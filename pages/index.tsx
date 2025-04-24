@@ -15,7 +15,7 @@ export default function HomePage () {
         <ConnectButton />
       </div>
       <Welcome />
-      <ColorSchemeToggle />
+      {/* <ColorSchemeToggle /> */}
     </>
   )
 }
