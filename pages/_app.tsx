@@ -21,7 +21,7 @@ export default function App ({ Component, pageProps }: AppProps) {
     <MantineProvider theme={theme}>
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
-          <RainbowKitProvider locale={locale}>
+          <RainbowKitProvider locale={locale} coolMode>
             <Head>
               <title>Mantine Template</title>
               <meta
