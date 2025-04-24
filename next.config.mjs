@@ -9,5 +9,9 @@ export default withBundleAnalyzer({
   eslint: {
     ignoreDuringBuilds: true,
   },
+  i18n: {
+    locales: ['en-US', 'zh-CN'],
+    defaultLocale: 'en-US',
+  },
   devIndicators: false
 });
