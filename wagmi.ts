@@ -3,9 +3,11 @@ import {
   bsc,
   bscTestnet,
 } from 'wagmi/chains';
+import { http } from 'wagmi'
+
 
 export const config = getDefaultConfig({
-  appName: 'RainbowKit demo',
+  appName: 'FF-NODE',
   projectId: 'YOUR_PROJECT_ID',
   chains: [
     bsc,
@@ -13,4 +15,8 @@ export const config = getDefaultConfig({
     // ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === 'true' ? [sepolia] : []),
   ],
   ssr: true,
+  transports: {
+    [bsc.id]: http(),
+    [bscTestnet.id]: http(),
+  },
 });

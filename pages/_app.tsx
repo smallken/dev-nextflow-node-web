@@ -13,6 +13,8 @@ import { RainbowKitProvider, type Locale } from '@rainbow-me/rainbowkit'
 
 import { config } from '../wagmi'
 
+import { Layout } from '../components/Layout/Layout'
+
 const queryClient = new QueryClient()
 
 export default function App ({ Component, pageProps }: AppProps) {
@@ -30,7 +32,9 @@ export default function App ({ Component, pageProps }: AppProps) {
               />
               <link rel='shortcut icon' href='/favicon.svg' />
             </Head>
-            <Component {...pageProps} />
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
           </RainbowKitProvider>
         </QueryClientProvider>
       </WagmiProvider>

@@ -1,0 +1,633 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "contract IERC20",
+        "name": "usdtToken",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
+      }
+    ],
+    "name": "OwnershipRenounced",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "OwnershipTransferred",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "andOn",
+        "type": "bool"
+      }
+    ],
+    "name": "setWhitelistedOnEvent",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "inviteAddress",
+        "type": "address"
+      }
+    ],
+    "name": "bind",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "number",
+        "type": "uint256"
+      }
+    ],
+    "name": "buyNft",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getBlockNum",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getBlockTime",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      }
+    ],
+    "name": "getUser",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "usdtTotal",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "friendCount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "teamCount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "friendNodeCount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "teamNodeCount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "vipLevel",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "profitTotal",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "drawedProfit",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "nodeCount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "l1InviteNodeCount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "l2InviteNodeCount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "l3InviteNodeCount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "l4InviteNodeCount",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct NftPool.UserInfo",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "iNftMint",
+    "outputs": [
+      {
+        "internalType": "contract INftMint",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "invitation_",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "maxInviteLevel",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "nftId",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "nftPrice",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "nodeCountLimit",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "pAddress",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_mintAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "preMint",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "user_",
+        "type": "address"
+      }
+    ],
+    "name": "removeFromWhiteList",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "rewardVipRate",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "user_",
+        "type": "address"
+      }
+    ],
+    "name": "setFromWhiteList",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_maxSupply",
+        "type": "uint256"
+      }
+    ],
+    "name": "setMaxSupply",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "nftId_",
+        "type": "uint256"
+      }
+    ],
+    "name": "setNftId",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "nftMintAddress_",
+        "type": "address"
+      }
+    ],
+    "name": "setNftMint",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "nftPrice_",
+        "type": "uint256"
+      }
+    ],
+    "name": "setNftPrice",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "pAddress_",
+        "type": "address"
+      }
+    ],
+    "name": "setProAddress",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bool",
+        "name": "isOn",
+        "type": "bool"
+      }
+    ],
+    "name": "setWhitelistedOn",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "userAddr",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "vipLevel",
+        "type": "uint256"
+      }
+    ],
+    "name": "updateUserVip",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "addressUp",
+        "type": "address"
+      },
+      {
+        "internalType": "bool",
+        "name": "isValid",
+        "type": "bool"
+      }
+    ],
+    "name": "updateValidAddress",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "usdtToken_",
+    "outputs": [
+      {
+        "internalType": "contract IERC20",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "usdtTotal_",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "userInfo_",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "usdtTotal",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "friendCount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "teamCount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "friendNodeCount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "teamNodeCount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "vipLevel",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "profitTotal",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "drawedProfit",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "nodeCount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "l1InviteNodeCount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "l2InviteNodeCount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "l3InviteNodeCount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "l4InviteNodeCount",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "validAddress",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

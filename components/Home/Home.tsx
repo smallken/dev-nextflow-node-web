@@ -4,8 +4,31 @@ import { Image, Card, Text, Center, Badge } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import classes from './ProgressCardColored.module.css';
 
+import { useChainId, useAccount } from 'wagmi';
+
+// test abi
+import { usdtAbi, usdtAddress, useReadUsdtBalanceOf } from '../../wagmi/generated';
+
+
 export function Home() {
   const [opened, { toggle }] = useDisclosure(false);
+
+  const chainId = useChainId();
+  const account = useAccount();
+
+  console.log('chainId', chainId);
+  console.log('account', account);
+
+  const { data: balance } = useReadUsdtBalanceOf(
+    {
+        args: [account.address!],
+        query: {
+          enabled: !!account.address,
+        }
+    }
+  )
+
+  console.log('balance', balance);
 
   return (
     <>
@@ -14,10 +37,10 @@ export function Home() {
         src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-7.png"
       />
       <Space h="sm" />
-      
+
       <Card withBorder radius="md" padding="xl" bg="var(--mantine-color-body)">
         <Text fz="xs" tt="uppercase" fw={700} c="dimmed">
-          完成进度 
+          完成进度
         </Text>
         <Group mt="md" justify="space-between">
           <Text fz="sm">6000 / 10000</Text>
