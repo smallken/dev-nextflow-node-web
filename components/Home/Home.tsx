@@ -13,18 +13,27 @@ export function Home() {
         h={200}
         src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-7.png"
       />
-
       <Space h="sm" />
+      
+      <Card withBorder radius="md" padding="xl" bg="var(--mantine-color-body)">
+        <Text fz="xs" tt="uppercase" fw={700} c="dimmed">
+          完成进度 
+        </Text>
+        <Group mt="md" justify="space-between">
+          <Text fz="sm">6000 / 10000</Text>
+          <Badge size="sm">60%</Badge>
+        </Group>
+        <Progress value={60} mt="md" size="lg" radius="xl" />
+      </Card>
 
-
-      <Card shadow="sm" padding="lg" radius="md" withBorder>
+      {/* <Card shadow="sm" padding="lg" radius="md" withBorder>
         <Space h="xl" />
         <Progress color="green" radius="xl" size="xl" value={60} />
         <Group mt="md" justify="end">
           <Text fz="sm">6000 / 10000</Text>
           <Badge size="sm">60%</Badge>
         </Group>
-      </Card>
+      </Card> */}
 
       <Space h="xl" />
       <Card shadow="sm" padding="lg" radius="md" withBorder>
@@ -45,7 +54,7 @@ export function Home() {
 
         <Space h="sm" />
         <Group justify="center" mb={5}>
-          <Button variant="subtle"color="#F2AE00" onClick={toggle}>More</Button>
+          <Button variant="subtle" color="#F2AE00" onClick={toggle}>More</Button>
         </Group>
 
         <Collapse in={opened}>
