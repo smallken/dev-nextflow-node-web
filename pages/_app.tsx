@@ -23,7 +23,7 @@ export default function App ({ Component, pageProps }: AppProps) {
         <QueryClientProvider client={queryClient}>
           <RainbowKitProvider locale={locale} coolMode>
             <Head>
-              <title>Mantine Template</title>
+              <title>FF Node</title>
               <meta
                 name='viewport'
                 content='minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no'
