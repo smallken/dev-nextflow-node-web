@@ -6,6 +6,8 @@ import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { AppShell, Burger, Group, Skeleton } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 
+import { Home } from '../components/Home/Home'
+
 export default function HomePage () {
   // const [opened, { toggle }] = useDisclosure()
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure()
@@ -53,24 +55,9 @@ export default function HomePage () {
       </AppShell.Navbar>
 
       <AppShell.Main>
-        <Welcome />
+        {/* <Welcome /> */}
+        <Home />
       </AppShell.Main>
     </AppShell>
   )
-
-  // return (
-  //   <>
-  //     <div
-  //       style={{
-  //         display: 'flex',
-  //         justifyContent: 'flex-end',
-  //         padding: 12
-  //       }}
-  //     >
-  //       <ConnectButton />
-  //     </div>
-  //     <Welcome />
-  //     {/* <ColorSchemeToggle /> */}
-  //   </>
-  // )
 }
