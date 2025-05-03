@@ -4,10 +4,20 @@ import { Image, Card, Text, Center, Badge } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import classes from './ProgressCardColored.module.css';
 
-import { useChainId, useAccount } from 'wagmi';
+import { useChainId, useAccount, useWaitForTransactionReceipt } from 'wagmi';
+
+import { useCallback } from 'react';
+import { notifications } from '@mantine/notifications';
+import { IconCheck, IconX } from '@tabler/icons-react';
+
+import  {Register } from '../User/Register'
+
 
 // test abi
-import { usdtAbi, usdtAddress, useReadUsdtBalanceOf } from '../../wagmi/generated';
+import { usdtAbi, usdtAddress, useReadUsdtBalanceOf, useWritePoolRegister } from '../../wagmi/generated';
+
+// Type assertion to ensure TypeScript recognizes this as an Ethereum address
+const defaultBindAddress = process.env.NEXT_PUBLIC_BSC_TESTNET_DEFAULT_BIND_ADDRESS as `0x${string}`
 
 
 export function Home() {
@@ -19,14 +29,44 @@ export function Home() {
   console.log('chainId', chainId);
   console.log('account', account);
 
+
+  console.log('defaultBindAddress', defaultBindAddress)
+  
+
   const { data: balance } = useReadUsdtBalanceOf(
     {
-        args: [account.address!],
-        query: {
-          enabled: !!account.address,
-        }
+      args: [account.address!],
+      query: {
+        enabled: !!account.address,
+      }
     }
   )
+
+  const {
+    data: hash,
+    error,
+    isPending,
+    writeContractAsync: register 
+  } = useWritePoolRegister();
+
+  async function submitBind(e: React.MouseEvent<HTMLButtonElement>) {
+    e.preventDefault()
+    console.log('submitBind')
+    // Make sure the address exists before sending
+    if (!defaultBindAddress) {
+      console.error('Bind address not configured in environment variables');
+      return;
+    }
+    
+    await register({
+      args: [defaultBindAddress],
+    })
+  }
+
+  const { isLoading: isConfirming, isSuccess: isConfirmed } =
+    useWaitForTransactionReceipt({
+      hash,
+    })
 
   console.log('balance', balance);
 
@@ -59,12 +99,27 @@ export function Home() {
       </Card> */}
 
       <Space h="xl" />
-      <Card shadow="sm" padding="lg" radius="md" withBorder>
+      
+      <Register />
+      {/* <Card shadow="sm" padding="lg" radius="md" withBorder>
         <Text fw={500}>
-
+          hash: {hash}
         </Text>
-        <Button fullWidth color="#F2AE00">接受邀请</Button>
-      </Card>
+        <Text>
+        isPending: {isPending}
+        </Text>
+        <Text>
+        isConfirming: {isConfirming}
+        </Text>
+        <Text>
+        isConfirmed: {isConfirmed}
+        </Text>
+        <Button onClick={submitBind} disabled={isPending} fullWidth color="#F2AE00">
+        {isPending ? '提交中...' : '接受邀请'}
+        {isConfirming && <div>Waiting for confirmation...</div>}
+       {isConfirmed && <div>Transaction confirmed.</div>}
+        </Button>
+      </Card> */}
 
       <Space h="xl" />
       <Card shadow="sm" padding="lg" radius="md" withBorder>
@@ -101,6 +156,49 @@ export function Home() {
       <Card shadow="sm" padding="lg" radius="md" withBorder>
         <Button fullWidth color="#F2AE00">邀请好友</Button>
       </Card>
+
+      <Button
+      onClick={() =>
+        notifications.show({
+          id: 'notification-loading',
+          title: 'Default notification',
+          message: 'Do not forget to star Mantine on GitHub! 🌟',
+          position: 'top-center',
+          loading: true,
+        })
+      }
+    >
+      Show loading
+    </Button>
+    <Button
+      onClick={() =>{
+        notifications.hide('notification-loading')
+        notifications.show({
+          id: 'notification-success',
+          title: 'Default notification',
+          message: 'Do not forget to star Mantine on GitHub! 🌟',
+          position: 'top-center',
+          icon: <IconCheck size={18} />
+        })
+      }}
+    >
+      Show success
+    </Button>
+    <Button
+      onClick={() =>{
+        notifications.hide('notification-success')
+        notifications.show({
+          id: 'notification-error',
+          title: 'Default notification',
+          message: 'Do not forget to star Mantine on GitHub! 🌟',
+          position: 'top-center',
+          icon: <IconX size={18} />,
+          color: 'red',
+        })
+      }}
+    >
+      Show error
+    </Button>
     </>
   );
 }

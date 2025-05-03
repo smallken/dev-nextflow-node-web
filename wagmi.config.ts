@@ -5,7 +5,7 @@ import { bscTestnet } from 'wagmi/chains'
 
 // load pool abi from abis
 const poolAbi = require('./abis/pool.json')
-const nodeNftAbi = require('./abis/nodeNft.json')
+const nodeNftAbi = require('./abis/nft.json')
 
 export default defineConfig({
   out: 'wagmi/generated.ts',
@@ -20,14 +20,14 @@ export default defineConfig({
     {
       name: 'pool',
       address: {
-        [bscTestnet.id]: '0x23e248Eb5417cDc60a67Aa546796559f9f05F447',
+        [bscTestnet.id]: '0x3A7dd71d898beC321A51961CAbB483E28B10e0E6',
       },
       abi: poolAbi,
     },
     {
       name: 'nodeNft',
       address: {
-        [bscTestnet.id]: '0x52925A66dc75fb7dA96F8468aA7476F10D80fB91',
+        [bscTestnet.id]: '0x76304F2547aA59954F2d5d479936B073aBCcDB8d',
       },
       abi: nodeNftAbi,
     },

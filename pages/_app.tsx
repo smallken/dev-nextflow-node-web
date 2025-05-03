@@ -5,6 +5,10 @@ import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import { MantineProvider } from '@mantine/core'
+
+import { Notifications } from '@mantine/notifications';
+import '@mantine/notifications/styles.css';
+
 import { theme } from '../theme'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -21,6 +25,7 @@ export default function App ({ Component, pageProps }: AppProps) {
   const { locale } = useRouter() as { locale: Locale }
   return (
     <MantineProvider theme={theme}>
+      <Notifications />
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
           <RainbowKitProvider locale={locale} coolMode>

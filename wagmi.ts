@@ -5,6 +5,8 @@ import {
 } from 'wagmi/chains';
 import { http } from 'wagmi'
 
+console.log('env', process.env.NEXT_PUBLIC_BSC_TESTNET_RPC)
+
 
 export const config = getDefaultConfig({
   appName: 'FF-NODE',
@@ -17,6 +19,6 @@ export const config = getDefaultConfig({
   ssr: true,
   transports: {
     [bsc.id]: http(),
-    [bscTestnet.id]: http(),
+    [bscTestnet.id]: http(process.env.NEXT_PUBLIC_BSC_TESTNET_RPC),
   },
 });
