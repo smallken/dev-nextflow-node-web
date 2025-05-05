@@ -104,19 +104,9 @@ export function Home() {
         <Progress value={nodeInfo ? nodeInfo.progress : 0} mt="md" size="lg" radius="xl" />
       </Card>
 
-      {/* <Card shadow="sm" padding="lg" radius="md" withBorder>
-        <Space h="xl" />
-        <Progress color="green" radius="xl" size="xl" value={60} />
-        <Group mt="md" justify="end">
-          <Text fz="sm">6000 / 10000</Text>
-          <Badge size="sm">60%</Badge>
-        </Group>
-      </Card> */}
-
       <Space h="xl" />
       
       <Register />
-
 
       <Space h="xl" />
       <BuyNode />
@@ -125,48 +115,6 @@ export function Home() {
 
       <Invite />
 
-      <Button
-      onClick={() =>
-        notifications.show({
-          id: 'notification-loading',
-          title: 'Default notification',
-          message: 'Do not forget to star Mantine on GitHub! 🌟',
-          position: 'top-center',
-          loading: true,
-        })
-      }
-    >
-      Show loading
-    </Button>
-    <Button
-      onClick={() =>{
-        notifications.hide('notification-loading')
-        notifications.show({
-          id: 'notification-success',
-          title: 'Default notification',
-          message: 'Do not forget to star Mantine on GitHub! 🌟',
-          position: 'top-center',
-          icon: <IconCheck size={18} />
-        })
-      }}
-    >
-      Show success
-    </Button>
-    <Button
-      onClick={() =>{
-        notifications.hide('notification-success')
-        notifications.show({
-          id: 'notification-error',
-          title: 'Default notification',
-          message: 'Do not forget to star Mantine on GitHub! 🌟',
-          position: 'top-center',
-          icon: <IconX size={18} />,
-          color: 'red',
-        })
-      }}
-    >
-      Show error
-    </Button>
     </>
   );
 }
