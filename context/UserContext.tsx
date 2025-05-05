@@ -1,12 +1,13 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { useAccount } from 'wagmi';
-import { useReadPoolGetUser, useReadPoolInvitation } from '../wagmi/generated';
+import { useReadPoolGetUser, useReadPoolInvitation, useReadPoolNftPrice } from '../wagmi/generated';
 
 
-// 定义用户节点信息类型
+// 定义全局节点信息类型
 type NodeInfo = {
-  count: number;
-  progress: number;
+  count: number; // 所有用户总数
+  progress: number; // 整体进度
+  price: bigint; // 节点价格（usdt计算）
   // 其他节点相关信息
 };
 
@@ -59,13 +60,26 @@ export function UserProvider({ children }: { children: ReactNode }) {
       enabled: !!address,
     }
   });
+  
+  // 使用 useReadPoolNftPrice 获取全局节点价格
+  const { data: nftPrice } = useReadPoolNftPrice();
 
-  console.log('parentAddress',parentAddress)
+  console.log('parentAddress', parentAddress)
+  console.log('nftPrice', nftPrice)
 
-  // 当地址变化时重置节点信息
+  // 初始化全局节点价格信息
+  useEffect(() => {
+    if (nftPrice) {
+      setNodeInfo(prevState => ({
+        ...prevState || { count: 0, progress: 0, price: BigInt(0) },
+        price: nftPrice
+      }));
+    }
+  }, [nftPrice]);
+  
+  // 当地址变化时重置用户相关信息
   useEffect(() => {
     if (!address) {
-      setNodeInfo(null);
       setContractUserInfo(null);
     }
     // 对于地址存在的情况，我们依赖上面的useReadPoolGetUser来获取数据
@@ -91,11 +105,12 @@ export function UserProvider({ children }: { children: ReactNode }) {
         parent: parentAddress as `0x${string}` || '0x0000000000000000000000000000000000000000'
       });
 
-      // 根据获取到的信息更新nodeInfo
-      setNodeInfo({
+      // 仅更新进度信息，保留价格信息
+      setNodeInfo(prevState => ({
+        ...prevState || { count: 0, progress: 0, price: BigInt(0) },
         count: Number(userData.selfNodeCount || 0),
         progress: Number(userData.vipLevel || 0) * 20, // 假设每个vip等级对应进度20%
-      });
+      }));
     } else {
       setContractUserInfo(null);
     }
