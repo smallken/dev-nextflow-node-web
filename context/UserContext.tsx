@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { useAccount } from 'wagmi';
-import { useReadPoolGetUser } from '../wagmi/generated';
+import { useReadPoolGetUser, useReadPoolInvitation } from '../wagmi/generated';
 
 
 // 定义用户节点信息类型
@@ -51,6 +51,16 @@ export function UserProvider({ children }: { children: ReactNode }) {
       enabled: !!address,
     }
   });
+  
+  // 使用 useReadPoolInvitation 获取用户的推荐人地址
+  const { data: parentAddress } = useReadPoolInvitation({
+    args: address ? [address] : undefined,
+    query: {
+      enabled: !!address,
+    }
+  });
+
+  console.log('parentAddress',parentAddress)
 
   // 当地址变化时重置节点信息
   useEffect(() => {
@@ -62,7 +72,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
     // 所以这里不需要额外的操作
   }, [address]);
   
-  // 从合约获取的用户数据更新 contractUserInfo
+  // 将userData和parentAddress结合更新contractUserInfo
   useEffect(() => {
     if (userData) {
       // userData 是合约返回的UserInfo结构，根据合约ABI定义包含各种属性
@@ -76,7 +86,9 @@ export function UserProvider({ children }: { children: ReactNode }) {
         profitTotal: typeof userData.profitTotal === 'bigint' ? userData.profitTotal : BigInt(userData.profitTotal as any || 0),
         selfNodeCount: Number(userData.selfNodeCount || 0),
         l1TeamNodeCount: Number(userData.l1TeamNodeCount || 0),
-        computeL0: Boolean(userData.computeL0)
+        computeL0: Boolean(userData.computeL0),
+        // 从推荐人查询中获取parent地址
+        parent: parentAddress as `0x${string}` || '0x0000000000000000000000000000000000000000'
       });
 
       // 根据获取到的信息更新nodeInfo
@@ -87,7 +99,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
     } else {
       setContractUserInfo(null);
     }
-  }, [userData]);
+  }, [userData, parentAddress]);
 
   const value = {
     nodeInfo,
