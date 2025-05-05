@@ -18,6 +18,7 @@ import { RainbowKitProvider, type Locale } from '@rainbow-me/rainbowkit'
 import { config } from '../wagmi'
 
 import { Layout } from '../components/Layout/Layout'
+import { UserProvider } from '../context/UserContext'
 
 const queryClient = new QueryClient()
 
@@ -29,17 +30,19 @@ export default function App ({ Component, pageProps }: AppProps) {
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
           <RainbowKitProvider locale={locale} coolMode>
-            <Head>
-              <title>FF Node</title>
-              <meta
-                name='viewport'
-                content='minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no'
-              />
-              <link rel='shortcut icon' href='/favicon.svg' />
-            </Head>
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
+            <UserProvider>
+              <Head>
+                <title>FF Node</title>
+                <meta
+                  name='viewport'
+                  content='minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no'
+                />
+                <link rel='shortcut icon' href='/favicon.svg' />
+              </Head>
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            </UserProvider>
           </RainbowKitProvider>
         </QueryClientProvider>
       </WagmiProvider>

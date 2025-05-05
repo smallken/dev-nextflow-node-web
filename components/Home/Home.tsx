@@ -5,6 +5,7 @@ import { useDisclosure } from '@mantine/hooks';
 import classes from './ProgressCardColored.module.css';
 
 import { useChainId, useAccount, useWaitForTransactionReceipt } from 'wagmi';
+import { useUser } from '../../context/UserContext';
 
 import { useCallback } from 'react';
 import { notifications } from '@mantine/notifications';
@@ -25,9 +26,12 @@ export function Home() {
 
   const chainId = useChainId();
   const account = useAccount();
+  // 使用全局用户上下文获取节点信息
+  const { nodeInfo, setNodeInfo } = useUser();
 
   console.log('chainId', chainId);
   console.log('account', account);
+  console.log('共享的节点信息', nodeInfo);
 
 
   console.log('defaultBindAddress', defaultBindAddress)
@@ -83,10 +87,19 @@ export function Home() {
           完成进度
         </Text>
         <Group mt="md" justify="space-between">
-          <Text fz="sm">6000 / 10000</Text>
-          <Badge size="sm">60%</Badge>
+          {nodeInfo ? (
+            <>
+              <Text fz="sm">{nodeInfo.progress}0 / 10000</Text>
+              <Badge size="sm">{nodeInfo.progress}%</Badge>
+            </>
+          ) : (
+            <>
+              <Text fz="sm">0 / 10000</Text>
+              <Badge size="sm">0%</Badge>
+            </>
+          )}
         </Group>
-        <Progress value={60} mt="md" size="lg" radius="xl" />
+        <Progress value={nodeInfo ? nodeInfo.progress : 0} mt="md" size="lg" radius="xl" />
       </Card>
 
       {/* <Card shadow="sm" padding="lg" radius="md" withBorder>
@@ -124,11 +137,39 @@ export function Home() {
       <Space h="xl" />
       <Card shadow="sm" padding="lg" radius="md" withBorder>
         <Text fw={500}>
-
+          当前节点: {nodeInfo ? nodeInfo.count : 0}个
         </Text>
-        <Button fullWidth color="#F2AE00">认购1个节点</Button>
+        <Button 
+          fullWidth 
+          color="#F2AE00" 
+          onClick={() => {
+            if (nodeInfo) {
+              // 更新全局节点信息
+              setNodeInfo({
+                ...nodeInfo,
+                count: nodeInfo.count + 1
+              });
+            }
+          }}
+        >
+          认购1个节点
+        </Button>
         <Space h="sm" />
-        <Button fullWidth color="#F2AE00">认购5个节点</Button>
+        <Button 
+          fullWidth 
+          color="#F2AE00"
+          onClick={() => {
+            if (nodeInfo) {
+              // 更新全局节点信息
+              setNodeInfo({
+                ...nodeInfo,
+                count: nodeInfo.count + 5
+              });
+            }
+          }}
+        >
+          认购5个节点
+        </Button>
 
         <Space h="sm" />
         <Group justify="center" mb={5}>

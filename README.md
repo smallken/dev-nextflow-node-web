@@ -1,4 +1,9 @@
 
+## Run
+
+```sh
+pnpm run dev
+```
 
 ## Update contract
 
