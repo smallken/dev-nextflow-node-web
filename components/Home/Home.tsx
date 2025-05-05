@@ -27,7 +27,7 @@ export function Home() {
   const chainId = useChainId();
   const account = useAccount();
   // 使用全局用户上下文获取节点信息
-  const { nodeInfo, setNodeInfo } = useUser();
+  const { nodeInfo, setNodeInfo,contractUserInfo } = useUser();
 
   console.log('chainId', chainId);
   console.log('account', account);
@@ -114,25 +114,7 @@ export function Home() {
       <Space h="xl" />
       
       <Register />
-      {/* <Card shadow="sm" padding="lg" radius="md" withBorder>
-        <Text fw={500}>
-          hash: {hash}
-        </Text>
-        <Text>
-        isPending: {isPending}
-        </Text>
-        <Text>
-        isConfirming: {isConfirming}
-        </Text>
-        <Text>
-        isConfirmed: {isConfirmed}
-        </Text>
-        <Button onClick={submitBind} disabled={isPending} fullWidth color="#F2AE00">
-        {isPending ? '提交中...' : '接受邀请'}
-        {isConfirming && <div>Waiting for confirmation...</div>}
-       {isConfirmed && <div>Transaction confirmed.</div>}
-        </Button>
-      </Card> */}
+
 
       <Space h="xl" />
       <Card shadow="sm" padding="lg" radius="md" withBorder>

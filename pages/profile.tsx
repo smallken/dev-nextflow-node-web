@@ -3,7 +3,7 @@ import { useUser } from '../context/UserContext';
 
 export default function Profile() {
   // 使用自定义 hook 获取全局用户数据
-  const { nodeInfo, address } = useUser();
+  const { nodeInfo, address, contractUserInfo } = useUser();
 
   return (
     <div>
@@ -16,29 +16,33 @@ export default function Profile() {
         <Text fz="sm">
           钱包地址: {address || '未连接钱包'}
         </Text>
-        
-        {nodeInfo ? (
+
+        {contractUserInfo && (
           <>
             <Space h="md" />
-            <Text fz="xs" tt="uppercase" fw={700} c="dimmed">
-              节点信息
-            </Text>
-            <Group mt="md" justify="space-between">
-              <Text fz="sm">节点数量: {nodeInfo.count}</Text>
+            <Group>
+              <Badge variant="light" color="green">
+                USDT总量: {contractUserInfo.usdtTotal.toString()}
+              </Badge>
+              <Badge variant="light" color="blue">
+                好友数量: {contractUserInfo.friendCount.toString()}
+              </Badge>
+              <Badge variant="light" color="yellow">
+                团队数量: {contractUserInfo.teamCount.toString()}
+              </Badge>
             </Group>
-            
-            <Text fz="xs" tt="uppercase" fw={700} c="dimmed" mt="md">
-              完成进度
-            </Text>
-            <Group mt="md" justify="space-between">
-              <Text fz="sm">{nodeInfo.progress}0 / 10000</Text>
-              <Badge size="sm">{nodeInfo.progress}%</Badge>
-            </Group>
-            <Progress value={nodeInfo.progress} mt="md" size="lg" radius="xl" />
+            <Space h="md" />
+            <Progress
+              value={contractUserInfo.vipLevel}
+              max={10}
+              size="xl"
+              radius="xl"
+              color="blue"
+              label={`${contractUserInfo.vipLevel}级`}
+            />
           </>
-        ) : (
-          <Text c="dimmed" mt="md">请连接钱包查看节点信息</Text>
         )}
+      
       </Card>
     </div>
   );
