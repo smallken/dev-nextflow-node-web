@@ -11,8 +11,10 @@ import { useCallback } from 'react';
 import { notifications } from '@mantine/notifications';
 import { IconCheck, IconX } from '@tabler/icons-react';
 
-import  {Register } from '../User/Register'
+import { Register } from '../User/Register'
+import { Invite } from '../User/Invite'
 
+import { BuyNode } from '../Node/BuyNode'
 
 // test abi
 import { usdtAbi, usdtAddress, useReadUsdtBalanceOf, useWritePoolRegister } from '../../wagmi/generated';
@@ -117,68 +119,11 @@ export function Home() {
 
 
       <Space h="xl" />
-      <Card shadow="sm" padding="lg" radius="md" withBorder>
-        <Text fw={500}>
-          当前节点: {nodeInfo ? nodeInfo.count : 0}个
-        </Text>
-        <Button 
-          fullWidth 
-          color="#F2AE00" 
-          onClick={() => {
-            if (nodeInfo) {
-              // 更新全局节点信息
-              setNodeInfo({
-                ...nodeInfo,
-                count: nodeInfo.count + 1
-              });
-            }
-          }}
-        >
-          认购1个节点
-        </Button>
-        <Space h="sm" />
-        <Button 
-          fullWidth 
-          color="#F2AE00"
-          onClick={() => {
-            if (nodeInfo) {
-              // 更新全局节点信息
-              setNodeInfo({
-                ...nodeInfo,
-                count: nodeInfo.count + 5
-              });
-            }
-          }}
-        >
-          认购5个节点
-        </Button>
-
-        <Space h="sm" />
-        <Group justify="center" mb={5}>
-          <Button variant="subtle" color="#F2AE00" onClick={toggle}>More</Button>
-        </Group>
-
-        <Collapse in={opened}>
-          <Center>
-            <Group>
-              <NumberInput
-                size="md"
-                allowNegative={false}
-                allowDecimal={false}
-                defaultValue={0}
-                placeholder="Input number"
-              />
-              <Button color="#F2AE00"> 认购</Button>
-            </Group>
-          </Center>
-        </Collapse>
-
-      </Card>
+      <BuyNode />
 
       <Space h="xl" />
-      <Card shadow="sm" padding="lg" radius="md" withBorder>
-        <Button fullWidth color="#F2AE00">邀请好友</Button>
-      </Card>
+
+      <Invite />
 
       <Button
       onClick={() =>
