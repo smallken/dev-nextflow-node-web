@@ -106,14 +106,40 @@ export function Home() {
 
       <Space h="xl" />
       
-      <Register />
-
-      <Space h="xl" />
-      <BuyNode />
-
-      <Space h="xl" />
-
-      <Invite />
+      {/* 根据用户状态展示不同组件 */}
+      {!account.address ? (
+        <>
+          {/* 用户未连接钱包，显示Register和Invite */}
+          <Register />
+          <Space h="xl" />
+          <Invite />
+        </>
+      ) : (
+        <>
+          {/* 用户已连接钱包 */}
+          {contractUserInfo?.parent === '0x0000000000000000000000000000000000000000' ? (
+            /* parent为0地址，展示Register */
+            <Register />
+          ) : (
+            /* parent不为0，展示BuyNode */
+            <BuyNode />
+          )}
+          
+          <Space h="xl" />
+          
+          {/* 根据节点购买情况展示Invite */}
+          {contractUserInfo && (contractUserInfo.selfNodeCount > 0) ? (
+            <Invite />
+          ) : (
+            <Card shadow="sm" padding="lg" radius="md" withBorder>
+              <Text color="dimmed" size="sm" mb="sm" ta="center">
+                至少需要购买一个节点才能邀请好友
+              </Text>
+              <Button fullWidth color="#F2AE00" disabled>邀请好友</Button>
+            </Card>
+          )}
+        </>
+      )}
 
     </>
   );
