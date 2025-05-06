@@ -10,7 +10,7 @@ import { formatEther } from 'viem'
 
 export function BuyNode() {
   const [opened, { toggle }] = useDisclosure(false);
-  const { nodeInfo, setNodeInfo, contractUserInfo, usdtBalance } = useUser();
+  const { nodeInfo, setNodeInfo, contractUserInfo, usdtBalance, usdtAllowanceForPool } = useUser();
   const [buyAmount, setBuyAmount] = useState<number>(1);
   
   // 使用Wagmi的useWritePoolBuyNft hook进行合约交互
@@ -123,6 +123,8 @@ export function BuyNode() {
         已购买: {contractUserInfo ? contractUserInfo.selfNodeCount : 0}个
       </Text>
       <Text>USDT余额:{formatEther(usdtBalance) || 0}</Text>
+    <Text>USDT授权: {usdtAllowanceForPool}</Text>
+      
       </Group>
       
       <Space h="sm" />

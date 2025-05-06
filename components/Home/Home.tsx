@@ -29,7 +29,8 @@ export function Home() {
   const chainId = useChainId();
   const account = useAccount();
   // 使用全局用户上下文获取节点信息
-  const { nodeInfo, setNodeInfo,contractUserInfo } = useUser();
+  const { nodeInfo, setNodeInfo,contractUserInfo, nftMintProgress, nftCurrentTotal, 
+    nftMintTargetAmount, nftMintTarget,nftMintStart } = useUser();
 
   console.log('chainId', chainId);
   console.log('account', account);
@@ -91,13 +92,13 @@ export function Home() {
         <Group mt="md" justify="space-between">
           {nodeInfo ? (
             <>
-              <Text fz="sm">{nodeInfo.progress}0 / 10000</Text>
-              <Badge size="sm">{nodeInfo.progress}%</Badge>
+              <Text fz="sm">{nftCurrentTotal} /{nftMintTargetAmount}</Text>
+              <Badge size="sm">{nftMintProgress}%</Badge>
             </>
           ) : (
             <>
               <Text fz="sm">0 / 10000</Text>
-              <Badge size="sm">0%</Badge>
+              <Badge size="sm">{nftMintProgress}%</Badge>
             </>
           )}
         </Group>

@@ -1,12 +1,15 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { useAccount, useChainId } from 'wagmi';
-import { useReadPoolGetUser, useReadPoolInvitation, useReadPoolNftPrice, useReadUsdtBalanceOf, useReadUsdtAllowance, poolAddress, usdtAddress } from '../wagmi/generated';
+import { useReadPoolGetUser, useReadPoolInvitation, useReadPoolNftPrice, useReadUsdtBalanceOf, useReadUsdtAllowance, poolAddress, usdtAddress,
+useReadNodeNftTotalSupply
+
+ } from '../wagmi/generated';
 
 
 // 定义全局节点信息类型
 type NodeInfo = {
-  count: number; // 所有用户总数
-  progress: number; // 整体进度
+  count: number; // 所有用户总数 // todo remove
+  progress: number; // 整体进度 // todo remove
   price: bigint; // 节点价格（usdt计算）
   // 其他节点相关信息
 };
@@ -36,7 +39,14 @@ type UserContextType = {
   contractUserInfo: ContractUserInfo | null;
   // 可以添加其他用户相关状态
   usdtBalance:bigint,
-  usdtAllowanceForPool:bigint
+  usdtAllowanceForPool:bigint,
+
+  //nft info
+  nftCurrentTotal: bigint, // total mint of different term
+  nftMintTarget: bigint, // target for the end of this loop
+  nftMintStart: number, // number start for a term
+  nftMintProgress: number // 当前铸造进度百分比
+  nftMintTargetAmount:bigint
 };
 
 // 创建上下文
@@ -91,6 +101,44 @@ export function UserProvider({ children }: { children: ReactNode }) {
   
   // 默认授权额度为0
   const usdtAllowanceForPool = usdtAllowanceData || BigInt(0);
+  
+  // 获取 NFT 总供应量
+  const { data: nftTotalSupplyData } = useReadNodeNftTotalSupply({
+    args:[BigInt(1)],
+    query: {
+      enabled: true,
+    }
+  });
+  
+  // 默认总供应量为0
+  const nftCurrentTotal = nftTotalSupplyData || BigInt(0);
+  
+  // NFT铸造目标和起始值
+  const nftMintTarget = BigInt(30000);
+  const nftMintStart = 0;
+  
+  // 计算NFT铸造进度
+  const calculateMintProgress = () => {
+    if (nftCurrentTotal === BigInt(0)) return 0;
+    if (nftMintTarget <= BigInt(nftMintStart)) return 100;
+    
+    // 当前铸造数量
+    const currentMinted = Number(nftCurrentTotal) - nftMintStart;
+    // 目标铸造数量
+    const targetMinted = Number(nftMintTarget) - nftMintStart;
+    
+    // 计算百分比
+    let progress = (currentMinted / targetMinted) * 100;
+    
+    // 限制在 0-100% 范围内
+    progress = Math.max(0, Math.min(100, progress));
+    
+    return progress;
+  };
+  
+  // 当前铸造进度百分比
+  const nftMintProgress = calculateMintProgress();
+  const nftMintTargetAmount = nftMintTarget - BigInt(nftMintStart)
 
   console.log('parentAddress', parentAddress)
   console.log('nftPrice', nftPrice)
@@ -136,9 +184,10 @@ export function UserProvider({ children }: { children: ReactNode }) {
       });
 
       // 仅更新进度信息，保留价格信息
+      // nftCurrentTotal,
       setNodeInfo(prevState => ({
         ...prevState || { count: 0, progress: 0, price: BigInt(0) },
-        count: Number(userData.selfNodeCount || 0),
+        count: Number(nftCurrentTotal || 0), 
         progress: Number(userData.vipLevel || 0) * 20, // 假设每个vip等级对应进度20%
       }));
     } else {
@@ -153,6 +202,12 @@ export function UserProvider({ children }: { children: ReactNode }) {
     contractUserInfo,
     usdtBalance,
     usdtAllowanceForPool,
+    // nft
+    nftCurrentTotal, // nft mint total
+    nftMintTarget, // nftMintTarget
+    nftMintTargetAmount,
+    nftMintStart,
+    nftMintProgress,
   };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
