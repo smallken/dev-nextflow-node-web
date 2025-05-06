@@ -149,42 +149,30 @@ export function UserProvider({ children }: { children: ReactNode }) {
   console.log('parentAddress', parentAddress)
   console.log('nftPrice', nftPrice)
   
-  // 初始化应用全局信息
+  // Initialize application global information only when key values change
   useEffect(() => {
+    // Only initialize or update global info when critical values are available
     if (nftPrice) {
-      setAppInfo((prevState) => ({
-        ...prevState || { 
-          price: BigInt(0),
-          nftCurrentTotal: BigInt(0),
-          nftMintTarget: BigInt(0),
-          nftMintStart: 0,
-          nftMintProgress: 0,
-          nftMintTargetAmount: BigInt(0),
-        },
-        price: nftPrice,
-        nftCurrentTotal,
-        nftMintTarget,
-        nftMintStart,
-        nftMintProgress,
-        nftMintTargetAmount
-      }));
-    }
-  }, [nftPrice, nftCurrentTotal, nftMintTarget, nftMintStart, nftMintProgress, nftMintTargetAmount]);
-
-  // 当全局NFT信息变化时更新appInfo
-  useEffect(() => {
-    if (nftCurrentTotal !== undefined && appInfo) {
-      setAppInfo((prevState) => {
-        if (!prevState) return null;
-        return {
-          ...prevState,
+      // Use a flag to prevent updating if already initialized with same values
+      const shouldUpdate = !appInfo || 
+        appInfo.price !== nftPrice || 
+        appInfo.nftCurrentTotal !== nftCurrentTotal;
+      
+      if (shouldUpdate) {
+        console.log('Updating appInfo with new values');
+        setAppInfo({
+          price: nftPrice,
           nftCurrentTotal,
-          nftMintProgress
-        };
-      });
+          nftMintTarget,
+          nftMintStart,
+          nftMintProgress,
+          nftMintTargetAmount
+        });
+      }
     }
-  }, [nftCurrentTotal, nftMintProgress, appInfo]);
-  
+  // Only depend on primitive values that come from external sources
+  }, [nftPrice, nftCurrentTotal, nftTotalSupplyData]);
+
   // 当地址变化时重置用户相关信息
   useEffect(() => {
     if (!address) {
@@ -215,16 +203,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
         address: address
       });
 
-      // 在用户登录时也更新全局信息
-      if (appInfo) {
-        setAppInfo((prevState) => {
-          if (!prevState) return null;
-          return {
-            ...prevState,
-            nftCurrentTotal
-          };
-        });
-      }
+      // We don't need to update global info here - it's handled by the main effect
     } else {
       setContractUserInfo(null);
     }
