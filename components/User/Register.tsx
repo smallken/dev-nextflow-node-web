@@ -3,12 +3,16 @@ import { Image, Card, Text, Center, Badge } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import classes from './ProgressCardColored.module.css';
 
-import { useChainId, useAccount, useWaitForTransactionReceipt } from 'wagmi';  
+import { useChainId, useAccount, useConnect, useWaitForTransactionReceipt } from 'wagmi';
+import { useConnectModal } from '@rainbow-me/rainbowkit';
 import React from 'react';
 
 import { useCallback, useEffect } from 'react';
 import { notifications } from '@mantine/notifications';
 import { IconCheck, IconX } from '@tabler/icons-react';
+
+import { useUser } from '../../context/UserContext';
+
 
 
 // test abi
@@ -21,6 +25,9 @@ const defaultBindAddress = process.env.NEXT_PUBLIC_BSC_TESTNET_DEFAULT_BIND_ADDR
 export function Register() {
 
   const account = useAccount();
+  const { connect, connectors } = useConnect();
+  const { openConnectModal } = useConnectModal();
+  const {contractUserInfo}= useUser()
 
   const {
     data: hash,
@@ -33,13 +40,22 @@ export function Register() {
     e.preventDefault()
     console.log('submitBind')
 
+    // 检查用户是否已连接钱包
+    if (!account.isConnected) {
+      // 如果未连接钱包，打开钱包选择弹窗
+      if (openConnectModal) {
+        openConnectModal();
+      }
+      return;
+    }
+    
     // Make sure the address exists before sending
     if (!defaultBindAddress) {
       console.error('Bind address not configured in environment variables');
       notifications.show({
         id: 'bind-error',
         title: '错误',
-        message: '邀请人地址未配置',
+        message: '邀请人地址不能为空',
         color: 'red',
         icon: <IconX />,
         autoClose: 3000,
@@ -133,9 +149,21 @@ export function Register() {
 
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>
-      <Button onClick={submitBind} disabled={isPending} fullWidth color="#F2AE00">
-        {isPending ? '提交中...' : '接受邀请'}
-      </Button>
+      {contractUserInfo && contractUserInfo.parent ? (
+        <>
+          <Text fw={500} size="md" mb="xs">邀请人</Text>
+          <Text size="sm" c="dimmed" mb="md">{contractUserInfo.parent}</Text>
+        </>
+      ) : (
+        <Button 
+          onClick={submitBind}
+          disabled={isPending} 
+          fullWidth 
+          color="#F2AE00"
+        >
+          {isPending ? '提交中...' : '接受邀请'}
+        </Button>
+      )}
     </Card>
   )
 

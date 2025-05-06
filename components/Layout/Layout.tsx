@@ -39,7 +39,9 @@ export  function Layout({ children }: { children: React.ReactNode }) {
             LOGO
           </Group>
           <Group>
-            <ConnectButton />
+            {/* 用自定义按钮替换原始ConnectButton，实现更灵活的UI定制 */}
+            <ConnectButton /> 
+            {/* <CustomConnectButton variant="outline" size="sm" /> */}
           </Group>
         </Group>
       </AppShell.Header>
