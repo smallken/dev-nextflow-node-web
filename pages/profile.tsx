@@ -47,13 +47,13 @@ export default function Profile() {
               </Badge>
             </Group>
             <Space h="md" />
+            {/* Mantine v6+ Progress组件不支持max和label属性 */}
+            <Text fz="sm" ta="center" mb="xs">用户等级: {contractUserInfo.vipLevel}级</Text>
             <Progress
-              value={contractUserInfo.vipLevel}
-              max={10}
-              size="xl"
-              radius="xl"
+              value={(contractUserInfo.vipLevel / 10) * 100}
+              size="md"
+              radius="md"
               color="blue"
-              label={`${contractUserInfo.vipLevel}级`}
             />
           </>
         )}
