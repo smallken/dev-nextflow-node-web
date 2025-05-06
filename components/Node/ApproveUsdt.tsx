@@ -12,15 +12,15 @@ import { formatEther } from 'viem';
 interface ApproveUsdtProps {
   opened: boolean;
   onClose: () => void;
-  amount: bigint; // 需要授权的金额
-  onApproveSuccess: () => void; // 授权成功后的回调
+  amount: bigint; // Amount to be approved
+  onApproveSuccess: () => void; // Callback after successful approval
 }
 
 export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: ApproveUsdtProps) {
   const { usdtBalance, usdtAllowanceForPool } = useUser();
   const chainId = useChainId();
   
-  // 使用Wagmi的useWriteUsdtApprove hook进行授权
+  // Use Wagmi's useWriteUsdtApprove hook to perform authorization
   const {
     data: hash,
     error,
@@ -29,7 +29,7 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
     writeContractAsync: approveUsdt
   } = useWriteUsdtApprove();
 
-  // 使用useWaitForTransactionReceipt对交易进行监听
+  // Use useWaitForTransactionReceipt to monitor the transaction
   const { 
     isLoading: isConfirming, 
     isSuccess: isConfirmed, 
@@ -42,22 +42,22 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
   console.log('useWriteUsdtApprove', hash, isPending, isError, error);
   console.log('useWaitForTransactionReceipt', hash, isConfirming, isConfirmed, isConfirmingError, confirmErrorData);
 
-  // 提交授权请求
+  // Submit approval request
   async function submitApprove() {
     try {
-      // 显示加载中的通知
+      // Show loading notification
       notifications.show({
         id: 'approve-loading',
-        title: '处理中',
-        message: '正在提交授权交易...',
+        title: 'Processing',
+        message: 'Submitting approval transaction...',
         loading: true,
         autoClose: false,
         withCloseButton: false,
       });
 
-      // 发送授权交易
-      // 授权一个足够大的金额，避免频繁授权
-      // 如果只想授权特定金额，可以使用 amount 参数
+      // Send approval transaction
+      // Approve a sufficiently large amount to avoid frequent approvals
+      // If you only want to approve a specific amount, you can use the amount parameter
       const approveAmount = BigInt('0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
       
       await approveUsdt({
@@ -67,22 +67,22 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
         ],
       });
 
-      // 交易发送成功 - 更新通知
+      // Transaction sent successfully - update notification
       notifications.update({
         id: 'approve-loading',
-        title: '授权已提交',
-        message: '正在等待区块链确认...',
+        title: 'Approval Submitted',
+        message: 'Waiting for blockchain confirmation...',
         loading: true,
         autoClose: false,
       });
       
     } catch (err) {
-      // 交易发送失败
+      // Transaction sending failed
       console.error('Approve error:', err);
       notifications.update({
         id: 'approve-loading',
-        title: '授权失败',
-        message: err instanceof Error ? err.message : '提交授权时出错',
+        title: 'Approval Failed',
+        message: err instanceof Error ? err.message : 'Error submitting approval',
         color: 'red',
         icon: <IconX />,
         autoClose: 6000,
@@ -90,55 +90,55 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
     }
   }
   
-  // 处理交易确认
+  // Handle transaction confirmation
   React.useEffect(() => {
     if (!hash) return;
 
     if (isConfirming) {
-      // 更新通知，显示交易确认中
+      // Update notification, show transaction confirmation in progress
       notifications.update({
         id: 'approve-loading',
-        title: '授权处理中',
-        message: '正在等待区块链确认...',
+        title: 'Approval Processing',
+        message: 'Waiting for blockchain confirmation...',
         loading: true,
         autoClose: false,
       });
     }
   }, [hash, isConfirming]);
   
-  // 处理交易成功
+  // Handle transaction success
   React.useEffect(() => {
-    // 使用引用变量防止多次调用
+    // Use a reference variable to prevent multiple calls
     const success = isConfirmed && hash;
     if (success) {
-      // 交易成功确认
+      // Transaction successfully confirmed
       notifications.update({
         id: 'approve-loading',
-        title: '授权成功',
-        message: 'USDT授权已完成',
+        title: 'Approval Successful',
+        message: 'USDT approval completed',
         color: 'green',
         icon: <IconCheck />,
         autoClose: 3000,
       });
       
-      // 使用setTimeout避免在渲染周期中直接调用状态变更
+      // Use setTimeout to avoid direct state changes during rendering cycle
       setTimeout(() => {
-        // 授权成功，调用回调
+        // After successful approval, call the callback
         onApproveSuccess();
-        // 关闭弹窗
+        // Close the modal
         onClose();
       }, 0);
     }
   }, [hash, isConfirmed, onApproveSuccess, onClose]);
   
-  // 处理交易失败
+  // Handle transaction failure
   React.useEffect(() => {
     if (isConfirmingError && hash) {
-      // 交易失败  
+      // Transaction failed
       notifications.update({
         id: 'approve-loading',
-        title: '授权失败',
-        message: confirmErrorData instanceof Error ? (confirmErrorData.message) : '授权失败',
+        title: 'Approval Failed',
+        message: confirmErrorData instanceof Error ? (confirmErrorData.message) : 'Approval failed',
         color: 'red',
         icon: <IconX />,
         autoClose: 6000,
@@ -147,26 +147,22 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
   }, [hash, isConfirmingError, confirmErrorData]);
   
   return (
-    <Modal opened={opened} onClose={onClose} title="授权USDT" centered>
+    <Modal opened={opened} onClose={onClose} title="Approve USDT" centered>
       <Text size="sm">
-        购买节点需要先授权USDT，请点击下方按钮进行授权。
+        USDT approval required to continue
       </Text>
       
       <Space h="md" />
       
       <Group>
-        <Text size="sm">当前USDT余额: </Text>
-        <Text size="sm" fw={500}>{formatEther(usdtBalance || BigInt(0))}</Text>
+        <Text fw={700} size="lg">USDT approval required to continue</Text>
+        <Text size="sm" c="dimmed">You need to approve the smart contract to spend your USDT before continuing with the purchase</Text>
       </Group>
       
       <Group>
-        <Text size="sm">当前授权额度: </Text>
-        <Text size="sm" fw={500}>{formatEther(usdtAllowanceForPool || BigInt(0))}</Text>
-      </Group>
-      
-      <Group>
-        <Text size="sm">需要授权额度: </Text>
-        <Text size="sm" fw={500}>{formatEther(amount || BigInt(0))}</Text>
+        <Text>Current USDT Balance: {formatEther(usdtBalance || BigInt(0))}</Text>
+        <Text>Current Approval Allowance: {formatEther(usdtAllowanceForPool || BigInt(0))}</Text>
+        <Text>Required Approval Amount: {formatEther(amount)}</Text>
       </Group>
       
       <Space h="xl" />
@@ -178,7 +174,7 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
           disabled={isPending || isConfirming}
           loading={isPending || isConfirming}
         >
-          {isPending || isConfirming ? '授权中...' : '授权USDT'}
+          {isPending || isConfirming ? 'Processing...' : 'Approve USDT'}
         </Button>
       </Group>
     </Modal>

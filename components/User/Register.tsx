@@ -40,9 +40,9 @@ export function Register() {
     e.preventDefault()
     console.log('submitBind')
 
-    // 检查用户是否已连接钱包
+    // Check if user has connected wallet
     if (!account.isConnected) {
-      // 如果未连接钱包，打开钱包选择弹窗
+      // If wallet is not connected, open wallet selection modal
       if (openConnectModal) {
         openConnectModal();
       }

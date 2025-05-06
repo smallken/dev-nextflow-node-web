@@ -1,7 +1,8 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-import { useAccount, useChainId } from 'wagmi';
-import { useReadPoolGetUser, useReadPoolInvitation, useReadPoolNftPrice, useReadUsdtBalanceOf, useReadUsdtAllowance, poolAddress, usdtAddress,
-useReadNodeNftTotalSupply
+import { createPublicClient, http } from 'viem';
+import { useAccount, useChainId, useReadContract } from 'wagmi';
+import { useReadPoolGetUser, useReadPoolInvitation, useReadPoolNftPrice, useReadUsdtBalanceOf, useReadUsdtAllowance, poolAddress, usdtAddress, 
+useReadNodeNftTotalSupply, nodeNftAbi, nodeNftAddress
 
  } from '../wagmi/generated';
 
@@ -101,13 +102,19 @@ export function UserProvider({ children }: { children: ReactNode }) {
   // 默认授权额度为0
   const usdtAllowanceForPool = usdtAllowanceData || BigInt(0);
   
-  // 获取 NFT 总供应量
-  const { data: nftTotalSupplyData } = useReadNodeNftTotalSupply({
-    args:[BigInt(1)],
+  // 使用 useReadContract 直接读取 NFT 总供应量，不依赖用户登录状态
+  const { data: nftTotalSupplyData } = useReadContract({
+    address: nodeNftAddress[chainId as keyof typeof nodeNftAddress] as `0x${string}`,
+    abi: nodeNftAbi,
+    functionName: 'totalSupply',
+    args: [BigInt(1)],
     query: {
       enabled: true,
+      retry: 3,
     }
   });
+
+  console.log('nftTotalSupplyData', nftTotalSupplyData);
   
   // 默认总供应量为0
   const nftCurrentTotal = nftTotalSupplyData || BigInt(0);
