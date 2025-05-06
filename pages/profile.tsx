@@ -5,7 +5,7 @@ import { formatEther } from 'viem'
 
 export default function Profile() {
   // 使用自定义 hook 获取全局用户数据
-  const { nodeInfo, address, contractUserInfo, usdtBalance, usdtAllowanceForPool } = useUser();
+  const { address, contractUserInfo, usdtBalance, usdtAllowanceForPool } = useUser();
 
   return (
     <div>

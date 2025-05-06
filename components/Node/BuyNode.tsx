@@ -11,7 +11,7 @@ import { ApproveUsdt } from './ApproveUsdt';
 
 export function BuyNode() {
   const [opened, { toggle }] = useDisclosure(false);
-  const { nodeInfo, setNodeInfo, contractUserInfo, usdtBalance, usdtAllowanceForPool } = useUser();
+  const { contractUserInfo, usdtBalance, usdtAllowanceForPool } = useUser();
   const [buyAmount, setBuyAmount] = useState<number>(1);
   
   // 控制授权弹窗

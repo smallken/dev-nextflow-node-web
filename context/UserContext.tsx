@@ -6,12 +6,17 @@ useReadNodeNftTotalSupply
  } from '../wagmi/generated';
 
 
-// 定义全局节点信息类型
-type NodeInfo = {
-  count: number; // 所有用户总数 // todo remove
-  progress: number; // 整体进度 // todo remove
+// 定义全局应用信息类型
+type AppInfo = {
   price: bigint; // 节点价格（usdt计算）
-  // 其他节点相关信息
+  
+  // NFT全局信息
+  nftCurrentTotal: bigint; // total mint of different term
+  nftMintTarget: bigint; // target for the end of this loop
+  nftMintStart: number; // number start for a term
+  nftMintProgress: number; // 当前铸造进度百分比
+  nftMintTargetAmount: bigint;
+  // 其他全局信息
 };
 
 // 定义合约用户信息类型
@@ -33,20 +38,13 @@ type ContractUserInfo = {
 
 // 用户上下文类型
 type UserContextType = {
-  nodeInfo: NodeInfo | null;
-  setNodeInfo: (info: NodeInfo) => void;
+  appInfo: AppInfo | null;
+  setAppInfo: (info: AppInfo) => void;
   address: `0x${string}` | undefined;
   contractUserInfo: ContractUserInfo | null;
   // 可以添加其他用户相关状态
   usdtBalance:bigint,
   usdtAllowanceForPool:bigint,
-
-  //nft info
-  nftCurrentTotal: bigint, // total mint of different term
-  nftMintTarget: bigint, // target for the end of this loop
-  nftMintStart: number, // number start for a term
-  nftMintProgress: number // 当前铸造进度百分比
-  nftMintTargetAmount:bigint
 };
 
 // 创建上下文
@@ -56,7 +54,8 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 export function UserProvider({ children }: { children: ReactNode }) {
   const { address } = useAccount();
   const chainId = useChainId();
-  const [nodeInfo, setNodeInfo] = useState<NodeInfo | null>(null);
+  // 初始化应用全局数据状态
+  const [appInfo, setAppInfo] = useState<AppInfo | null>(null);
   const [contractUserInfo, setContractUserInfo] = useState<ContractUserInfo | null>(null);
   
   // 使用 useReadPoolGetUser 从合约获取用户信息
@@ -142,16 +141,42 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
   console.log('parentAddress', parentAddress)
   console.log('nftPrice', nftPrice)
-
-  // 初始化全局节点价格信息
+  
+  // 初始化应用全局信息
   useEffect(() => {
     if (nftPrice) {
-      setNodeInfo(prevState => ({
-        ...prevState || { count: 0, progress: 0, price: BigInt(0) },
-        price: nftPrice
+      setAppInfo((prevState) => ({
+        ...prevState || { 
+          price: BigInt(0),
+          nftCurrentTotal: BigInt(0),
+          nftMintTarget: BigInt(0),
+          nftMintStart: 0,
+          nftMintProgress: 0,
+          nftMintTargetAmount: BigInt(0),
+        },
+        price: nftPrice,
+        nftCurrentTotal,
+        nftMintTarget,
+        nftMintStart,
+        nftMintProgress,
+        nftMintTargetAmount
       }));
     }
-  }, [nftPrice]);
+  }, [nftPrice, nftCurrentTotal, nftMintTarget, nftMintStart, nftMintProgress, nftMintTargetAmount]);
+
+  // 当全局NFT信息变化时更新appInfo
+  useEffect(() => {
+    if (nftCurrentTotal !== undefined && appInfo) {
+      setAppInfo((prevState) => {
+        if (!prevState) return null;
+        return {
+          ...prevState,
+          nftCurrentTotal,
+          nftMintProgress
+        };
+      });
+    }
+  }, [nftCurrentTotal, nftMintProgress, appInfo]);
   
   // 当地址变化时重置用户相关信息
   useEffect(() => {
@@ -183,34 +208,31 @@ export function UserProvider({ children }: { children: ReactNode }) {
         address: address
       });
 
-      // 仅更新进度信息，保留价格信息
-      // nftCurrentTotal,
-      setNodeInfo(prevState => ({
-        ...prevState || { count: 0, progress: 0, price: BigInt(0) },
-        count: Number(nftCurrentTotal || 0), 
-        progress: Number(userData.vipLevel || 0) * 20, // 假设每个vip等级对应进度20%
-      }));
+      // 在用户登录时也更新全局信息
+      if (appInfo) {
+        setAppInfo((prevState) => {
+          if (!prevState) return null;
+          return {
+            ...prevState,
+            nftCurrentTotal
+          };
+        });
+      }
     } else {
       setContractUserInfo(null);
     }
   }, [userData, parentAddress]);
 
-  const value = {
-    nodeInfo,
-    setNodeInfo,
+  const context: UserContextType = {
+    appInfo,
+    setAppInfo,
     address,
     contractUserInfo,
     usdtBalance,
     usdtAllowanceForPool,
-    // nft
-    nftCurrentTotal, // nft mint total
-    nftMintTarget, // nftMintTarget
-    nftMintTargetAmount,
-    nftMintStart,
-    nftMintProgress,
   };
 
-  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
+  return <UserContext.Provider value={context}>{children}</UserContext.Provider>;
 }
 
 // 创建自定义Hook以便在组件中使用

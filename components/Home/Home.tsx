@@ -28,13 +28,11 @@ export function Home() {
 
   const chainId = useChainId();
   const account = useAccount();
-  // 使用全局用户上下文获取节点信息
-  const { nodeInfo, setNodeInfo,contractUserInfo, nftMintProgress, nftCurrentTotal, 
-    nftMintTargetAmount, nftMintTarget,nftMintStart } = useUser();
+  // 使用全局用户上下文获取应用信息
+  const { contractUserInfo, appInfo } = useUser();
 
   console.log('chainId', chainId);
   console.log('account', account);
-  console.log('共享的节点信息', nodeInfo);
 
 
   console.log('defaultBindAddress', defaultBindAddress)
@@ -90,19 +88,19 @@ export function Home() {
           完成进度
         </Text>
         <Group mt="md" justify="space-between">
-          {nodeInfo ? (
+          {appInfo ? (
             <>
-              <Text fz="sm">{nftCurrentTotal} /{nftMintTargetAmount}</Text>
-              <Badge size="sm">{nftMintProgress}%</Badge>
+              <Text fz="sm">{appInfo.nftCurrentTotal.toString()} /{appInfo.nftMintTargetAmount.toString()}</Text>
+              <Badge size="sm">{appInfo.nftMintProgress}%</Badge>
             </>
           ) : (
             <>
-              <Text fz="sm">0 / 10000</Text>
-              <Badge size="sm">{nftMintProgress}%</Badge>
+              <Text fz="sm">0 / 0</Text>
+              <Badge size="sm">0%</Badge>
             </>
           )}
         </Group>
-        <Progress value={nodeInfo ? nodeInfo.progress : 0} mt="md" size="lg" radius="xl" />
+        <Progress value={appInfo?.nftMintProgress || 0} mt="md" size="lg" radius="xl" />
       </Card>
 
       <Space h="xl" />
