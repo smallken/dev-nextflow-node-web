@@ -188,7 +188,7 @@ export function BuyNode() {
         已购买: {contractUserInfo ? contractUserInfo.selfNodeCount : 0}个
       </Text>
       <Text>USDT余额:{formatEther(usdtBalance) || 0}</Text>
-    <Text>USDT授权: {usdtAllowanceForPool}</Text>
+    <Text>USDT是否授权: {usdtAllowanceForPool> BigInt(0)?'是':'否'}</Text>
       
       </Group>
       
