@@ -25,6 +25,7 @@ type ContractUserInfo = {
   computeL0: boolean;
   // 扩展信息 - 我们计算的属性
   parent?: string; // 需要从其他地方获取
+  address?: `0x${string}`; // 用户地址
 };
 
 // 用户上下文类型
@@ -102,7 +103,9 @@ export function UserProvider({ children }: { children: ReactNode }) {
         l1TeamNodeCount: Number(userData.l1TeamNodeCount || 0),
         computeL0: Boolean(userData.computeL0),
         // 从推荐人查询中获取parent地址
-        parent: parentAddress as `0x${string}` || '0x0000000000000000000000000000000000000000'
+        parent: parentAddress as `0x${string}` || '0x0000000000000000000000000000000000000000',
+        // 添加用户地址
+        address: address
       });
 
       // 仅更新进度信息，保留价格信息
