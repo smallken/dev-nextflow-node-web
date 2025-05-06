@@ -110,7 +110,7 @@ export function BuyNode() {
         message: confirmErrorData instanceof Error ? (confirmErrorData.message): '交易失败',
         color: 'red',
         icon: <IconX />,
-        autoClose: 3000,
+        autoClose: 6000,
       });
     }
   }, [hash, isConfirming, isConfirmed, isConfirmingError, confirmErrorData]);
