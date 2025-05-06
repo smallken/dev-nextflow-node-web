@@ -1,17 +1,25 @@
 import { Button, Card, Space, Text, Group, NumberInput, Collapse, Center } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useUser } from '../../context/UserContext';
-import { useWritePoolBuyNft,  } from '../../wagmi/generated';
+import { useWritePoolBuyNft, useReadPoolNftPrice  } from '../../wagmi/generated';
 import { useWaitForTransactionReceipt } from 'wagmi';
 import { notifications } from '@mantine/notifications';
 import { IconCheck, IconX } from '@tabler/icons-react';
 import React, { useState } from 'react';
-import { formatEther } from 'viem'
+import { formatEther, parseEther } from 'viem';
+import { ApproveUsdt } from './ApproveUsdt';
 
 export function BuyNode() {
   const [opened, { toggle }] = useDisclosure(false);
   const { nodeInfo, setNodeInfo, contractUserInfo, usdtBalance, usdtAllowanceForPool } = useUser();
   const [buyAmount, setBuyAmount] = useState<number>(1);
+  
+  // 控制授权弹窗
+  const [approveModalOpened, setApproveModalOpened] = useState(false);
+  const [requiredApproveAmount, setRequiredApproveAmount] = useState<bigint>(BigInt(0));
+  
+  // 获取NFT价格
+  const { data: nftPrice } = useReadPoolNftPrice();
   
   // 使用Wagmi的useWritePoolBuyNft hook进行合约交互
   const {
@@ -22,7 +30,55 @@ export function BuyNode() {
     writeContractAsync: buyNft
   } = useWritePoolBuyNft();
 
-  console.log('useWritePoolBuyNft',hash, isPending ,isError, error)
+  console.log('useWritePoolBuyNft', hash, isPending, isError, error)
+  console.log('USDT allowance', usdtAllowanceForPool)
+
+  // 检查授权并处理购买操作
+  function handleBuyNode(amount: number = 1) {
+    // 如果价格没有获取到，则返回
+    if (!nftPrice) {
+      notifications.show({
+        title: '无法获取节点价格',
+        message: '请稍后再试',
+        color: 'red',
+        icon: <IconX />,
+        autoClose: 3000,
+      });
+      return;
+    }
+    
+    // 计算购买所需的总额
+    // nftPrice需要乘以10^18转换为wei单位
+    const totalAmount = nftPrice * BigInt(10 ** 18) * BigInt(amount);
+    
+    // 如果余额不足，提示用户
+    if (usdtBalance < totalAmount) {
+      notifications.show({
+        title: 'USDT余额不足',
+        message: `需要${formatEther(totalAmount)}，当前余额${formatEther(usdtBalance)}`,
+        color: 'red',
+        icon: <IconX />,
+        autoClose: 6000,
+      });
+      return;
+    }
+    
+    // 如果授权额度不足，打开授权弹窗
+    if (usdtAllowanceForPool < totalAmount) {
+      setRequiredApproveAmount(totalAmount);
+      setApproveModalOpened(true);
+      return;
+    }
+    
+    // 如果授权足够，直接购买
+    submitBuyNode(amount);
+  }
+  
+  // 授权成功后的回调
+  function handleApproveSuccess() {
+    // 当授权成功后，自动跳转到购买流程
+    submitBuyNode(buyAmount);
+  }
 
   // 提交购买节点请求
   async function submitBuyNode(amount: number = 1) {
@@ -116,7 +172,16 @@ export function BuyNode() {
   }, [hash, isConfirming, isConfirmed, isConfirmingError, confirmErrorData]);
   
   return (
-    <Card shadow="sm" padding="lg" radius="md" withBorder>
+    <>
+      {/* 授权弹窗 */}
+      <ApproveUsdt 
+        opened={approveModalOpened} 
+        onClose={() => setApproveModalOpened(false)} 
+        amount={requiredApproveAmount}
+        onApproveSuccess={handleApproveSuccess}
+      />
+      
+      <Card shadow="sm" padding="lg" radius="md" withBorder>
 
       <Group>
       <Text fw={500}>
@@ -131,7 +196,7 @@ export function BuyNode() {
       <Button 
         fullWidth 
         color="#F2AE00" 
-        onClick={() => submitBuyNode(1)}
+        onClick={() => handleBuyNode(1)}
         disabled={isPending || isConfirming}
       >
         {isPending || isConfirming ? '处理中...' : '购买1个节点'}
@@ -140,7 +205,7 @@ export function BuyNode() {
       <Button 
         fullWidth 
         color="#F2AE00"
-        onClick={() => submitBuyNode(5)}
+        onClick={() => handleBuyNode(5)}
         disabled={isPending || isConfirming}
       >
         {isPending || isConfirming ? '处理中...' : '购买5个节点'}
@@ -166,7 +231,7 @@ export function BuyNode() {
             />
             <Button 
               color="#F2AE00" 
-              onClick={() => submitBuyNode(buyAmount)}
+              onClick={() => handleBuyNode(buyAmount)}
               disabled={isPending || isConfirming}
             >
               购买
@@ -175,5 +240,6 @@ export function BuyNode() {
         </Center>
       </Collapse>
     </Card>
+    </>
   );
 }
