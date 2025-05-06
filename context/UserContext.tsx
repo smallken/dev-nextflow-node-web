@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-import { useAccount } from 'wagmi';
-import { useReadPoolGetUser, useReadPoolInvitation, useReadPoolNftPrice } from '../wagmi/generated';
+import { useAccount, useChainId } from 'wagmi';
+import { useReadPoolGetUser, useReadPoolInvitation, useReadPoolNftPrice, useReadUsdtBalanceOf, useReadUsdtAllowance, poolAddress, usdtAddress } from '../wagmi/generated';
 
 
 // 定义全局节点信息类型
@@ -35,6 +35,8 @@ type UserContextType = {
   address: `0x${string}` | undefined;
   contractUserInfo: ContractUserInfo | null;
   // 可以添加其他用户相关状态
+  usdtBalance:bigint,
+  usdtAllowanceForPool:bigint
 };
 
 // 创建上下文
@@ -43,6 +45,7 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 // 上下文提供者组件
 export function UserProvider({ children }: { children: ReactNode }) {
   const { address } = useAccount();
+  const chainId = useChainId();
   const [nodeInfo, setNodeInfo] = useState<NodeInfo | null>(null);
   const [contractUserInfo, setContractUserInfo] = useState<ContractUserInfo | null>(null);
   
@@ -64,6 +67,30 @@ export function UserProvider({ children }: { children: ReactNode }) {
   
   // 使用 useReadPoolNftPrice 获取全局节点价格
   const { data: nftPrice } = useReadPoolNftPrice();
+  
+  // 使用 useReadUsdtBalanceOf 获取用户的USDT余额
+  const { data: usdtBalanceData } = useReadUsdtBalanceOf({
+    args: address ? [address] : undefined,
+    query: {
+      enabled: !!address,
+    }
+  });
+  
+  // 默认余额为0
+  const usdtBalance = usdtBalanceData || BigInt(0);
+  
+  // 获取用户授权给pool合约的USDT额度
+  const { data: usdtAllowanceData } = useReadUsdtAllowance({
+    args: address && poolAddress[chainId as keyof typeof poolAddress] ? 
+      [address, poolAddress[chainId as keyof typeof poolAddress] as `0x${string}`] : 
+      undefined,
+    query: {
+      enabled: !!address && !!poolAddress[chainId as keyof typeof poolAddress],
+    }
+  });
+  
+  // 默认授权额度为0
+  const usdtAllowanceForPool = usdtAllowanceData || BigInt(0);
 
   console.log('parentAddress', parentAddress)
   console.log('nftPrice', nftPrice)
@@ -124,6 +151,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
     setNodeInfo,
     address,
     contractUserInfo,
+    usdtBalance,
+    usdtAllowanceForPool,
   };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

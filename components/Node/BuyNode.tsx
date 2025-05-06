@@ -17,8 +17,11 @@ export function BuyNode() {
     data: hash,
     error,
     isPending,
+    isError,
     writeContractAsync: buyNft
   } = useWritePoolBuyNft();
+
+  console.log('useWritePoolBuyNft',hash, isPending ,isError, error)
 
   // 提交购买节点请求
   async function submitBuyNode(amount: number = 1) {
@@ -64,10 +67,12 @@ export function BuyNode() {
   }
   
   // 使用useWaitForTransactionReceipt对交易进行监听
-  const { isLoading: isConfirming, isSuccess: isConfirmed } =
+  const { isLoading: isConfirming, isSuccess: isConfirmed, isError:isConfirmingError, error:confirmErrorData } =
     useWaitForTransactionReceipt({
       hash,
     });
+
+  console.log('useWaitForTransactionReceipt', hash, isConfirming, isConfirmed, isConfirmingError, confirmErrorData)  
     
   // 处理交易确认
   React.useEffect(() => {
@@ -96,18 +101,18 @@ export function BuyNode() {
       });
     }
     
-    if (error) {
+    if (isConfirmingError) {
       // 交易失败  
       notifications.update({
         id: 'tx-loading',
         title: '交易失败',
-        message: error instanceof Error ? error.message : '交易失败',
+        message: confirmErrorData instanceof Error ? (confirmErrorData.message): '交易失败',
         color: 'red',
         icon: <IconX />,
         autoClose: 3000,
       });
     }
-  }, [hash, isConfirming, isConfirmed, error]);
+  }, [hash, isConfirming, isConfirmed, isConfirmingError, confirmErrorData]);
   
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>

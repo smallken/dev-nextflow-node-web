@@ -3,7 +3,7 @@ import { useUser } from '../context/UserContext';
 
 export default function Profile() {
   // 使用自定义 hook 获取全局用户数据
-  const { nodeInfo, address, contractUserInfo } = useUser();
+  const { nodeInfo, address, contractUserInfo, usdtBalance, usdtAllowanceForPool } = useUser();
 
   return (
     <div>
@@ -17,12 +17,25 @@ export default function Profile() {
           钱包地址: {address || '未连接钱包'}
         </Text>
 
+        <Text fz="sm">
+          邀请者: { contractUserInfo?.parent || '无'}
+        </Text>
+
+        <Text fz="sm">
+          USDT余额: { usdtBalance || '0'}
+        </Text>
+        <Text fz="sm">
+          USDT授权额度: { usdtAllowanceForPool.toString() || '0' }
+        </Text>
+
+        
+
         {contractUserInfo && (
           <>
             <Space h="md" />
             <Group>
               <Badge variant="light" color="green">
-                USDT总量: {contractUserInfo.usdtTotal.toString()}
+                USDT够买总量: {contractUserInfo.usdtTotal.toString()}
               </Badge>
               <Badge variant="light" color="blue">
                 好友数量: {contractUserInfo.friendCount.toString()}
