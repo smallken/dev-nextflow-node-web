@@ -46,6 +46,8 @@ type UserContextType = {
   // 可以添加其他用户相关状态
   usdtBalance:bigint,
   usdtAllowanceForPool:bigint,
+  // Method to refresh data after transactions
+  refreshData: () => void,
 };
 
 // 创建上下文
@@ -60,7 +62,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const [contractUserInfo, setContractUserInfo] = useState<ContractUserInfo | null>(null);
   
   // 使用 useReadPoolGetUser 从合约获取用户信息
-  const { data: userData, isError, isLoading } = useReadPoolGetUser({
+  const { data: userData, isError, isLoading, refetch: refetchUserData } = useReadPoolGetUser({
     args: address ? [address] : undefined,
     query: {
       enabled: !!address,
@@ -68,7 +70,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   });
   
   // 使用 useReadPoolInvitation 获取用户的推荐人地址
-  const { data: parentAddress } = useReadPoolInvitation({
+  const { data: parentAddress, refetch: refetchParentAddress } = useReadPoolInvitation({
     args: address ? [address] : undefined,
     query: {
       enabled: !!address,
@@ -76,10 +78,10 @@ export function UserProvider({ children }: { children: ReactNode }) {
   });
   
   // 使用 useReadPoolNftPrice 获取全局节点价格
-  const { data: nftPrice } = useReadPoolNftPrice();
+  const { data: nftPrice, refetch: refetchNftPrice } = useReadPoolNftPrice();
   
   // 使用 useReadUsdtBalanceOf 获取用户的USDT余额
-  const { data: usdtBalanceData } = useReadUsdtBalanceOf({
+  const { data: usdtBalanceData, refetch: refetchUsdtBalance } = useReadUsdtBalanceOf({
     args: address ? [address] : undefined,
     query: {
       enabled: !!address,
@@ -90,7 +92,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const usdtBalance = usdtBalanceData || BigInt(0);
   
   // 获取用户授权给pool合约的USDT额度
-  const { data: usdtAllowanceData } = useReadUsdtAllowance({
+  const { data: usdtAllowanceData, refetch: refetchUsdtAllowance } = useReadUsdtAllowance({
     args: address && poolAddress[chainId as keyof typeof poolAddress] ? 
       [address, poolAddress[chainId as keyof typeof poolAddress] as `0x${string}`] : 
       undefined,
@@ -103,7 +105,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const usdtAllowanceForPool = usdtAllowanceData || BigInt(0);
   
   // 使用 useReadContract 直接读取 NFT 总供应量，不依赖用户登录状态
-  const { data: nftTotalSupplyData } = useReadContract({
+  const { data: nftTotalSupplyData, refetch: refetchNftTotalSupply } = useReadContract({
     address: nodeNftAddress[chainId as keyof typeof nodeNftAddress] as `0x${string}`,
     abi: nodeNftAbi,
     functionName: 'totalSupply',
@@ -149,28 +151,66 @@ export function UserProvider({ children }: { children: ReactNode }) {
   console.log('parentAddress', parentAddress)
   console.log('nftPrice', nftPrice)
   
+  // Function to refresh data after transactions by refetching from the blockchain
+  const refreshData = async () => {
+    try {
+      console.log('Refreshing blockchain data after transaction...');
+      
+      // Force a small delay to allow blockchain state to update
+      // This is important because the RPC needs time to reflect the new state
+      await new Promise(resolve => setTimeout(resolve, 500));
+            
+      // After immediate UI feedback, now refetch actual blockchain data
+      console.log('Refetching data from blockchain...');
+      
+      // Execute all refetch operations in parallel for efficiency
+      const refetchPromises = [];
+      
+      // Only refetch data that's relevant to the current user state
+      if (address) {
+        // User-specific data only if user is connected
+        refetchPromises.push(refetchUserData());
+        refetchPromises.push(refetchUsdtBalance());
+        refetchPromises.push(refetchUsdtAllowance());
+        refetchPromises.push(refetchParentAddress());
+      }
+      
+      // Global data (always refetch)
+      refetchPromises.push(refetchNftPrice());
+      refetchPromises.push(refetchNftTotalSupply());
+      
+      // Wait for all refetch operations to complete
+      await Promise.all(refetchPromises);
+      
+      console.log('Blockchain data refresh complete')
+    } catch (error) {
+      console.error('Error refreshing data:', error);
+    }
+  };
+  
+  // NOTE: We already have a calculateMintProgress function defined above
+  // The duplicate definition has been removed to fix the compilation error
+
   // Initialize application global information only when key values change
   useEffect(() => {
     // Only initialize or update global info when critical values are available
     if (nftPrice) {
-      // Use a flag to prevent updating if already initialized with same values
-      const shouldUpdate = !appInfo || 
+      const shouldUpdate = 
+        !appInfo || 
         appInfo.price !== nftPrice || 
         appInfo.nftCurrentTotal !== nftCurrentTotal;
       
       if (shouldUpdate) {
-        console.log('Updating appInfo with new values');
         setAppInfo({
           price: nftPrice,
           nftCurrentTotal,
           nftMintTarget,
           nftMintStart,
           nftMintProgress,
-          nftMintTargetAmount
+          nftMintTargetAmount,
         });
       }
     }
-  // Only depend on primitive values that come from external sources
   }, [nftPrice, nftCurrentTotal, nftTotalSupplyData]);
 
   // 当地址变化时重置用户相关信息
@@ -209,16 +249,21 @@ export function UserProvider({ children }: { children: ReactNode }) {
     }
   }, [userData, parentAddress]);
 
-  const context: UserContextType = {
-    appInfo,
-    setAppInfo,
-    address,
-    contractUserInfo,
-    usdtBalance,
-    usdtAllowanceForPool,
-  };
-
-  return <UserContext.Provider value={context}>{children}</UserContext.Provider>;
+  return (
+    <UserContext.Provider
+      value={{
+        appInfo,
+        setAppInfo,
+        address,
+        contractUserInfo,
+        usdtBalance,
+        usdtAllowanceForPool,
+        refreshData,
+      }}
+    >
+      {children}
+    </UserContext.Provider>
+  );
 }
 
 // 创建自定义Hook以便在组件中使用

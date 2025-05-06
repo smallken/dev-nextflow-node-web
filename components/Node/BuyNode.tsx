@@ -11,7 +11,7 @@ import { ApproveUsdt } from './ApproveUsdt';
 
 export function BuyNode() {
   const [opened, { toggle }] = useDisclosure(false);
-  const { contractUserInfo, usdtBalance, usdtAllowanceForPool } = useUser();
+  const { contractUserInfo, usdtBalance, usdtAllowanceForPool, appInfo, refreshData } = useUser();
   const [buyAmount, setBuyAmount] = useState<number>(1);
   
   // Control approve modal
@@ -150,12 +150,16 @@ export function BuyNode() {
       // Transaction successfully confirmed
       notifications.update({
         id: 'tx-loading',
-        title: 'Transaction Successful',
-        message: 'Node purchase completed',
+        title: 'Purchase Successful',
+        message: 'Your node purchase has been confirmed!',
         color: 'green',
         icon: <IconCheck />,
         autoClose: 3000,
       });
+      
+      // Refresh global data to update UI
+      refreshData();
+      console.log('Refreshed global data after successful purchase');
     }
     
     if (isConfirmingError) {
