@@ -81,7 +81,7 @@ export function Home() {
     <>
       <Image
         h={200}
-        src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-7.png"
+        src="/ffboat.png"
       />
       <Space h="sm" />
 
