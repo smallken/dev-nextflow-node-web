@@ -109,7 +109,7 @@ export function Home() {
       {!account.address ? (
         <>
           {/* 用户未连接钱包，显示Register和Invite */}
-          <Register />
+          <BuyNode />
           <Space h="xl" />
           <Invite />
         </>
