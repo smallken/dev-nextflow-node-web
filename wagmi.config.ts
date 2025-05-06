@@ -1,3 +1,4 @@
+import { usdtAddress } from './wagmi/generated';
 import { defineConfig } from '@wagmi/cli'
 import { react } from '@wagmi/cli/plugins'
 import { erc20Abi } from 'viem'
@@ -20,7 +21,7 @@ export default defineConfig({
     {
       name: 'pool',
       address: {
-        [bscTestnet.id]: '0x3A7dd71d898beC321A51961CAbB483E28B10e0E6',
+        [bscTestnet.id]: '0x7dc35a306955dDa85A11Ff51Df27aAb876F25914',
       },
       abi: poolAbi,
     },
