@@ -1,5 +1,7 @@
 import { Card, Text, Group, Badge, Progress, Space } from '@mantine/core';
 import { useUser } from '../context/UserContext';
+import { formatEther } from 'viem'
+
 
 export default function Profile() {
   // 使用自定义 hook 获取全局用户数据
@@ -22,10 +24,10 @@ export default function Profile() {
         </Text>
 
         <Text fz="sm">
-          USDT余额: { usdtBalance || '0'}
+          USDT余额: { formatEther(usdtBalance || BigInt(0))}
         </Text>
         <Text fz="sm">
-          USDT授权额度: { usdtAllowanceForPool.toString() || '0' }
+          USDT授权额度: { formatEther(usdtAllowanceForPool|| BigInt(0)) }
         </Text>
 
         

@@ -6,10 +6,11 @@ import { useWaitForTransactionReceipt } from 'wagmi';
 import { notifications } from '@mantine/notifications';
 import { IconCheck, IconX } from '@tabler/icons-react';
 import React, { useState } from 'react';
+import { formatEther } from 'viem'
 
 export function BuyNode() {
   const [opened, { toggle }] = useDisclosure(false);
-  const { nodeInfo, setNodeInfo, contractUserInfo } = useUser();
+  const { nodeInfo, setNodeInfo, contractUserInfo, usdtBalance } = useUser();
   const [buyAmount, setBuyAmount] = useState<number>(1);
   
   // 使用Wagmi的useWritePoolBuyNft hook进行合约交互
@@ -116,9 +117,14 @@ export function BuyNode() {
   
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>
+
+      <Group>
       <Text fw={500}>
         已购买: {contractUserInfo ? contractUserInfo.selfNodeCount : 0}个
       </Text>
+      <Text>USDT余额:{formatEther(usdtBalance) || 0}</Text>
+      </Group>
+      
       <Space h="sm" />
       <Button 
         fullWidth 
