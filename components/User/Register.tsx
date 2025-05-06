@@ -12,6 +12,7 @@ import { notifications } from '@mantine/notifications';
 import { IconCheck, IconX } from '@tabler/icons-react';
 
 import { useUser } from '../../context/UserContext';
+import { isNonZeroAddress } from '../../utils';
 
 
 
@@ -149,7 +150,7 @@ export function Register() {
 
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>
-      {contractUserInfo && contractUserInfo.parent ? (
+      {contractUserInfo && isNonZeroAddress(contractUserInfo.parent) ? (
         <>
           <Text fw={500} size="md" mb="xs">邀请人</Text>
           <Text size="sm" c="dimmed" mb="md">{contractUserInfo.parent}</Text>
