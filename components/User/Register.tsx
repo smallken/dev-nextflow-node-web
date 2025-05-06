@@ -5,6 +5,7 @@ import classes from './ProgressCardColored.module.css';
 
 import { useChainId, useAccount, useConnect, useWaitForTransactionReceipt } from 'wagmi';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 import { useCallback, useEffect } from 'react';
@@ -12,23 +13,30 @@ import { notifications } from '@mantine/notifications';
 import { IconCheck, IconX } from '@tabler/icons-react';
 
 import { useUser } from '../../context/UserContext';
-import { isNonZeroAddress } from '../../utils';
-
-
+import { isNonZeroAddress, isValidEthAddress } from '../../utils';
 
 // test abi
 import { usdtAbi, usdtAddress, useReadUsdtBalanceOf, useWritePoolRegister } from '../../wagmi/generated';
 
-// Type assertion to ensure TypeScript recognizes this as an Ethereum address
-const defaultBindAddress = process.env.NEXT_PUBLIC_BSC_TESTNET_DEFAULT_BIND_ADDRESS as `0x${string}`
-
-
 export function Register() {
-
+  const router = useRouter();
   const account = useAccount();
   const { connect, connectors } = useConnect();
   const { openConnectModal } = useConnectModal();
-  const {contractUserInfo}= useUser()
+  const { contractUserInfo } = useUser();
+
+  // Get inviter address from URL query parameter
+  const inviterAddress = React.useMemo(() => {
+    const { inviter } = router.query;
+
+    // Check if inviter exists, is a valid Ethereum address, and not zero address
+    if (inviter && typeof inviter === 'string' && isValidEthAddress(inviter) && isNonZeroAddress(inviter)) {
+      return inviter as `0x${string}`;
+    }
+
+    // No fallback - return undefined if no valid inviter in query
+    return undefined;
+  }, [router.query]);
 
   const {
     data: hash,
@@ -49,14 +57,14 @@ export function Register() {
       }
       return;
     }
-    
+
     // Make sure the address exists before sending
-    if (!defaultBindAddress) {
-      console.error('Bind address not configured in environment variables');
+    if (!inviterAddress) {
+      console.error('No valid inviter address in URL');
       notifications.show({
         id: 'bind-error',
-        title: '错误',
-        message: '邀请人地址不能为空',
+        title: 'Error',
+        message: 'Please use a valid invitation link with a non-zero address',
         color: 'red',
         icon: <IconX />,
         autoClose: 3000,
@@ -77,7 +85,7 @@ export function Register() {
 
       // Send the transaction
       await register({
-        args: [defaultBindAddress],
+        args: [inviterAddress],
       });
 
       // Transaction sent successfully - update notification
@@ -106,7 +114,7 @@ export function Register() {
     useWaitForTransactionReceipt({
       hash,
     })
-    
+
   // Effect to handle transaction confirmation
   React.useEffect(() => {
     if (!hash) return;
@@ -121,7 +129,7 @@ export function Register() {
         autoClose: false,
       });
     }
-    
+
     if (isConfirmed) {
       // Transaction confirmed successfully
       notifications.update({
@@ -133,7 +141,7 @@ export function Register() {
         autoClose: 3000,
       });
     }
-    
+
     if (error) {
       // Transaction failed  
       notifications.update({
@@ -152,18 +160,26 @@ export function Register() {
     <Card shadow="sm" padding="lg" radius="md" withBorder>
       {contractUserInfo && isNonZeroAddress(contractUserInfo.parent) ? (
         <>
-          <Text fw={500} size="md" mb="xs">邀请人</Text>
-          <Text size="sm" c="dimmed" mb="md">{contractUserInfo.parent}</Text>
+          <Text fw={500} size="md" mb="xs">已注册</Text>
+          <Text size="sm" c="dimmed" mb="md">邀请人: {contractUserInfo.parent}</Text>
         </>
       ) : (
-        <Button 
-          onClick={submitBind}
-          disabled={isPending} 
-          fullWidth 
-          color="#F2AE00"
-        >
-          {isPending ? '提交中...' : '接受邀请'}
-        </Button>
+
+        <Group>
+        
+          <Text fw={500} size="md" mb="xs">邀请人: {inviterAddress|| '无'}</Text>
+
+          <Button
+            onClick={submitBind}
+            disabled={isPending || !inviterAddress}
+            fullWidth
+            color="#F2AE00"
+          >
+            {isPending ? '提交中...' : '接受邀请'}
+          </Button>
+
+        </Group>
+
       )}
     </Card>
   )
