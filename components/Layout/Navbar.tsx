@@ -70,7 +70,7 @@ export function Navbar() {
         
         {/* Version info */}
         <Stack gap="xs" fz="xs" c="dimmed" ta="center">
-          <Text>Version: {process.env.APP_VERSION || '1.0.0'}</Text>
+          <Text>v{process.env.APP_VERSION || '1.0.0'}</Text>
           <Text hidden>Commit: {process.env.GIT_COMMIT_HASH || 'development'}</Text>
         </Stack>
       </Box>
