@@ -1,8 +1,9 @@
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 // import { MantineLogo } from '@mantinex/mantine-logo';
-import { AppShell, Burger, Group } from '@mantine/core'
+import { AppShell, Burger, Group, Space } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import Navbar from './Navbar'
+import LanguageSwitcher from './LanguageSwitcher'
 
 export function Layout({ children }: { children: React.ReactNode }) {
   // const [opened, { toggle }] = useDisclosure()
@@ -38,6 +39,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
           </Group>
           <Group>
+            <LanguageSwitcher />
+            <Space w="xs" />
             <ConnectButton />
           </Group>
         </Group>

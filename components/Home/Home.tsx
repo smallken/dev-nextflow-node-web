@@ -15,6 +15,8 @@ import { Register } from '../User/Register'
 import { Invite } from '../User/Invite'
 
 import { BuyNode } from '../Node/BuyNode'
+import { useTranslation } from 'react-i18next';
+
 
 // test abi
 import { usdtAbi, usdtAddress, useReadUsdtBalanceOf, useWritePoolRegister } from '../../wagmi/generated';
@@ -24,6 +26,8 @@ const defaultBindAddress = process.env.NEXT_PUBLIC_BSC_TESTNET_DEFAULT_BIND_ADDR
 
 
 export function Home() {
+  const { t } = useTranslation();
+
   const [opened, { toggle }] = useDisclosure(false);
 
   const chainId = useChainId();
@@ -85,7 +89,7 @@ export function Home() {
 
       <Card withBorder radius="md" padding="xl" bg="var(--mantine-color-body)">
         <Text fz="xs" tt="uppercase" fw={700} c="dimmed">
-          完成进度
+          {t('progress')}
         </Text>
         <Group mt="md" justify="space-between">
           {appInfo ? (

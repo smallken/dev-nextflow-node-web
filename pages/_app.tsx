@@ -1,6 +1,9 @@
 import '@mantine/core/styles.css'
 import '@rainbow-me/rainbowkit/styles.css'
 
+// Import i18n configuration
+import '../i18n/index';
+
 import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
@@ -39,7 +42,7 @@ export default function App ({ Component, pageProps }: AppProps) {
                 />
                 <link rel='shortcut icon' href='/favicon.ico' />
                 <link rel="apple-touch-icon" href="/logo192.png" />
-                <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+                <link rel="manifest" href="/manifest.json" />
 
 
               </Head>

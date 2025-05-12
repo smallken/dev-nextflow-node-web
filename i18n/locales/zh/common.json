@@ -1,0 +1,12 @@
+{
+  "home": "首页",
+  "profile": "个人中心",
+  "connect": "连接钱包",
+  "invite": "邀请好友",
+  "buy": "购买节点",
+  "register": "注册",
+  "buy_one_node":"购买1个节点",
+  "buy_five_node":"购买5个节点",
+  "progress":"完成进度"
+
+}

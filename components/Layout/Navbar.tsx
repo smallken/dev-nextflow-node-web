@@ -1,19 +1,21 @@
 import { AppShell, Box, NavLink, Skeleton, Stack, Text, Group, ActionIcon, Tooltip } from '@mantine/core';
 import { IconHome2, IconUser, IconBrandTwitter, IconBrandTelegram, IconBrandGithub, IconBrandMedium } from '@tabler/icons-react';
+import { useTranslation } from 'react-i18next';
 
 export function Navbar() {
+  const { t } = useTranslation();
   return (
     <AppShell.Navbar p='md' style={{ display: 'flex', flexDirection: 'column' }}>
       <div style={{ flex: 1 }}>
         <NavLink
           href="/"
-          label="Home"
+          label={t('home')}
           leftSection={<IconHome2 size={16} stroke={1.5} />}
         />
 
         <NavLink
           href="/profile"
-          label="Profile"
+          label={t('profile')}
           leftSection={<IconUser size={16} stroke={1.5} />}
         />
 

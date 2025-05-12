@@ -9,8 +9,11 @@ import React, { useState } from 'react';
 import { formatEther, parseEther } from 'viem';
 import { ApproveUsdt } from './ApproveUsdt';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
+import { useTranslation } from 'react-i18next';
 
 export function BuyNode() {
+  const { t } = useTranslation();
+
   const account = useAccount();
   const { openConnectModal } = useConnectModal();
 
@@ -220,7 +223,7 @@ export function BuyNode() {
           onClick={() => handleBuyNode(1)}
           disabled={isPending || isConfirming}
         >
-          {isPending || isConfirming ? '处理中...' : '购买1个节点'}
+          {isPending || isConfirming ? '处理中...' : t('buy_one_node')}
         </Button>
         <Space h="sm" />
         <Button
@@ -229,7 +232,7 @@ export function BuyNode() {
           onClick={() => handleBuyNode(5)}
           disabled={isPending || isConfirming}
         >
-          {isPending || isConfirming ? '处理中...' : '购买5个节点'}
+          {isPending || isConfirming ? '处理中...' : t('buy_one_node')}
         </Button>
 
         <Space h="sm" />
