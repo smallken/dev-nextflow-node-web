@@ -5,6 +5,9 @@
   "invite": "Invite Friends",
   "buy": "Buy Node",
   "register": "Register",
-  "buy_one_node":"Buy one node"
+  "buy_one_node":"Buy one node",
+  "buy_five_node":"Buy five node",
+
+  "progress":"progress"
 
 }
