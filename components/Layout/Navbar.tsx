@@ -1,5 +1,5 @@
-import { AppShell, Box, NavLink, Skeleton, Stack, Text } from '@mantine/core';
-import { IconHome2, IconUser } from '@tabler/icons-react';
+import { AppShell, Box, NavLink, Skeleton, Stack, Text, Group, ActionIcon, Tooltip } from '@mantine/core';
+import { IconHome2, IconUser, IconBrandTwitter, IconBrandTelegram, IconBrandGithub, IconBrandMedium } from '@tabler/icons-react';
 
 export function Navbar() {
   return (
@@ -24,8 +24,51 @@ export function Navbar() {
           ))} */}
       </div>
 
-      {/* Version and commit info at bottom */}
+      {/* Social media links */}
       <Box mt="auto" pt="md" style={{ borderTop: '1px solid var(--mantine-color-gray-3)' }}>
+        <Stack gap="xs" py="md">
+          <NavLink
+            label="Twitter"
+            leftSection={
+              <IconBrandTwitter size={18} stroke={1.5} />
+            }
+            component="a"
+            href="https://twitter.com/flipflop"
+            target="_blank"
+          />
+          
+          <NavLink
+            label="Telegram"
+            leftSection={
+              <IconBrandTelegram size={18} stroke={1.5} />
+            }
+            component="a"
+            href="https://t.me/flipflop"
+            target="_blank"
+          />
+          
+          <NavLink
+            label="GitHub"
+            leftSection={
+              <IconBrandGithub size={18} stroke={1.5} />
+            }
+            component="a"
+            href="https://github.com/flipflop"
+            target="_blank"
+          />
+          
+          <NavLink
+            label="Medium"
+            leftSection={
+              <IconBrandMedium size={18} stroke={1.5} />
+            }
+            component="a"
+            href="https://medium.com/flipflop"
+            target="_blank"
+          />
+        </Stack>
+        
+        {/* Version info */}
         <Stack gap="xs" fz="xs" c="dimmed" ta="center">
           <Text>Version: {process.env.APP_VERSION || '1.0.0'}</Text>
           <Text hidden>Commit: {process.env.GIT_COMMIT_HASH || 'development'}</Text>
