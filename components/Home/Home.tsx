@@ -79,7 +79,7 @@ export function Home() {
     <>
       <Image
         h={200}
-        src="/ffboat.png"
+        src="/1.jpg"
       />
       <Space h="sm" />
 
