@@ -232,7 +232,7 @@ export function BuyNode() {
           onClick={() => handleBuyNode(5)}
           disabled={isPending || isConfirming}
         >
-          {isPending || isConfirming ? '处理中...' : t('buy_one_node')}
+          {isPending || isConfirming ? '处理中...' : t('buy_five_node')}
         </Button>
 
         <Space h="sm" />
