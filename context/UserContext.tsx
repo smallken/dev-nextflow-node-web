@@ -127,7 +127,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const nftCurrentTotal = nftTotalSupplyData || BigInt(0);
   
   // NFT铸造目标和起始值
-  const nftMintTarget = BigInt(30000);
+  const nftMintTarget = BigInt(100);
   const nftMintStart = 0;
   
   // 计算NFT铸造进度
