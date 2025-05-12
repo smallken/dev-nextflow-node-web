@@ -39,9 +39,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
           </Group>
           <Group>
-            <LanguageSwitcher />
-            <Space w="xs" />
+            {/* <Space w="xs" /> */}
             <ConnectButton />
+            <LanguageSwitcher />
           </Group>
         </Group>
       </AppShell.Header>
