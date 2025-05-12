@@ -242,13 +242,17 @@ export function BuyNode() {
             <Group>
               <NumberInput
                 size="md"
+                placeholder="购买数量1-100"
+                clampBehavior="strict"
                 allowNegative={false}
                 allowDecimal={false}
+                stepHoldDelay={500}
+                stepHoldInterval={100}
                 defaultValue={1}
                 min={1}
+                max={100}
                 value={buyAmount}
                 onChange={(val) => setBuyAmount(Number(val) || 1)}
-                placeholder="输入购买数量"
               />
               <Button
                 color="#F2AE00"
