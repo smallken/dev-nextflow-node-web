@@ -37,20 +37,20 @@ export default function Profile() {
             <Space h="md" />
             <Group>
               <Badge variant="light" color="green">
-                USDT够买总量: {contractUserInfo.usdtTotal.toString()}
+                USDT收益: {contractUserInfo.income.toString()}
               </Badge>
-              <Badge variant="light" color="blue">
+              {/* <Badge variant="light" color="blue">
                 好友数量: {contractUserInfo.friendCount.toString()}
-              </Badge>
+              </Badge> */}
               <Badge variant="light" color="yellow">
-                团队数量: {contractUserInfo.teamCount.toString()}
+                团队数量: {contractUserInfo.teamNodeCount.toString()}
               </Badge>
             </Group>
             <Space h="md" />
             {/* Mantine v6+ Progress组件不支持max和label属性 */}
-            <Text fz="sm" ta="center" mb="xs">用户等级: {contractUserInfo.vipLevel}级</Text>
+            <Text fz="sm" ta="center" mb="xs">用户等级: {contractUserInfo.level}级</Text>
             <Progress
-              value={(contractUserInfo.vipLevel / 10) * 100}
+              value={(contractUserInfo.level / 10) * 100}
               size="md"
               radius="md"
               color="blue"

@@ -127,7 +127,7 @@ export function Home() {
           <Space h="xl" />
           
           {/* 根据节点购买情况展示Invite */}
-          {contractUserInfo && (contractUserInfo.selfNodeCount > 0) ? (
+          {contractUserInfo && (contractUserInfo.nodeCount > 0) ? (
             <Invite />
           ) : (
             <Card shadow="sm" padding="lg" radius="md" withBorder>
