@@ -103,15 +103,16 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
         loading: true,
         autoClose: false,
       });
+
+      setTimeout(() => {
+        // After successful approval, call the callback
+        onApproveSuccess();
+        // Close the modal
+        onClose();
+      }, 0);  
     }
-  }, [hash, isConfirming]);
-  
-  // Handle transaction success
-  React.useEffect(() => {
-    // Use a reference variable to prevent multiple calls
-    const success = isConfirmed && hash;
-    if (success) {
-      // Transaction successfully confirmed
+
+    if (isConfirmed) {
       notifications.update({
         id: 'approve-loading',
         title: 'Approval Successful',
@@ -120,31 +121,22 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
         icon: <IconCheck />,
         autoClose: 3000,
       });
-      
-      // Use setTimeout to avoid direct state changes during rendering cycle
-      setTimeout(() => {
-        // After successful approval, call the callback
-        onApproveSuccess();
-        // Close the modal
-        onClose();
-      }, 0);
+
     }
-  }, [hash, isConfirmed, onApproveSuccess, onClose]);
-  
-  // Handle transaction failure
-  React.useEffect(() => {
-    if (isConfirmingError && hash) {
-      // Transaction failed
+
+    if (isConfirmingError) {
+      // Transaction failed  
       notifications.update({
-        id: 'approve-loading',
-        title: 'Approval Failed',
-        message: confirmErrorData instanceof Error ? (confirmErrorData.message) : 'Approval failed',
+        id: 'tx-loading',
+        title: '交易失败',
+        message: confirmErrorData instanceof Error ? (confirmErrorData.message) : 'Transaction failed',
         color: 'red',
         icon: <IconX />,
-        autoClose: 6000,
+        autoClose: 3000,
       });
     }
-  }, [hash, isConfirmingError, confirmErrorData]);
+  }, [hash, isConfirming, isConfirmed, isConfirmingError,onApproveSuccess, onClose]);
+  
   
   return (
     <Modal opened={opened} onClose={onClose} title="Approve USDT" centered>

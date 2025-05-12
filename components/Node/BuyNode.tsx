@@ -92,6 +92,8 @@ export function BuyNode() {
   // Callback after successful approval
   function handleApproveSuccess() {
     // After successful approval, automatically proceed to purchase process
+    console.log('refresh after approve')
+    refreshData()
     submitBuyNode(buyAmount);
   }
 

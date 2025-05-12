@@ -23,7 +23,7 @@ export function Register() {
   const account = useAccount();
   const { connect, connectors } = useConnect();
   const { openConnectModal } = useConnectModal();
-  const { contractUserInfo } = useUser();
+  const { contractUserInfo, refreshData } = useUser();
 
   // Get inviter address from URL query parameter
   const inviterAddress = React.useMemo(() => {
@@ -110,10 +110,12 @@ export function Register() {
     }
   }
 
-  const { isLoading: isConfirming, isSuccess: isConfirmed } =
+  const { isLoading: isConfirming, isSuccess: isConfirmed,isError: isConfirmingError, error: confirmErrorData  } =
     useWaitForTransactionReceipt({
       hash,
     })
+  console.log('useWaitForTransactionReceipt', hash, isConfirming, isConfirmed, isConfirmingError, confirmErrorData)
+
 
   // Effect to handle transaction confirmation
   React.useEffect(() => {
@@ -140,20 +142,23 @@ export function Register() {
         icon: <IconCheck />,
         autoClose: 3000,
       });
+
+      // Refresh global data to update UI
+      refreshData();
     }
 
-    if (error) {
+    if (isConfirmingError) {
       // Transaction failed  
       notifications.update({
         id: 'tx-loading',
         title: '交易失败',
-        message: error instanceof Error ? error.message : '交易失败',
+        message: confirmErrorData instanceof Error ? (confirmErrorData.message) : 'Transaction failed',
         color: 'red',
         icon: <IconX />,
         autoClose: 3000,
       });
     }
-  }, [hash, isConfirming, isConfirmed, error])
+  }, [hash, isConfirming, isConfirmed, , isConfirmingError, confirmErrorData])
 
 
   return (
