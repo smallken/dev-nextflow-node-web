@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { createPublicClient, http } from 'viem';
 import { useAccount, useChainId, useReadContract } from 'wagmi';
-import { useReadPoolGetUser, useReadPoolInvitation, useReadPoolNftPrice, useReadUsdtBalanceOf, useReadUsdtAllowance, poolAddress, usdtAddress, 
+import { useReadPoolGetUserInfo, useReadPoolUpline, useReadPoolGetNodePrice, useReadUsdtBalanceOf, useReadUsdtAllowance, poolAddress, usdtAddress, 
 useReadNodeNftTotalSupply, nodeNftAbi, nodeNftAddress
 
  } from '../wagmi/generated';
@@ -22,16 +22,21 @@ type AppInfo = {
 
 // 定义合约用户信息类型
 type ContractUserInfo = {
-  usdtTotal: bigint;
-  friendCount: number;
-  teamCount: number;
-  friendNodeCount: number;
-  teamNodeCount: number;
-  vipLevel: number;
-  profitTotal: bigint;
-  selfNodeCount: number;
-  l1TeamNodeCount: number;
-  computeL0: boolean;
+   nodeCount:number, 
+   level:number, 
+   teamNodeCount:number,
+   income:bigint, 
+
+  // usdtTotal: bigint;
+  // friendCount: number;
+  // teamCount: number;
+  // friendNodeCount: number;
+  // teamNodeCount: number;
+  // vipLevel: number;
+  // profitTotal: bigint;
+  // selfNodeCount: number;
+  // l1TeamNodeCount: number;
+  // computeL0: boolean;
   // 扩展信息 - 我们计算的属性
   parent?: string; // 需要从其他地方获取
   address?: `0x${string}`; // 用户地址
@@ -61,24 +66,24 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const [appInfo, setAppInfo] = useState<AppInfo | null>(null);
   const [contractUserInfo, setContractUserInfo] = useState<ContractUserInfo | null>(null);
   
-  // 使用 useReadPoolGetUser 从合约获取用户信息
-  const { data: userData, isError, isLoading, refetch: refetchUserData } = useReadPoolGetUser({
+  // 使用 useReadPoolGetUserInfo 从合约获取用户信息
+  const { data: userData, isError, isLoading, refetch: refetchUserData } = useReadPoolGetUserInfo({
     args: address ? [address] : undefined,
     query: {
       enabled: !!address,
     }
   });
   
-  // 使用 useReadPoolInvitation 获取用户的推荐人地址
-  const { data: parentAddress, refetch: refetchParentAddress } = useReadPoolInvitation({
+  // 使用 useReadPoolUpline 获取用户的推荐人地址
+  const { data: parentAddress, refetch: refetchParentAddress } = useReadPoolUpline({
     args: address ? [address] : undefined,
     query: {
       enabled: !!address,
     }
   });
   
-  // 使用 useReadPoolNftPrice 获取全局节点价格
-  const { data: nftPrice, refetch: refetchNftPrice } = useReadPoolNftPrice();
+  // 使用 useReadPoolGetNodePrice 获取全局节点价格
+  const { data: nftPrice, refetch: refetchNftPrice } = useReadPoolGetNodePrice();
   
   // 使用 useReadUsdtBalanceOf 获取用户的USDT余额
   const { data: usdtBalanceData, refetch: refetchUsdtBalance } = useReadUsdtBalanceOf({
@@ -218,7 +223,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
     if (!address) {
       setContractUserInfo(null);
     }
-    // 对于地址存在的情况，我们依赖上面的useReadPoolGetUser来获取数据
+    // 对于地址存在的情况，我们依赖上面的useReadPoolGetUserInfo来获取数据
     // 所以这里不需要额外的操作
   }, [address]);
   
@@ -226,18 +231,14 @@ export function UserProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (userData) {
       // userData 是合约返回的UserInfo结构，根据合约ABI定义包含各种属性
+      const [ nodeCount,  income, level, teamNodeCount] = userData
+      
       setContractUserInfo({
-        usdtTotal: typeof userData.usdtTotal === 'bigint' ? userData.usdtTotal : BigInt(userData.usdtTotal as any || 0),
-        friendCount: Number(userData.friendCount || 0),
-        teamCount: Number(userData.teamCount || 0),
-        friendNodeCount: Number(userData.friendNodeCount || 0),
-        teamNodeCount: Number(userData.teamNodeCount || 0),
-        vipLevel: Number(userData.vipLevel || 0),
-        profitTotal: typeof userData.profitTotal === 'bigint' ? userData.profitTotal : BigInt(userData.profitTotal as any || 0),
-        selfNodeCount: Number(userData.selfNodeCount || 0),
-        l1TeamNodeCount: Number(userData.l1TeamNodeCount || 0),
-        computeL0: Boolean(userData.computeL0),
-        // 从推荐人查询中获取parent地址
+        nodeCount: Number(nodeCount),  
+        income, 
+        level: Number(level), 
+        teamNodeCount: Number(teamNodeCount),
+
         parent: parentAddress as `0x${string}` || '0x0000000000000000000000000000000000000000',
         // 添加用户地址
         address: address

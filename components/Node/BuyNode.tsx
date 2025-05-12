@@ -1,7 +1,7 @@
 import { Button, Card, Space, Text, Group, NumberInput, Collapse, Center } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useUser } from '../../context/UserContext';
-import { useWritePoolBuyNft, useReadPoolNftPrice } from '../../wagmi/generated';
+import { useWritePoolBuyNode, useReadPoolGetNodePrice } from '../../wagmi/generated';
 import { useWaitForTransactionReceipt, useAccount } from 'wagmi';
 import { notifications } from '@mantine/notifications';
 import { IconCheck, IconX } from '@tabler/icons-react';
@@ -23,18 +23,18 @@ export function BuyNode() {
   const [requiredApproveAmount, setRequiredApproveAmount] = useState<bigint>(BigInt(0));
 
   // Get NFT price
-  const { data: nftPrice } = useReadPoolNftPrice();
+  const { data: nftPrice } = useReadPoolGetNodePrice();
 
-  // Use Wagmi's useWritePoolBuyNft hook for contract interaction
+  // Use Wagmi's useWritePoolBuyNode hook for contract interaction
   const {
     data: hash,
     error,
     isPending,
     isError,
     writeContractAsync: buyNft
-  } = useWritePoolBuyNft();
+  } = useWritePoolBuyNode();
 
-  console.log('useWritePoolBuyNft', hash, isPending, isError, error)
+  console.log('useWritePoolBuyNode', hash, isPending, isError, error)
   console.log('USDT allowance', usdtAllowanceForPool)
 
   // Check approval and handle purchase operation
@@ -64,7 +64,7 @@ export function BuyNode() {
 
     // Calculate total amount needed for purchase
     // nftPrice needs to be multiplied by 10^18 to convert to wei units
-    const totalAmount = nftPrice * BigInt(10 ** 18) * BigInt(amount);
+    const totalAmount = nftPrice * BigInt(amount);
 
     // If balance is insufficient, notify user
     if (usdtBalance < totalAmount) {
@@ -204,7 +204,7 @@ export function BuyNode() {
 
         <Group>
           <Text fw={500}>
-            Purchased: {contractUserInfo ? contractUserInfo.selfNodeCount : 0}
+            Purchased: {contractUserInfo ? contractUserInfo.nodeCount : 0}
           </Text>
           <Text>USDT Balance: {formatEther(usdtBalance) || 0}</Text>
           <Text>USDT Approved: {usdtAllowanceForPool > BigInt(0) ? 'Yes' : 'No'}</Text>

@@ -14,21 +14,21 @@ export default defineConfig({
     {
       name: 'usdt',
       address: {
-        [bscTestnet.id]: '0x17512c164A86790c0b5a6ae9e2913208765164FB',
+        [bscTestnet.id]: '0xa1f6966b416e221C9F3bD1D49B3F8fDE5Fd495d0',
       },
       abi: erc20Abi,
     },
     {
       name: 'pool',
       address: {
-        [bscTestnet.id]: '0x7dc35a306955dDa85A11Ff51Df27aAb876F25914',
+        [bscTestnet.id]: '0x8D74dD3b6957e44632B020e6F9F86FA05E8FA3C9',
       },
       abi: poolAbi,
     },
     {
       name: 'nodeNft',
       address: {
-        [bscTestnet.id]: '0x76304F2547aA59954F2d5d479936B073aBCcDB8d',
+        [bscTestnet.id]: '0xA2c14F04A79535600F68d1E682C0215b027E56d9',
       },
       abi: nodeNftAbi,
     },

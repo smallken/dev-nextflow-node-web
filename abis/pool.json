@@ -1,14 +1,252 @@
 [
   {
+    "inputs": [],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
     "inputs": [
       {
-        "internalType": "contract IERC20Custom",
-        "name": "usdtToken",
+        "internalType": "address",
+        "name": "target",
         "type": "address"
       }
     ],
-    "stateMutability": "nonpayable",
-    "type": "constructor"
+    "name": "AddressEmptyCode",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "AlreadyRegistered",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "AmountMustBePositive",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "recipient",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "CommissionTransferFailed",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint8",
+        "name": "depth",
+        "type": "uint8"
+      }
+    ],
+    "name": "DepthExceedsMaximum",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "DepthMustBePositive",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "implementation",
+        "type": "address"
+      }
+    ],
+    "name": "ERC1967InvalidImplementation",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC1967NonPayable",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "newTotal",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "limit",
+        "type": "uint256"
+      }
+    ],
+    "name": "ExceedsMaxCumulativePurchase",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "limit",
+        "type": "uint256"
+      }
+    ],
+    "name": "ExceedsMaxSinglePurchase",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "FailedCall",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidInitialization",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint8",
+        "name": "level",
+        "type": "uint8"
+      }
+    ],
+    "name": "InvalidLevel",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidPriceOracleAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "MaxSinglePurchaseMustBePositive",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotInitializing",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotRegistered",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      }
+    ],
+    "name": "OwnableInvalidOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "OwnableUnauthorizedAccount",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint8",
+        "name": "rate",
+        "type": "uint8"
+      }
+    ],
+    "name": "RateTooHigh",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ReentrancyGuardReentrantCall",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "referrer",
+        "type": "address"
+      }
+    ],
+    "name": "ReferrerHasNoNodes",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "referrer",
+        "type": "address"
+      }
+    ],
+    "name": "ReferrerNotRegistered",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "expectedToken",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "providedToken",
+        "type": "address"
+      }
+    ],
+    "name": "TokenMismatch",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "TokenTransferFailed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "UUPSUnauthorizedCallContext",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "slot",
+        "type": "bytes32"
+      }
+    ],
+    "name": "UUPSUnsupportedProxiableUUID",
+    "type": "error"
   },
   {
     "anonymous": false,
@@ -30,6 +268,18 @@
         "internalType": "uint256",
         "name": "amount",
         "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "fromLevel",
+        "type": "uint8"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "toLevel",
+        "type": "uint8"
       }
     ],
     "name": "CommissionPaid",
@@ -39,19 +289,32 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": true,
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "level",
+        "type": "uint8"
       },
       {
         "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
+        "internalType": "uint8",
+        "name": "rate",
+        "type": "uint8"
       }
     ],
-    "name": "Invested",
+    "name": "CommissionRateSet",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint64",
+        "name": "version",
+        "type": "uint64"
+      }
+    ],
+    "name": "Initialized",
     "type": "event"
   },
   {
@@ -76,7 +339,46 @@
         "type": "uint8"
       }
     ],
-    "name": "LevelUp",
+    "name": "LevelUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "maxCumulativePurchase",
+        "type": "uint256"
+      }
+    ],
+    "name": "MaxCumulativePurchaseSet",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "maxReferralDepth",
+        "type": "uint8"
+      }
+    ],
+    "name": "MaxReferralDepthSet",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "maxSinglePurchase",
+        "type": "uint256"
+      }
+    ],
+    "name": "MaxSinglePurchaseSet",
     "type": "event"
   },
   {
@@ -85,11 +387,36 @@
       {
         "indexed": true,
         "internalType": "address",
-        "name": "previousOwner",
+        "name": "nodeNFT",
         "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
       }
     ],
-    "name": "OwnershipRenounced",
+    "name": "NodeNFTSet",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "NodePurchased",
     "type": "event"
   },
   {
@@ -117,66 +444,66 @@
       {
         "indexed": true,
         "internalType": "address",
+        "name": "priceOracle",
+        "type": "address"
+      }
+    ],
+    "name": "PriceOracleSet",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
         "name": "user",
         "type": "address"
       },
       {
         "indexed": true,
         "internalType": "address",
-        "name": "parent",
+        "name": "referrer",
         "type": "address"
       }
     ],
-    "name": "Registered",
+    "name": "ReferralRegistered",
     "type": "event"
   },
   {
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "address",
-        "name": "_manager",
+        "name": "treasury",
         "type": "address"
       }
     ],
-    "name": "RemoveManager",
+    "name": "TreasurySet",
     "type": "event"
   },
   {
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "address",
-        "name": "_manager",
+        "name": "implementation",
         "type": "address"
       }
     ],
-    "name": "SetManager",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "bool",
-        "name": "andOn",
-        "type": "bool"
-      }
-    ],
-    "name": "setWhitelistedOnEvent",
+    "name": "Upgraded",
     "type": "event"
   },
   {
     "inputs": [],
-    "name": "MAX_RATE",
+    "name": "UPGRADE_INTERFACE_VERSION",
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "string",
         "name": "",
-        "type": "uint256"
+        "type": "string"
       }
     ],
     "stateMutability": "view",
@@ -190,14 +517,63 @@
         "type": "uint256"
       }
     ],
-    "name": "buyNft",
+    "name": "buyNode",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "firstAddress",
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "commissionRates",
+    "outputs": [
+      {
+        "internalType": "uint8",
+        "name": "",
+        "type": "uint8"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "directPurchaseCount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "downlines",
     "outputs": [
       {
         "internalType": "address",
@@ -210,7 +586,7 @@
   },
   {
     "inputs": [],
-    "name": "getBlockNum",
+    "name": "getNodePrice",
     "outputs": [
       {
         "internalType": "uint256",
@@ -222,8 +598,19 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "getBlockTime",
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "internalType": "uint8",
+        "name": "_level",
+        "type": "uint8"
+      }
+    ],
+    "name": "getTeamNodeBaseline",
     "outputs": [
       {
         "internalType": "uint256",
@@ -242,77 +629,12 @@
         "type": "address"
       }
     ],
-    "name": "getUser",
+    "name": "getUserDownlines",
     "outputs": [
       {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "usdtTotal",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "friendCount",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "teamCount",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "friendNodeCount",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "teamNodeCount",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint8",
-            "name": "vipLevel",
-            "type": "uint8"
-          },
-          {
-            "internalType": "uint256",
-            "name": "profitTotal",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "selfNodeCount",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "l1TeamNodeCount",
-            "type": "uint256"
-          },
-          {
-            "internalType": "bool",
-            "name": "computeL0",
-            "type": "bool"
-          }
-        ],
-        "internalType": "struct NftPool.UserInfo",
+        "internalType": "address[]",
         "name": "",
-        "type": "tuple"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "iNftMint",
-    "outputs": [
-      {
-        "internalType": "contract INftMint",
-        "name": "",
-        "type": "address"
+        "type": "address[]"
       }
     ],
     "stateMutability": "view",
@@ -322,11 +644,45 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "",
+        "name": "user",
         "type": "address"
       }
     ],
-    "name": "invitation_",
+    "name": "getUserInfo",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "_nodeCount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_income",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint8",
+        "name": "_level",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_teamNodeCount",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      }
+    ],
+    "name": "getUserUpline",
     "outputs": [
       {
         "internalType": "address",
@@ -345,7 +701,49 @@
         "type": "address"
       }
     ],
-    "name": "managers",
+    "name": "income",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_token",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_treasury",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_referrer0",
+        "type": "address"
+      }
+    ],
+    "name": "initialize",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "isRegistered",
     "outputs": [
       {
         "internalType": "bool",
@@ -357,39 +755,19 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "maxInviteLevel",
-    "outputs": [
+    "inputs": [
       {
-        "internalType": "uint256",
+        "internalType": "address",
         "name": "",
-        "type": "uint256"
+        "type": "address"
       }
     ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "nftId",
+    "name": "level",
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "uint8",
         "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "nftPrice",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
+        "type": "uint8"
       }
     ],
     "stateMutability": "view",
@@ -403,7 +781,46 @@
         "type": "uint256"
       }
     ],
-    "name": "nodeCountLimit",
+    "name": "levelRequirements",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "maxCumulativePurchase",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "maxReferralDepth",
+    "outputs": [
+      {
+        "internalType": "uint8",
+        "name": "",
+        "type": "uint8"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "maxSinglePurchase",
     "outputs": [
       {
         "internalType": "uint256",
@@ -417,12 +834,38 @@
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "nodeCount",
+    "outputs": [
+      {
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
       }
     ],
-    "name": "nodeCountLimitInc",
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "nodeNFT",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "nodeTokenId",
     "outputs": [
       {
         "internalType": "uint256",
@@ -448,7 +891,33 @@
   },
   {
     "inputs": [],
-    "name": "pAddress",
+    "name": "priceOracle",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "proxiableUUID",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "referrer0",
     "outputs": [
       {
         "internalType": "address",
@@ -462,56 +931,12 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "_tokenId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_mintAmount",
-        "type": "uint256"
-      }
-    ],
-    "name": "preMint",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "address",
-        "name": "inviteAddress",
+        "name": "referrer",
         "type": "address"
       }
     ],
     "name": "register",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user_",
-        "type": "address"
-      }
-    ],
-    "name": "removeFromWhiteList",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_manager",
-        "type": "address"
-      }
-    ],
-    "name": "removeManager",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -526,12 +951,118 @@
   {
     "inputs": [
       {
+        "internalType": "uint8",
+        "name": "_level",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint8",
+        "name": "_rate",
+        "type": "uint8"
+      }
+    ],
+    "name": "setCommissionRate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "uint256",
-        "name": "",
+        "name": "_maxCumulativePurchase",
         "type": "uint256"
       }
     ],
-    "name": "rewardVipRate",
+    "name": "setMaxCumulativePurchase",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint8",
+        "name": "_maxReferralDepth",
+        "type": "uint8"
+      }
+    ],
+    "name": "setMaxReferralDepth",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_maxSinglePurchase",
+        "type": "uint256"
+      }
+    ],
+    "name": "setMaxSinglePurchase",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_nodeNFT",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_nodeTokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "setNodeNFT",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_priceOracle",
+        "type": "address"
+      }
+    ],
+    "name": "setPriceOracle",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_wallet",
+        "type": "address"
+      }
+    ],
+    "name": "setTreasury",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "uint8",
+        "name": "",
+        "type": "uint8"
+      }
+    ],
+    "name": "teamNodeBaseline",
     "outputs": [
       {
         "internalType": "uint256",
@@ -546,130 +1077,45 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "firstAddress_",
+        "name": "",
         "type": "address"
       }
     ],
-    "name": "setFirstAddress",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user_",
-        "type": "address"
-      }
-    ],
-    "name": "setFromWhiteList",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_manager",
-        "type": "address"
-      }
-    ],
-    "name": "setManager",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
+    "name": "teamNodeCount",
+    "outputs": [
       {
         "internalType": "uint256",
-        "name": "maxInviteLevel_",
+        "name": "",
         "type": "uint256"
       }
     ],
-    "name": "setMaxInviteLevel",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "view",
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_maxSupply",
-        "type": "uint256"
-      }
-    ],
-    "name": "setMaxSupply",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "nftId_",
-        "type": "uint256"
-      }
-    ],
-    "name": "setNftId",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
+    "inputs": [],
+    "name": "token",
+    "outputs": [
       {
         "internalType": "address",
-        "name": "nftMintAddress_",
+        "name": "",
         "type": "address"
       }
     ],
-    "name": "setNftMint",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "view",
     "type": "function"
   },
   {
-    "inputs": [
+    "inputs": [],
+    "name": "totalProjectIncome",
+    "outputs": [
       {
         "internalType": "uint256",
-        "name": "nftPrice_",
+        "name": "",
         "type": "uint256"
       }
     ],
-    "name": "setNftPrice",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "pAddress_",
-        "type": "address"
-      }
-    ],
-    "name": "setProAddress",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bool",
-        "name": "isOn",
-        "type": "bool"
-      }
-    ],
-    "name": "setWhitelistedOn",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -686,47 +1132,11 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "userAddr",
-        "type": "address"
-      },
-      {
-        "internalType": "uint8",
-        "name": "vipLevel",
-        "type": "uint8"
-      }
-    ],
-    "name": "updateUserVip",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "addressUp",
-        "type": "address"
-      },
-      {
-        "internalType": "bool",
-        "name": "isValid",
-        "type": "bool"
-      }
-    ],
-    "name": "updateValidAddress",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "inputs": [],
-    "name": "usdtToken_",
+    "name": "treasury",
     "outputs": [
       {
-        "internalType": "contract IERC20Custom",
+        "internalType": "address",
         "name": "",
         "type": "address"
       }
@@ -735,16 +1145,21 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "usdtTotal_",
-    "outputs": [
+    "inputs": [
       {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
+        "internalType": "address",
+        "name": "newImplementation",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes",
+        "name": "data",
+        "type": "bytes"
       }
     ],
-    "stateMutability": "view",
+    "name": "upgradeToAndCall",
+    "outputs": [],
+    "stateMutability": "payable",
     "type": "function"
   },
   {
@@ -755,76 +1170,12 @@
         "type": "address"
       }
     ],
-    "name": "userInfo_",
+    "name": "upline",
     "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "usdtTotal",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "friendCount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "teamCount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "friendNodeCount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "teamNodeCount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint8",
-        "name": "vipLevel",
-        "type": "uint8"
-      },
-      {
-        "internalType": "uint256",
-        "name": "profitTotal",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "selfNodeCount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "l1TeamNodeCount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "bool",
-        "name": "computeL0",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
       {
         "internalType": "address",
         "name": "",
         "type": "address"
-      }
-    ],
-    "name": "validAddress",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
       }
     ],
     "stateMutability": "view",
