@@ -4,8 +4,9 @@ import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/router';
 
 export function Navbar() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const router = useRouter();
+  const currentLanguage = i18n.language;
   return (
     <AppShell.Navbar p='md' style={{ display: 'flex', flexDirection: 'column' }}>
       <div style={{ flex: 1 }}>
@@ -22,6 +23,7 @@ export function Navbar() {
           label={t('profile')}
           leftSection={<IconUser size={16} stroke={1.5} />}
           active={router.pathname === '/profile'}
+          variant="subtle"
         />
       </div>
 
@@ -44,16 +46,7 @@ export function Navbar() {
               <IconBrandTelegram size={18} stroke={1.5} />
             }
             component="a"
-            href="https://t.me/flipflopEng"
-            target="_blank"
-          />
-          <NavLink
-            label="Telegram"
-            leftSection={
-              <IconBrandTelegram size={18} stroke={1.5} />
-            }
-            component="a"
-            href="@flipflopChi"
+            href={currentLanguage === 'zh' ? "https://t.me/flipflopChi" : "https://t.me/flipflopEng"}
             target="_blank"
           />
           
