@@ -10,5 +10,6 @@
 
   "progress":"progress",
   "custom_quantity":"Custom quantity",
-  "total_cost":"Total Cost"
+  "total_cost":"Total Cost",
+  "wrong_network":"Wrong Network"
 }

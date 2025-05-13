@@ -1,4 +1,5 @@
-import { ConnectButton } from '@rainbow-me/rainbowkit'
+// import { ConnectButton } from '@rainbow-me/rainbowkit'
+import CustomConnectButton from './CustomConnectButton'
 // import { MantineLogo } from '@mantinex/mantine-logo';
 import { AppShell, Burger, Group, Space } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
@@ -38,9 +39,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <img src="/images/flip-flops-64_64.png" style={{ width: '32px', height: '32px' }} alt="Logo" />
 
           </Group>
-          <Group>
-            {/* <Space w="xs" /> */}
-            <ConnectButton />
+          <Group gap="xs" visibleFrom="sm">
+            <CustomConnectButton />
+            <LanguageSwitcher />
+          </Group>
+          <Group gap="xs" hiddenFrom="sm" justify="center" mt="xs">
+            <CustomConnectButton />
             <LanguageSwitcher />
           </Group>
         </Group>
