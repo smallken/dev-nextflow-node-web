@@ -1,5 +1,7 @@
 import '@mantine/core/styles.css'
 import '@rainbow-me/rainbowkit/styles.css'
+import '@mantine/notifications/styles.css';
+import '../styles/global.css'
 
 // Import i18n configuration
 import '../i18n/index';
@@ -10,7 +12,6 @@ import Head from 'next/head'
 import { MantineProvider } from '@mantine/core'
 
 import { Notifications } from '@mantine/notifications';
-import '@mantine/notifications/styles.css';
 
 import { theme } from '../theme'
 
