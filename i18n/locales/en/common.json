@@ -32,5 +32,12 @@
   "waiting_confirmation":"Waiting for blockchain confirmation...",
   "approval_successful":"Approval Successful",
   "approval_completed":"USDT approval completed",
-  "transaction_failed":"Transaction Failed"
+  "transaction_failed":"Transaction Failed",
+
+  "invite_friends":"Invite Friends",
+  "scan_or_copy":"Scan QR code or copy the link to invite friends",
+  "copied":"Copied",
+  "copy_link":"Copy Link",
+  "invite_reward_desc":"Share this link with your friends. When they successfully register, you'll receive rewards.",
+  "share_invitation":"Share Invitation"
 }

@@ -1,9 +1,9 @@
-import { Button, Card, Space, Text, Modal, Group, Stack, Center, CopyButton, ActionIcon, Tooltip } from '@mantine/core';
+import { Button, Card, Space, Text, Modal, Group, Stack, Center, CopyButton, ActionIcon, Tooltip, Paper, Divider, Box } from '@mantine/core';
 import { useUser } from '../../context/UserContext';
 import { useDisclosure } from '@mantine/hooks';
 import { QRCodeSVG } from 'qrcode.react';
 import { useEffect, useState } from 'react';
-import { IconCopy, IconCheck } from '@tabler/icons-react';
+import { IconCopy, IconCheck, IconShare, IconBrandFacebook, IconBrandTwitter, IconBrandTelegram } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 
 export function Invite() {
@@ -29,39 +29,74 @@ export function Invite() {
   return (
     <>
       <Card shadow="sm" padding="lg" radius="md" withBorder>
-        <Button fullWidth color="#F2AE00" onClick={open}>{t('invite')}</Button>
+        <Button 
+          fullWidth 
+          color="#F2AE00" 
+          onClick={open}
+          leftSection={<IconShare size={16} />}
+        >
+          {t('invite')}
+        </Button>
       </Card>
       
-      <Modal opened={opened} onClose={close} title="邀请好友" centered size="md">
-        <Stack>
-          <Text ta="center" fw={500} size="lg">扫描二维码或复制链接邀请好友</Text>
+      <Modal 
+        opened={opened} 
+        onClose={close} 
+        title={t('invite_friends')} 
+        centered 
+        size="md"
+        styles={{
+          title: { fontSize: '1.2rem', fontWeight: 600 }
+        }}
+      >
+        <Stack gap="lg">
+          <Text ta="center" fw={500} size="lg" c="#F2AE00">{t('scan_or_copy')}</Text>
           
-          <Center py="md">
-            <QRCodeSVG 
-              value={inviteUrl} 
-              size={200} 
-              bgColor={"#ffffff"}
-              fgColor={"#000000"}
-              level={"L"}
-              includeMargin={false}
-            />
-          </Center>
+          <Paper shadow="xs" withBorder radius="md" p="md" style={{ background: '#FAFAFA' }}>
+            <Center py="md">
+              <Box style={{ padding: '10px', background: 'white', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
+                <QRCodeSVG 
+                  value={inviteUrl} 
+                  size={200} 
+                  bgColor={"#ffffff"}
+                  fgColor={"#000000"}
+                  level={"L"}
+                  includeMargin={false}
+                />
+              </Box>
+            </Center>
+          </Paper>
           
-          <Group style={{ width: '100%' }}>
-            <Text truncate fw={500} style={{ flex: 1 }}>{inviteUrl}</Text>
-            <CopyButton value={inviteUrl} timeout={2000}>
-              {({ copied, copy }) => (
-                <Tooltip label={copied ? '已复制' : '复制链接'} withArrow position="top">
-                  <ActionIcon color={copied ? 'teal' : 'gray'} onClick={copy}>
-                    {copied ? <IconCheck size={16} /> : <IconCopy size={16} />}
-                  </ActionIcon>
-                </Tooltip>
-              )}
-            </CopyButton>
-          </Group>
+          <Paper p="xs" withBorder radius="md" bg="var(--mantine-color-gray-0)">
+            <Group style={{ width: '100%' }}>
+              <Text truncate fw={500} style={{ flex: 1, fontSize: '0.9rem' }}>{inviteUrl}</Text>
+              <CopyButton value={inviteUrl} timeout={2000}>
+                {({ copied, copy }) => (
+                  <Tooltip label={copied ? t('copied') : t('copy_link')} withArrow position="top">
+                    <ActionIcon color={copied ? 'teal' : '#F2AE00'} variant={copied ? 'filled' : 'light'} onClick={copy}>
+                      {copied ? <IconCheck size={16} /> : <IconCopy size={16} />}
+                    </ActionIcon>
+                  </Tooltip>
+                )}
+              </CopyButton>
+            </Group>
+          </Paper>
           
-          <Text c="dimmed" size="sm" ta="center">
-            分享此链接给你的朋友，当他们注册成功后，你将获得奖励。
+          {/* <Divider label={t('share_invitation')} labelPosition="center" /> */}
+          {/* <Group position="center" spacing="md">
+            <ActionIcon size="lg" variant="light" color="blue">
+              <IconBrandFacebook size={18} />
+            </ActionIcon>
+            <ActionIcon size="lg" variant="light" color="cyan">
+              <IconBrandTwitter size={18} />
+            </ActionIcon>
+            <ActionIcon size="lg" variant="light" color="blue">
+              <IconBrandTelegram size={18} /> 
+            </ActionIcon>
+          </Group> */}
+          
+          <Text c="dimmed" size="sm" ta="center" px="md">
+            {t('invite_reward_desc')}
           </Text>
         </Stack>
       </Modal>
