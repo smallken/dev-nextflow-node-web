@@ -1,7 +1,8 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { createPublicClient, http } from 'viem';
 import { useAccount, useChainId, useReadContract } from 'wagmi';
-import { useReadPoolGetUserInfo, useReadPoolUpline, useReadPoolGetNodePrice, useReadUsdtBalanceOf, useReadUsdtAllowance, poolAddress, usdtAddress, 
+import { useReadPoolGetUserInfo, useReadPoolUpline, useReadPoolGetNodePrice, 
+  useReadUsdtBalanceOf, useReadUsdtAllowance, poolAddress, usdtAddress, useReadPoolGetUserDownlines,
 useReadNodeNftTotalSupply, nodeNftAbi, nodeNftAddress
 
  } from '../wagmi/generated';
@@ -26,17 +27,8 @@ type ContractUserInfo = {
    level:number, 
    teamNodeCount:number,
    income:bigint, 
-
-  // usdtTotal: bigint;
-  // friendCount: number;
-  // teamCount: number;
-  // friendNodeCount: number;
-  // teamNodeCount: number;
-  // vipLevel: number;
-  // profitTotal: bigint;
-  // selfNodeCount: number;
-  // l1TeamNodeCount: number;
-  // computeL0: boolean;
+   friends:string[],
+  
   // 扩展信息 - 我们计算的属性
   parent?: string; // 需要从其他地方获取
   address?: `0x${string}`; // 用户地址
@@ -76,6 +68,14 @@ export function UserProvider({ children }: { children: ReactNode }) {
   
   // 使用 useReadPoolUpline 获取用户的推荐人地址
   const { data: parentAddress, refetch: refetchParentAddress } = useReadPoolUpline({
+    args: address ? [address] : undefined,
+    query: {
+      enabled: !!address,
+    }
+  });
+  
+  // 使用 useReadPoolGetUserDownlines 获取用户的好友列表
+  const { data: friendsList, refetch: refetchFriendsList } = useReadPoolGetUserDownlines({
     args: address ? [address] : undefined,
     query: {
       enabled: !!address,
@@ -175,9 +175,10 @@ export function UserProvider({ children }: { children: ReactNode }) {
       if (address) {
         // User-specific data only if user is connected
         refetchPromises.push(refetchUserData());
+        refetchPromises.push(refetchParentAddress());
+        refetchPromises.push(refetchFriendsList()); // 刷新好友列表
         refetchPromises.push(refetchUsdtBalance());
         refetchPromises.push(refetchUsdtAllowance());
-        refetchPromises.push(refetchParentAddress());
       }
       
       // Global data (always refetch)
@@ -229,26 +230,25 @@ export function UserProvider({ children }: { children: ReactNode }) {
   
   // 将userData和parentAddress结合更新contractUserInfo
   useEffect(() => {
-    if (userData) {
-      // userData 是合约返回的UserInfo结构，根据合约ABI定义包含各种属性
-      const [ nodeCount,  income, level, teamNodeCount] = userData
+    if (userData && address) {
+      // 处理和转换数据
+      // 从数组解构各个属性
+      const [nodeCount, income, level, teamNodeCount] = userData;
       
-      setContractUserInfo({
-        nodeCount: Number(nodeCount),  
+      const transformedData: ContractUserInfo = {
+        nodeCount: Number(nodeCount),
         income, 
-        level: Number(level), 
+        level: Number(level),
         teamNodeCount: Number(teamNodeCount),
-
-        parent: parentAddress as `0x${string}` || '0x0000000000000000000000000000000000000000',
-        // 添加用户地址
-        address: address
-      });
-
-      // We don't need to update global info here - it's handled by the main effect
-    } else {
-      setContractUserInfo(null);
+        parent: parentAddress || undefined, // 添加父级推荐人地址
+        address, // 添加用户地址
+        friends: friendsList ? [...friendsList] : [], // 添加好友列表 - 转换为可变数组
+      };
+      
+      // 更新状态
+      setContractUserInfo(transformedData);
     }
-  }, [userData, parentAddress]);
+  }, [userData, address, parentAddress, friendsList]);
 
   return (
     <UserContext.Provider

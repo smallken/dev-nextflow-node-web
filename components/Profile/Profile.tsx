@@ -1,9 +1,11 @@
 import { Card, Text, Group, Button, Container, Stack, rem, Box, Paper, Grid, Space, Progress, CopyButton, ActionIcon, Tooltip, Divider } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 import { formatEther } from 'viem';
 import { IconCrown, IconChevronRight, IconCopy, IconCheck } from '@tabler/icons-react';
 import { useState } from 'react';
 import { useUser } from '../../context/UserContext';
 import { useTranslation } from 'react-i18next';
+import { InviteModal } from '../User/InviteModal';
 
 
 // StatCard component for the four info boxes
@@ -43,6 +45,7 @@ export function Profile() {
   // 使用自定义 hook 获取全局用户数据
   const { address, contractUserInfo, usdtBalance, usdtAllowanceForPool } = useUser();
   const [bgColor] = useState('#E3FBE3'); // Default light green background
+  const [inviteModalOpened, { open: openInviteModal, close: closeInviteModal }] = useDisclosure(false);
 
   // If user is not connected or data is not loaded, show a placeholder
   if (!address || !contractUserInfo) {
@@ -165,14 +168,14 @@ export function Profile() {
             <Grid.Col span={6}>
               <StatCard 
                 title="我的好友" 
-                value={contractUserInfo.teamNodeCount || 0} 
+                value={contractUserInfo?.friends?.length  || 0} 
                 buttonText="邀请" 
-                onClick={() => console.log('Invite friends')}
+                onClick={openInviteModal}
               />
             </Grid.Col>
             <Grid.Col span={6}>
               <StatCard 
-                title="好友节点数量" 
+                title="伞下节点数量" 
                 value={contractUserInfo.teamNodeCount || 0} 
                 buttonText="详情" 
                 onClick={() => console.log('Friend nodes details')}
@@ -184,6 +187,9 @@ export function Profile() {
         {/* Add some bottom padding */}
         <Space h="xl" />
       </Container>
+
+      {/* Invite Modal */}
+      <InviteModal opened={inviteModalOpened} onClose={closeInviteModal} />
     </div>
   );
 }
