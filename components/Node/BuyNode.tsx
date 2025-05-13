@@ -241,31 +241,38 @@ export function BuyNode() {
         </Group>
 
         <Collapse in={opened}>
-          <Center>
-            <Group>
-              <NumberInput
-                size="md"
-                placeholder="1-100"
-                clampBehavior="strict"
-                allowNegative={false}
-                allowDecimal={false}
-                stepHoldDelay={500}
-                stepHoldInterval={100}
-                defaultValue={1}
-                min={1}
-                max={100}
-                value={buyAmount}
-                onChange={(val) => setBuyAmount(Number(val) || 1)}
-              />
-              <Button
-                color="#F2AE00"
-                onClick={() => handleBuyNode(buyAmount)}
-                disabled={isPending || isConfirming}
-              >
-                {t('buy')}
-              </Button>
-            </Group>
-          </Center>
+          <Card p="md" withBorder shadow="sm" radius="md" mt="xs">
+            <Text size="sm" fw={500} mb="xs">{t('custom_quantity')}</Text>
+            
+            <NumberInput
+              size="md"
+              placeholder="1-100"
+              clampBehavior="strict"
+              allowNegative={false}
+              allowDecimal={false}
+              stepHoldDelay={500}
+              stepHoldInterval={100}
+              defaultValue={1}
+              min={1}
+              max={100}
+              value={buyAmount}
+              onChange={(val) => setBuyAmount(Number(val) || 1)}
+              mb="sm"
+            />
+            
+            <Text size="sm" c="dimmed" mb="md">
+              {t('total_cost')}: <Text span fw={700} c="blue">{buyAmount * 100} USDT</Text>
+            </Text>
+            
+            <Button
+              fullWidth
+              color="#F2AE00"
+              onClick={() => handleBuyNode(buyAmount)}
+              disabled={isPending || isConfirming}
+            >
+              {isPending || isConfirming ? 'loading...' : t('buy')}
+            </Button>
+          </Card>
         </Collapse>
       </Card>
     </>

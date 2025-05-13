@@ -8,6 +8,6 @@
   "buy_one_node":"购买1个节点",
   "buy_five_node":"购买5个节点",
   "progress":"完成进度",
-  "custom_quantity":"自定义数量"
-
+  "custom_quantity":"自定义数量",
+  "total_cost":"总费用"
 }

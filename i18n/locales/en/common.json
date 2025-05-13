@@ -9,6 +9,6 @@
   "buy_five_node":"Buy five node",
 
   "progress":"progress",
-  "custom_quantity":"Custom quantity"
-  
+  "custom_quantity":"Custom quantity",
+  "total_cost":"Total Cost"
 }
