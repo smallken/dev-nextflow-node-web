@@ -1,9 +1,11 @@
 import { AppShell, Box, NavLink, Skeleton, Stack, Text, Group, ActionIcon, Tooltip } from '@mantine/core';
 import { IconHome2, IconUser, IconBrandTwitter, IconBrandTelegram, IconBrandGithub, IconBrandMedium } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
+import { useRouter } from 'next/router';
 
 export function Navbar() {
   const { t } = useTranslation();
+  const router = useRouter();
   return (
     <AppShell.Navbar p='md' style={{ display: 'flex', flexDirection: 'column' }}>
       <div style={{ flex: 1 }}>
@@ -11,19 +13,16 @@ export function Navbar() {
           href="/"
           label={t('home')}
           leftSection={<IconHome2 size={16} stroke={1.5} />}
+          active={router.pathname === '/'}
+          variant="subtle"
         />
 
         <NavLink
           href="/profile"
           label={t('profile')}
           leftSection={<IconUser size={16} stroke={1.5} />}
+          active={router.pathname === '/profile'}
         />
-
-        {/* {Array(15)
-          .fill(0)
-          .map((_, index) => (
-            <Skeleton key={index} h={28} mt='sm' animate={false} />
-          ))} */}
       </div>
 
       {/* Social media links */}
@@ -35,7 +34,7 @@ export function Navbar() {
               <IconBrandTwitter size={18} stroke={1.5} />
             }
             component="a"
-            href="https://twitter.com/flipflop"
+            href="https://x.com/flipfloplaunch"
             target="_blank"
           />
           
@@ -45,7 +44,16 @@ export function Navbar() {
               <IconBrandTelegram size={18} stroke={1.5} />
             }
             component="a"
-            href="https://t.me/flipflop"
+            href="https://t.me/flipflopEng"
+            target="_blank"
+          />
+          <NavLink
+            label="Telegram"
+            leftSection={
+              <IconBrandTelegram size={18} stroke={1.5} />
+            }
+            component="a"
+            href="@flipflopChi"
             target="_blank"
           />
           
@@ -55,7 +63,7 @@ export function Navbar() {
               <IconBrandGithub size={18} stroke={1.5} />
             }
             component="a"
-            href="https://github.com/flipflop"
+            href="https://github.com/flipflop-fun"
             target="_blank"
           />
           
@@ -65,7 +73,7 @@ export function Navbar() {
               <IconBrandMedium size={18} stroke={1.5} />
             }
             component="a"
-            href="https://medium.com/flipflop"
+            href="https://medium.com/@flipfloplaunch"
             target="_blank"
           />
         </Stack>
