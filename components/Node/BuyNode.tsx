@@ -4,7 +4,7 @@ import { useUser } from '../../context/UserContext';
 import { useWritePoolBuyNode, useReadPoolGetNodePrice } from '../../wagmi/generated';
 import { useWaitForTransactionReceipt, useAccount } from 'wagmi';
 import { notifications } from '@mantine/notifications';
-import { IconCheck, IconX } from '@tabler/icons-react';
+import { IconCheck, IconX,IconChevronsDown,IconChevronsUp  } from '@tabler/icons-react';
 import React, { useState } from 'react';
 import { formatEther, parseEther } from 'viem';
 import { ApproveUsdt } from './ApproveUsdt';
@@ -236,8 +236,8 @@ export function BuyNode() {
         </Button>
 
         <Space h="sm" />
-        <Group justify="center" mb={5}>
-          <Button variant="subtle" color="#F2AE00" onClick={toggle}>{t('custom_quantity')}</Button>
+        <Group justify="center" mb={5} onClick={toggle}>
+          {opened ? <IconChevronsUp size={16} /> : <IconChevronsDown size={16} />}
         </Group>
 
         <Collapse in={opened}>
