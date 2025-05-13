@@ -13,7 +13,7 @@ import { MantineProvider } from '@mantine/core'
 
 import { Notifications } from '@mantine/notifications';
 
-import { theme } from '../theme'
+import { theme, customLightTheme, customDarkTheme } from '../theme'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { WagmiProvider } from 'wagmi'
@@ -33,7 +33,11 @@ export default function App ({ Component, pageProps }: AppProps) {
       <Notifications />
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
-          <RainbowKitProvider locale={locale} coolMode>
+          <RainbowKitProvider
+            locale={locale}
+            theme={customLightTheme}
+            modalSize="compact"
+          >
             <UserProvider>
               <Head>
                 <title>FF Node</title>

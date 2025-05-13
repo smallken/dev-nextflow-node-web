@@ -1,4 +1,5 @@
 import { createTheme, MantineColorsTuple } from '@mantine/core';
+import { darkTheme, lightTheme } from '@rainbow-me/rainbowkit';
 
 const myColor: MantineColorsTuple = [
   '#e5fff1',
@@ -19,4 +20,25 @@ export const theme = createTheme({
     myColor,
   },
   primaryColor: 'myColor'
+});
+
+// Custom colors for RainbowKit
+const brandColor = '#F2AE00'; // Primary brand color
+
+// Custom RainbowKit theme for light mode
+export const customLightTheme = lightTheme({
+  accentColor: brandColor,
+  accentColorForeground: 'white',
+  borderRadius: 'medium',
+  fontStack: 'system',
+  overlayBlur: 'small',
+});
+
+// Custom RainbowKit theme for dark mode
+export const customDarkTheme = darkTheme({
+  accentColor: brandColor,
+  accentColorForeground: 'white',
+  borderRadius: 'medium',
+  fontStack: 'system',
+  overlayBlur: 'small',
 });
