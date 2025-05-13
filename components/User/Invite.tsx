@@ -68,8 +68,28 @@ export function Invite() {
           </Paper>
           
           <Paper p="xs" withBorder radius="md" bg="var(--mantine-color-gray-0)">
-            <Group style={{ width: '100%' }}>
-              <Text truncate fw={500} style={{ flex: 1, fontSize: '0.9rem' }}>{inviteUrl}</Text>
+            <Group style={{ width: '100%' }} wrap="nowrap">
+              <Box style={{ flex: 1, overflow: 'hidden' }}>
+                <Group gap={4} wrap="nowrap">
+                  {/* Beginning of URL */}
+                  <Text fw={500} style={{ fontSize: '0.9rem', whiteSpace: 'nowrap' }}>
+                    {inviteUrl.length > 30 ? inviteUrl.substring(0, 20) : inviteUrl}
+                  </Text>
+                  
+                  {/* Middle ellipsis if URL is long */}
+                  {inviteUrl.length > 30 && (
+                    <Text c="dimmed">...</Text>
+                  )}
+                  
+                  {/* End of URL */}
+                  {inviteUrl.length > 30 && (
+                    <Text fw={500} style={{ fontSize: '0.9rem', whiteSpace: 'nowrap' }}>
+                      {inviteUrl.substring(inviteUrl.length - 10)}
+                    </Text>
+                  )}
+                </Group>
+              </Box>
+              
               <CopyButton value={inviteUrl} timeout={2000}>
                 {({ copied, copy }) => (
                   <Tooltip label={copied ? t('copied') : t('copy_link')} withArrow position="top">
