@@ -1,8 +1,9 @@
-import { Card, Text, Group, Button, Container, Stack, rem, Box, Paper, Grid, Space, Progress } from '@mantine/core';
+import { Card, Text, Group, Button, Container, Stack, rem, Box, Paper, Grid, Space, Progress, CopyButton, ActionIcon, Tooltip, Divider } from '@mantine/core';
 import { formatEther } from 'viem';
-import { IconCrown, IconChevronRight } from '@tabler/icons-react';
+import { IconCrown, IconChevronRight, IconCopy, IconCheck } from '@tabler/icons-react';
 import { useState } from 'react';
 import { useUser } from '../../context/UserContext';
+import { useTranslation } from 'react-i18next';
 
 
 // StatCard component for the four info boxes
@@ -30,7 +31,15 @@ function StatCard({ title, value, buttonText, onClick }: { title: string; value:
   );
 }
 
+// Helper function to format wallet address for display
+function formatAddress(address: string | undefined): string {
+  if (!address) return '';
+  // Show first 4 and last 4 characters
+  return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
+}
+
 export function Profile() {
+  const { t } = useTranslation();
   // 使用自定义 hook 获取全局用户数据
   const { address, contractUserInfo, usdtBalance, usdtAllowanceForPool } = useUser();
   const [bgColor] = useState('#E3FBE3'); // Default light green background
@@ -89,16 +98,45 @@ export function Profile() {
             </Box>
 
             {/* User info */}
-            <Group>
-              <Text size="sm" c="dimmed">邀请者:</Text>
-              <Text size="sm" truncate style={{ maxWidth: '70%' }}>
-                {contractUserInfo.parent || '无'}
-              </Text>
+            <Divider my="xs" variant="dashed" />
+          
+            
+            {/* Inviter address row */}
+            <Group justify="space-between" w="100%">
+              <Text size="xs" c="dimmed" w={60}>邀请者:</Text>
+              {contractUserInfo.parent && contractUserInfo.parent !== '0x0000000000000000000000000000000000000000' ? (
+                <Group wrap="nowrap" align="center" gap={4} style={{ flex: 1 }}>
+                  <Text size="xs" c="dimmed">{formatAddress(contractUserInfo.parent)}</Text>
+                  <CopyButton value={contractUserInfo.parent || ''} timeout={2000}>
+                    {({ copied, copy }) => (
+                      <Tooltip label={copied ? '已复制' : '复制'} withArrow position="top">
+                        <ActionIcon variant="subtle" color={copied ? 'teal' : 'gray'} onClick={copy} size="xs">
+                          {copied ? <IconCheck size={14} /> : <IconCopy size={14} />}
+                        </ActionIcon>
+                      </Tooltip>
+                    )}
+                  </CopyButton>
+                </Group>
+              ) : (
+                <Text size="xs" c="dimmed">无</Text>
+              )}
             </Group>
             
-            <Group>
-              <Text size="sm" c="dimmed">钱包地址:</Text>
-              <Text size="sm" truncate style={{ maxWidth: '70%' }}>{address}</Text>
+            {/* Wallet address row */}
+            <Group justify="space-between" w="100%">
+              <Text size="xs" c="dimmed" w={60}>我的钱包:</Text>
+              <Group wrap="nowrap" align="center" gap={4} style={{ flex: 1 }}>
+                <Text size="xs" c="dimmed">{formatAddress(address)}</Text>
+                <CopyButton value={address || ''} timeout={2000}>
+                  {({ copied, copy }) => (
+                    <Tooltip label={copied ? '已复制' : '复制'} withArrow position="top">
+                      <ActionIcon variant="subtle" color={copied ? 'teal' : 'gray'} onClick={copy} size="xs">
+                        {copied ? <IconCheck size={14} /> : <IconCopy size={14} />}
+                      </ActionIcon>
+                    </Tooltip>
+                  )}
+                </CopyButton>
+              </Group>
             </Group>
           </Stack>
         </Card>
