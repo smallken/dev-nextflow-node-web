@@ -140,9 +140,9 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
   
   return (
     <Modal opened={opened} onClose={onClose} title="Approve USDT" centered>
-      <Text size="sm">
+      {/* <Text size="sm">
         USDT approval required to continue
-      </Text>
+      </Text> */}
       
       <Space h="md" />
       
@@ -151,11 +151,11 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
         <Text size="sm" c="dimmed">You need to approve the smart contract to spend your USDT before continuing with the purchase</Text>
       </Group>
       
-      <Group>
+      {/* <Group>
         <Text>Current USDT Balance: {formatEther(usdtBalance || BigInt(0))}</Text>
         <Text>Current Approval Allowance: {formatEther(usdtAllowanceForPool || BigInt(0))}</Text>
         <Text>Required Approval Amount: {formatEther(amount)}</Text>
-      </Group>
+      </Group> */}
       
       <Space h="xl" />
       
