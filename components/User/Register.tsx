@@ -1,4 +1,4 @@
-import { Button, Space, NumberInput, Group, Progress, Collapse } from '@mantine/core';
+import { Button, Space, NumberInput, Group, Progress, Collapse, Stack, Alert, Paper } from '@mantine/core';
 import { Image, Card, Text, Center, Badge } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import classes from './ProgressCardColored.module.css';
@@ -10,7 +10,7 @@ import React from 'react';
 
 import { useCallback, useEffect } from 'react';
 import { notifications } from '@mantine/notifications';
-import { IconCheck, IconX } from '@tabler/icons-react';
+import { IconCheck, IconX, IconInfoCircle, IconAlertCircle } from '@tabler/icons-react';
 
 import { useUser } from '../../context/UserContext';
 import { isNonZeroAddress, isValidEthAddress } from '../../utils';
@@ -170,20 +170,55 @@ export function Register() {
         </>
       ) : (
 
-        <Group>
-        
-          <Text fw={500} size="md" mb="xs">邀请人: {inviterAddress|| '无'}</Text>
-
-          <Button
-            onClick={submitBind}
-            disabled={isPending || !inviterAddress}
-            fullWidth
-            color="#F2AE00"
+        <Stack gap="md">
+          <Alert 
+            color="blue" 
+            title="需要邀请人" 
+            icon={<IconInfoCircle size={16} />}
+            variant="light"
           >
-            {isPending ? '提交中...' : '接受邀请'}
-          </Button>
-
-        </Group>
+            <Text size="sm" c="dimmed">
+              您需要通过邀请链接访问本站才能完成注册。请向朋友索要邀请链接或扫描邀请二维码。
+            </Text>
+          </Alert>
+          
+          {inviterAddress ? (
+            <>
+              <Text fw={500} size="sm">邀请人地址:</Text>
+              <Paper p="xs" withBorder radius="md" bg="var(--mantine-color-gray-0)">
+                <Text size="sm" tt="lowercase" c="dimmed" style={{ wordBreak: 'break-all' }}>
+                  {inviterAddress}
+                </Text>
+              </Paper>
+            
+              <Button
+                onClick={submitBind}
+                disabled={isPending}
+                fullWidth
+                color="#F2AE00"
+                mt="md"
+              >
+                {isPending ? '提交中...' : '接受邀请并注册'}
+              </Button>
+            </>
+          ) : (
+            <>
+              <Paper p="md" withBorder shadow="sm" radius="md" bg="var(--mantine-color-gray-0)">
+                <Center>
+                  <Stack align="center" gap="xs">
+                    <IconAlertCircle size={40} color="var(--mantine-color-orange-5)" />
+                    <Text fw={500} c="orange">
+                      未检测到邀请链接
+                    </Text>
+                    <Text size="sm" c="dimmed" ta="center">
+                      请通过好友分享的邀请链接进入网站
+                    </Text>
+                  </Stack>
+                </Center>
+              </Paper>
+            </>
+          )}
+        </Stack>
 
       )}
     </Card>
