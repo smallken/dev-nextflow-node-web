@@ -232,12 +232,12 @@ export function BuyNode() {
           onClick={() => handleBuyNode(5)}
           disabled={isPending || isConfirming}
         >
-          {isPending || isConfirming ? '处理中...' : t('buy_five_node')}
+          {isPending || isConfirming ? 'loading...' : t('buy_five_node')}
         </Button>
 
         <Space h="sm" />
         <Group justify="center" mb={5}>
-          <Button variant="subtle" color="#F2AE00" onClick={toggle}>自定义数量</Button>
+          <Button variant="subtle" color="#F2AE00" onClick={toggle}>{t('custom_quantity')}</Button>
         </Group>
 
         <Collapse in={opened}>
@@ -245,7 +245,7 @@ export function BuyNode() {
             <Group>
               <NumberInput
                 size="md"
-                placeholder="购买数量1-100"
+                placeholder="1-100"
                 clampBehavior="strict"
                 allowNegative={false}
                 allowDecimal={false}
@@ -262,7 +262,7 @@ export function BuyNode() {
                 onClick={() => handleBuyNode(buyAmount)}
                 disabled={isPending || isConfirming}
               >
-                购买
+                {t('buy')}
               </Button>
             </Group>
           </Center>

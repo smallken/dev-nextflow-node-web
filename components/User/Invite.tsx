@@ -4,8 +4,11 @@ import { useDisclosure } from '@mantine/hooks';
 import { QRCodeSVG } from 'qrcode.react';
 import { useEffect, useState } from 'react';
 import { IconCopy, IconCheck } from '@tabler/icons-react';
+import { useTranslation } from 'react-i18next';
 
 export function Invite() {
+  const { t } = useTranslation();
+
   const { contractUserInfo, address } = useUser();
   const [opened, { open, close }] = useDisclosure(false);
   const [inviteUrl, setInviteUrl] = useState('');
@@ -26,7 +29,7 @@ export function Invite() {
   return (
     <>
       <Card shadow="sm" padding="lg" radius="md" withBorder>
-        <Button fullWidth color="#F2AE00" onClick={open}>邀请好友</Button>
+        <Button fullWidth color="#F2AE00" onClick={open}>{t('invite')}</Button>
       </Card>
       
       <Modal opened={opened} onClose={close} title="邀请好友" centered size="md">

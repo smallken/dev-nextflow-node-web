@@ -8,6 +8,7 @@
   "buy_one_node":"Buy one node",
   "buy_five_node":"Buy five node",
 
-  "progress":"progress"
+  "progress":"progress",
+  "custom_quantity":"Custom quantity"
 
 }
