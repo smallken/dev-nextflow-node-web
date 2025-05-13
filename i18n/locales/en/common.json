@@ -21,5 +21,16 @@
   "accept_invite":"Accept Invitation & Register",
   "submitting":"Submitting...",
   "no_invite_detected":"No Invitation Link Detected",
-  "use_friend_link":"Please enter the site through an invitation link shared by a friend"
+  "use_friend_link":"Please enter the site through an invitation link shared by a friend",
+
+  "approve_usdt":"Approve USDT",
+  "approval_required":"USDT approval required to continue",
+  "approval_description":"You need to approve the smart contract to spend your USDT before continuing with the purchase",
+  "processing":"Processing...",
+  "approve_button":"Approve USDT",
+  "approval_processing":"Approval Processing",
+  "waiting_confirmation":"Waiting for blockchain confirmation...",
+  "approval_successful":"Approval Successful",
+  "approval_completed":"USDT approval completed",
+  "transaction_failed":"Transaction Failed"
 }

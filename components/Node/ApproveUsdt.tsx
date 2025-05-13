@@ -4,6 +4,7 @@ import { useWriteUsdtApprove } from '../../wagmi/generated';
 import { useWaitForTransactionReceipt } from 'wagmi';
 import { notifications } from '@mantine/notifications';
 import { IconCheck, IconX } from '@tabler/icons-react';
+import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { poolAddress } from '../../wagmi/generated';
 import { useChainId } from 'wagmi';
@@ -17,6 +18,7 @@ interface ApproveUsdtProps {
 }
 
 export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: ApproveUsdtProps) {
+  const { t } = useTranslation();
   const { usdtBalance, usdtAllowanceForPool } = useUser();
   const chainId = useChainId();
   
@@ -39,8 +41,8 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
     hash,
   });
 
-  console.log('useWriteUsdtApprove', hash, isPending, isError, error);
-  console.log('useWaitForTransactionReceipt', hash, isConfirming, isConfirmed, isConfirmingError, confirmErrorData);
+  // console.log('useWriteUsdtApprove', hash, isPending, isError, error);
+  // console.log('useWaitForTransactionReceipt', hash, isConfirming, isConfirmed, isConfirmingError, confirmErrorData);
 
   // Submit approval request
   async function submitApprove() {
@@ -48,8 +50,8 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
       // Show loading notification
       notifications.show({
         id: 'approve-loading',
-        title: 'Processing',
-        message: 'Submitting approval transaction...',
+        title: t('approval_processing'),
+        message: t('waiting_confirmation'),
         loading: true,
         autoClose: false,
         withCloseButton: false,
@@ -98,8 +100,8 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
       // Update notification, show transaction confirmation in progress
       notifications.update({
         id: 'approve-loading',
-        title: 'Approval Processing',
-        message: 'Waiting for blockchain confirmation...',
+        title: t('approval_processing'),
+        message: t('waiting_confirmation'),
         loading: true,
         autoClose: false,
       });
@@ -115,8 +117,8 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
     if (isConfirmed) {
       notifications.update({
         id: 'approve-loading',
-        title: 'Approval Successful',
-        message: 'USDT approval completed',
+        title: t('approval_successful'),
+        message: t('approval_completed'),
         color: 'green',
         icon: <IconCheck />,
         autoClose: 3000,
@@ -128,8 +130,8 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
       // Transaction failed  
       notifications.update({
         id: 'tx-loading',
-        title: '交易失败',
-        message: confirmErrorData instanceof Error ? (confirmErrorData.message) : 'Transaction failed',
+        title: t('transaction_failed'),
+        message: confirmErrorData instanceof Error ? (confirmErrorData.message) : t('transaction_failed'),
         color: 'red',
         icon: <IconX />,
         autoClose: 3000,
@@ -139,24 +141,15 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
   
   
   return (
-    <Modal opened={opened} onClose={onClose} title="Approve USDT" centered>
-      {/* <Text size="sm">
-        USDT approval required to continue
-      </Text> */}
+    <Modal opened={opened} onClose={onClose} title={t('approve_usdt')} centered>
       
       <Space h="md" />
       
       <Group>
-        <Text fw={700} size="lg">USDT approval required to continue</Text>
-        <Text size="sm" c="dimmed">You need to approve the smart contract to spend your USDT before continuing with the purchase</Text>
+        <Text fw={700} size="lg">{t('approval_required')}</Text>
+        <Text size="sm" c="dimmed">{t('approval_description')}</Text>
       </Group>
-      
-      {/* <Group>
-        <Text>Current USDT Balance: {formatEther(usdtBalance || BigInt(0))}</Text>
-        <Text>Current Approval Allowance: {formatEther(usdtAllowanceForPool || BigInt(0))}</Text>
-        <Text>Required Approval Amount: {formatEther(amount)}</Text>
-      </Group> */}
-      
+            
       <Space h="xl" />
       
       <Group justify="center">
@@ -166,7 +159,7 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
           disabled={isPending || isConfirming}
           loading={isPending || isConfirming}
         >
-          {isPending || isConfirming ? 'Processing...' : 'Approve USDT'}
+          {isPending || isConfirming ? t('processing') : t('approve_button')}
         </Button>
       </Group>
     </Modal>

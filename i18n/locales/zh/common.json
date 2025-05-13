@@ -20,5 +20,16 @@
   "accept_invite":"接受邀请并注册",
   "submitting":"提交中...",
   "no_invite_detected":"未检测到邀请链接",
-  "use_friend_link":"请通过好友分享的邀请链接进入网站"
+  "use_friend_link":"请通过好友分享的邀请链接进入网站",
+
+  "approve_usdt":"授权USDT",
+  "approval_required":"继续操作需要授权USDT",
+  "approval_description":"在继续购买前，您需要授权智能合约使用您的USDT",
+  "processing":"处理中...",
+  "approve_button":"授权USDT",
+  "approval_processing":"授权处理中",
+  "waiting_confirmation":"等待区块链确认...",
+  "approval_successful":"授权成功",
+  "approval_completed":"USDT授权已完成",
+  "transaction_failed":"交易失败"
 }
