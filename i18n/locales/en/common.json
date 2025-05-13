@@ -11,5 +11,15 @@
   "progress":"progress",
   "custom_quantity":"Custom quantity",
   "total_cost":"Total Cost",
-  "wrong_network":"Wrong Network"
+  "wrong_network":"Wrong Network",
+
+  "registered":"Registered",
+  "inviter":"Inviter",
+  "need_inviter":"Inviter Required",
+  "inviter_instruction":"You need to access this site through an invitation link to complete registration. Please ask a friend for an invitation link or scan the invitation QR code.",
+  "inviter_address":"Inviter Address",
+  "accept_invite":"Accept Invitation & Register",
+  "submitting":"Submitting...",
+  "no_invite_detected":"No Invitation Link Detected",
+  "use_friend_link":"Please enter the site through an invitation link shared by a friend"
 }

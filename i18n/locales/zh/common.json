@@ -10,5 +10,15 @@
   "progress":"完成进度",
   "custom_quantity":"自定义数量",
   "total_cost":"总费用",
-  "wrong_network":"网络错误"
+  "wrong_network":"网络错误",
+
+  "registered":"已注册",
+  "inviter":"邀请人",
+  "need_inviter":"需要邀请人",
+  "inviter_instruction":"您需要通过邀请链接访问本站才能完成注册。请向朋友索要邀请链接或扫描邀请二维码。",
+  "inviter_address":"邀请人地址",
+  "accept_invite":"接受邀请并注册",
+  "submitting":"提交中...",
+  "no_invite_detected":"未检测到邀请链接",
+  "use_friend_link":"请通过好友分享的邀请链接进入网站"
 }

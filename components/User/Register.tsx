@@ -10,6 +10,7 @@ import React from 'react';
 
 import { useCallback, useEffect } from 'react';
 import { notifications } from '@mantine/notifications';
+import { useTranslation } from 'react-i18next';
 import { IconCheck, IconX, IconInfoCircle, IconAlertCircle } from '@tabler/icons-react';
 
 import { useUser } from '../../context/UserContext';
@@ -19,6 +20,7 @@ import { isNonZeroAddress, isValidEthAddress } from '../../utils';
 import { usdtAbi, usdtAddress, useReadUsdtBalanceOf, useWritePoolRegister } from '../../wagmi/generated';
 
 export function Register() {
+  const { t } = useTranslation();
   const router = useRouter();
   const account = useAccount();
   const { connect, connectors } = useConnect();
@@ -165,26 +167,26 @@ export function Register() {
     <Card shadow="sm" padding="lg" radius="md" withBorder>
       {contractUserInfo && isNonZeroAddress(contractUserInfo.parent) ? (
         <>
-          <Text fw={500} size="md" mb="xs">已注册</Text>
-          <Text size="sm" c="dimmed" mb="md">邀请人: {contractUserInfo.parent}</Text>
+          <Text fw={500} size="md" mb="xs">{t('registered')}</Text>
+          <Text size="sm" c="dimmed" mb="md">{t('inviter')}: {contractUserInfo.parent}</Text>
         </>
       ) : (
 
         <Stack gap="md">
           <Alert 
             color="blue" 
-            title="需要邀请人" 
+            title={t('need_inviter')} 
             icon={<IconInfoCircle size={16} />}
             variant="light"
           >
             <Text size="sm" c="dimmed">
-              您需要通过邀请链接访问本站才能完成注册。请向朋友索要邀请链接或扫描邀请二维码。
+              {t('inviter_instruction')}
             </Text>
           </Alert>
           
           {inviterAddress ? (
             <>
-              <Text fw={500} size="sm">邀请人地址:</Text>
+              <Text fw={500} size="sm">{t('inviter_address')}:</Text>
               <Paper p="xs" withBorder radius="md" bg="var(--mantine-color-gray-0)">
                 <Text size="sm" tt="lowercase" c="dimmed" style={{ wordBreak: 'break-all' }}>
                   {inviterAddress}
@@ -198,7 +200,7 @@ export function Register() {
                 color="#F2AE00"
                 mt="md"
               >
-                {isPending ? '提交中...' : '接受邀请并注册'}
+                {isPending ? t('submitting') : t('accept_invite')}
               </Button>
             </>
           ) : (
@@ -208,10 +210,10 @@ export function Register() {
                   <Stack align="center" gap="xs">
                     <IconAlertCircle size={40} color="var(--mantine-color-orange-5)" />
                     <Text fw={500} c="orange">
-                      未检测到邀请链接
+                      {t('no_invite_detected')}
                     </Text>
                     <Text size="sm" c="dimmed" ta="center">
-                      请通过好友分享的邀请链接进入网站
+                      {t('use_friend_link')}
                     </Text>
                   </Stack>
                 </Center>
