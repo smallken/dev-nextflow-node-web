@@ -53,33 +53,57 @@ export function Profile() {
         <Text size="lg" fw={700}>个人中心</Text>
       </Group>
       
-      {/* User level section with crown */}
-      <Box ta="center" mb="md">
-        <Box pos="relative" style={{ display: 'inline-block' }}>
-          <IconCrown 
-            size={100} 
-            color="#FFD700" 
-            stroke={1}
-            style={{ filter: 'drop-shadow(0 2px 5px rgba(0,0,0,0.2))' }}
-          />
-          <Text 
-            fw={700} 
-            size="2rem" 
-            c="white" 
-            pos="absolute" 
-            top="50%" 
-            left="50%" 
-            style={{ transform: 'translate(-50%, -50%)' }}
-          >
-            {contractUserInfo.level}
-          </Text>
-        </Box>
-        <Card radius="md" mt="-20px" mx="auto" maw={130} shadow="sm">
-          <Text ta="center" fw={500}>我的身份</Text>
-        </Card>
-      </Box>
+      {/* User profile card with level and info */}
+      <Container size="md" mb="md">
+        <Card withBorder radius="md" shadow="sm" p="md">
+          <Group justify="space-between" mb="sm">
+            <Text fw={700} size="lg">用户信息</Text>
+            <Box 
+              style={{ 
+                background: 'linear-gradient(135deg, #F2AE00, #FFD700)',
+                borderRadius: '20px',
+                padding: '4px 12px',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+              }}
+            >
+              <Group gap={6}>
+                <IconCrown size={20} color="white" stroke={1.5} />
+                <Text fw={700} c="white" size="sm">Level {contractUserInfo.level}</Text>
+              </Group>
+            </Box>
+          </Group>
+          
+          <Stack gap="sm">
+            {/* Level progress */}
+            <Box>
+              <Group justify="space-between" mb={4}>
+                <Text size="sm" c="dimmed">等级进度</Text>
+                <Text size="sm" fw={500}>{contractUserInfo.level}/5</Text>
+              </Group>
+              <Progress
+                value={contractUserInfo.level * 20} /* Each level represents 20% */
+                size="md"
+                radius="xl"
+                color="#F2AE00"
+              />
+            </Box>
 
-      
+            {/* User info */}
+            <Group>
+              <Text size="sm" c="dimmed">邀请者:</Text>
+              <Text size="sm" truncate style={{ maxWidth: '70%' }}>
+                {contractUserInfo.parent || '无'}
+              </Text>
+            </Group>
+            
+            <Group>
+              <Text size="sm" c="dimmed">钱包地址:</Text>
+              <Text size="sm" truncate style={{ maxWidth: '70%' }}>{address}</Text>
+            </Group>
+          </Stack>
+        </Card>
+      </Container>
+
       {/* Stats grid */}
       <Container size="md">
         <Card shadow="sm" radius="lg" withBorder>
@@ -119,33 +143,8 @@ export function Profile() {
           </Grid>
         </Card>
 
-        {/* Additional user info (optional) */}
-        <Card withBorder radius="md" padding="md" mt="xl" shadow="sm">
-          <Text fw={500} mb="xs">用户信息</Text>
-          <Space h="xs" />
-          
-          <Group>
-            <Text size="sm" c="dimmed">邀请者:</Text>
-            <Text size="sm" truncate style={{ maxWidth: '70%' }}>
-              {contractUserInfo.parent || '无'}
-            </Text>
-          </Group>
-          
-          <Group>
-            <Text size="sm" c="dimmed">钱包地址:</Text>
-            <Text size="sm" truncate style={{ maxWidth: '70%' }}>{address}</Text>
-          </Group>
-          
-          <Space h="md" />
-          <Text fw={500} size="sm">用户等级: Level {contractUserInfo.level}</Text>
-          <Progress
-            value={(contractUserInfo.level / 10) * 100}
-            size="md"
-            radius="md"
-            color="#F2AE00"
-            mt="xs"
-          />
-        </Card>
+        {/* Add some bottom padding */}
+        <Space h="xl" />
       </Container>
     </div>
   );
