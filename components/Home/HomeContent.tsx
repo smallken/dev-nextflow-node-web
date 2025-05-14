@@ -50,9 +50,9 @@ export function HomeContent({ isConnected, contractUserInfo }: HomeContentProps)
         // Case 3b: User hasn't purchased any nodes
         <Card shadow="sm" padding="lg" radius="md" withBorder>
           <Text color="dimmed" size="sm" mb="sm" ta="center">
-            {t('need_one_node_to_invite', '至少需要购买一个节点才能邀请好友')}
+            {t('need_one_node_to_invite')}
           </Text>
-          <Button fullWidth color="#F2AE00" disabled>{t('invite')}</Button>
+          <Button fullWidth color="#F2AE00" disabled>{t('common.invite')}</Button>
         </Card>
       )}
     </>

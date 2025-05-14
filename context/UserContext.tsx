@@ -9,7 +9,7 @@ import {
 
 } from '../wagmi/generated';
 
-import MINT_STAGE from '../config/min.stage.ts';
+import MINT_STAGE from '../config/min.stage';
 
 
 // 定义全局应用信息类型

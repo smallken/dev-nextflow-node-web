@@ -17,7 +17,7 @@ export function Invite() {
           onClick={open}
           leftSection={<IconShare size={16} />}
         >
-          {t('invite')}
+          {t('common.invite')}
         </Button>
       </Card>
       
