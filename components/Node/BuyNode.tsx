@@ -268,7 +268,7 @@ export function BuyNode() {
               min={1}
               max={100}
               value={buyAmount}
-              onChange={(val) => setBuyAmount(Number(val) || 1)}
+              onChange={(val) => setBuyAmount(Number(val))}
               mb="sm"
             />
             
@@ -291,7 +291,7 @@ export function BuyNode() {
               color="#F2AE00"
               onClick={() => handleBuyNode(buyAmount, 'custom')}
               disabled={(loadingButton === 'custom' && (isPending || isConfirming)) || 
-                (account.isConnected && nftPrice !== undefined && buyAmount > 0 && usdtBalance < (nftPrice * BigInt(buyAmount)))}
+                (account.isConnected && nftPrice !== undefined && buyAmount > 0 && usdtBalance < (nftPrice * BigInt(buyAmount)))|| buyAmount==0}
             >
               {loadingButton === 'custom' && (isPending || isConfirming) ? t('processing') : t('buy')}
             </Button>
