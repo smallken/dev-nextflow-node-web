@@ -249,7 +249,7 @@ export function BuyNode() {
           onClick={() => handleBuyNode(1, 'one')}
           disabled={loadingButton === 'one' && (isPending || isConfirming)}
         >
-          {loadingButton === 'one' && (isPending || isConfirming) ? t('processing') : t('buy_one_node')}
+          {loadingButton === 'one' && (isPending || isConfirming) ? t('processing') : t('buy_one_node')+' ('+ formatEther(BigInt(1) * (nftPrice || BigInt(0)))+' USDT)'}
         </Button>
         <Space h="sm" />
         <Button
@@ -258,7 +258,7 @@ export function BuyNode() {
           onClick={() => handleBuyNode(5, 'five')}
           disabled={loadingButton === 'five' && (isPending || isConfirming)}
         >
-          {loadingButton === 'five' && (isPending || isConfirming) ? t('processing') : t('buy_five_node')}
+          {loadingButton === 'five' && (isPending || isConfirming) ? t('processing') : t('buy_five_node') +' ('+ formatEther(BigInt(5) * (nftPrice || BigInt(0)))+' USDT)'}
         </Button>
 
         <Space h="sm" />
