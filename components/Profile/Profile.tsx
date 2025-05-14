@@ -135,7 +135,7 @@ export function Profile() {
                 <Text size="xs" c="dimmed">{formatAddress(address)}</Text>
                 <CopyButton value={address || ''} timeout={2000}>
                   {({ copied, copy }) => (
-                    <Tooltip label={copied ? '已复制' : '复制'} withArrow position="top">
+                    <Tooltip label={copied ? t('common.copied') : t('common.copy')} withArrow position="top">
                       <ActionIcon variant="subtle" color={copied ? 'teal' : 'gray'} onClick={copy} size="xs">
                         {copied ? <IconCheck size={14} /> : <IconCopy size={14} />}
                       </ActionIcon>

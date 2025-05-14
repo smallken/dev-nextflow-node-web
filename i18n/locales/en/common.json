@@ -45,6 +45,7 @@
   "usdt_balance":"USDT Balance",
   "nodes_owned":"Nodes",
   "invite_friends":"Invite Friends",
+  "need_one_node_to_invite":"You need to purchase at least one node to invite friends",
   "scan_or_copy":"Scan QR code or copy the link to invite friends",
   "copy_link":"Copy Link",
   "invite_reward_desc":"Share this link with your friends. When they successfully register, you'll receive rewards.",
