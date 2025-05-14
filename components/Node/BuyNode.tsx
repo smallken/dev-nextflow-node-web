@@ -56,8 +56,8 @@ export function BuyNode() {
     // Return if price is not available
     if (!nftPrice) {
       notifications.show({
-        title: 'Unable to get node price',
-        message: 'Please try again later',
+        title: t('unable_get_price'),
+        message: t('try_again_later'),
         color: 'red',
         icon: <IconX />,
         autoClose: 3000,
@@ -72,8 +72,8 @@ export function BuyNode() {
     // If balance is insufficient, notify user
     if (usdtBalance < totalAmount) {
       notifications.show({
-        title: 'Insufficient USDT balance',
-        message: `Required: ${formatEther(totalAmount)}, Current balance: ${formatEther(usdtBalance)}`,
+        title: t('insufficient_usdt'),
+        message: t('required_balance', { required: formatEther(totalAmount), current: formatEther(usdtBalance) }),
         color: 'red',
         icon: <IconX />,
         autoClose: 6000,
@@ -108,8 +108,8 @@ export function BuyNode() {
       // Show loading notification
       notifications.show({
         id: 'tx-loading',
-        title: 'Processing',
-        message: 'Submitting transaction...',
+        title: t('transaction_processing_title'),
+        message: t('submitting_transaction'),
         loading: true,
         autoClose: false,
         withCloseButton: false,
@@ -123,8 +123,8 @@ export function BuyNode() {
       // Transaction sent successfully - update notification
       notifications.update({
         id: 'tx-loading',
-        title: 'Transaction Submitted',
-        message: 'Waiting for blockchain confirmation...',
+        title: t('transaction_submitted'),
+        message: t('waiting_confirmation'),
         loading: true,
         autoClose: false,
       });
@@ -134,8 +134,8 @@ export function BuyNode() {
       console.error('Transaction error:', err);
       notifications.update({
         id: 'tx-loading',
-        title: 'Transaction Failed',
-        message: err instanceof Error ? err.message : 'Error submitting transaction',
+        title: t('transaction_failed'),
+        message: err instanceof Error ? err.message : t('transaction_error'),
         color: 'red',
         icon: <IconX />,
         autoClose: 3000,
@@ -159,8 +159,8 @@ export function BuyNode() {
       // Update notification, show transaction confirmation in progress
       notifications.update({
         id: 'tx-loading',
-        title: 'Transaction Processing',
-        message: 'Waiting for blockchain confirmation...',
+        title: t('transaction_processing'),
+        message: t('waiting_confirmation'),
         loading: true,
         autoClose: false,
       });
@@ -170,8 +170,8 @@ export function BuyNode() {
       // Transaction successfully confirmed
       notifications.update({
         id: 'tx-loading',
-        title: 'Purchase Successful',
-        message: 'Your node purchase has been confirmed!',
+        title: t('purchase_successful'),
+        message: t('purchase_confirmed'),
         color: 'green',
         icon: <IconCheck />,
         autoClose: 3000,
@@ -186,8 +186,8 @@ export function BuyNode() {
       // Transaction failed  
       notifications.update({
         id: 'tx-loading',
-        title: 'Transaction Failed',
-        message: confirmErrorData instanceof Error ? (confirmErrorData.message) : 'Transaction failed',
+        title: t('transaction_failed'),
+        message: confirmErrorData instanceof Error ? (confirmErrorData.message) : t('transaction_failed'),
         color: 'red',
         icon: <IconX />,
         autoClose: 6000,
@@ -223,7 +223,7 @@ export function BuyNode() {
           onClick={() => handleBuyNode(1)}
           disabled={isPending || isConfirming}
         >
-          {isPending || isConfirming ? '处理中...' : t('buy_one_node')}
+          {isPending || isConfirming ? t('processing') : t('buy_one_node')}
         </Button>
         <Space h="sm" />
         <Button
@@ -232,7 +232,7 @@ export function BuyNode() {
           onClick={() => handleBuyNode(5)}
           disabled={isPending || isConfirming}
         >
-          {isPending || isConfirming ? 'loading...' : t('buy_five_node')}
+          {isPending || isConfirming ? t('processing') : t('buy_five_node')}
         </Button>
 
         <Space h="sm" />
@@ -270,7 +270,7 @@ export function BuyNode() {
               onClick={() => handleBuyNode(buyAmount)}
               disabled={isPending || isConfirming}
             >
-              {isPending || isConfirming ? 'loading...' : t('buy')}
+              {isPending || isConfirming ? t('processing') : t('buy')}
             </Button>
           </Card>
         </Collapse>

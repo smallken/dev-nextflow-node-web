@@ -72,8 +72,8 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
       // Transaction sent successfully - update notification
       notifications.update({
         id: 'approve-loading',
-        title: 'Approval Submitted',
-        message: 'Waiting for blockchain confirmation...',
+        title: t('approval_submitted'),
+        message: t('waiting_confirmation'),
         loading: true,
         autoClose: false,
       });
@@ -83,8 +83,8 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
       console.error('Approve error:', err);
       notifications.update({
         id: 'approve-loading',
-        title: 'Approval Failed',
-        message: err instanceof Error ? err.message : 'Error submitting approval',
+        title: t('approval_failed'),
+        message: err instanceof Error ? err.message : t('approval_error'),
         color: 'red',
         icon: <IconX />,
         autoClose: 6000,
