@@ -155,7 +155,7 @@ export function Profile() {
             <Grid.Col span={6}>
               <StatCard 
                 title={t('profile.myNodes')} 
-                value={contractUserInfo.nodeCount} 
+                value={contractUserInfo.nftCount} 
                 buttonText={t('common.details')} 
                 onClick={() => window.open(`${scanBaseURL[chainId]}/address/${address}`, '_blank')}
               />

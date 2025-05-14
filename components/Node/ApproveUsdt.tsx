@@ -21,7 +21,7 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
   const { t } = useTranslation();
   const { usdtBalance, usdtAllowanceForPool } = useUser();
   const chainId = useChainId();
-  
+
   // Use Wagmi's useWriteUsdtApprove hook to perform authorization
   const {
     data: hash,
@@ -32,11 +32,11 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
   } = useWriteUsdtApprove();
 
   // Use useWaitForTransactionReceipt to monitor the transaction
-  const { 
-    isLoading: isConfirming, 
-    isSuccess: isConfirmed, 
-    isError: isConfirmingError, 
-    error: confirmErrorData 
+  const {
+    isLoading: isConfirming,
+    isSuccess: isConfirmed,
+    isError: isConfirmingError,
+    error: confirmErrorData
   } = useWaitForTransactionReceipt({
     hash,
   });
@@ -61,7 +61,7 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
       // Approve a sufficiently large amount to avoid frequent approvals
       // If you only want to approve a specific amount, you can use the amount parameter
       const approveAmount = BigInt('0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
-      
+
       await approveUsdt({
         args: [
           poolAddress[chainId as keyof typeof poolAddress] as `0x${string}`,
@@ -77,7 +77,7 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
         loading: true,
         autoClose: false,
       });
-      
+
     } catch (err) {
       // Transaction sending failed
       console.error('Approve error:', err);
@@ -91,7 +91,7 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
       });
     }
   }
-  
+
   // Handle transaction confirmation
   React.useEffect(() => {
     if (!hash) return;
@@ -111,7 +111,7 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
         onApproveSuccess();
         // Close the modal
         onClose();
-      }, 0);  
+      }, 0);
     }
 
     if (isConfirmed) {
@@ -137,24 +137,24 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
         autoClose: 3000,
       });
     }
-  }, [hash, isConfirming, isConfirmed, isConfirmingError,onApproveSuccess, onClose]);
-  
-  
+  }, [hash, isConfirming, isConfirmed, isConfirmingError, onApproveSuccess, onClose]);
+
+
   return (
     <Modal opened={opened} onClose={onClose} title={t('approve_usdt')} centered>
-      
+
       <Space h="md" />
-      
+
       <Group>
         <Text fw={700} size="lg">{t('approval_required')}</Text>
         <Text size="sm" c="dimmed">{t('approval_description')}</Text>
       </Group>
-            
+
       <Space h="xl" />
-      
+
       <Group justify="center">
-        <Button 
-          color="#F2AE00" 
+        <Button
+          color="#F2AE00"
           onClick={submitApprove}
           disabled={isPending || isConfirming}
           loading={isPending || isConfirming}

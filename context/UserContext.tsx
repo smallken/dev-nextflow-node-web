@@ -4,7 +4,8 @@ import { useAccount, useChainId, useReadContract } from 'wagmi';
 import {
   useReadPoolGetUserInfo, useReadPoolUpline, useReadPoolGetNodePrice,
   useReadUsdtBalanceOf, useReadUsdtAllowance, poolAddress, usdtAddress, useReadPoolGetUserDownlines,
-  useReadNodeNftTotalSupply, nodeNftAbi, nodeNftAddress
+  useReadNodeNftTotalSupply, nodeNftAbi, nodeNftAddress,
+  useReadNodeNftBalanceOf,
 
 } from '../wagmi/generated';
 
@@ -29,6 +30,7 @@ type ContractUserInfo = {
   teamNodeCount: number,
   income: bigint,
   friends: string[],
+  nftCount:number,
 
   // 扩展信息 - 我们计算的属性
   parent?: string; // 需要从其他地方获取
@@ -110,6 +112,18 @@ export function UserProvider({ children }: { children: ReactNode }) {
   // 默认授权额度为0
   const usdtAllowanceForPool = usdtAllowanceData || BigInt(0);
 
+ 
+  const tokenId = BigInt(1); // Node NFT 的 tokenId
+  const { data: nftBalanceData, refetch: refetchNftBalance } = useReadNodeNftBalanceOf({
+    args: address ? [address as `0x${string}`, tokenId] : undefined,
+    query: {
+      enabled: !!address,
+    }
+  });
+
+  // 默认 NFT 数量为 0
+  const nftBalance = nftBalanceData ? Number(nftBalanceData) : 0;
+
   // 使用 useReadContract 直接读取 NFT 总供应量，不依赖用户登录状态
   const { data: nftTotalSupplyData, refetch: refetchNftTotalSupply } = useReadContract({
     address: nodeNftAddress[chainId as keyof typeof nodeNftAddress] as `0x${string}`,
@@ -174,9 +188,10 @@ export function UserProvider({ children }: { children: ReactNode }) {
         // User-specific data only if user is connected
         refetchPromises.push(refetchUserData());
         refetchPromises.push(refetchParentAddress());
-        refetchPromises.push(refetchFriendsList()); // 刷新好友列表
+        refetchPromises.push(refetchFriendsList());
         refetchPromises.push(refetchUsdtBalance());
         refetchPromises.push(refetchUsdtAllowance());
+        refetchPromises.push(refetchNftBalance());
       }
 
       // Global data (always refetch)
@@ -229,7 +244,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
   // 将userData和parentAddress结合更新contractUserInfo
   useEffect(() => {
     if (userData && address) {
-      // 处理和转换数据
       // 从数组解构各个属性
       const [nodeCount, income, level, teamNodeCount] = userData;
 
@@ -238,15 +252,16 @@ export function UserProvider({ children }: { children: ReactNode }) {
         income,
         level: Number(level),
         teamNodeCount: Number(teamNodeCount),
+        nftCount: nftBalance, // 添加用户持有的 NFT 数量
         parent: parentAddress || undefined, // 添加父级推荐人地址
-        address, // 添加用户地址
+        address, // 添加用户自己的地址
         friends: friendsList ? [...friendsList] : [], // 添加好友列表 - 转换为可变数组
       };
 
       // 更新状态
       setContractUserInfo(transformedData);
     }
-  }, [userData, address, parentAddress, friendsList]);
+  }, [userData, address, parentAddress, friendsList, nftBalance]);
 
   return (
     <UserContext.Provider
