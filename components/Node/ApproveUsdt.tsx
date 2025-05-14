@@ -105,13 +105,6 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
         loading: true,
         autoClose: false,
       });
-
-      setTimeout(() => {
-        // After successful approval, call the callback
-        onApproveSuccess();
-        // Close the modal
-        onClose();
-      }, 0);
     }
 
     if (isConfirmed) {
@@ -123,6 +116,13 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
         icon: <IconCheck />,
         autoClose: 3000,
       });
+
+      //setTimeout(() => {
+      // After successful approval, call the callback
+      onApproveSuccess();
+      // Close the modal
+      onClose();
+      //}, 0);
 
     }
 
