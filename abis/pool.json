@@ -669,6 +669,16 @@
         "internalType": "uint256",
         "name": "_teamNodeCount",
         "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_upline",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_friendCount",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
