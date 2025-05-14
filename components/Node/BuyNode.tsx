@@ -277,7 +277,7 @@ export function BuyNode() {
             </Text>
             
             {/* Show warning when balance is insufficient */}
-            {nftPrice !== undefined && buyAmount > 0 && usdtBalance < (nftPrice * BigInt(buyAmount)) && (
+            {account.isConnected && nftPrice !== undefined && buyAmount > 0 && usdtBalance < (nftPrice * BigInt(buyAmount)) && (
               <Text size="sm" c="red" mb="md">
                 {t('insufficient_usdt')}: {t('required_balance', { 
                   required: formatEther(nftPrice * BigInt(buyAmount)), 
@@ -291,7 +291,7 @@ export function BuyNode() {
               color="#F2AE00"
               onClick={() => handleBuyNode(buyAmount, 'custom')}
               disabled={(loadingButton === 'custom' && (isPending || isConfirming)) || 
-                (nftPrice !== undefined && buyAmount > 0 && usdtBalance < (nftPrice * BigInt(buyAmount)))}
+                (account.isConnected && nftPrice !== undefined && buyAmount > 0 && usdtBalance < (nftPrice * BigInt(buyAmount)))}
             >
               {loadingButton === 'custom' && (isPending || isConfirming) ? t('processing') : t('buy')}
             </Button>
