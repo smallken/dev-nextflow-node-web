@@ -83,7 +83,7 @@ export function Profile() {
             >
               <Group gap={6}>
                 <IconCrown size={20} color="white" stroke={1.5} />
-                <Text fw={700} c="white" size="sm">Level {contractUserInfo.level}</Text>
+                <Text fw={700} c="white" size="sm">Level {contractUserInfo?.level}</Text>
               </Group>
             </Box>
           </Group>
@@ -93,10 +93,10 @@ export function Profile() {
             <Box>
               <Group justify="space-between" mb={4}>
                 <Text size="sm" c="dimmed">{t('profile.levelProgress')}</Text>
-                <Text size="sm" fw={500}>{contractUserInfo.level}/5</Text>
+                <Text size="sm" fw={500}>{contractUserInfo?.level}/5</Text>
               </Group>
               <Progress
-                value={contractUserInfo.level * 20} /* Each level represents 20% */
+                value={(contractUserInfo?.level ||0) * 20} /* Each level represents 20% */
                 size="md"
                 radius="xl"
                 color="#F2AE00"
@@ -110,7 +110,7 @@ export function Profile() {
             {/* Inviter address row */}
             <Group justify="space-between" w="100%">
               <Text size="xs" c="dimmed" w={80}>{t('profile.inviter')}:</Text>
-              {contractUserInfo.parent && contractUserInfo.parent !== '0x0000000000000000000000000000000000000000' ? (
+              {contractUserInfo?.parent && contractUserInfo?.parent !== '0x0000000000000000000000000000000000000000' ? (
                 <Group wrap="nowrap" align="center" gap={4} style={{ flex: 1 }}>
                   <Text size="xs" c="dimmed">{formatAddress(contractUserInfo.parent)}</Text>
                   <CopyButton value={contractUserInfo.parent || ''} timeout={2000}>
@@ -155,7 +155,7 @@ export function Profile() {
             <Grid.Col span={6}>
               <StatCard 
                 title={t('profile.myNodes')} 
-                value={contractUserInfo.nftCount} 
+                value={contractUserInfo?.nftCount || '0'} 
                 buttonText={t('common.details')} 
                 onClick={() => window.open(`${scanBaseURL[chainId]}/address/${address}`, '_blank')}
               />
@@ -163,7 +163,7 @@ export function Profile() {
             <Grid.Col span={6}>
               <StatCard 
                 title={t('profile.myEarnings')} 
-                value={formatEther(contractUserInfo.income).substring(0, 8)} 
+                value={formatEther(contractUserInfo?.income || BigInt(0)).substring(0, 8)} 
                 buttonText={t('common.details')} 
                 onClick={() => window.open(`${scanBaseURL[chainId]}/address/${address}`, '_blank')}
               />
@@ -179,7 +179,7 @@ export function Profile() {
             <Grid.Col span={6}>
               <StatCard 
                 title={t('profile.teamNodes')} 
-                value={contractUserInfo.teamNodeCount || 0} 
+                value={contractUserInfo?.teamNodeCount || 0} 
                 buttonText={t('common.details')} 
                 onClick={() => window.open(`${scanBaseURL[chainId]}/address/${address}`, '_blank')}
               />
