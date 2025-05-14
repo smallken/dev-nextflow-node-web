@@ -1,4 +1,4 @@
-import { Button, Card, Space, Text, Group, NumberInput, Collapse, Center } from '@mantine/core';
+import { Button, Card, Space, Text, Group, NumberInput, Collapse, Center, LoadingOverlay } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useUser } from '../../context/UserContext';
 import { useWritePoolBuyNode, useReadPoolGetNodePrice } from '../../wagmi/generated';
@@ -205,7 +205,8 @@ export function BuyNode() {
         onApproveSuccess={handleApproveSuccess}
       />
 
-      <Card shadow="sm" padding="lg" radius="md" withBorder>
+      <Card shadow="sm" padding="lg" radius="md" withBorder pos="relative">
+        <LoadingOverlay visible={isPending || isConfirming} loaderProps={{ size: 'lg', color: '#F2AE00' }} />
 
         <Group>
           <Text fw={500}>
@@ -223,7 +224,8 @@ export function BuyNode() {
           onClick={() => handleBuyNode(1)}
           disabled={isPending || isConfirming}
         >
-          {isPending || isConfirming ? t('processing') : t('buy_one_node')}
+          {t('buy_one_node')}
+          {/* {isPending || isConfirming ? t('processing') : t('buy_one_node')} */}
         </Button>
         <Space h="sm" />
         <Button
@@ -232,7 +234,8 @@ export function BuyNode() {
           onClick={() => handleBuyNode(5)}
           disabled={isPending || isConfirming}
         >
-          {isPending || isConfirming ? t('processing') : t('buy_five_node')}
+          {t('buy_five_node')}
+          {/* {isPending || isConfirming ? t('processing') : t('buy_five_node')} */}
         </Button>
 
         <Space h="sm" />
@@ -270,7 +273,8 @@ export function BuyNode() {
               onClick={() => handleBuyNode(buyAmount)}
               disabled={isPending || isConfirming}
             >
-              {isPending || isConfirming ? t('processing') : t('buy')}
+              {t('buy')}
+              {/* {isPending || isConfirming ? t('processing') : t('buy')} */}
             </Button>
           </Card>
         </Collapse>
