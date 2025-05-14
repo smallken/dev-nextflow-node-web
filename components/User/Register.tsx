@@ -64,9 +64,9 @@ export function Register() {
     if (!inviterAddress) {
       console.error('No valid inviter address in URL');
       notifications.show({
-        id: 'bind-error',
-        title: 'Error',
-        message: 'Please use a valid invitation link with a non-zero address',
+        id: 'register-tx',
+        title: t('error_title'),
+        message: t('error_invalid_invitation'),
         color: 'red',
         icon: <IconX />,
         autoClose: 3000,
@@ -77,9 +77,9 @@ export function Register() {
     try {
       // Show loading notification when starting transaction
       notifications.show({
-        id: 'tx-loading',
-        title: '处理中',
-        message: '正在提交交易...',
+        id: 'register-tx',
+        title: t('transaction_processing_title'),
+        message: t('submitting_transaction'),
         loading: true,
         autoClose: false,
         withCloseButton: false,
@@ -92,9 +92,9 @@ export function Register() {
 
       // Transaction sent successfully - update notification
       notifications.update({
-        id: 'tx-loading',
-        title: '交易已提交',
-        message: '正在等待区块链确认...',
+        id: 'register-tx',
+        title: t('registration_submitted'),
+        message: t('waiting_confirmation'),
         loading: true,
         autoClose: false,
       });
@@ -102,9 +102,9 @@ export function Register() {
       // Transaction failed to send
       console.error('Transaction error:', err);
       notifications.update({
-        id: 'tx-loading',
-        title: '交易失败',
-        message: err instanceof Error ? err.message : '提交交易时出错',
+        id: 'register-tx',
+        title: t('transaction_failed'),
+        message: err instanceof Error ? err.message : t('transaction_error'),
         color: 'red',
         icon: <IconX />,
         autoClose: 3000,
@@ -126,9 +126,9 @@ export function Register() {
     if (isConfirming) {
       // Update notification when transaction is being confirmed
       notifications.update({
-        id: 'tx-loading',
-        title: '交易处理中',
-        message: '正在等待区块链确认...',
+        id: 'register-tx',
+        title: t('registration_processing'),
+        message: t('waiting_confirmation'),
         loading: true,
         autoClose: false,
       });
@@ -137,9 +137,9 @@ export function Register() {
     if (isConfirmed) {
       // Transaction confirmed successfully
       notifications.update({
-        id: 'tx-loading',
-        title: '交易成功',
-        message: '邀请注册已完成',
+        id: 'register-tx',
+        title: t('registration_successful'),
+        message: t('registration_completed'),
         color: 'green',
         icon: <IconCheck />,
         autoClose: 3000,
@@ -152,9 +152,9 @@ export function Register() {
     if (isConfirmingError) {
       // Transaction failed  
       notifications.update({
-        id: 'tx-loading',
-        title: '交易失败',
-        message: confirmErrorData instanceof Error ? (confirmErrorData.message) : 'Transaction failed',
+        id: 'register-tx',
+        title: t('transaction_failed'),
+        message: confirmErrorData instanceof Error ? (confirmErrorData.message) : t('transaction_failed'),
         color: 'red',
         icon: <IconX />,
         autoClose: 3000,
