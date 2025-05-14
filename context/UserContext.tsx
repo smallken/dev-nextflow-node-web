@@ -141,7 +141,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
     const targetMinted = Number(nftMintTarget) - nftMintStart;
     
     // 计算百分比
-    let progress = (currentMinted / targetMinted) * 100;
+    let progress = Math.round(((currentMinted / targetMinted) * 10) * 100) / 100; // Round to 2 decimal places
     
     // 限制在 0-100% 范围内
     progress = Math.max(0, Math.min(100, progress));
@@ -152,9 +152,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
   // 当前铸造进度百分比
   const nftMintProgress = calculateMintProgress();
   const nftMintTargetAmount = nftMintTarget - BigInt(nftMintStart)
-
-  console.log('parentAddress', parentAddress)
-  console.log('nftPrice', nftPrice)
   
   // Function to refresh data after transactions by refetching from the blockchain
   const refreshData = async () => {
