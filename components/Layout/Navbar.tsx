@@ -20,7 +20,7 @@ export function Navbar() {
 
         <NavLink
           href="/profile"
-          label={t('profile')}
+          label={t('nav_profile')}
           leftSection={<IconUser size={16} stroke={1.5} />}
           active={router.pathname === '/profile'}
           variant="subtle"

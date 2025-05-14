@@ -55,7 +55,7 @@ export function Profile() {
     return (
       <Container size="md" py="xl">
         <Card withBorder radius="md" padding="xl">
-          <Text ta="center" fw={500} size="lg">请连接钱包查看个人信息</Text>
+          <Text ta="center" fw={500} size="lg">{t('profile.connectWallet')}</Text>
         </Card>
       </Container>
     );
@@ -65,14 +65,14 @@ export function Profile() {
     <div style={{ backgroundColor: bgColor, minHeight: '100vh', paddingBottom: rem(80) }}>
       {/* Header with title */}
       <Group px="md" py="lg" justify="space-between">
-        <Text size="lg" fw={700}>个人中心</Text>
+        <Text size="lg" fw={700}>{t('profile.title')}</Text>
       </Group>
       
       {/* User profile card with level and info */}
       <Container size="md" mb="md">
         <Card withBorder radius="md" shadow="sm" p="md">
           <Group justify="space-between" mb="sm">
-            <Text fw={700} size="lg">用户信息</Text>
+            <Text fw={700} size="lg">{t('profile.userInfo')}</Text>
             <Box 
               style={{ 
                 background: 'linear-gradient(135deg, #F2AE00, #FFD700)',
@@ -92,7 +92,7 @@ export function Profile() {
             {/* Level progress */}
             <Box>
               <Group justify="space-between" mb={4}>
-                <Text size="sm" c="dimmed">等级进度</Text>
+                <Text size="sm" c="dimmed">{t('profile.levelProgress')}</Text>
                 <Text size="sm" fw={500}>{contractUserInfo.level}/5</Text>
               </Group>
               <Progress
@@ -109,13 +109,13 @@ export function Profile() {
             
             {/* Inviter address row */}
             <Group justify="space-between" w="100%">
-              <Text size="xs" c="dimmed" w={60}>邀请者:</Text>
+              <Text size="xs" c="dimmed" w={80}>{t('profile.inviter')}:</Text>
               {contractUserInfo.parent && contractUserInfo.parent !== '0x0000000000000000000000000000000000000000' ? (
                 <Group wrap="nowrap" align="center" gap={4} style={{ flex: 1 }}>
                   <Text size="xs" c="dimmed">{formatAddress(contractUserInfo.parent)}</Text>
                   <CopyButton value={contractUserInfo.parent || ''} timeout={2000}>
                     {({ copied, copy }) => (
-                      <Tooltip label={copied ? '已复制' : '复制'} withArrow position="top">
+                      <Tooltip label={copied ? t('common.copied') : t('common.copy')} withArrow position="top">
                         <ActionIcon variant="subtle" color={copied ? 'teal' : 'gray'} onClick={copy} size="xs">
                           {copied ? <IconCheck size={14} /> : <IconCopy size={14} />}
                         </ActionIcon>
@@ -124,13 +124,13 @@ export function Profile() {
                   </CopyButton>
                 </Group>
               ) : (
-                <Text size="xs" c="dimmed">无</Text>
+                <Text size="xs" c="dimmed">{t('common.none')}</Text>
               )}
             </Group>
             
             {/* Wallet address row */}
             <Group justify="space-between" w="100%">
-              <Text size="xs" c="dimmed" w={60}>我的钱包:</Text>
+              <Text size="xs" c="dimmed" w={80}>{t('profile.myWallet')}:</Text>
               <Group wrap="nowrap" align="center" gap={4} style={{ flex: 1 }}>
                 <Text size="xs" c="dimmed">{formatAddress(address)}</Text>
                 <CopyButton value={address || ''} timeout={2000}>
@@ -154,33 +154,33 @@ export function Profile() {
           <Grid gutter={16}>
             <Grid.Col span={6}>
               <StatCard 
-                title="我的节点数量" 
+                title={t('profile.myNodes')} 
                 value={contractUserInfo.nodeCount} 
-                buttonText="详情" 
+                buttonText={t('common.details')} 
                 onClick={() => window.open(`${scanBaseURL[chainId]}/address/${address}`, '_blank')}
               />
             </Grid.Col>
             <Grid.Col span={6}>
               <StatCard 
-                title="我的收益(USDT)" 
+                title={t('profile.myEarnings')} 
                 value={formatEther(contractUserInfo.income).substring(0, 8)} 
-                buttonText="详情" 
+                buttonText={t('common.details')} 
                 onClick={() => window.open(`${scanBaseURL[chainId]}/address/${address}`, '_blank')}
               />
             </Grid.Col>
             <Grid.Col span={6}>
               <StatCard 
-                title="我的好友" 
+                title={t('profile.myFriends')} 
                 value={contractUserInfo?.friends?.length  || 0} 
-                buttonText="邀请" 
+                buttonText={t('common.invite')} 
                 onClick={openInviteModal}
               />
             </Grid.Col>
             <Grid.Col span={6}>
               <StatCard 
-                title="伞下节点数量" 
+                title={t('profile.teamNodes')} 
                 value={contractUserInfo.teamNodeCount || 0} 
-                buttonText="详情" 
+                buttonText={t('common.details')} 
                 onClick={() => window.open(`${scanBaseURL[chainId]}/address/${address}`, '_blank')}
               />
             </Grid.Col>

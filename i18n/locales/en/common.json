@@ -1,20 +1,16 @@
 {
   "home": "Home",
-  "profile": "Profile",
+  "nav_profile": "Profile",
   "connect": "Connect Wallet",
-  "invite": "Invite Friends",
   "buy": "Buy Node",
   "register": "Register",
   "buy_one_node":"Buy one node",
   "buy_five_node":"Buy five node",
-
   "progress":"progress",
   "custom_quantity":"Custom quantity",
   "total_cost":"Total Cost",
   "wrong_network":"Wrong Network",
-
   "registered":"Registered",
-  "inviter":"Inviter",
   "need_inviter":"Inviter Required",
   "inviter_instruction":"You need to access this site through an invitation link to complete registration. Please ask a friend for an invitation link or scan the invitation QR code.",
   "inviter_address":"Inviter Address",
@@ -22,7 +18,6 @@
   "submitting":"Submitting...",
   "no_invite_detected":"No Invitation Link Detected",
   "use_friend_link":"Please enter the site through an invitation link shared by a friend",
-
   "approve_usdt":"Approve USDT",
   "approval_required":"USDT approval required to continue",
   "approval_description":"You need to approve the smart contract to spend your USDT before continuing with the purchase",
@@ -33,11 +28,30 @@
   "approval_successful":"Approval Successful",
   "approval_completed":"USDT approval completed",
   "transaction_failed":"Transaction Failed",
-
   "invite_friends":"Invite Friends",
   "scan_or_copy":"Scan QR code or copy the link to invite friends",
-  "copied":"Copied",
   "copy_link":"Copy Link",
   "invite_reward_desc":"Share this link with your friends. When they successfully register, you'll receive rewards.",
-  "share_invitation":"Share Invitation"
+  "share_invitation":"Share Invitation",
+  
+  "common": {
+    "details": "Details",
+    "invite": "Invite",
+    "copy": "Copy",
+    "copied": "Copied",
+    "none": "None"
+  },
+  
+  "profile": {
+    "connectWallet": "Please connect wallet to view profile",
+    "title": "My Profile",
+    "userInfo": "User Information",
+    "levelProgress": "Level Progress",
+    "inviter": "Inviter",
+    "myWallet": "My Wallet",
+    "myNodes": "My Nodes",
+    "myEarnings": "My Earnings (USDT)",
+    "myFriends": "My Friends",
+    "teamNodes": "Team Nodes"
+  }
 }
