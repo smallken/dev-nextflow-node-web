@@ -72,9 +72,9 @@
     "levelProgress": "等级进度",
     "inviter": "邀请者",
     "myWallet": "我的钱包",
-    "myNodes": "我的节点数量",
+    "myNodes": "我的节点",
     "myEarnings": "我的收益(USDT)",
     "myFriends": "我的好友",
-    "teamNodes": "伞下节点数量"
+    "teamNodes": "伞下节点"
   }
 }
