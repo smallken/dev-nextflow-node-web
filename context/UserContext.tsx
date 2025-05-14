@@ -9,6 +9,8 @@ import {
 
 } from '../wagmi/generated';
 
+import MINT_STAGE from '../config/min.stage.ts';
+
 
 // 定义全局应用信息类型
 type AppInfo = {
@@ -142,7 +144,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const nftCurrentTotal = nftTotalSupplyData || BigInt(0);
 
   // NFT铸造目标和起始值
-  const nftMintTarget = BigInt(100);
+  const nftMintTarget = MINT_STAGE.nftMintTarget;
   const nftMintStart = 0;
 
   // 计算NFT铸造进度
