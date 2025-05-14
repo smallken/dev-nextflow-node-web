@@ -87,7 +87,7 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
         message: err instanceof Error ? err.message : t('approval_error'),
         color: 'red',
         icon: <IconX />,
-        autoClose: 6000,
+        autoClose: 3000,
       });
     }
   }
