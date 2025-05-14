@@ -97,7 +97,7 @@ export function BuyNode() {
     // After successful approval, automatically proceed to purchase process
     console.log('refresh after approve')
     refreshData()
-    submitBuyNode(buyAmount);
+    // submitBuyNode(buyAmount);
   }
 
   // Submit buy node request
@@ -107,7 +107,7 @@ export function BuyNode() {
     try {
       // Show loading notification
       notifications.show({
-        id: 'tx-loading',
+        id: 'buy-tx',
         title: t('transaction_processing_title'),
         message: t('submitting_transaction'),
         loading: true,
@@ -122,7 +122,7 @@ export function BuyNode() {
 
       // Transaction sent successfully - update notification
       notifications.update({
-        id: 'tx-loading',
+        id: 'buy-tx',
         title: t('transaction_submitted'),
         message: t('waiting_confirmation'),
         loading: true,
@@ -133,7 +133,7 @@ export function BuyNode() {
       // Transaction sending failed
       console.error('Transaction error:', err);
       notifications.update({
-        id: 'tx-loading',
+        id: 'buy-tx',
         title: t('transaction_failed'),
         message: err instanceof Error ? err.message : t('transaction_error'),
         color: 'red',
@@ -158,7 +158,7 @@ export function BuyNode() {
     if (isConfirming) {
       // Update notification, show transaction confirmation in progress
       notifications.update({
-        id: 'tx-loading',
+        id: 'buy-tx',
         title: t('transaction_processing'),
         message: t('waiting_confirmation'),
         loading: true,
@@ -169,7 +169,7 @@ export function BuyNode() {
     if (isConfirmed) {
       // Transaction successfully confirmed
       notifications.update({
-        id: 'tx-loading',
+        id: 'buy-tx',
         title: t('purchase_successful'),
         message: t('purchase_confirmed'),
         color: 'green',
@@ -185,7 +185,7 @@ export function BuyNode() {
     if (isConfirmingError) {
       // Transaction failed  
       notifications.update({
-        id: 'tx-loading',
+        id: 'buy-tx',
         title: t('transaction_failed'),
         message: confirmErrorData instanceof Error ? (confirmErrorData.message) : t('transaction_failed'),
         color: 'red',

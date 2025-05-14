@@ -49,7 +49,7 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
     try {
       // Show loading notification
       notifications.show({
-        id: 'approve-loading',
+        id: 'approve-tx',
         title: t('approval_processing'),
         message: t('waiting_confirmation'),
         loading: true,
@@ -71,7 +71,7 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
 
       // Transaction sent successfully - update notification
       notifications.update({
-        id: 'approve-loading',
+        id: 'approve-tx',
         title: t('approval_submitted'),
         message: t('waiting_confirmation'),
         loading: true,
@@ -82,7 +82,7 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
       // Transaction sending failed
       console.error('Approve error:', err);
       notifications.update({
-        id: 'approve-loading',
+        id: 'approve-tx',
         title: t('approval_failed'),
         message: err instanceof Error ? err.message : t('approval_error'),
         color: 'red',
@@ -99,7 +99,7 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
     if (isConfirming) {
       // Update notification, show transaction confirmation in progress
       notifications.update({
-        id: 'approve-loading',
+        id: 'approve-tx',
         title: t('approval_processing'),
         message: t('waiting_confirmation'),
         loading: true,
@@ -116,7 +116,7 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
 
     if (isConfirmed) {
       notifications.update({
-        id: 'approve-loading',
+        id: 'approve-tx',
         title: t('approval_successful'),
         message: t('approval_completed'),
         color: 'green',
@@ -129,7 +129,7 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
     if (isConfirmingError) {
       // Transaction failed  
       notifications.update({
-        id: 'tx-loading',
+        id: 'approve-tx',
         title: t('transaction_failed'),
         message: confirmErrorData instanceof Error ? (confirmErrorData.message) : t('transaction_failed'),
         color: 'red',
