@@ -238,7 +238,7 @@ export function BuyNode() {
             <Text span fw={500} c="inherit">{t('nodes_owned')}:</Text> {contractUserInfo ? contractUserInfo.nodeCount : 0}
           </Text>
           <Text size="sm" c="dimmed">
-            {parseFloat(formatEther(usdtBalance)).toFixed(2)} usdt
+            {parseFloat(formatEther(usdtBalance)).toFixed(2)} USDT
           </Text>
         </Group>
 
