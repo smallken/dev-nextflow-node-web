@@ -217,14 +217,15 @@ export function BuyNode() {
 
       <Card shadow="sm" padding="lg" radius="md" withBorder pos="relative">
         <LoadingOverlay visible={isPending || isConfirming} loaderProps={{ size: 'lg', color: '#F2AE00' }} />
-
-        <Group>
-          <Text fw={500}>
-            Purchased: {contractUserInfo ? contractUserInfo.nodeCount : 0}
+        
+        {/* Subtle user info in the top right corner */}
+        <Group justify="space-between" mb="md" gap="xs">
+          <Text size="sm" c="dimmed">
+            <Text span fw={500} c="inherit">{t('nodes_owned')}:</Text> {contractUserInfo ? contractUserInfo.nodeCount : 0}
           </Text>
-          <Text>USDT Balance: {formatEther(usdtBalance) || 0}</Text>
-          <Text>USDT Approved: {usdtAllowanceForPool > BigInt(0) ? 'Yes' : 'No'}</Text>
-
+          <Text size="sm" c="dimmed">
+            {parseFloat(formatEther(usdtBalance)).toFixed(2)} usdt
+          </Text>
         </Group>
 
         <Space h="sm" />
