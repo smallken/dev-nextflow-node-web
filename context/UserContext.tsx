@@ -141,7 +141,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
     const targetMinted = Number(nftMintTarget) - nftMintStart;
     
     // 计算百分比
-    let progress = Math.round(((currentMinted / targetMinted) * 10) * 100) / 100; // Round to 2 decimal places
+    let progress = Math.round(((currentMinted / targetMinted) * 100) * 100) / 100; // Round to 2 decimal places
     
     // 限制在 0-100% 范围内
     progress = Math.max(0, Math.min(100, progress));
