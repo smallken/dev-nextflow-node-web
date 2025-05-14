@@ -6,6 +6,8 @@ import { useState } from 'react';
 import { useUser } from '../../context/UserContext';
 import { useTranslation } from 'react-i18next';
 import { InviteModal } from '../User/InviteModal';
+import {scanBaseURL} from '../../config'
+import { useChainId } from 'wagmi';
 
 
 // StatCard component for the four info boxes
@@ -42,6 +44,7 @@ function formatAddress(address: string | undefined): string {
 
 export function Profile() {
   const { t } = useTranslation();
+  const chainId = useChainId();
   // 使用自定义 hook 获取全局用户数据
   const { address, contractUserInfo, usdtBalance, usdtAllowanceForPool } = useUser();
   const [bgColor] = useState('#E3FBE3'); // Default light green background
@@ -154,7 +157,7 @@ export function Profile() {
                 title="我的节点数量" 
                 value={contractUserInfo.nodeCount} 
                 buttonText="详情" 
-                onClick={() => console.log('Node details')}
+                onClick={() => window.open(`${scanBaseURL[chainId]}/address/${address}`, '_blank')}
               />
             </Grid.Col>
             <Grid.Col span={6}>
@@ -162,7 +165,7 @@ export function Profile() {
                 title="我的收益(USDT)" 
                 value={formatEther(contractUserInfo.income).substring(0, 8)} 
                 buttonText="详情" 
-                onClick={() => console.log('Earnings details')}
+                onClick={() => window.open(`${scanBaseURL[chainId]}/address/${address}`, '_blank')}
               />
             </Grid.Col>
             <Grid.Col span={6}>
@@ -178,7 +181,7 @@ export function Profile() {
                 title="伞下节点数量" 
                 value={contractUserInfo.teamNodeCount || 0} 
                 buttonText="详情" 
-                onClick={() => console.log('Friend nodes details')}
+                onClick={() => window.open(`${scanBaseURL[chainId]}/address/${address}`, '_blank')}
               />
             </Grid.Col>
           </Grid>
