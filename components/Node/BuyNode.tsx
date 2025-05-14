@@ -20,6 +20,9 @@ export function BuyNode() {
   const [opened, { toggle }] = useDisclosure(false);
   const { contractUserInfo, usdtBalance, usdtAllowanceForPool, appInfo, refreshData } = useUser();
   const [buyAmount, setBuyAmount] = useState<number>(1);
+  
+  // Track which button is currently loading
+  const [loadingButton, setLoadingButton] = useState<'one' | 'five' | 'custom' | null>(null);
 
   // Control approve modal
   const [approveModalOpened, setApproveModalOpened] = useState(false);
@@ -41,7 +44,7 @@ export function BuyNode() {
   console.log('USDT allowance', usdtAllowanceForPool)
 
   // Check approval and handle purchase operation
-  function handleBuyNode(amount: number = 1) {
+  function handleBuyNode(amount: number = 1, buttonType: 'one' | 'five' | 'custom' = 'one') {
 
     // Check if user has connected wallet
     if (!account.isConnected) {
@@ -89,7 +92,7 @@ export function BuyNode() {
     }
 
     // If approval is sufficient, proceed with purchase
-    submitBuyNode(amount);
+    submitBuyNode(amount, buttonType);
   }
 
   // Callback after successful approval
@@ -97,12 +100,15 @@ export function BuyNode() {
     // After successful approval, automatically proceed to purchase process
     console.log('refresh after approve')
     refreshData()
+    // Reset loading button state
+    setLoadingButton(null);
     // submitBuyNode(buyAmount);
   }
 
   // Submit buy node request
-  async function submitBuyNode(amount: number = 1) {
+  async function submitBuyNode(amount: number = 1, buttonType: 'one' | 'five' | 'custom' = 'one') {
     console.log('submitBuyNode', amount);
+    setLoadingButton(buttonType);
 
     try {
       // Show loading notification
@@ -179,6 +185,8 @@ export function BuyNode() {
 
       // Refresh global data to update UI
       refreshData();
+      // Reset loading button state
+      setLoadingButton(null);
       console.log('Refreshed global data after successful purchase');
     }
 
@@ -192,6 +200,8 @@ export function BuyNode() {
         icon: <IconX />,
         autoClose: 6000,
       });
+      // Reset loading button state on error
+      setLoadingButton(null);
     }
   }, [hash, isConfirming, isConfirmed, isConfirmingError, confirmErrorData]);
 
@@ -221,21 +231,19 @@ export function BuyNode() {
         <Button
           fullWidth
           color="#F2AE00"
-          onClick={() => handleBuyNode(1)}
-          disabled={isPending || isConfirming}
+          onClick={() => handleBuyNode(1, 'one')}
+          disabled={loadingButton === 'one' && (isPending || isConfirming)}
         >
-          {t('buy_one_node')}
-          {/* {isPending || isConfirming ? t('processing') : t('buy_one_node')} */}
+          {loadingButton === 'one' && (isPending || isConfirming) ? t('processing') : t('buy_one_node')}
         </Button>
         <Space h="sm" />
         <Button
           fullWidth
           color="#F2AE00"
-          onClick={() => handleBuyNode(5)}
-          disabled={isPending || isConfirming}
+          onClick={() => handleBuyNode(5, 'five')}
+          disabled={loadingButton === 'five' && (isPending || isConfirming)}
         >
-          {t('buy_five_node')}
-          {/* {isPending || isConfirming ? t('processing') : t('buy_five_node')} */}
+          {loadingButton === 'five' && (isPending || isConfirming) ? t('processing') : t('buy_five_node')}
         </Button>
 
         <Space h="sm" />
@@ -270,11 +278,10 @@ export function BuyNode() {
             <Button
               fullWidth
               color="#F2AE00"
-              onClick={() => handleBuyNode(buyAmount)}
-              disabled={isPending || isConfirming}
+              onClick={() => handleBuyNode(buyAmount, 'custom')}
+              disabled={loadingButton === 'custom' && (isPending || isConfirming)}
             >
-              {t('buy')}
-              {/* {isPending || isConfirming ? t('processing') : t('buy')} */}
+              {loadingButton === 'custom' && (isPending || isConfirming) ? t('processing') : t('buy')}
             </Button>
           </Card>
         </Collapse>
