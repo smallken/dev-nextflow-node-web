@@ -51,7 +51,7 @@ export function Profile() {
   const [inviteModalOpened, { open: openInviteModal, close: closeInviteModal }] = useDisclosure(false);
 
   // If user is not connected or data is not loaded, show a placeholder
-  if (!address || !contractUserInfo) {
+  if (!address) {
     return (
       <Container size="md" py="xl">
         <Card withBorder radius="md" padding="xl">
