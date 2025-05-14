@@ -12,8 +12,8 @@ export const config = getDefaultConfig({
   appName: 'FF-NODE',
   projectId: 'YOUR_PROJECT_ID',
   chains: [
-    // bsc,
-    bscTestnet,
+    bsc,
+    //bscTestnet,
     // ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === 'true' ? [sepolia] : []),
   ],
   ssr: true,
