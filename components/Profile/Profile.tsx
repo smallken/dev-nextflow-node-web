@@ -6,8 +6,9 @@ import { useState } from 'react';
 import { useUser } from '../../context/UserContext';
 import { useTranslation } from 'react-i18next';
 import { InviteModal } from '../User/InviteModal';
-import {scanBaseURL} from '../../config'
+import {scanBaseURL, getConfigLink} from '../../config'
 import { useChainId } from 'wagmi';
+
 
 
 // StatCard component for the four info boxes
@@ -157,7 +158,7 @@ export function Profile() {
                 title={t('profile.myNodes')} 
                 value={contractUserInfo?.nftCount || '0'} 
                 buttonText={t('common.details')} 
-                onClick={() => window.open(`${scanBaseURL[chainId]}/address/${address}`, '_blank')}
+                onClick={() => window.open(getConfigLink(chainId,"myNodeLink",address), '_blank')}
               />
             </Grid.Col>
             <Grid.Col span={6}>
@@ -165,7 +166,7 @@ export function Profile() {
                 title={t('profile.myEarnings')} 
                 value={formatEther(contractUserInfo?.income || BigInt(0)).substring(0, 8)} 
                 buttonText={t('common.details')} 
-                onClick={() => window.open(`${scanBaseURL[chainId]}/address/${address}`, '_blank')}
+                onClick={() => window.open(getConfigLink(chainId,"myIncomeLink",address), '_blank')}
               />
             </Grid.Col>
             <Grid.Col span={6}>
@@ -181,7 +182,7 @@ export function Profile() {
                 title={t('profile.teamNodes')} 
                 value={contractUserInfo?.teamNodeCount || 0} 
                 buttonText={t('common.details')} 
-                onClick={() => window.open(`${scanBaseURL[chainId]}/address/${address}`, '_blank')}
+                onClick={() => window.open(getConfigLink(chainId,"myTeamNodeLink",address), '_blank')}
               />
             </Grid.Col>
           </Grid>
