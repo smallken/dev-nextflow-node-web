@@ -283,7 +283,7 @@ export function BuyNode() {
               defaultValue={1}
               min={1}
               max={100}
-              value={buyAmount}
+              value={buyAmount || ''}
               onChange={(val) => setBuyAmount(Number(val))}
               mb="sm"
             />
