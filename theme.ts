@@ -22,7 +22,7 @@ export const theme = createTheme({
   primaryColor: 'myColor'
 });
 
-// Custom colors for RainbowKit
+// Custom colors for RainbowKit //F2AE00 //22d577
 const brandColor = '#F2AE00'; // Primary brand color
 
 // Custom RainbowKit theme for light mode

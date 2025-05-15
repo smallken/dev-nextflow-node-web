@@ -41,7 +41,7 @@ export function Home() {
             overflow: 'hidden',
             boxShadow: '0 8px 20px rgba(0, 0, 0, 0.15)',
             transition: 'all 0.3s ease',
-            border: '1px solid rgba(242, 174, 0, 0.3)',
+            border: '2px solid rgba(34, 213, 119, 0.3)',
             '&:hover': {
               transform: 'translateY(-3px)',
               boxShadow: '0 12px 30px rgba(0, 0, 0, 0.2)'
@@ -53,7 +53,7 @@ export function Home() {
               left: '-2px',
               right: '-2px',
               bottom: '-2px',
-              background: 'linear-gradient(45deg, #F2AE00, #FFD700, #F2AE00)',
+              background: 'linear-gradient(45deg, #22d577, #4ae792, #22d577)',
               backgroundSize: '400% 400%',
               zIndex: -1,
               animation: 'glowingBorder 3s ease infinite',
@@ -69,28 +69,28 @@ export function Home() {
             100% { background-position: 0% 50% }
           }
           .progress-card .mantine-Progress-root .mantine-Progress-bar {
-            background: linear-gradient(90deg, #F2AE00, #FFD700);
+            background: linear-gradient(90deg, #22d577, #4ae792);
             transition: width 1.5s ease-in-out;
           }
         `}</style>
-        <Text fz="md" tt="uppercase" fw={700} c="#F2AE00" mb="xs">
+        <Text fz="md" tt="uppercase" fw={700} c="#22d577" mb="xs">
           {t('progress')}
         </Text>
         <Group mt="lg" justify="space-between">
           {appInfo ? (
             <>
               <Text fz="lg" fw={600}>
-                <span style={{ fontSize: '1.2em', color: '#F2AE00' }}>{appInfo.nftCurrentTotal.toString()}</span>
+                <span style={{ fontSize: '1.2em', color: '#22d577' }}>{appInfo.nftCurrentTotal.toString()}</span>
                 <span style={{ opacity: 0.7 }}> / {appInfo.nftMintTargetAmount.toString()}</span>
               </Text>
-              <Badge size="xl" radius="md" color="yellow" variant="filled" style={{ fontSize: '1em' }}>
+              <Badge size="xl" radius="md" color="green" variant="filled" style={{ fontSize: '1em' }}>
                 {appInfo.nftMintProgress}%
               </Badge>
             </>
           ) : (
             <>
-              <Text fz="lg" fw={600}><span style={{ fontSize: '1.2em', color: '#F2AE00' }}>0</span> <span style={{ opacity: 0.7 }}>/ 0</span></Text>
-              <Badge size="xl" radius="md" color="yellow" variant="filled" style={{ fontSize: '1em' }}>0%</Badge>
+              <Text fz="lg" fw={600}><span style={{ fontSize: '1.2em', color: '#22d577' }}>0</span> <span style={{ opacity: 0.7 }}>/ 0</span></Text>
+              <Badge size="xl" radius="md" color="green" variant="filled" style={{ fontSize: '1em' }}>0%</Badge>
             </>
           )}
         </Group>
@@ -99,7 +99,7 @@ export function Home() {
           mt="md" 
           size="xl" 
           radius="xl"
-          color="#F2AE00"
+          color="#22d577"
           animated
           striped
         />
