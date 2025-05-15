@@ -57,6 +57,13 @@
   "invite_reward_desc":"Share this link with your friends. When they successfully register, you'll receive rewards.",
   "share_invitation":"Share Invitation",
   
+  "registration_required": "Registration Required",
+  "please_register_before_invite": "You need to register first before you can invite friends.",
+  "go_to_register": "Go to Register",
+  "node_purchase_required": "Node Purchase Required",
+  "please_purchase_node_before_invite": "You need to purchase at least one node before you can invite friends.",
+  "go_to_purchase": "Go to Purchase",
+
   "common": {
     "details": "Details",
     "invite": "Invite",

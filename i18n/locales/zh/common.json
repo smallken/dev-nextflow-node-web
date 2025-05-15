@@ -57,6 +57,13 @@
   "invite_reward_desc":"分享此链接给你的朋友，当他们注册成功后，你将获得奖励。",
   "share_invitation":"分享邀请",
   
+  "registration_required": "需要注册",
+  "please_register_before_invite": "您需要先注册才能邀请好友。",
+  "go_to_register": "去注册",
+  "node_purchase_required": "需要购买节点",
+  "please_purchase_node_before_invite": "您需要至少购买一个节点才能邀请好友。",
+  "go_to_purchase": "去购买",
+
   "common": {
     "details": "详情",
     "invite": "邀请",
