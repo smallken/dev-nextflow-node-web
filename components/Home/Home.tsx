@@ -29,24 +29,80 @@ export function Home() {
       />
       <Space h="sm" />
 
-      <Card withBorder radius="md" padding="xl" bg="var(--mantine-color-body)">
-        <Text fz="xs" tt="uppercase" fw={700} c="dimmed">
+      <Card 
+        withBorder 
+        radius="md" 
+        padding="xl" 
+        bg="var(--mantine-color-body)"
+        className="progress-card"
+        styles={(theme) => ({
+          root: {
+            position: 'relative',
+            overflow: 'hidden',
+            boxShadow: '0 8px 20px rgba(0, 0, 0, 0.15)',
+            transition: 'all 0.3s ease',
+            border: '1px solid rgba(242, 174, 0, 0.3)',
+            '&:hover': {
+              transform: 'translateY(-3px)',
+              boxShadow: '0 12px 30px rgba(0, 0, 0, 0.2)'
+            },
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              top: '-2px',
+              left: '-2px',
+              right: '-2px',
+              bottom: '-2px',
+              background: 'linear-gradient(45deg, #F2AE00, #FFD700, #F2AE00)',
+              backgroundSize: '400% 400%',
+              zIndex: -1,
+              animation: 'glowingBorder 3s ease infinite',
+              borderRadius: 'md',
+            }
+          },
+        })}
+      >
+        <style jsx global>{`
+          @keyframes glowingBorder {
+            0% { background-position: 0% 50% }
+            50% { background-position: 100% 50% }
+            100% { background-position: 0% 50% }
+          }
+          .progress-card .mantine-Progress-root .mantine-Progress-bar {
+            background: linear-gradient(90deg, #F2AE00, #FFD700);
+            transition: width 1.5s ease-in-out;
+          }
+        `}</style>
+        <Text fz="md" tt="uppercase" fw={700} c="#F2AE00" mb="xs">
           {t('progress')}
         </Text>
-        <Group mt="md" justify="space-between">
+        <Group mt="lg" justify="space-between">
           {appInfo ? (
             <>
-              <Text fz="sm">{appInfo.nftCurrentTotal.toString()} /{appInfo.nftMintTargetAmount.toString()}</Text>
-              <Badge size="sm">{appInfo.nftMintProgress}%</Badge>
+              <Text fz="lg" fw={600}>
+                <span style={{ fontSize: '1.2em', color: '#F2AE00' }}>{appInfo.nftCurrentTotal.toString()}</span>
+                <span style={{ opacity: 0.7 }}> / {appInfo.nftMintTargetAmount.toString()}</span>
+              </Text>
+              <Badge size="xl" radius="md" color="yellow" variant="filled" style={{ fontSize: '1em' }}>
+                {appInfo.nftMintProgress}%
+              </Badge>
             </>
           ) : (
             <>
-              <Text fz="sm">0 / 0</Text>
-              <Badge size="sm">0%</Badge>
+              <Text fz="lg" fw={600}><span style={{ fontSize: '1.2em', color: '#F2AE00' }}>0</span> <span style={{ opacity: 0.7 }}>/ 0</span></Text>
+              <Badge size="xl" radius="md" color="yellow" variant="filled" style={{ fontSize: '1em' }}>0%</Badge>
             </>
           )}
         </Group>
-        <Progress value={appInfo?.nftMintProgress || 0} mt="md" size="lg" radius="xl" />
+        <Progress 
+          value={appInfo?.nftMintProgress || 0} 
+          mt="md" 
+          size="xl" 
+          radius="xl"
+          color="#F2AE00"
+          animated
+          striped
+        />
       </Card>
 
       <Space h="xl" />
