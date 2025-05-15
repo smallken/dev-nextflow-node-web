@@ -28,6 +28,8 @@ export function BuyNode() {
   const [approveModalOpened, setApproveModalOpened] = useState(false);
   const [requiredApproveAmount, setRequiredApproveAmount] = useState<bigint>(BigInt(0));
 
+  const isNftMintComplete = appInfo?.isNftMintComplete
+
   // Get NFT price
   const { data: nftPrice } = useReadPoolGetNodePrice();
 
@@ -247,7 +249,7 @@ export function BuyNode() {
           fullWidth
           color="#F2AE00"
           onClick={() => handleBuyNode(1, 'one')}
-          disabled={loadingButton === 'one' && (isPending || isConfirming)}
+          disabled={(loadingButton === 'one' && (isPending || isConfirming)) || isNftMintComplete}
         >
           {loadingButton === 'one' && (isPending || isConfirming) ? t('processing') : t('buy_one_node')+' ('+ formatEther(BigInt(1) * (nftPrice || BigInt(0)))+' USDT)'}
         </Button>
@@ -256,7 +258,7 @@ export function BuyNode() {
           fullWidth
           color="#F2AE00"
           onClick={() => handleBuyNode(5, 'five')}
-          disabled={loadingButton === 'five' && (isPending || isConfirming)}
+          disabled={(loadingButton === 'five' && (isPending || isConfirming))|| isNftMintComplete}
         >
           {loadingButton === 'five' && (isPending || isConfirming) ? t('processing') : t('buy_five_node') +' ('+ formatEther(BigInt(5) * (nftPrice || BigInt(0)))+' USDT)'}
         </Button>
@@ -305,7 +307,7 @@ export function BuyNode() {
               color="#F2AE00"
               onClick={() => handleBuyNode(buyAmount, 'custom')}
               disabled={(loadingButton === 'custom' && (isPending || isConfirming)) || 
-                (account.isConnected && nftPrice !== undefined && buyAmount > 0 && usdtBalance < ((nftPrice || BigInt(0)) * BigInt(buyAmount)))|| buyAmount===0}
+                (account.isConnected && nftPrice !== undefined && buyAmount > 0 && usdtBalance < ((nftPrice || BigInt(0)) * BigInt(buyAmount)))|| buyAmount===0 || isNftMintComplete}
             >
               {loadingButton === 'custom' && (isPending || isConfirming) ? t('processing') : t('buy')}
             </Button>

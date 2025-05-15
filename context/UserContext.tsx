@@ -19,9 +19,10 @@ type AppInfo = {
   // NFT全局信息
   nftCurrentTotal: bigint; // total mint of different term
   nftMintTarget: bigint; // target for the end of this loop
-  nftMintStart: number; // number start for a term
+  nftMintStart: bigint; // number start for a term
   nftMintProgress: number; // 当前铸造进度百分比
   nftMintTargetAmount: bigint;
+  isNftMintComplete: boolean;
   // 其他全局信息
 };
 
@@ -140,25 +141,27 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
   console.log('nftTotalSupplyData', nftTotalSupplyData);
 
-  // 默认总供应量为0
+  // Actual mint total amount
   const nftCurrentTotal = nftTotalSupplyData || BigInt(0);
 
   // NFT铸造目标和起始值
   const nftMintTarget = MINT_STAGE.nftMintTarget;
-  const nftMintStart = 0;
+  const nftMintStart = MINT_STAGE.nftMintStart;
 
   // 计算NFT铸造进度
   const calculateMintProgress = () => {
     if (nftCurrentTotal === BigInt(0)) return 0;
-    if (nftMintTarget <= BigInt(nftMintStart)) return 100;
+    if (nftMintTarget <= BigInt(nftCurrentTotal)) return 100;
 
     // 当前铸造数量
-    const currentMinted = Number(nftCurrentTotal) - nftMintStart;
+    const currentMinted = nftCurrentTotal - nftMintStart;
     // 目标铸造数量
-    const targetMinted = Number(nftMintTarget) - nftMintStart;
+    const targetMinted = nftMintTarget - nftMintStart;
 
-    // 计算百分比
-    let progress = Math.round(((currentMinted / targetMinted) * 100) * 100) / 100; // Round to 2 decimal places
+    // 计算百分比 - Convert BigInt to number before calculation
+    const currentMintedNum = Number(currentMinted);
+    const targetMintedNum = Number(targetMinted);
+    let progress = Math.round(((currentMintedNum / targetMintedNum) * 100) * 100) / 100; // Round to 2 decimal places
 
     // 限制在 0-100% 范围内
     progress = Math.max(0, Math.min(100, progress));
@@ -169,6 +172,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   // 当前铸造进度百分比
   const nftMintProgress = calculateMintProgress();
   const nftMintTargetAmount = nftMintTarget - BigInt(nftMintStart)
+  const isNftMintComplete = nftMintTarget == nftCurrentTotal
 
   // Function to refresh data after transactions by refetching from the blockchain
   const refreshData = async () => {
@@ -229,6 +233,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
           nftMintStart,
           nftMintProgress,
           nftMintTargetAmount,
+          isNftMintComplete,
         });
       }
     }
