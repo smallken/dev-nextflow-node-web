@@ -1,4 +1,5 @@
 import { Modal, Stack, Text, Paper, Center, Box, Group, CopyButton, ActionIcon, Tooltip, Alert, Button } from '@mantine/core';
+import { useRouter } from 'next/router';
 import { QRCodeSVG } from 'qrcode.react';
 import { useEffect, useState } from 'react';
 import { IconCopy, IconCheck, IconAlertCircle, IconInfoCircle } from '@tabler/icons-react';
@@ -14,6 +15,7 @@ export function InviteModal({ opened, onClose }: InviteModalProps) {
   const { t } = useTranslation();
   const { address, contractUserInfo } = useUser();
   const [inviteUrl, setInviteUrl] = useState('');
+  const router = useRouter();
   
   // Generate the invitation URL with the user's address
   useEffect(() => {
@@ -52,7 +54,10 @@ export function InviteModal({ opened, onClose }: InviteModalProps) {
             <Button 
               color="#F2AE00" 
               fullWidth 
-              onClick={onClose}
+              onClick={() => {
+                onClose();
+                router.push('/');
+              }}
             >
               {t('go_to_register')}
             </Button>
@@ -69,7 +74,10 @@ export function InviteModal({ opened, onClose }: InviteModalProps) {
             <Button 
               color="#F2AE00" 
               fullWidth 
-              onClick={onClose}
+              onClick={() => {
+                onClose();
+                router.push('/');
+              }}
             >
               {t('go_to_purchase')}
             </Button>
