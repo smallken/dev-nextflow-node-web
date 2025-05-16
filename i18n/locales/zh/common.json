@@ -51,7 +51,7 @@
   "usdt_balance":"USDT余额",
   "nodes_owned":"节点数",
   "invite_friends":"邀请好友",
-  "need_one_node_to_invite":"至少需要认购一个节点才能邀请好友",
+  "need_one_node_to_invite":"购买节点，解锁邀请权限",
   "scan_or_copy":"扫描二维码或复制链接邀请好友",
   "copy_link":"复制链接",
   "invite_reward_desc":"分享此链接给你的朋友，当他们注册成功后，你将获得奖励。",
@@ -61,7 +61,7 @@
   "please_register_before_invite": "您需要先注册才能邀请好友。",
   "go_to_register": "去注册",
   "node_purchase_required": "需要购买节点",
-  "please_purchase_node_before_invite": "您需要至少购买一个节点才能邀请好友。",
+  "please_purchase_node_before_invite": "购买节点，解锁邀请权限",
   "go_to_purchase": "去购买",
 
   "common": {
@@ -82,6 +82,6 @@
     "myNodes": "我的节点",
     "myEarnings": "我的收益(USDT)",
     "myFriends": "我的好友",
-    "teamNodes": "伞下节点"
+    "teamNodes": "团队节点"
   }
 }

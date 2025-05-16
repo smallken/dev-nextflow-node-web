@@ -51,7 +51,7 @@
   "usdt_balance":"USDT Balance",
   "nodes_owned":"Nodes",
   "invite_friends":"Invite Friends",
-  "need_one_node_to_invite":"You need to purchase at least one node to invite friends",
+  "need_one_node_to_invite":"Purchase node to unlock invitation privileges",
   "scan_or_copy":"Scan QR code or copy the link to invite friends",
   "copy_link":"Copy Link",
   "invite_reward_desc":"Share this link with your friends. When they successfully register, you'll receive rewards.",
@@ -61,7 +61,7 @@
   "please_register_before_invite": "You need to register first before you can invite friends.",
   "go_to_register": "Go to Register",
   "node_purchase_required": "Node Purchase Required",
-  "please_purchase_node_before_invite": "You need to purchase at least one node before you can invite friends.",
+  "please_purchase_node_before_invite": "Purchase node to unlock invitation privileges",
   "go_to_purchase": "Go to Purchase",
 
   "common": {
