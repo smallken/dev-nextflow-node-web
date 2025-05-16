@@ -8,9 +8,6 @@ import { useTranslation } from 'react-i18next';
 import { useUser } from '../../context/UserContext';
 import { HomeContent } from './HomeContent';
 
-// Type assertion to ensure TypeScript recognizes this as an Ethereum address
-const defaultBindAddress = process.env.NEXT_PUBLIC_BSC_TESTNET_DEFAULT_BIND_ADDRESS as `0x${string}`
-
 export function Home() {
   const { t } = useTranslation();
 

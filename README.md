@@ -9,13 +9,13 @@ pnpm run dev
 
 1. Update wagmi.config.ts and abis files
 
-2. Genarate
+2. Update files in config directory as necessary
+
+3. Genarate
 ```sh
 pnpm wagmi generate
 
 ```
-3. update NEXT_PUBLIC_BSC_TESTNET_DEFAULT_BIND_ADDRESS
-
 
 ## Actions
 
