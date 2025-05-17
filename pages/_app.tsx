@@ -16,8 +16,8 @@ import { Notifications } from '@mantine/notifications';
 import { theme, customLightTheme, customDarkTheme } from '../theme'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { WagmiProvider } from 'wagmi'
-import { RainbowKitProvider, type Locale } from '@rainbow-me/rainbowkit'
+import { WagmiProvider, useAccount, useConnect } from 'wagmi'
+import { RainbowKitProvider, type Locale, lightTheme } from '@rainbow-me/rainbowkit'
 import { useTranslation } from 'react-i18next';
 
 import { config } from '../wagmi'
@@ -41,6 +41,7 @@ export default function App ({ Component, pageProps }: AppProps) {
             locale={currentLocale}
             theme={customLightTheme}
             modalSize="compact"
+            showRecentTransactions={true}
           >
             <UserProvider>
               <Head>
