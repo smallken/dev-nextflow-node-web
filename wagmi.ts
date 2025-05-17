@@ -1,12 +1,45 @@
 import { bsc } from 'wagmi/chains';
 import { http, createConfig } from 'wagmi';
-import { injected } from 'wagmi/connectors';
+import { connectorsForWallets } from '@rainbow-me/rainbowkit';
+import { 
+  metaMaskWallet,
+  trustWallet,
+  okxWallet,
+  injectedWallet,
+  tokenPocketWallet
+} from '@rainbow-me/rainbowkit/wallets';
 
-// We're not using RainbowKit's connectorsForWallets since we don't need WalletConnect
-// Instead, we'll use Wagmi's injected connector directly for browser wallets
+// We don't need a real projectId since we're not using WalletConnect
+const dummyProjectId = '0';
 
-// Configure injected connector for browser wallets (MetaMask, TokenPocket, Trust, OKX)
-const connectors = [injected()];
+// Configure recommended wallets: MetaMask, TokenPocket, Trust, and OKX
+// For RainbowKit v2, we call the wallets with an options object
+const walletList = [
+  {
+    groupName: 'Recommended',
+    wallets: [
+      // These are wallet connector factories that return a wallet connector function
+      metaMaskWallet,
+      tokenPocketWallet, 
+      injectedWallet
+    ]
+  },
+  {
+    groupName: 'Other',
+    wallets: [
+      trustWallet,
+      okxWallet
+      // Include the generic injected wallet for any other browser wallets
+     
+    ]
+  }
+];
+
+// Create the connectors with our wallet list
+const connectors = connectorsForWallets(walletList, {
+  projectId: dummyProjectId,
+  appName: 'FlipFlop Never Node'
+});
 
 
 // Create the Wagmi config
