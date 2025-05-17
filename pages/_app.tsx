@@ -18,6 +18,7 @@ import { theme, customLightTheme, customDarkTheme } from '../theme'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { WagmiProvider } from 'wagmi'
 import { RainbowKitProvider, type Locale } from '@rainbow-me/rainbowkit'
+import { useTranslation } from 'react-i18next';
 
 import { config } from '../wagmi'
 
@@ -27,14 +28,17 @@ import { UserProvider } from '../context/UserContext'
 const queryClient = new QueryClient()
 
 export default function App ({ Component, pageProps }: AppProps) {
-  const { locale } = useRouter() as { locale: Locale }
+  const { t, i18n } = useTranslation();
+  // Get current language from i18n and use it as locale
+  const currentLocale = i18n.language === 'en' ? 'en' : 'zh-CN';
+
   return (
     <MantineProvider theme={theme}>
       <Notifications />
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
           <RainbowKitProvider
-            locale={locale}
+            locale={currentLocale}
             theme={customLightTheme}
             modalSize="compact"
           >
