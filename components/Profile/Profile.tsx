@@ -125,7 +125,9 @@ export function Profile() {
                   </CopyButton>
                 </Group>
               ) : (
-                <Text size="xs" c="dimmed">{t('common.none')}</Text>
+                <Group wrap="nowrap" align="center" gap={4} style={{ flex: 1 }}>
+                  <Text size="xs" c="dimmed">{t('common.none')}</Text>
+                </Group>
               )}
             </Group>
             
