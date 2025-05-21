@@ -22,8 +22,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
       padding='md'
     >
       <AppShell.Header>
-        <Group h='100%' px='md' justify='space-between'>
-          <Group>
+        <Group h='100%' px='md' justify='space-between' gap='xs'>
+          <Group gap='xs'>
             <Burger
               opened={mobileOpened}
               onClick={toggleMobile}
