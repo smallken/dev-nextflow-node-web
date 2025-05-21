@@ -114,7 +114,7 @@ export function Profile() {
               {contractUserInfo?.parent && contractUserInfo?.parent !== '0x0000000000000000000000000000000000000000' ? (
                 <Group wrap="nowrap" align="center" gap={4} style={{ flex: 1 }}>
                   <Text size="xs" c="dimmed">{formatAddress(contractUserInfo.parent)}</Text>
-                  <CopyButton value={contractUserInfo.parent || ''} timeout={2000}>
+                  {/* <CopyButton value={contractUserInfo.parent || ''} timeout={2000}>
                     {({ copied, copy }) => (
                       <Tooltip label={copied ? t('common.copied') : t('common.copy')} withArrow position="top">
                         <ActionIcon variant="subtle" color={copied ? 'teal' : 'gray'} onClick={copy} size="xs">
@@ -122,7 +122,7 @@ export function Profile() {
                         </ActionIcon>
                       </Tooltip>
                     )}
-                  </CopyButton>
+                  </CopyButton> */}
                 </Group>
               ) : (
                 <Group wrap="nowrap" align="center" gap={4} style={{ flex: 1 }}>
