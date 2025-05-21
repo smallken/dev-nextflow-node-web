@@ -83,5 +83,22 @@
     "myEarnings": "Income(USDT)",
     "myFriends": "My Friends",
     "teamNodes": "Team Nodes"
+  },
+
+  "bindSolana": {
+    "title": "Bind Solana Wallet Address",
+    "currentAddress": "Current Bound Solana Address",
+    "addressLabel": "Solana Address",
+    "addressPlaceholder": "Enter your Solana wallet address",
+    "addressDescription": "Please ensure you enter the correct Solana wallet address",
+    "bindingSuccessful": "Binding Successful",
+    "bindingConfirmed": "Your Solana address has been successfully bound",
+    "updateBinding": "Update Binding",
+    "bindAddress": "Bind Address",
+    "addressRequired": "Please enter a Solana address",
+    "addressInvalid": "Invalid Solana address format",
+    "registrationRequired": "You need to register this Solana address in the FlipFlop Dapp first before binding",
+    "nodeNftRequired": "You need at least one Node NFT to bind a Solana address",
+    "checkingNftBalance": "Checking NFT balance..."
   }
 }

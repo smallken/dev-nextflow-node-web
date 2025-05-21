@@ -1,4 +1,6 @@
-import { bsc } from 'wagmi/chains'
+import { zeroAddress } from 'viem'
+import { bsc, hardhat } from 'wagmi/chains'
+
 
 type Address = `0x${string}`
 
@@ -7,6 +9,7 @@ interface ChainAddresses {
   nft: Address
   priceOracle: Address
   usdt: Address
+  bindSolana: Address
 }
 
 export const addresses: Record<number, ChainAddresses> = {
@@ -14,6 +17,10 @@ export const addresses: Record<number, ChainAddresses> = {
     "pool": "0xd0FB85E347f5894904C6592D597CBFB6222226ab" as Address,
     "nft": "0x05c0d03ca1831964f1674499F05856157d762E6C" as Address,
     "priceOracle": "0x0f143cD7b7C219b271F03a35E3BB8BC80f144Fb5" as Address,
-    "usdt": "0x55d398326f99059ff775485246999027b3197955" as Address
+    "usdt": "0x55d398326f99059ff775485246999027b3197955" as Address,
+    'bindSolana': zeroAddress // TODO update after deployment
   }
 }
+
+
+export const NODE_NFT_TOKEN_ID = BigInt(1)

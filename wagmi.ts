@@ -1,4 +1,4 @@
-import { bsc } from 'wagmi/chains';
+import { bsc, hardhat } from 'wagmi/chains';
 import { http, createConfig } from 'wagmi';
 import { connectorsForWallets } from '@rainbow-me/rainbowkit';
 import { 
@@ -44,9 +44,10 @@ const connectors = connectorsForWallets(walletList, {
 
 // Create the Wagmi config
 export const config = createConfig({
-  chains: [bsc],
+  chains: [bsc, hardhat],
   transports: {
     [bsc.id]: http(process.env.NEXT_PUBLIC_BSC_MAINNET_RPC || 'https://bsc-dataseed.binance.org'),
+    [hardhat.id]: http('http://127.0.0.1:8545')
   },
   connectors,
   ssr: true,
