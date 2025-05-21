@@ -70,7 +70,7 @@ export function Home() {
             transition: width 1.5s ease-in-out;
           }
         `}</style>
-        <Text fz="md" tt="uppercase" fw={700} c="#22d577" mb="xs">
+        <Text fz="md" fw={700} c="#22d577" mb="xs">
           {t('progress')}
         </Text>
         <Group mt="lg" justify="space-between">
