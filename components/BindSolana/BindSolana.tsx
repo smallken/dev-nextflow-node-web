@@ -332,8 +332,10 @@ export function BindSolana() {
       </div>
 
       <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
-        <Button onClick={submitBindSolana}
+        <Button
+          onClick={submitBindSolana}
           loading={field.isValidating || isWritePending || isConfirming}
+          fullWidth={isMobile}
         >
           {currentSolanaAddress ? t('bindSolana.updateBinding') : t('bindSolana.bindAddress')}
         </Button>
