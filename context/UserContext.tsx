@@ -17,9 +17,10 @@ type AppInfo = {
   price: bigint; // 节点价格（usdt计算）
 
   // NFT全局信息
-  nftCurrentTotal: bigint; // total mint of different term
+  nftCurrentTotal: bigint; // total mint of different stage
+  nftCurrentStageMinted: bigint; // total mint of this stage
   nftMintTarget: bigint; // target for the end of this loop
-  nftMintStart: bigint; // number start for a term
+  nftMintStart: bigint; // number start for a stage
   nftMintProgress: number; // 当前铸造进度百分比
   nftMintTargetAmount: bigint;
   isNftMintComplete: boolean;
@@ -150,28 +151,34 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
   // 计算NFT铸造进度
   const calculateMintProgress = () => {
-    if (nftCurrentTotal === BigInt(0)) return 0;
-    if (nftMintTarget <= BigInt(nftCurrentTotal)) return 100;
+    // 当前铸造数量和目标铸造数量
+    const currentMinted = nftCurrentTotal === BigInt(0) ? BigInt(0) : nftCurrentTotal - nftMintStart + BigInt(1);
+    const targetMinted = nftMintTarget - nftMintStart + BigInt(1);
+    
+    // 计算进度值
+    let progress = 0;
+    
+    if (nftCurrentTotal === BigInt(0)) {
+      progress = 0;
+    } else if (nftMintTarget <= BigInt(nftCurrentTotal)) {
+      progress = 100;
+    } else {
+      // 计算百分比 - Convert BigInt to number before calculation
+      const currentMintedNum = Number(currentMinted);
+      const targetMintedNum = Number(targetMinted);
+      progress = Math.round(((currentMintedNum / targetMintedNum) * 100) * 100) / 100; // Round to 2 decimal places
+      // 限制在 0-100% 范围内
+      progress = Math.max(0, Math.min(100, progress));
+    }
 
-    // 当前铸造数量
-    const currentMinted = nftCurrentTotal - nftMintStart;
-    // 目标铸造数量
-    const targetMinted = nftMintTarget - nftMintStart;
-
-    // 计算百分比 - Convert BigInt to number before calculation
-    const currentMintedNum = Number(currentMinted);
-    const targetMintedNum = Number(targetMinted);
-    let progress = Math.round(((currentMintedNum / targetMintedNum) * 100) * 100) / 100; // Round to 2 decimal places
-
-    // 限制在 0-100% 范围内
-    progress = Math.max(0, Math.min(100, progress));
-
-    return progress;
+    return { progress, currentMinted, targetMinted };
   };
 
   // 当前铸造进度百分比
-  const nftMintProgress = calculateMintProgress();
-  const nftMintTargetAmount = nftMintTarget - BigInt(nftMintStart)
+  const mintProgressResult = calculateMintProgress();
+  const nftMintProgress = mintProgressResult.progress;
+  const nftMintTargetAmount = mintProgressResult.targetMinted;
+  const nftCurrentStageMinted = mintProgressResult.currentMinted;
   const isNftMintComplete = nftMintTarget == nftCurrentTotal
 
   // Function to refresh data after transactions by refetching from the blockchain
@@ -229,6 +236,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
         setAppInfo({
           price: nftPrice,
           nftCurrentTotal,
+          nftCurrentStageMinted,
           nftMintTarget,
           nftMintStart,
           nftMintProgress,
