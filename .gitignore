@@ -132,5 +132,6 @@ dist
 .DS_Store
 
 /.vscode
+/.idea
 
 # wagmi/generated.ts

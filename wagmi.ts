@@ -1,5 +1,5 @@
-import { bsc, hardhat } from 'wagmi/chains';
 import { http, createConfig } from 'wagmi';
+import { bsc, hardhat, type Chain } from 'wagmi/chains';
 import { connectorsForWallets } from '@rainbow-me/rainbowkit';
 import { 
   metaMaskWallet,
@@ -41,10 +41,16 @@ const connectors = connectorsForWallets(walletList, {
   appName: 'FlipFlop Never Node'
 });
 
+// Define chains with proper tuple typing for Wagmi v2
+const mainnetChains = [bsc] as const satisfies readonly [Chain, ...Chain[]];
+const testnetChains = [bsc, hardhat] as const satisfies readonly [Chain, ...Chain[]];
+
+// Select appropriate chains based on environment
+const chains = process.env.NEXT_PUBLIC_ENABLE_TESTNETS === 'true' ? testnetChains : mainnetChains;
 
 // Create the Wagmi config
 export const config = createConfig({
-  chains: [bsc, hardhat],
+  chains,
   transports: {
     [bsc.id]: http(process.env.NEXT_PUBLIC_BSC_MAINNET_RPC || 'https://bsc-dataseed.binance.org'),
     [hardhat.id]: http('http://127.0.0.1:8545')
@@ -52,20 +58,3 @@ export const config = createConfig({
   connectors,
   ssr: true,
 });
-
-
-// export const config = getDefaultConfig({
-//   appName: 'FF-NODE',
-//   projectId: 'YOUR_PROJECT_ID',
-//   chains: [
-//     bsc,
-//     //bscTestnet,
-//     // ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === 'true' ? [sepolia] : []),
-//   ],
-//   ssr: true,
-//   transports: {
-//     [bsc.id]: process.env.NEXT_PUBLIC_BSC_MAINNET_RPC ? http(process.env.NEXT_PUBLIC_BSC_MAINNET_RPC) : http(),
-//     // [bscTestnet.id]: http(process.env.NEXT_PUBLIC_BSC_TESTNET_RPC),
-//   },
-
-// });
