@@ -3,9 +3,15 @@ import { Menu, ActionIcon, Image, Group } from '@mantine/core';
 import { IconLanguage, IconCheck, IconWorld } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 
+//   const languages: Language[] = ['en-US', 'ja-JP', 'es-ES', 'zh-CN', 'zh-TW', 'vi-VN'];
+
 const languages = [
   { code: 'en', name: 'English', flag: '/images/flags/en.png' },
-  { code: 'zh', name: '中文', flag: '/images/flags/zh.png' },
+  { code: 'ja', name: '日本語', flag: '/images/flags/ja.png' },
+  { code: 'es', name: 'Español', flag: '/images/flags/es.png' },
+  { code: 'zh', name: '简体中文', flag: '/images/flags/zh.png' },
+  { code: 'zh-TW', name: '繁體中文', flag: '/images/flags/zh-TW.png' },
+  { code: 'vi', name: 'Tiếng Việt', flag: '/images/flags/vi.png' },
 ];
 
 export function LanguageSwitcher() {

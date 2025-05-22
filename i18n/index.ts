@@ -5,6 +5,10 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 // Import translations directly
 import enCommon from './locales/en/common.json';
 import zhCommon from './locales/zh/common.json';
+import zhTWCommon from './locales/zh-TW/common.json';
+import jaCommon from './locales/ja/common.json';
+import esCommon from './locales/es/common.json';
+import viCommon from './locales/vi/common.json';
 
 // Resources object with all translations
 const resources = {
@@ -13,6 +17,18 @@ const resources = {
   },
   zh: {
     common: zhCommon
+  },
+  'zh-TW': {
+    common: zhTWCommon
+  },
+  ja: {
+    common: jaCommon
+  },
+  es: {
+    common: esCommon
+  },
+  vi: {
+    common: viCommon
   }
 };
 
@@ -31,7 +47,7 @@ i18n
       escapeValue: false, // not needed for react as it escapes by default
     },
     
-    supportedLngs: ['en', 'zh'],
+    supportedLngs: ['en', 'zh', 'zh-TW', 'ja', 'es', 'vi'],
     
     // default namespace used if not specified
     defaultNS: 'common',
