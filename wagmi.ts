@@ -45,8 +45,19 @@ const connectors = connectorsForWallets(walletList, {
 const mainnetChains = [bsc] as const satisfies readonly [Chain, ...Chain[]];
 const testnetChains = [bsc, hardhat] as const satisfies readonly [Chain, ...Chain[]];
 
-// Select appropriate chains based on environment
-const chains = process.env.NEXT_PUBLIC_ENABLE_TESTNETS === 'true' ? testnetChains : mainnetChains;
+// Function to check if testnet is enabled via URL parameter
+function isTestnetEnabledByUrl(): boolean {
+  // Only run in browser environment
+  if (typeof window !== 'undefined') {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('__test__') === '1';
+  }
+  return false;
+}
+
+// Select appropriate chains based on environment or URL parameter
+const isTestnetEnabled = process.env.NEXT_PUBLIC_ENABLE_TESTNETS === 'true' || isTestnetEnabledByUrl();
+const chains = isTestnetEnabled ? testnetChains : mainnetChains;
 
 // Create the Wagmi config
 export const config = createConfig({
