@@ -22,7 +22,7 @@ export function Home() {
     <>
       <Image
         h={200}
-        src="/1.jpg"
+        src="/cover-1.jpg"
       />
       <Space h="sm" />
 
