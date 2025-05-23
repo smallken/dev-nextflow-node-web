@@ -77,8 +77,8 @@ export function Home() {
           {appInfo ? (
             <>
               <Text fz="lg" fw={600}>
-                <span style={{ fontSize: '1.2em', color: '#22d577' }}>{appInfo.nftCurrentStageMinted.toString()}</span>
-                <span style={{ opacity: 0.7 }}> / {appInfo.nftMintTargetAmount.toString()}</span>
+                <span style={{ fontSize: '1.2em', color: '#22d577' }}>{appInfo.nftCurrentTotal.toString()}</span>
+                <span style={{ opacity: 0.7 }}> / {appInfo.nftMintTarget.toString()}</span>
               </Text>
               <Badge size="xl" radius="md" color="green" variant="filled" style={{ fontSize: '1em' }}>
                 {appInfo.nftMintProgress}%
