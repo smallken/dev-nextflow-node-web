@@ -330,7 +330,7 @@ export function BindSolana() {
       <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
         <Button
           onClick={submitBindSolana}
-          disabled={field.error || !field.getValue()}
+          disabled={!!field.error || !field.getValue()}
           loading={field.isValidating || isWritePending || isConfirming}
           fullWidth={isMobile}
         >
