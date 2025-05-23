@@ -39,7 +39,7 @@ export default async function handler(
       }
 
       // 检查 Solana 地址是否已注册
-      const apiUrl = `${baseUrl}/user/solana?address=${solanaAddress}`;
+      const apiUrl = `${baseUrl}/user/user?wallet_address=${solanaAddress}`;
       const response = await fetch(apiUrl, {
         method: 'GET',
         headers: {
