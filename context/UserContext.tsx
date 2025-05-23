@@ -61,6 +61,7 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 export function UserProvider({ children }: { children: ReactNode }) {
   const { address } = useAccount();
   const chainId = useChainId();
+  console.log('chainId', chainId);
   // 初始化应用全局数据状态
   const [appInfo, setAppInfo] = useState<AppInfo | null>(null);
   const [contractUserInfo, setContractUserInfo] = useState<ContractUserInfo | null>(null);
@@ -277,6 +278,14 @@ export function UserProvider({ children }: { children: ReactNode }) {
       setContractUserInfo(transformedData);
     }
   }, [userData, address, parentAddress, friendsList, nftBalance]);
+
+
+  useEffect(() => {
+    if (address) {
+      console.log('Chain ID changed, refreshing data...');
+      refreshData();
+    }
+  }, [chainId, address]); 
 
   return (
     <UserContext.Provider

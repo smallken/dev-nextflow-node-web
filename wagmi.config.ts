@@ -36,6 +36,7 @@ export default defineConfig({
       name: 'usdt',
       address: {
         [bsc.id]: addresses[bsc.id].usdt,
+        [bscTestnet.id]: addresses[bscTestnet.id].usdt,
         [hardhat.id]:localAddresses[hardhat.id].usdt,
       },
       abi: erc20Abi,
@@ -44,6 +45,7 @@ export default defineConfig({
       name: 'pool',
       address: {
         [bsc.id]: addresses[bsc.id].pool,
+        [bscTestnet.id]: addresses[bscTestnet.id].pool,
         [hardhat.id]:localAddresses[hardhat.id].pool,
 
       },
@@ -53,6 +55,7 @@ export default defineConfig({
       name: 'nodeNft',
       address: {
         [bsc.id]: addresses[bsc.id].nft,
+        [bscTestnet.id]: addresses[bscTestnet.id].nft,
         [hardhat.id]:localAddresses[hardhat.id].nft,
 
 
@@ -62,7 +65,8 @@ export default defineConfig({
     {
       name: 'bindSolana',
       address: {
-        // [bsc.id]: addresses[bsc.id].nft,
+        [bsc.id]: addresses[bsc.id].bindSolana,
+        [bscTestnet.id]: addresses[bscTestnet.id].bindSolana,
         [hardhat.id]:localAddresses[hardhat.id].bindSolana
       },
       abi: bindSolanaAbi,

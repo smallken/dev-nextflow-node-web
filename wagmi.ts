@@ -1,5 +1,5 @@
 import { http, createConfig } from 'wagmi';
-import { bsc, hardhat, type Chain } from 'wagmi/chains';
+import { bsc, hardhat, bscTestnet, type Chain } from 'wagmi/chains';
 import { connectorsForWallets } from '@rainbow-me/rainbowkit';
 import { 
   metaMaskWallet,
@@ -43,7 +43,7 @@ const connectors = connectorsForWallets(walletList, {
 
 // Define chains with proper tuple typing for Wagmi v2
 const mainnetChains = [bsc] as const satisfies readonly [Chain, ...Chain[]];
-const testnetChains = [bsc, hardhat] as const satisfies readonly [Chain, ...Chain[]];
+const testnetChains = [bsc, bscTestnet, hardhat] as const satisfies readonly [Chain, ...Chain[]];
 
 // Function to check if testnet is enabled via URL parameter
 function isTestnetEnabledByUrl(): boolean {
@@ -64,6 +64,7 @@ export const config = createConfig({
   chains,
   transports: {
     [bsc.id]: http(process.env.NEXT_PUBLIC_BSC_MAINNET_RPC || 'https://bsc-dataseed.binance.org'),
+    [bscTestnet.id]: http(process.env.NEXT_PUBLIC_BSC_TESTNET_RPC || 'https://bsc-testnet-dataseed.bnbchain.org'),
     [hardhat.id]: http('http://127.0.0.1:8545')
   },
   connectors,
