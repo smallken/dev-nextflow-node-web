@@ -44,10 +44,10 @@ export function BindSolana() {
       return t('bindSolana.addressInvalid')
     } else {
 
-    // const isUserRegistered = await checkRegistrationStatus(currentSolanaAddress);
-    // if (!isUserRegistered) {
-    //   return t('bindSolana.registrationRequired');
-    // }
+    const isUserRegistered = await checkRegistrationStatus(currentSolanaAddress);
+    if (!isUserRegistered) {
+      return t('bindSolana.registrationRequired');
+    }
     }
     return null
   }
