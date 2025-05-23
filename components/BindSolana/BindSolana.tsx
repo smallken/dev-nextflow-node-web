@@ -44,7 +44,7 @@ export function BindSolana() {
       return t('bindSolana.addressInvalid')
     } else {
 
-    const isUserRegistered = await checkRegistrationStatus(currentSolanaAddress);
+    const isUserRegistered = await checkRegistrationStatus(value);
     if (!isUserRegistered) {
       return t('bindSolana.registrationRequired');
     }
