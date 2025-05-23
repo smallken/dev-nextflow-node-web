@@ -2,15 +2,16 @@ import { useState, useEffect } from 'react';
 import { TextInput, Button, Paper, Text, Alert, rem, Loader, Tooltip, CopyButton, Box, Group } from '@mantine/core';
 import { useField } from '@mantine/form';
 import { useAccount, useChainId, useWaitForTransactionReceipt } from 'wagmi';
-import { useSimulateBindSolanaBindSolana, useWriteBindSolanaBindSolana, useReadBindSolanaGetSolanaAddress,
-useReadNodeNftBalanceOf
- } from '../../wagmi/generated';
+import {
+  useSimulateBindSolanaBindSolana, useWriteBindSolanaBindSolana, useReadBindSolanaGetSolanaAddress,
+  useReadNodeNftBalanceOf
+} from '../../wagmi/generated';
 import { IconCheck, IconX, IconCopy, IconCheck as IconCheckmark } from '@tabler/icons-react';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { notifications } from '@mantine/notifications';
 import { useTranslation } from 'react-i18next';
 import { useMediaQuery } from '@mantine/hooks';
-import { NODE_NFT_TOKEN_ID }  from '../../config/constants'
+import { NODE_NFT_TOKEN_ID } from '../../config/constants'
 
 export function BindSolana() {
   const account = useAccount();
@@ -23,7 +24,7 @@ export function BindSolana() {
   const [wasConnected, setWasConnected] = useState(false);
   const [hasNFT, setHasNFT] = useState<boolean | null>(null);
   const [checkingNFT, setCheckingNFT] = useState<boolean>(false);
-  
+
   // Function to truncate address for mobile display
   const formatAddress = (address: string) => {
     if (!address) return '';
@@ -39,15 +40,14 @@ export function BindSolana() {
     let val = null
     if (!value) {
       return t('bindSolana.addressRequired')
-    }
-    else if (!/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(value)) {
+    } else if (!/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(value)) {
       return t('bindSolana.addressInvalid')
     } else {
 
-    const isUserRegistered = await checkRegistrationStatus(value);
-    if (!isUserRegistered) {
-      return t('bindSolana.registrationRequired');
-    }
+      const isUserRegistered = await checkRegistrationStatus(value);
+      if (!isUserRegistered) {
+        return t('bindSolana.registrationRequired');
+      }
     }
     return null
   }
@@ -73,14 +73,14 @@ export function BindSolana() {
     validateOnBlur: true,
     validate: validateAsync
   });
-  
+
   // Monitor wallet connection status changes and update wasConnected when the status changes
   useEffect(() => {
     if (wasConnected && !isConnected) {
       setCurrentSolanaAddress('');
-      field.reset(); 
+      field.reset();
     }
-    
+
     setWasConnected(isConnected);
   }, [isConnected, wasConnected, field]);
 
@@ -91,7 +91,7 @@ export function BindSolana() {
       enabled: !!address,
     },
   });
-  
+
 
   // 查询当前用户拥有的NodeNFT数量
   const { data: nodeNftBalance, isLoading: isLoadingNFT, refetch: refetchNftBalance } = useReadNodeNftBalanceOf({
@@ -104,7 +104,7 @@ export function BindSolana() {
   // 更新NFT持有状态
   useEffect(() => {
     console.log('NFT Balance Effect:', { nodeNftBalance, isLoadingNFT });
-    
+
     if (nodeNftBalance !== undefined) {
       // 如果有数据，更新状态
       console.log('Setting hasNFT:', nodeNftBalance > BigInt(0));
@@ -155,7 +155,7 @@ export function BindSolana() {
     if (field.error || !field.getValue()) {
       return
     }
-    
+
     // 验证用户是否拥有足够的NodeNFT
     if (hasNFT === false) {
       notifications.show({
@@ -168,7 +168,7 @@ export function BindSolana() {
       });
       return;
     }
-    
+
     // 如果还在检查NFT余额，提示用户等待
     if (checkingNFT) {
       notifications.show({
@@ -302,7 +302,7 @@ export function BindSolana() {
             </Group>
           </Alert>
         }
-        
+
         {/* NFT余额状态提示 */}
         {address && (
           <>
@@ -310,7 +310,7 @@ export function BindSolana() {
               <Alert icon={<Loader size="sm" />} color="blue" variant="light">
                 {t('bindSolana.checkingNftBalance')}
               </Alert>
-            ) : hasNFT === false &&  (
+            ) : hasNFT === false && (
               <Alert icon={<IconX />} title={t('error_title')} color="red" variant="light">
                 {t('bindSolana.nodeNftRequired')}
               </Alert>
@@ -318,10 +318,10 @@ export function BindSolana() {
           </>
         )}
 
-        <TextInput {...field.getInputProps()} 
+        <TextInput {...field.getInputProps()}
           label={t('bindSolana.addressLabel')}
           rightSection={field.isValidating ? <Loader size={18} /> : null}
-          placeholder={t('bindSolana.addressPlaceholder')} 
+          placeholder={t('bindSolana.addressPlaceholder')}
           description={t('bindSolana.addressDescription')}
           mb="md"
         />
@@ -330,6 +330,7 @@ export function BindSolana() {
       <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
         <Button
           onClick={submitBindSolana}
+          disabled={field.error || !field.getValue()}
           loading={field.isValidating || isWritePending || isConfirming}
           fullWidth={isMobile}
         >
