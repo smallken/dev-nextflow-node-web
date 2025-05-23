@@ -310,13 +310,9 @@ export function BindSolana() {
               <Alert icon={<Loader size="sm" />} color="blue" variant="light">
                 {t('bindSolana.checkingNftBalance')}
               </Alert>
-            ) : hasNFT === false ? (
+            ) : hasNFT === false &&  (
               <Alert icon={<IconX />} title={t('error_title')} color="red" variant="light">
                 {t('bindSolana.nodeNftRequired')}
-              </Alert>
-            ) : hasNFT === true && (
-              <Alert icon={<IconCheck />} color="green" variant="light">
-                {t('bindSolana.title')}
               </Alert>
             )}
           </>
