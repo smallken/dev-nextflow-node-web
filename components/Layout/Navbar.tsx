@@ -1,5 +1,5 @@
 import { AppShell, Box, NavLink, Skeleton, Stack, Text, Group, ActionIcon, Tooltip } from '@mantine/core';
-import { IconHome2, IconUser, IconBrandTwitter, IconBrandTelegram, IconBrandGithub, IconBrandMedium } from '@tabler/icons-react';
+import { IconHome2, IconUser, IconCirclesRelation,IconNetwork, IconBrandTwitter, IconBrandTelegram, IconBrandGithub, IconBrandMedium } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -46,7 +46,7 @@ export function Navbar() {
           <NavLink
             href="/bind-solana"
             label={t('nav_bind_solana')}
-            leftSection={<IconUser size={16} stroke={1.5} />}
+            leftSection={<IconCirclesRelation size={16} stroke={1.5} />}
             active={router.pathname === '/bind-solana'}
             variant="subtle"
           />
