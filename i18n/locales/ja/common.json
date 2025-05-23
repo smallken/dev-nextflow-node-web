@@ -1,6 +1,7 @@
 {
   "home": "ホーム",
   "nav_profile": "プロフィール",
+  "nav_bind_solana": "Solanaアドレスを結合",
   "connect": "ウォレットを接続",
   "buy": "ノードNFTを購入",
   "register": "登録",

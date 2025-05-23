@@ -1,6 +1,7 @@
 {
   "home": "首頁",
   "nav_profile": "個人中心",
+  "nav_bind_solana": "綁定solana地址",
   "connect": "連接錢包",
   "buy": "認購節點",
   "register": "註冊",

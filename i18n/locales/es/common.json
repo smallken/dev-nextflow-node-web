@@ -1,6 +1,7 @@
 {
   "home": "Inicio",
   "nav_profile": "Perfil",
+  "nav_bind_solana": "Vincular Solana",
   "connect": "Conectar Billetera",
   "buy": "Comprar Nodos NFT",
   "register": "Registrarse",

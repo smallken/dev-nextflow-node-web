@@ -1,6 +1,7 @@
 {
   "home": "Home",
   "nav_profile": "Profile",
+  "nav_bind_solana": "Bind Solana",
   "connect": "Connect Wallet",
   "buy": "Mint Node NFTs",
   "register": "Register",
