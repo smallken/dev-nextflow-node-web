@@ -10,7 +10,7 @@ export const scanBaseURL: Record<number, string> = {
 }
 
 export const myIncomeLink: Record<string, string> = {
-  [bsc.id]: "https://bscscan.com/advanced-filter?txntype=2&tadd=",
+  [bsc.id]: "https://bscscan.com/advanced-filter?tadd=",
 }
 
 export const myNodeLink: Record<string, string> = {
