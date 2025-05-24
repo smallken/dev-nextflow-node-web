@@ -106,22 +106,10 @@ export function InviteModal({ opened, onClose }: InviteModalProps) {
               <Group style={{ width: '100%' }} wrap="nowrap">
                 <Box style={{ flex: 1, overflow: 'hidden' }}>
                   <Group gap={4} wrap="nowrap">
-                    {/* Beginning of URL */}
-                    <Text fw={500} style={{ fontSize: '0.9rem', whiteSpace: 'nowrap' }}>
-                      {inviteUrl.length > 30 ? inviteUrl.substring(0, 20) : inviteUrl}
+                    {/* Complete URL for easy selection/copying */}
+                    <Text fw={500} style={{ fontSize: '0.9rem', wordBreak: 'break-all' }}>
+                      {inviteUrl}
                     </Text>
-                    
-                    {/* Middle ellipsis if URL is long */}
-                    {inviteUrl.length > 30 && (
-                      <Text c="dimmed">...</Text>
-                    )}
-                    
-                    {/* End of URL */}
-                    {inviteUrl.length > 30 && (
-                      <Text fw={500} style={{ fontSize: '0.9rem', whiteSpace: 'nowrap' }}>
-                        {inviteUrl.substring(inviteUrl.length - 10)}
-                      </Text>
-                    )}
                   </Group>
                 </Box>
                 
