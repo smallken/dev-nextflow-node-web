@@ -94,7 +94,7 @@ export function Profile() {
             <Box>
               <Group justify="space-between" mb={4}>
                 <Text size="sm" c="dimmed">{t('profile.levelProgress')}</Text>
-                <Text size="sm" fw={500}>{contractUserInfo?.level}/5</Text>
+                <Text size="sm" fw={500}>L{contractUserInfo?.level}/L5</Text>
               </Group>
               <Progress
                 value={(contractUserInfo?.level ||0) * 20} /* Each level represents 20% */
