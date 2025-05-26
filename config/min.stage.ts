@@ -1,6 +1,6 @@
 
 const stage = {
-  nftMintStart: BigInt(5001),
+  nftMintStart: BigInt(1),
   nftMintTarget: BigInt(10000)
 }
 
