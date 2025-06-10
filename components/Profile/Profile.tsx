@@ -224,7 +224,7 @@ export function Profile() {
                 title={t('profile.teamNodes')} 
                 value={contractUserInfo?.teamNodeCount || 0} 
                 buttonText={t('common.details')} 
-                onClick={() => window.open(getConfigLink(chainId,"myTeamNodeLink",address), '_blank')}
+                onClick={() => window.location.href = `/team?address=${address}`}
               />
             </Grid.Col>
           </Grid>
