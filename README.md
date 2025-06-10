@@ -17,5 +17,13 @@ pnpm wagmi generate
 
 ```
 
-## Actions
+## Environment variables
+
+```sh
+# show testnets and module not published on mainnet
+NEXT_PUBLIC_ENABLE_TESTNETS=true
+
+```
+
+## online
 

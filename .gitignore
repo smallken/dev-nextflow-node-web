@@ -135,3 +135,5 @@ dist
 /.idea
 
 # wagmi/generated.ts
+
+/subgraph-info
