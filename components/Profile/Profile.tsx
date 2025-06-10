@@ -175,8 +175,8 @@ export function Profile() {
               <StatCard 
                 title={t('profile.myFriends')} 
                 value={contractUserInfo?.friends?.length  || 0} 
-                buttonText={t('common.invite')} 
-                onClick={openInviteModal}
+                buttonText={t('common.details')} 
+                onClick={() => window.location.href = '/friend-list'}
               />
             </Grid.Col>
             <Grid.Col span={6}>

@@ -86,6 +86,15 @@
     "teamNodes": "Team Nodes"
   },
 
+  "friends": {
+    "title": "My Friends",
+    "nodeCount": "Nodes",
+    "directReferrals": "Direct Referrals",
+    "noFriends": "No friends yet",
+    "inviteMessage": "Invite your friends to join and they will appear here",
+    "friendDetails": "Friend Details"
+  },
+
   "bindSolana": {
     "title": "Bind Solana Wallet Address",
     "currentAddress": "Current Bound Solana Address",
