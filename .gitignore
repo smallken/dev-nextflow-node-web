@@ -137,3 +137,4 @@ dist
 # wagmi/generated.ts
 
 /subgraph-info
+/TODO.md
