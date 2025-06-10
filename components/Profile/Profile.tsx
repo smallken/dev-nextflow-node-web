@@ -1,7 +1,7 @@
 import { Card, Text, Group, Button, Container, Stack, rem, Box, Paper, Grid, Space, Progress, CopyButton, ActionIcon, Tooltip, Divider } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { formatEther } from 'viem';
-import { IconCrown, IconChevronRight, IconCopy, IconCheck } from '@tabler/icons-react';
+import { IconCrown, IconChevronRight, IconCopy, IconCheck, IconUserPlus } from '@tabler/icons-react';
 import { useState } from 'react';
 import { useUser } from '../../context/UserContext';
 import { useTranslation } from 'react-i18next';
@@ -12,9 +12,44 @@ import { useChainId } from 'wagmi';
 
 
 // StatCard component for the four info boxes
-function StatCard({ title, value, buttonText, onClick }: { title: string; value: string | number; buttonText: string; onClick?: () => void }) {
+function StatCard({ 
+  title, 
+  value, 
+  buttonText, 
+  onClick, 
+  secondaryAction,
+  onSecondaryAction 
+}: { 
+  title: string; 
+  value: string | number; 
+  buttonText: string; 
+  onClick?: () => void;
+  secondaryAction?: boolean;
+  onSecondaryAction?: () => void; 
+}) {
+  const { t } = useTranslation();
   return (
-    <Paper radius="md" withBorder p="md" style={{ height: '100%' }}>
+    <Paper radius="md" withBorder p="md" style={{ height: '100%', position: 'relative' }}>
+      {/* Top-right corner action button */}
+      {secondaryAction && onSecondaryAction && (
+        <ActionIcon 
+          variant="light" 
+          color="green" 
+          size="md" 
+          radius="xl" 
+          onClick={onSecondaryAction}
+          title={t('common.invite')}
+          style={{ 
+            position: 'absolute', 
+            top: '8px', 
+            right: '8px',
+            zIndex: 2
+          }}
+        >
+          <IconUserPlus size={18} stroke={1.5} />
+        </ActionIcon>
+      )}
+      
       <Stack gap="xs" align="center">
         <Text c="dimmed" size="sm" ta="center">
           {title}
@@ -22,12 +57,15 @@ function StatCard({ title, value, buttonText, onClick }: { title: string; value:
         <Text fw={700} size="xl" ta="center">
           {value}
         </Text>
+        
+        {/* Main action button */}
         <Button 
           variant="filled" 
           color="#F2AE00" 
           onClick={onClick}
           rightSection={<IconChevronRight size={16} />}
           size="xs"
+          fullWidth
         >
           {buttonText}
         </Button>
@@ -177,6 +215,8 @@ export function Profile() {
                 value={contractUserInfo?.friends?.length  || 0} 
                 buttonText={t('common.details')} 
                 onClick={() => window.location.href = '/friend-list'}
+                secondaryAction={true}
+                onSecondaryAction={openInviteModal}
               />
             </Grid.Col>
             <Grid.Col span={6}>

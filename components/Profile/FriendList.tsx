@@ -1,9 +1,10 @@
-import { Card, Text, Group, Container, Stack, Paper, Badge, Modal, Button, Grid, Divider, rem, Loader, ActionIcon, CopyButton, Avatar, Tooltip } from '@mantine/core';
-import { IconUsers, IconCrown, IconCopy, IconCheck, IconArrowsMaximize, IconNfc, IconTree, IconInfoCircle, IconCoin, IconEye, IconWindow } from '@tabler/icons-react';
+import { Card, Text, Group, Container, Stack, Paper, Badge, Modal, Button, Grid, Divider, rem, Loader, ActionIcon, CopyButton, Avatar, Tooltip, Center } from '@mantine/core';
+import { IconUsers, IconCrown, IconCopy, IconCheck, IconArrowsMaximize, IconNfc, IconTree, IconInfoCircle, IconCoin, IconEye, IconWindow, IconUserPlus } from '@tabler/icons-react';
 import { useState, useEffect } from 'react';
 import { useUser } from '../../context/UserContext';
 import { useTranslation } from 'react-i18next';
 import { useDisclosure } from '@mantine/hooks';
+import { InviteModal } from '../User/InviteModal';
 import { getUserWithFriends, getAddressFromUrl, User } from '../../services/thegraph';
 import { useAccount } from 'wagmi';
 
@@ -276,9 +277,9 @@ export function FriendList() {
   const [userData, setUserData] = useState<User | null>(null);
   const [friends, setFriends] = useState<User[]>([]);
   
-  // State for friend detail modal
   const [selectedFriend, setSelectedFriend] = useState<FriendDetail | null>(null);
-  const [detailModalOpened, { open: openDetailModal, close: closeDetailModal }] = useDisclosure(false);
+  const [opened, { open: openDetailModal, close: closeDetailModal }] = useDisclosure(false);
+  const [inviteModalOpened, { open: openInviteModal, close: closeInviteModal }] = useDisclosure(false);
   
   // Fetch user data from TheGraph
   useEffect(() => {
@@ -347,21 +348,37 @@ export function FriendList() {
   }
 
   return (
-    <div style={{ background: bgColor, minHeight: '100vh', paddingBottom: rem(40) }}>
+    <div style={{ background: bgColor, minHeight: '100vh', paddingBottom: rem(20) }}>
       {/* Header */}
       <Container size="md" mt="md" mb="xl">
+        {/* Header with title, count badge and invite button */}
         <Group justify="space-between" align="center" mb="md">
-          <Text fw={700} size="xl" style={{ fontFamily: '"Pixel", monospace' }}>{t('friends.title')}</Text>
-          <Badge size="lg" radius="xl" style={{ background: '#40c057', color: 'white' }}>
-            <Group gap="xs">
-              <IconUsers size={16} />
-              {userData?.referrals?.length || 0} {t('friends.title')}
-            </Group>
-          </Badge>
+          <Group gap="md" align="center">
+            <Text fw={700} size="xl" style={{ fontFamily: '"Pixel", monospace' }}>{t('friends.title')}</Text>
+            <Badge size="lg" radius="xl" style={{ background: '#40c057', color: 'white' }}>
+              <Group gap="xs">
+                <IconUsers size={16} />
+                {userData?.referrals?.length || 0}
+              </Group>
+            </Badge>
+          </Group>
+          
+          <ActionIcon 
+            variant="light" 
+            color="green" 
+            size="lg" 
+            radius="xl" 
+            onClick={openInviteModal}
+            title={t('common.invite')}
+          >
+            <IconUserPlus size={24} stroke={1.5} />
+          </ActionIcon>
         </Group>
       </Container>
       {/* Friends list */}
+     
       <Container size="md" style={{ fontFamily: '"Pixel", monospace' }}>
+    
         {friends.length > 0 ? (
           <div>
             {friends.map((friend) => (
@@ -378,16 +395,25 @@ export function FriendList() {
             <IconUsers size={48} stroke={1.5} color="#ADB5BD" />
             <Text ta="center" size="lg" fw={500}>{t('friends.noFriends')}</Text>
             <Text ta="center" c="dimmed" size="sm">{t('friends.inviteMessage')}</Text>
+            
+            <Button
+              leftSection={<IconUserPlus size={16} />}
+              variant="filled"
+              color="#40c057"
+              mt="md"
+              onClick={openInviteModal}
+            >
+              {t('common.invite')}
+            </Button>
           </Stack>
         )}
       </Container>
       
       {/* Friend detail modal */}
-      <FriendDetailModal 
-        opened={detailModalOpened} 
-        onClose={closeDetailModal}
-        friend={selectedFriend}
-      />
+      <FriendDetailModal opened={opened} onClose={closeDetailModal} friend={selectedFriend} />
+      
+      {/* Invite Modal */}
+      <InviteModal opened={inviteModalOpened} onClose={closeInviteModal} />
     </div>
   );
 }
