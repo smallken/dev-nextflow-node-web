@@ -70,7 +70,8 @@
     "invite": "Invite",
     "copy": "Copy",
     "copied": "Copied",
-    "none": "None"
+    "none": "None",
+    "loading": "Loading..."
   },
   
   "profile": {
@@ -90,6 +91,8 @@
     "title": "My Friends",
     "nodeCount": "Nodes",
     "directReferrals": "Direct Referrals",
+    "teamNodes": "Team Nodes",
+    "income": "Income (USDT)",
     "noFriends": "No friends yet",
     "inviteMessage": "Invite your friends to join and they will appear here",
     "friendDetails": "Friend Details"
