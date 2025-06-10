@@ -71,7 +71,8 @@
     "copy": "Copy",
     "copied": "Copied",
     "none": "None",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "close": "Close"
   },
   
   "profile": {
@@ -95,7 +96,11 @@
     "income": "Income (USDT)",
     "noFriends": "No friends yet",
     "inviteMessage": "Invite your friends to join and they will appear here",
-    "friendDetails": "Friend Details"
+    "friendDetails": "Friend Details",
+    "loading": "Loading friends...",
+    "error": "Error loading friends data",
+    "vip": "VIP",
+    "level": "Level"
   },
 
   "bindSolana": {

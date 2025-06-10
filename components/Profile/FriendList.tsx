@@ -71,7 +71,7 @@ function FriendCard({ friend, friendData, onClick }: { friend: string; friendDat
               color: '#fa5252'
             }}
           >
-            VIP {friendData.vipLevel || 0}
+            {t('friends.vip')} {friendData.vipLevel || 0}
           </Badge>
           <Text size="sm" fw={500} style={{ fontFamily: '"Pixel", monospace' }}>
             {formatAddress(friend)}
@@ -206,7 +206,7 @@ function FriendDetailModal({ opened, onClose, friend }: { opened: boolean; onClo
               color: 'white'
             }}
           >
-            Level {friend.level}
+            {t('friends.level')} {friend.level}
           </Badge>
         </Group>
 
@@ -339,7 +339,7 @@ export function FriendList() {
         <Card withBorder radius="md" padding="xl">
           <Stack align="center" gap="md">
             <Loader size="md" />
-            <Text ta="center">{t('common.loading', 'Loading...')}</Text>
+            <Text ta="center" mt="xl" size="lg" c="red">{t('friends.error')}</Text>
           </Stack>
         </Card>
       </Container>
@@ -376,8 +376,8 @@ export function FriendList() {
         ) : (
           <Stack align="center" py="xl">
             <IconUsers size={48} stroke={1.5} color="#ADB5BD" />
-            <Text fw={500}>{t('friends.noFriends')}</Text>
-            <Text size="sm" c="dimmed" ta="center">{t('friends.inviteMessage')}</Text>
+            <Text ta="center" size="lg" fw={500}>{t('friends.noFriends')}</Text>
+            <Text ta="center" c="dimmed" size="sm">{t('friends.inviteMessage')}</Text>
           </Stack>
         )}
       </Container>

@@ -70,7 +70,9 @@
     "invite": "Mời",
     "copy": "Sao chép",
     "copied": "Đã sao chép",
-    "none": "Không có"
+    "none": "Không có",
+    "loading": "Đang tải...",
+    "close": "Đóng"
   },
   
   "profile": {
@@ -84,6 +86,21 @@
     "myEarnings": "Thu nhập(USDT)",
     "myFriends": "Bạn bè của tôi",
     "teamNodes": "Node của đội"
+  },
+
+  "friends": {
+    "title": "Bạn bè của tôi",
+    "nodeCount": "Node",
+    "directReferrals": "Giới thiệu trực tiếp",
+    "teamNodes": "Node của đội",
+    "income": "Thu nhập (USDT)",
+    "noFriends": "Chưa có bạn bè",
+    "inviteMessage": "Mời bạn bè tham gia và họ sẽ xuất hiện ở đây",
+    "friendDetails": "Chi tiết bạn bè",
+    "loading": "Đang tải bạn bè...",
+    "error": "Lỗi khi tải dữ liệu bạn bè",
+    "vip": "VIP",
+    "level": "Cấp độ"
   },
 
   "bindSolana": {

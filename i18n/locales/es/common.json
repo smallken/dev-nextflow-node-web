@@ -70,7 +70,9 @@
     "invite": "Invitar",
     "copy": "Copiar",
     "copied": "Copiado",
-    "none": "Ninguno"
+    "none": "Ninguno",
+    "loading": "Cargando...",
+    "close": "Cerrar"
   },
   
   "profile": {
@@ -84,6 +86,21 @@
     "myEarnings": "Ingresos(USDT)",
     "myFriends": "Mis Amigos",
     "teamNodes": "Nodos del Equipo"
+  },
+
+  "friends": {
+    "title": "Mis Amigos",
+    "nodeCount": "Nodos",
+    "directReferrals": "Referencias Directas",
+    "teamNodes": "Nodos del Equipo",
+    "income": "Ingresos (USDT)",
+    "noFriends": "Aún no hay amigos",
+    "inviteMessage": "Invita a tus amigos a unirse y aparecerán aquí",
+    "friendDetails": "Detalles del Amigo",
+    "loading": "Cargando amigos...",
+    "error": "Error al cargar datos de amigos",
+    "vip": "VIP",
+    "level": "Nivel"
   },
 
   "bindSolana": {

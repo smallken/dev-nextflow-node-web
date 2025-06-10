@@ -70,7 +70,9 @@
     "invite": "邀请",
     "copy": "复制",
     "copied": "已复制",
-    "none": "无"
+    "none": "无",
+    "loading": "加载中...",
+    "close": "关闭"
   },
   
   "profile": {
@@ -84,6 +86,21 @@
     "myEarnings": "收益(USDT)",
     "myFriends": "我的好友",
     "teamNodes": "团队节点"
+  },
+
+  "friends": {
+    "title": "我的好友",
+    "nodeCount": "节点数",
+    "directReferrals": "直接推荐",
+    "teamNodes": "团队节点",
+    "income": "收益 (USDT)",
+    "noFriends": "暂无好友",
+    "inviteMessage": "邀请你的好友加入，他们将会显示在这里",
+    "friendDetails": "好友详情",
+    "loading": "好友加载中...",
+    "error": "加载好友数据出错",
+    "vip": "VIP",
+    "level": "等级"
   },
 
   "bindSolana": {

@@ -70,7 +70,9 @@
     "invite": "招待",
     "copy": "コピー",
     "copied": "コピー済み",
-    "none": "なし"
+    "none": "なし",
+    "loading": "読み込み中...",
+    "close": "閉じる"
   },
   
   "profile": {
@@ -84,6 +86,21 @@
     "myEarnings": "収入(USDT)",
     "myFriends": "マイフレンド",
     "teamNodes": "チームノード"
+  },
+
+  "friends": {
+    "title": "マイフレンド",
+    "nodeCount": "ノード",
+    "directReferrals": "直接紹介",
+    "teamNodes": "チームノード",
+    "income": "収入 (USDT)",
+    "noFriends": "友達はまだいません",
+    "inviteMessage": "友達を招待して、ここに表示されるようにしましょう",
+    "friendDetails": "友達の詳細",
+    "loading": "友達を読み込み中...",
+    "error": "友達データの読み込みエラー",
+    "vip": "VIP",
+    "level": "レベル"
   },
 
   "bindSolana": {
