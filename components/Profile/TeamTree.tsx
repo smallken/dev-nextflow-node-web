@@ -9,17 +9,23 @@ import { getAddressFromUrl, User } from '../../services/thegraph';
 import { graphClient } from '../../services/thegraph';
 import { gql } from 'graphql-request';
 import { UserDetailModal, UserDetail } from '../../components/User/UserDetailModal';
+import { formatEther } from 'viem';
 
 // Query to get a user's direct referrals
 const GET_USER_REFERRALS = gql`
   query GetUserReferrals($userId: String!) {
     user(id: $userId) {
       id
+      vipLevel
+      nodePurchasedTotal
+      childrenAmountIn10Levels
+      income
       referrals {
         id
         vipLevel
         nodePurchasedTotal
         childrenAmountIn10Levels
+        income
         referrals {
           id
         }
@@ -88,7 +94,7 @@ function TeamNode({ member, level = 0, maxLevel = 3 }: { member: User; level: nu
       nodeCount: member.nodePurchasedTotal,
       directReferrals: member.referrals?.length || 0,
       teamNodesCount: member.childrenAmountIn10Levels,
-      income: '0' // 这里可能需要从API获取
+      income: formatEther(BigInt(member.income || 0)).toString() 
     });
     setModalOpened(true);
   };
@@ -109,10 +115,10 @@ function TeamNode({ member, level = 0, maxLevel = 3 }: { member: User; level: nu
         shadow="sm" 
         padding={4} 
         style={{ overflow: 'visible', cursor: 'pointer' }} 
-        onClick={openUserDetail} // 卡片整体可点击以打开详情
+        onClick={openUserDetail} 
       >
         <Group justify="space-between" align="center" wrap="nowrap" style={{ minHeight: '32px' }}>
-          <Group gap="xs" wrap="nowrap" style={{ flex: 1, overflow: 'hidden' }}>
+          <Group gap="xs" wrap="nowrap" style={{ flex: 1, overflow: 'hidden'}}>
             {hasChildren && (
               <ActionIcon 
                 size="sm" 
@@ -279,7 +285,7 @@ function TeamTreeComponent() {
           </Badge>
         </Group>
         
-        <Tooltip label={t('team.refresh')} withArrow position="left">
+        {/* <Tooltip label={t('team.refresh')} withArrow position="left">
           <ActionIcon 
             variant="light" 
             style={{ color: colors.secondary }} 
@@ -289,11 +295,11 @@ function TeamTreeComponent() {
           >
             <IconRefresh size={24} stroke={1.5} />
           </ActionIcon>
-        </Tooltip>
+        </Tooltip> */}
       </Group>
       
       {/* Team header with root user info */}
-      <Card shadow="sm" withBorder mb="md">
+      {/* <Card shadow="sm" withBorder mb="md">
         <Group justify="space-between" align="center">
           <Stack gap="xs">
             <Text size="lg" fw={700}>{t('team.title', 'My Team')}</Text>
@@ -316,7 +322,7 @@ function TeamTreeComponent() {
             </ActionIcon>
           </Group>
         </Group>
-      </Card>
+      </Card> */}
       
       {/* Team tree with fixed width container */}
       {members.length > 0 ? (
