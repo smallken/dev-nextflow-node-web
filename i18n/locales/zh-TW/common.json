@@ -89,18 +89,31 @@
   },
 
   "friends": {
-    "title": "我的好友",
+    "title": "我的朋友",
     "nodeCount": "節點數",
     "directReferrals": "直接推薦",
     "teamNodes": "團隊節點",
     "income": "收益 (USDT)",
-    "noFriends": "暫無好友",
-    "inviteMessage": "邀請你的好友加入，他們將會顯示在這裡",
-    "friendDetails": "好友詳情",
-    "loading": "好友加載中...",
-    "error": "加載好友數據出錯",
+    "noFriends": "暫無朋友",
+    "inviteMessage": "邀請你的朋友加入，他們將會顯示在這裡",
+    "friendDetails": "朋友詳情",
+    "loading": "朋友加載中...",
+    "error": "加載朋友數據出錯",
     "vip": "VIP",
     "level": "等級"
+  },
+
+  "team": {
+    "title": "我的團隊",
+    "loading": "正在加載團隊數據...",
+    "error": "錯誤",
+    "userNotFound": "未找到用戶數據",
+    "refresh": "刷新",
+    "loadingError": "加載團隊成員出錯",
+    "noMembers": "未找到團隊成員",
+    "emptyTeam": "該用戶暫無團隊成員",
+    "viewDetails": "查看詳情",
+    "vipPrefix": "VIP"
   },
 
   "bindSolana": {

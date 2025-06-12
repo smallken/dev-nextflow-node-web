@@ -89,18 +89,31 @@
   },
 
   "friends": {
-    "title": "マイフレンド",
-    "nodeCount": "ノード",
+    "title": "友達",
+    "nodeCount": "ノード数",
     "directReferrals": "直接紹介",
     "teamNodes": "チームノード",
     "income": "収入 (USDT)",
-    "noFriends": "友達はまだいません",
-    "inviteMessage": "友達を招待して、ここに表示されるようにしましょう",
-    "friendDetails": "友達の詳細",
+    "noFriends": "まだ友達がいません",
+    "inviteMessage": "友達を招待すると、ここに表示されます",
+    "friendDetails": "友達詳細",
     "loading": "友達を読み込み中...",
     "error": "友達データの読み込みエラー",
     "vip": "VIP",
     "level": "レベル"
+  },
+
+  "team": {
+    "title": "チーム",
+    "loading": "チームデータを読み込み中...",
+    "error": "エラー",
+    "userNotFound": "ユーザーデータが見つかりません",
+    "refresh": "更新",
+    "loadingError": "メンバーの読み込みエラー",
+    "noMembers": "チームメンバーが見つかりません",
+    "emptyTeam": "このユーザーにはまだチームメンバーがいません",
+    "viewDetails": "詳細を表示",
+    "vipPrefix": "VIP"
   },
 
   "bindSolana": {

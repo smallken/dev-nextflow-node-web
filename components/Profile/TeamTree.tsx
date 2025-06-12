@@ -103,7 +103,7 @@ function TeamNode({ member, level = 0, maxLevel = 3 }: { member: User; level: nu
   
   return (
     <Box style={containerStyles} mb={4}>
-      {/* 简化为单行的节点显示 */}
+      {/* Simplified single-line node display */}
       <Card 
         withBorder 
         shadow="sm" 
@@ -117,7 +117,7 @@ function TeamNode({ member, level = 0, maxLevel = 3 }: { member: User; level: nu
               <ActionIcon 
                 size="sm" 
                 onClick={(e) => {
-                  e.stopPropagation(); // 防止触发卡片的点击事件
+                  e.stopPropagation(); // Prevent triggering the card's click event
                   toggleExpand();
                 }} 
                 variant="subtle"
@@ -126,7 +126,7 @@ function TeamNode({ member, level = 0, maxLevel = 3 }: { member: User; level: nu
               </ActionIcon>
             )}
             <Text size="xs" fw={500} lineClamp={1}>{formatAddress(member.id)}</Text>
-            <Badge size="xs" variant="filled" style={{ ...styles.vipBadge(member.vipLevel || 0), whiteSpace: 'nowrap' }}>VIP {member.vipLevel || 0}</Badge>
+            <Badge size="xs" variant="filled" style={{ ...styles.vipBadge(member.vipLevel || 0), whiteSpace: 'nowrap' }}>{t('team.vipPrefix')} {member.vipLevel || 0}</Badge>
           </Group>
           
           <Group gap={6} wrap="nowrap">
@@ -138,7 +138,7 @@ function TeamNode({ member, level = 0, maxLevel = 3 }: { member: User; level: nu
         </Group>
       </Card>
       
-      {/* 显示子节点 */}
+      {/* Display child nodes */}
       <Collapse in={expanded}>
         {loading ? (
           <div style={{ padding: '4px 0', textAlign: 'center' }}>
@@ -157,7 +157,7 @@ function TeamNode({ member, level = 0, maxLevel = 3 }: { member: User; level: nu
         ) : null}
       </Collapse>
 
-      {/* 用户详情模态框 */}
+      {/* User detail modal */}
       <UserDetailModal
         opened={modalOpened}
         onClose={() => setModalOpened(false)}
@@ -300,7 +300,7 @@ function TeamTreeComponent() {
             <Group align="center" gap="xs">
               <Text size="sm">{rootUser ? formatAddress(rootUser.id) : ''}</Text>
               {rootUser ? (
-                <Badge size="sm" variant="filled" style={styles.vipBadge(rootUser.vipLevel || 0)}>VIP {rootUser.vipLevel || 0}</Badge>
+                <Badge size="sm" variant="filled" style={styles.vipBadge(rootUser.vipLevel || 0)}>{t('team.vipPrefix')} {rootUser.vipLevel || 0}</Badge>
               ) : null}
             </Group>
           </Stack>

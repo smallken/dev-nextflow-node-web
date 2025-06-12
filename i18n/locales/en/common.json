@@ -103,6 +103,19 @@
     "level": "Level"
   },
 
+  "team": {
+    "title": "My Team",
+    "loading": "Loading team data...",
+    "error": "Error",
+    "userNotFound": "User data not found",
+    "refresh": "Refresh",
+    "loadingError": "Error loading members",
+    "noMembers": "No team members found",
+    "emptyTeam": "This user has no team members yet",
+    "viewDetails": "View Details",
+    "vipPrefix": "VIP"
+  },
+
   "bindSolana": {
     "title": "Bind Solana Wallet Address",
     "currentAddress": "Current Bound Solana Address",

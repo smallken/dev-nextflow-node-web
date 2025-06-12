@@ -89,18 +89,31 @@
   },
 
   "friends": {
-    "title": "Bạn bè của tôi",
+    "title": "Bạn Bè Của Tôi",
     "nodeCount": "Node",
-    "directReferrals": "Giới thiệu trực tiếp",
-    "teamNodes": "Node của đội",
-    "income": "Thu nhập (USDT)",
+    "directReferrals": "Giới Thiệu Trực Tiếp",
+    "teamNodes": "Node Nhóm",
+    "income": "Thu Nhập (USDT)",
     "noFriends": "Chưa có bạn bè",
     "inviteMessage": "Mời bạn bè tham gia và họ sẽ xuất hiện ở đây",
-    "friendDetails": "Chi tiết bạn bè",
+    "friendDetails": "Chi Tiết Bạn Bè",
     "loading": "Đang tải bạn bè...",
     "error": "Lỗi khi tải dữ liệu bạn bè",
     "vip": "VIP",
     "level": "Cấp độ"
+  },
+
+  "team": {
+    "title": "Nhóm Của Tôi",
+    "loading": "Đang tải dữ liệu nhóm...",
+    "error": "Lỗi",
+    "userNotFound": "Không tìm thấy dữ liệu người dùng",
+    "refresh": "Làm mới",
+    "loadingError": "Lỗi khi tải thành viên",
+    "noMembers": "Không tìm thấy thành viên nhóm",
+    "emptyTeam": "Người dùng này chưa có thành viên nhóm",
+    "viewDetails": "Xem Chi Tiết",
+    "vipPrefix": "VIP"
   },
 
   "bindSolana": {

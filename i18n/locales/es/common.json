@@ -103,6 +103,19 @@
     "level": "Nivel"
   },
 
+  "team": {
+    "title": "Mi Equipo",
+    "loading": "Cargando datos del equipo...",
+    "error": "Error",
+    "userNotFound": "Datos de usuario no encontrados",
+    "refresh": "Actualizar",
+    "loadingError": "Error al cargar miembros",
+    "noMembers": "No se encontraron miembros del equipo",
+    "emptyTeam": "Este usuario aún no tiene miembros en su equipo",
+    "viewDetails": "Ver Detalles",
+    "vipPrefix": "VIP"
+  },
+
   "bindSolana": {
     "title": "Vincular Dirección de Billetera Solana",
     "currentAddress": "Dirección Solana Actualmente Vinculada",

@@ -103,6 +103,19 @@
     "level": "等级"
   },
 
+  "team": {
+    "title": "我的团队",
+    "loading": "正在加载团队数据...",
+    "error": "错误",
+    "userNotFound": "未找到用户数据",
+    "refresh": "刷新",
+    "loadingError": "加载团队成员出错",
+    "noMembers": "未找到团队成员",
+    "emptyTeam": "该用户暂无团队成员",
+    "viewDetails": "查看详情",
+    "vipPrefix": "VIP"
+  },
+
   "bindSolana": {
     "title": "绑定Solana钱包地址",
     "currentAddress": "当前绑定的Solana地址",
