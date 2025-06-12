@@ -255,7 +255,7 @@ function TeamTreeComponent() {
       <Container size="md" py="xl">
         <Card withBorder radius="md" padding="xl">
           <Stack align="center" gap="md">
-            <Text ta="center" fw={500} size="lg" c="red">{t('team.error')}</Text>
+            {/* <Text ta="center" fw={500} size="lg" c="red">{t('team.error')}</Text> */}
             <Text ta="center" size="sm" c="dimmed">{t('team.userNotFound')}</Text>
           </Stack>
         </Card>

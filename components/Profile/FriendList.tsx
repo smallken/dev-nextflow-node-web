@@ -9,6 +9,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { InviteModal } from '../User/InviteModal';
 import { getUserWithFriends, getAddressFromUrl, User } from '../../services/thegraph';
 import { useAccount } from 'wagmi';
+import { formatEther } from 'viem';
 
 // Type for friend details
 interface FriendDetail {
@@ -321,7 +322,7 @@ function FriendListComponent() {
         directReferrals: friendData.referrals?.length || 0,
         level: friendData.vipLevel || 0,
         teamNodesCount: friendData.childrenAmountIn10Levels || 0,
-        income: '120.45' // Placeholder - replace with real income data when available
+        income: formatEther(BigInt(friendData.income || 0)).toString() // Placeholder - replace with real income data when available
       });
       openDetailModal();
     }
@@ -345,7 +346,7 @@ function FriendListComponent() {
         <Card withBorder radius="md" padding="xl">
           <Stack align="center" gap="md">
             <Loader size="md" />
-            <Text ta="center" mt="xl" size="lg" c="red">{t('friends.error')}</Text>
+            <Text ta="center" mt="xl" size="lg" c="green">{t('common.loading')}</Text>
           </Stack>
         </Card>
       </Container>

@@ -13,18 +13,20 @@ export const GET_USER_WITH_FRIENDS = gql`
   query GetUserWithFriends($userId: String!) {
     user(id: $userId) {
       id
+      vipLevel
+      nodePurchasedTotal
+      childrenAmountIn10Levels
+      income
       referrals {
         id
         vipLevel
         nodePurchasedTotal
         childrenAmountIn10Levels
+        income
         referrals {
           id
         }
       }
-      vipLevel
-      nodePurchasedTotal
-      childrenAmountIn10Levels
     }
   }
 `;
@@ -37,6 +39,7 @@ export interface User {
   vipLevel: number;
   nodePurchasedTotal: string;
   childrenAmountIn10Levels: number;
+  income: string;
 }
 
 // Function to fetch user data with friends
