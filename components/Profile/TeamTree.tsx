@@ -1,4 +1,5 @@
 import { Container, Text, Card, Stack, Loader, Group, Badge, ActionIcon, Tooltip, Collapse, Button, Box, Grid } from '@mantine/core';
+import dynamic from 'next/dynamic';
 import { IconUsers, IconTree, IconRefresh, IconNfc, IconCloudOff, IconChevronDown, IconChevronRight, IconInfoCircle } from '@tabler/icons-react';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -165,7 +166,18 @@ function TeamNode({ member, level = 0, maxLevel = 3 }: { member: User; level: nu
   );
 }
 
+// Create a client-only version of the TeamTree component to avoid hydration issues
+const TeamTreeClient = dynamic(() => Promise.resolve(TeamTreeComponent), {
+  ssr: false
+});
+
+// Export the client-side only version
 export function TeamTree() {
+  return <TeamTreeClient />;
+}
+
+// Main implementation of the component
+function TeamTreeComponent() {
   const { t } = useTranslation();
   const { address: connectedAddress } = useAccount();
   
