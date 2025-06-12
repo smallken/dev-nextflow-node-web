@@ -1,5 +1,6 @@
 import { Container, Text, Card, Stack, Loader, Group, Badge, ActionIcon, Tooltip, Collapse, Button, Box, Grid } from '@mantine/core';
 import dynamic from 'next/dynamic';
+import { colors, styles, vipColors } from '../../theme';
 import { IconUsers, IconTree, IconRefresh, IconNfc, IconCloudOff, IconChevronDown, IconChevronRight, IconInfoCircle } from '@tabler/icons-react';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -125,7 +126,7 @@ function TeamNode({ member, level = 0, maxLevel = 3 }: { member: User; level: nu
               </ActionIcon>
             )}
             <Text size="xs" fw={500} lineClamp={1}>{formatAddress(member.id)}</Text>
-            <Badge size="xs" variant="filled" color="blue" style={{ whiteSpace: 'nowrap' }}>VIP {member.vipLevel || 0}</Badge>
+            <Badge size="xs" variant="filled" style={{ ...styles.vipBadge(member.vipLevel || 0), whiteSpace: 'nowrap' }}>VIP {member.vipLevel || 0}</Badge>
           </Group>
           
           <Group gap={6} wrap="nowrap">
@@ -270,7 +271,7 @@ function TeamTreeComponent() {
           <Text fw={700} size="xl" style={{ fontFamily: '"Pixel", monospace' }}>
             {t('team.title')}
           </Text>
-          <Badge size="lg" radius="xl" style={{ background: '#40c057', color: 'white' }}>
+          <Badge size="lg" radius="xl" style={{ background: colors.secondary, color: 'white' }}>
             <Group gap="xs">
               <IconTree size={16} />
               {rootUser?.childrenAmountIn10Levels || 0}
@@ -281,7 +282,7 @@ function TeamTreeComponent() {
         <Tooltip label={t('team.refresh')} withArrow position="left">
           <ActionIcon 
             variant="light" 
-            color="green" 
+            style={{ color: colors.secondary }} 
             size="lg" 
             radius="xl" 
             onClick={() => window.location.reload()}
@@ -299,7 +300,7 @@ function TeamTreeComponent() {
             <Group align="center" gap="xs">
               <Text size="sm">{rootUser ? formatAddress(rootUser.id) : ''}</Text>
               {rootUser ? (
-                <Badge size="sm" variant="filled" color="blue">VIP {rootUser.vipLevel || 0}</Badge>
+                <Badge size="sm" variant="filled" style={styles.vipBadge(rootUser.vipLevel || 0)}>VIP {rootUser.vipLevel || 0}</Badge>
               ) : null}
             </Group>
           </Stack>
@@ -307,7 +308,7 @@ function TeamTreeComponent() {
           <Group gap="sm">
             <ActionIcon 
               variant="light" 
-              color="blue" 
+              style={{ color: colors.info }} 
               title={t('common.refresh', 'Refresh')} 
               onClick={() => window.location.reload()}
             >

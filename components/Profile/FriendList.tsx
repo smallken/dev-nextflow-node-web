@@ -1,5 +1,6 @@
 import { Card, Text, Group, Container, Stack, Paper, Badge, Modal, Button, Grid, Divider, rem, Loader, ActionIcon, CopyButton, Avatar, Tooltip, Center } from '@mantine/core';
 import dynamic from 'next/dynamic';
+import { colors, styles, vipColors } from '../../theme';
 import { IconUsers, IconCrown, IconCopy, IconCheck, IconArrowsMaximize, IconNfc, IconTree, IconInfoCircle, IconCoin, IconEye, IconWindow, IconUserPlus } from '@tabler/icons-react';
 import { useState, useEffect } from 'react';
 import { useUser } from '../../context/UserContext';
@@ -64,14 +65,9 @@ function FriendCard({ friend, friendData, onClick }: { friend: string; friendDat
         <Group gap="xs">
           <Badge 
             size="sm"
-            variant="dot"
-            color="red"
+            variant="filled"
             radius="xl"
-            style={{ 
-              fontFamily: '"Pixel", monospace',
-              background: 'white',
-              color: '#fa5252'
-            }}
+            style={styles.vipBadge(friendData.vipLevel || 0)}
           >
             {t('friends.vip')} {friendData.vipLevel || 0}
           </Badge>
@@ -203,10 +199,7 @@ function FriendDetailModal({ opened, onClose, friend }: { opened: boolean; onClo
           <Badge 
             leftSection={<IconCrown size={14} />}
             size="lg"
-            style={{ 
-              background: 'linear-gradient(135deg, #F2AE00, #FFD700)',
-              color: 'white'
-            }}
+            style={styles.vipBadge(friend.level || 0)}
           >
             {t('friends.level')} {friend.level}
           </Badge>
@@ -367,7 +360,7 @@ function FriendListComponent() {
         <Group justify="space-between" align="center" mb="md">
           <Group gap="md" align="center">
             <Text fw={700} size="xl" style={{ fontFamily: '"Pixel", monospace' }}>{t('friends.title')}</Text>
-            <Badge size="lg" radius="xl" style={{ background: '#40c057', color: 'white' }}>
+            <Badge size="lg" radius="xl" style={{ background: colors.secondary, color: 'white' }}>
               <Group gap="xs">
                 <IconUsers size={16} />
                 {userData?.referrals?.length || 0}

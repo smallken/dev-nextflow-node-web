@@ -2,6 +2,7 @@ import { Modal, Text, Group, ActionIcon, CopyButton, Badge, Divider, Grid, Stack
 import { IconArrowsMaximize, IconCheck, IconCoin, IconCopy, IconCrown, IconNfc, IconTree, IconUsers } from '@tabler/icons-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { colors, styles, vipColors } from '../../theme';
 
 // Helper function to format wallet address for display
 function formatAddress(address: string | undefined): string {
@@ -43,7 +44,7 @@ export function UserDetailModal({
       radius="md"
       transitionProps={{ transition: 'slide-up' }}
       styles={{
-        header: { background: '#f8f9fa', display: 'flex', justifyContent: 'center' },
+        header: { background: colors.background, display: 'flex', justifyContent: 'center' },
         title: { width: '100%', textAlign: 'center' },
         body: { padding: '0 !important' },
         content: { 
@@ -74,7 +75,7 @@ export function UserDetailModal({
                 <CopyButton value={user.address} timeout={2000}>
                   {({ copied, copy }) => (
                     <ActionIcon 
-                      color={copied ? 'teal' : 'gray'}
+                      color={copied ? colors.success : colors.textSecondary}
                       variant="subtle"
                       onClick={copy}
                     >
@@ -96,7 +97,7 @@ export function UserDetailModal({
                 <CopyButton value={user.address} timeout={2000}>
                   {({ copied, copy }) => (
                     <ActionIcon 
-                      color={copied ? 'teal' : 'gray'}
+                      color={copied ? colors.success : colors.textSecondary}
                       variant="subtle"
                       onClick={copy}
                     >
@@ -113,10 +114,7 @@ export function UserDetailModal({
           <Badge 
             leftSection={<IconCrown size={14} />}
             size="lg"
-            style={{ 
-              background: 'linear-gradient(135deg, #F2AE00, #FFD700)',
-              color: 'white'
-            }}
+            style={styles.vipBadge(user.level || 0)}
           >
             {t('friends.level')} {user.level || 0}
           </Badge>
@@ -164,7 +162,7 @@ export function UserDetailModal({
           </Grid.Col>
         </Grid>
         
-        <Button fullWidth style={{ background: '#F2AE00' }} onClick={onClose} mt="md">
+        <Button fullWidth style={styles.primaryButton} onClick={onClose} mt="md">
           {t('common.close')}
         </Button>
       </div>

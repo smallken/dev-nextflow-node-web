@@ -1,5 +1,6 @@
 import { Card, Text, Group, Button, Container, Stack, rem, Box, Paper, Grid, Space, Progress, CopyButton, ActionIcon, Tooltip, Divider } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { colors, styles, vipColors } from '../../theme';
 import { formatEther } from 'viem';
 import { IconCrown, IconChevronRight, IconCopy, IconCheck, IconUserPlus } from '@tabler/icons-react';
 import { useState } from 'react';
@@ -34,7 +35,6 @@ function StatCard({
       {secondaryAction && onSecondaryAction && (
         <ActionIcon 
           variant="light" 
-          color="green" 
           size="md" 
           radius="xl" 
           onClick={onSecondaryAction}
@@ -43,7 +43,8 @@ function StatCard({
             position: 'absolute', 
             top: '8px', 
             right: '8px',
-            zIndex: 2
+            zIndex: 2,
+            color: colors.secondary
           }}
         >
           <IconUserPlus size={18} stroke={1.5} />
@@ -61,11 +62,11 @@ function StatCard({
         {/* Main action button */}
         <Button 
           variant="filled" 
-          color="#F2AE00" 
           onClick={onClick}
           rightSection={<IconChevronRight size={16} />}
           size="xs"
           fullWidth
+          style={styles.primaryButton}
         >
           {buttonText}
         </Button>
@@ -113,9 +114,9 @@ export function Profile() {
           <Group justify="space-between" mb="sm">
             <Text fw={700} size="lg">{t('profile.userInfo')}</Text>
             <Box 
-              style={{ 
-                background: 'linear-gradient(135deg, #F2AE00, #FFD700)',
-                borderRadius: '20px',
+              style={{
+                background: vipColors[(contractUserInfo?.level || 0) as keyof typeof vipColors] || vipColors[0],
+                borderRadius: '4px',
                 padding: '4px 12px',
                 boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
               }}
@@ -138,7 +139,7 @@ export function Profile() {
                 value={(contractUserInfo?.level ||0) * 20} /* Each level represents 20% */
                 size="md"
                 radius="xl"
-                color="#F2AE00"
+                color={colors.primary}
               />
             </Box>
 
