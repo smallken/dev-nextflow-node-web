@@ -137,7 +137,7 @@ function TeamNode({ member, level = 0, maxLevel = 3 }: { member: User; level: nu
           
           <Group gap={6} wrap="nowrap">
             <Group gap={4} wrap="nowrap">
-              <IconNfc size={12} />
+              <IconUsers size={12} />
               <Text size="xs">{member.childrenAmountIn10Levels || 0}</Text>
             </Group>
           </Group>
