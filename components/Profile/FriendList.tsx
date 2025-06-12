@@ -1,4 +1,5 @@
 import { Card, Text, Group, Container, Stack, Paper, Badge, Modal, Button, Grid, Divider, rem, Loader, ActionIcon, CopyButton, Avatar, Tooltip, Center } from '@mantine/core';
+import dynamic from 'next/dynamic';
 import { IconUsers, IconCrown, IconCopy, IconCheck, IconArrowsMaximize, IconNfc, IconTree, IconInfoCircle, IconCoin, IconEye, IconWindow, IconUserPlus } from '@tabler/icons-react';
 import { useState, useEffect } from 'react';
 import { useUser } from '../../context/UserContext';
@@ -261,7 +262,18 @@ function FriendDetailModal({ opened, onClose, friend }: { opened: boolean; onClo
   );
 }
 
+// Create a client-only version of the FriendList component to avoid hydration issues
+const FriendListClient = dynamic(() => Promise.resolve(FriendListComponent), {
+  ssr: false
+});
+
+// Export the client-side only version
 export function FriendList() {
+  return <FriendListClient />;
+}
+
+// Main implementation of the component
+function FriendListComponent() {
   const { t } = useTranslation();
   // Use wagmi to get connected wallet address
   const { address: connectedAddress } = useAccount();
