@@ -2,7 +2,8 @@ import { Container, Text, Card, Stack, Loader, Group, Badge, ActionIcon, Tooltip
 import { Tree, TreeNodeData, useTree } from '@mantine/core';
 import dynamic from 'next/dynamic';
 import { colors, styles, vipColors } from '../../theme';
-import { IconUsers, IconTree, IconRefresh, IconNfc, IconCloudOff, IconInfoCircle, IconEye } from '@tabler/icons-react';
+import { IconUsers, IconTree, IconRefresh, IconNfc, IconCloudOff, IconInfoCircle, IconEye, 
+  IconChevronRight, IconChevronDown, IconFile, IconFolder, IconFolderOpen } from '@tabler/icons-react';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAccount } from 'wagmi';
@@ -52,11 +53,12 @@ interface ExtendedTreeNodeData extends TreeNodeData {
   userData?: TeamNodeData;
 }
 
-// Function to create a tree node label component
-function TreeNodeLabel({ node }: { node: TeamNodeData }) {
+// Custom component for tree node with icons based on node type and state
+function TreeNodeLabel({ node, expandedState }: { node: TeamNodeData, expandedState: Record<string, boolean> }) {
   const { t } = useTranslation();
   const [modalOpened, setModalOpened] = useState(false);
   const [selectedUser, setSelectedUser] = useState<UserDetail | null>(null);
+  const isExpanded = expandedState[node.id];
 
   const openUserDetail = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -70,23 +72,38 @@ function TreeNodeLabel({ node }: { node: TeamNodeData }) {
     });
     setModalOpened(true);
   };
+  
+  // Determine which icon to show based on node type and expand state
+  const nodeIcon = node.hasChildren
+    ? isExpanded
+      ? <IconFolderOpen size={18} color="#228be6" />
+      : <IconFolder size={18} color="#228be6" />
+    : <IconFile size={18} color="#868e96" />;
+
+  // Determine expand/collapse arrow icon
+  const expandIcon = node.hasChildren
+    ? isExpanded
+      ? <IconChevronDown size={14} />
+      : <IconChevronRight size={14} />
+    : null;
 
   return (
     <>
-      <Group justify="space-between" align="center" wrap="nowrap" style={{ minHeight: '32px', width: '100%' }}>
+      <Group justify="space-between" align="center" wrap="nowrap" style={{ minHeight: '28px', width: '100%', padding: '0 4px' }}>
         <Group gap="xs" wrap="nowrap" style={{ flex: 1, overflow: 'hidden'}}>
+          {nodeIcon}
           <Text size="xs" fw={500} lineClamp={1}>{formatAddress(node.id)}</Text>
           <Badge size="xs" variant="filled" style={{ ...styles.vipBadge(node.vipLevel || 0), whiteSpace: 'nowrap' }}>{t('team.vipPrefix')} {node.vipLevel || 0}</Badge>
         </Group>
         
-        <Group gap={6} wrap="nowrap">
+        <Group gap={8} wrap="nowrap">
           <Group gap={4} wrap="nowrap">
             <IconUsers size={12} />
             <Text size="xs">{node.childrenAmountIn10Levels || 0}</Text>
           </Group>
           
           <ActionIcon 
-            variant="light"
+            variant="subtle"
             color="gray"
             radius="xl"
             size="xs"
@@ -142,7 +159,7 @@ function TeamTree2Component() {
     
     return {
       value: user.id,
-      label: <TreeNodeLabel node={{ ...user, hasChildren }} />,
+      label: <TreeNodeLabel node={{ ...user, hasChildren }} expandedState={tree.expandedState} />,
       userData: { ...user, hasChildren },
       // If there are children but not loaded yet, set empty array to allow lazy loading
       children: hasChildren ? [] : undefined
@@ -179,6 +196,27 @@ function TeamTree2Component() {
     
     fetchRootUser();
   }, [effectiveAddress]);
+
+  // Effect to update nodes when tree.expandedState changes
+  useEffect(() => {
+    // When tree state is updated, remap the nodes to refresh their labels with new expanded state
+    setTreeData(prevData => {
+      // Deep clone and update all node labels
+      const updateNodeLabels = (nodes: ExtendedTreeNodeData[]): ExtendedTreeNodeData[] => {
+        return nodes.map(node => {
+          const userData = node.userData;
+          return {
+            ...node,
+            label: <TreeNodeLabel node={userData!} expandedState={tree.expandedState} />,
+            // Recursively update child nodes if they exist
+            children: node.children ? updateNodeLabels(node.children) : undefined
+          };
+        });
+      };
+      
+      return updateNodeLabels(prevData);
+    });
+  }, [tree.expandedState]);
 
   // Handle node expansion for lazy loading
   async function handleNodeExpand(nodeValue: string) {
@@ -318,21 +356,21 @@ function TeamTree2Component() {
             <Tree
               data={treeData}
               tree={tree}
-              styles={{
+              styles={(theme) => ({
                 root: {
-                  '--mantine-tree-item-padding-left': '16px',
+                  '--mantine-tree-item-padding-left': '16px'
                 },
                 node: {
                   marginBottom: '4px',
-                  border: '1px solid #dee2e6',
                   borderRadius: '4px',
-                  padding: '4px',
-                  backgroundColor: 'white'
+                  padding: '2px 0',
+                  backgroundColor: 'transparent'
                 },
                 label: {
-                  width: '100%'
+                  width: '100%',
+                  paddingLeft: '8px' // Add padding to align the icon and text better
                 }
-              }}
+              })}
             />
             {Object.keys(loadingNodes).length > 0 && (
               <Box style={{ position: 'absolute', top: '10px', right: '10px' }}>
