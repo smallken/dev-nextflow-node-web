@@ -1,7 +1,7 @@
-import { TeamTree2 } from '../components/Profile/TeamTree2';
+import { TeamTree } from '../components/Profile/TeamTree';
 
 export default function TeamPage() {
   return (
-      <TeamTree2 />
+      <TeamTree />
   );
 }
