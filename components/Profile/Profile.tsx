@@ -87,7 +87,7 @@ export function Profile() {
   const chainId = useChainId();
   // 使用自定义 hook 获取全局用户数据
   const { address, contractUserInfo, usdtBalance, usdtAllowanceForPool } = useUser();
-  const [bgColor] = useState('#E3FBE3'); // Default light green background
+  const [bgColor] = useState('#FFF'); // Default light green background
   const [inviteModalOpened, { open: openInviteModal, close: closeInviteModal }] = useDisclosure(false);
 
   // If user is not connected or data is not loaded, show a placeholder
@@ -123,7 +123,7 @@ export function Profile() {
             >
               <Group gap={6}>
                 <IconCrown size={20} color="white" stroke={1.5} />
-                <Text fw={700} c="white" size="sm">Level {contractUserInfo?.level}</Text>
+                <Text fw={700} c="white" size="sm">VIP {contractUserInfo?.level}</Text>
               </Group>
             </Box>
           </Group>
@@ -133,7 +133,7 @@ export function Profile() {
             <Box>
               <Group justify="space-between" mb={4}>
                 <Text size="sm" c="dimmed">{t('profile.levelProgress')}</Text>
-                <Text size="sm" fw={500}>Lv{contractUserInfo?.level} / Lv5</Text>
+                <Text size="sm" fw={500}>VIP {contractUserInfo?.level} / VIP 5</Text>
               </Group>
               <Progress
                 value={(contractUserInfo?.level ||0) * 20} /* Each level represents 20% */
