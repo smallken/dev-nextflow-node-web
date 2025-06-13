@@ -3,7 +3,8 @@ import { Tree, TreeNodeData, useTree } from '@mantine/core';
 import dynamic from 'next/dynamic';
 import { colors, styles, vipColors } from '../../theme';
 import { IconUsers, IconTree, IconRefresh, IconNfc, IconCloudOff, IconInfoCircle, IconEye, 
-  IconChevronRight, IconChevronDown, IconFile, IconFolder, IconFolderOpen } from '@tabler/icons-react';
+  IconChevronRight, IconChevronDown, IconFile, IconFolder, IconFolderOpen,
+IconSquarePlus, IconSquareMinus, IconUser } from '@tabler/icons-react';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAccount } from 'wagmi';
@@ -76,9 +77,9 @@ function TreeNodeLabel({ node, isExpanded }: { node: TeamNodeData, isExpanded?: 
   // Determine which icon to show based on node type and expand state
   const nodeIcon = node.hasChildren
     ? isExpanded
-      ? <IconFolderOpen size={18} color="#228be6" />
-      : <IconFolder size={18} color="#228be6" />
-    : <IconFile size={18} color="#868e96" />;
+      ? <IconSquareMinus size={18} color="#228be6" />
+      : <IconSquarePlus size={18} color="#228be6" />
+    : <IconUser size={18} color="#868e96" />;
 
   // Determine expand/collapse arrow icon
   const expandIcon = node.hasChildren
