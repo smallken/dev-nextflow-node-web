@@ -39,7 +39,7 @@ export function UserDetailModal({
     <Modal 
       opened={opened} 
       onClose={onClose} 
-      title={<Text fw={700} style={{ width: '100%', textAlign: 'center' }}>{t('common.userDetails', 'User Details')}</Text>} 
+      title={<Text fw={700} style={{ width: '100%', textAlign: 'center' }}>{t('userDetails', 'User Details')}</Text>} 
       size="auto"
       radius="md"
       transitionProps={{ transition: 'slide-up' }}
