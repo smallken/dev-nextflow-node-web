@@ -54,11 +54,11 @@ interface ExtendedTreeNodeData extends TreeNodeData {
 }
 
 // Custom component for tree node with icons based on node type and state
-function TreeNodeLabel({ node, expandedState }: { node: TeamNodeData, expandedState: Record<string, boolean> }) {
+function TreeNodeLabel({ node, isExpanded }: { node: TeamNodeData, isExpanded?: boolean }) {
   const { t } = useTranslation();
   const [modalOpened, setModalOpened] = useState(false);
   const [selectedUser, setSelectedUser] = useState<UserDetail | null>(null);
-  const isExpanded = expandedState[node.id];
+  // isExpanded is passed from the parent
 
   const openUserDetail = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -154,12 +154,15 @@ function TeamTree2Component() {
   });
   
   // Function to convert user data to tree nodes
-  const mapUserToTreeNode = (user: User): ExtendedTreeNodeData => {
+  const mapUserToTreeNode = (user: User, expandedState?: Record<string, boolean>): ExtendedTreeNodeData => {
     const hasChildren = (user.referrals?.length || 0) > 0;
     
     return {
       value: user.id,
-      label: <TreeNodeLabel node={{ ...user, hasChildren }} expandedState={tree.expandedState} />,
+      label: <TreeNodeLabel 
+        node={{ ...user, hasChildren }} 
+        isExpanded={expandedState ? expandedState[user.id] : false} 
+      />,
       userData: { ...user, hasChildren },
       // If there are children but not loaded yet, set empty array to allow lazy loading
       children: hasChildren ? [] : undefined
@@ -182,10 +185,11 @@ function TeamTree2Component() {
         
         setRootUser(user);
         
-        // Set the direct referrals as the initial nodes
-        if (user && user.referrals) {
-          const initialNodes = user.referrals.map(mapUserToTreeNode);
-          setTreeData(initialNodes);
+        // Get initial tree data from the root user
+        if (user) {
+          // If root has referrals, set them as children in the tree
+          const treeItems = user.referrals?.map(user => mapUserToTreeNode(user)) || [];
+          setTreeData(treeItems);
         }
       } catch (error) {
         console.error('Error fetching root user data:', error);
@@ -197,26 +201,65 @@ function TeamTree2Component() {
     fetchRootUser();
   }, [effectiveAddress]);
 
-  // Effect to update nodes when tree.expandedState changes
-  useEffect(() => {
-    // When tree state is updated, remap the nodes to refresh their labels with new expanded state
-    setTreeData(prevData => {
-      // Deep clone and update all node labels
-      const updateNodeLabels = (nodes: ExtendedTreeNodeData[]): ExtendedTreeNodeData[] => {
-        return nodes.map(node => {
-          const userData = node.userData;
-          return {
-            ...node,
-            label: <TreeNodeLabel node={userData!} expandedState={tree.expandedState} />,
-            // Recursively update child nodes if they exist
-            children: node.children ? updateNodeLabels(node.children) : undefined
-          };
-        });
+  // Function to update a specific node's children - defined outside of other functions for reuse
+  const updateNodeChildren = (nodes: ExtendedTreeNodeData[], nodeId: string, children: ExtendedTreeNodeData[], expandedState?: Record<string, boolean>): ExtendedTreeNodeData[] => {
+    return nodes.map(node => {
+      if (node.value === nodeId) {
+        // Update the node's children
+        return { 
+          ...node, 
+          children: children,
+          // Update the node label with new expanded state
+          label: <TreeNodeLabel 
+            node={node.userData!} 
+            isExpanded={expandedState ? expandedState[node.value] : false}
+          />
+        };
+      } else if (node.children?.length) {
+        // Recursively update children
+        return { 
+          ...node, 
+          children: updateNodeChildren(node.children, nodeId, children, expandedState),
+          // Update this node's label with expanded state
+          label: <TreeNodeLabel 
+            node={node.userData!} 
+            isExpanded={expandedState ? expandedState[node.value] : false}
+          />
+        };
+      }
+      // Just update the label for this node
+      return { 
+        ...node,
+        label: <TreeNodeLabel 
+          node={node.userData!}
+          isExpanded={expandedState ? expandedState[node.value] : false} 
+        />
       };
-      
-      return updateNodeLabels(prevData);
     });
-  }, [tree.expandedState]);
+  };
+
+  // Cache the expanded state to avoid infinite loop
+  const [prevExpandedState, setPrevExpandedState] = useState<Record<string, boolean>>({});
+  
+  // Effect to update node labels only when tree.expandedState changes significantly
+  useEffect(() => {
+    // Check if the expanded state has changed in a way that matters
+    const hasExpandedStateChanged = Object.keys(tree.expandedState).some(
+      id => tree.expandedState[id] !== prevExpandedState[id]
+    );
+    
+    if (hasExpandedStateChanged) {
+      // Save the new expanded state
+      setPrevExpandedState(tree.expandedState);
+      
+      // Only update the tree data when expanded state changes meaningfully
+      setTreeData(prevData => {
+        // For performance reasons, only update the tree with enough info to rerender
+        // without changing the structure that would cause more updates
+        return updateNodeChildren(prevData, 'root', prevData, tree.expandedState);
+      });
+    }
+  }, [tree.expandedState, prevExpandedState]);
 
   // Handle node expansion for lazy loading
   async function handleNodeExpand(nodeValue: string) {
@@ -249,23 +292,11 @@ function TeamTree2Component() {
       
       if (user && user.referrals) {
         // Create children nodes
-        const childNodes = user.referrals.map(mapUserToTreeNode);
+        const childNodes = user.referrals.map(user => mapUserToTreeNode(user, tree.expandedState));
         
         // Update tree data with new children
-        setTreeData(current => {
-          const updateNodeChildren = (nodes: ExtendedTreeNodeData[]): ExtendedTreeNodeData[] => {
-            return nodes.map(n => {
-              if (n.value === nodeValue) {
-                return { ...n, children: childNodes };
-              } else if (n.children?.length) {
-                return { ...n, children: updateNodeChildren(n.children) };
-              }
-              return n;
-            });
-          };
-          
-          return updateNodeChildren(current);
-        });
+        
+        setTreeData(current => updateNodeChildren(current, nodeValue, childNodes, tree.expandedState));
         
         // Mark as loaded
         setLoadedNodes(prev => ({ ...prev, [nodeValue]: true }));
@@ -357,15 +388,21 @@ function TeamTree2Component() {
               data={treeData}
               tree={tree}
               styles={(theme) => ({
-                root: {},  // Don't override default indentation
+                root: {
+                  maxWidth: '100%', // Ensure tree doesn't overflow container
+                  overflow: 'auto'  // Add scrolling when needed
+                },
                 node: {
                   marginBottom: '4px',
                   borderRadius: '4px',
                   padding: '2px 0',
-                  backgroundColor: 'transparent'
+                  backgroundColor: 'transparent',
+                  whiteSpace: 'normal' // Allow text to wrap
                 },
                 label: {
-                  width: '100%'
+                  width: '100%',
+                  overflow: 'visible', // Ensure content doesn't get cut off
+                  wordBreak: 'break-word' // Allow long texts to wrap
                 }
               })}
             />
