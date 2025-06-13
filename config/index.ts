@@ -10,17 +10,14 @@ export const scanBaseURL: Record<number, string> = {
 }
 
 export const myIncomeLink: Record<string, string> = {
-  [bsc.id]: "https://bscscan.com/advanced-filter?tadd=",
+  // for mainnet
+  [bsc.id]: "https://bscscan.com/advanced-filtered?tkn=0x55d398326f99059ff775485246999027b3197955&txntype=2&fadd=0xd0FB85E347f5894904C6592D597CBFB6222226ab&tadd=",
 }
 
 export const myNodeLink: Record<string, string> = {
-  [bsc.id]: `https://bscscan.com/token/${addresses[bsc.id].nft}?a=`,
+  // for mainnet
+  [bsc.id]: `https://bscscan.com/advanced-filter?tkn=0x05c0d03ca1831964f1674499F05856157d762E6C&txntype=4&fadd=0x0000e39736ebcF3cba0f22E54C2bAc4CaC61f520%2c0x0000000000000000000000000000000000000000&qt=1&tadd=`,
 }
-
-export const myTeamNodeLink: Record<string, string> = {
-  [bsc.id]: `https://bscscan.com/advanced-filter?tadd=${addresses[bsc.id].pool}&mtd=0x4420e486%7eRegister`,
-}
-
 
 export function getConfigLink(chainId: number, type: string, address: string): string {
 
@@ -30,9 +27,7 @@ export function getConfigLink(chainId: number, type: string, address: string): s
     return `${myIncomeLink[chainId]}${address}`;
   } else if (type === 'myNodeLink') {
     return `${myNodeLink[chainId]}${address}`;
-  } else if (type === 'myTeamNodeLink') {
-    return `${myTeamNodeLink[chainId]}&fadd=${address}`;
-  }
+  } 
 
   return `${scanBaseURL[chainId] || 'https://bscscan.com'}/address/${address}`;
 
