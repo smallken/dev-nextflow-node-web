@@ -10,6 +10,7 @@ import { InviteModal } from '../User/InviteModal';
 import { getUserWithFriends, getAddressFromUrl, User } from '../../services/thegraph';
 import { useAccount } from 'wagmi';
 import { formatEther } from 'viem';
+import { UserDetailModal, UserDetail } from '../User/UserDetailModal';
 
 // Type for friend details
 interface FriendDetail {
@@ -114,148 +115,6 @@ function FriendCard({ friend, friendData, onClick }: { friend: string; friendDat
   );
 }
 
-// Friend detail modal component
-function FriendDetailModal({ opened, onClose, friend }: { opened: boolean; onClose: () => void; friend: FriendDetail | null }) {
-  const { t } = useTranslation();
-  const [expanded, setExpanded] = useState(false);
-  
-  if (!friend) return null;
-  
-  return (
-    <Modal 
-      opened={opened} 
-      onClose={onClose} 
-      title={<Text fw={700} style={{ width: '100%', textAlign: 'center' }}>{t('friends.friendDetails')}</Text>} 
-      size="auto"
-      radius="md"
-      transitionProps={{ transition: 'slide-up' }}
-      styles={{
-        header: { background: '#f8f9fa', display: 'flex', justifyContent: 'center' },
-        title: { width: '100%', textAlign: 'center' },
-        body: { padding: '0 !important' },
-        content: { 
-          position: 'absolute', 
-          bottom: 0, 
-          left: 0, 
-          right: 0, 
-          maxHeight: '70vh', 
-          borderBottomLeftRadius: 0,
-          borderBottomRightRadius: 0,
-        },
-        overlay: { opacity: 0.35 }
-      }}
-      centered
-    >
-      <div style={{ padding: rem(20) }}>
-        {/* Friend name/address with copy and expand */}
-        <div style={{ width: '100%' }}>
-          {expanded ? (
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-              <Text size="sm" fw={500} style={{ wordBreak: 'break-all', flex: 1 }}>{friend.address}</Text>
-              <Group gap="xs" style={{ flexShrink: 0, marginLeft: '8px' }}>
-                <ActionIcon 
-                  variant="subtle" 
-                  onClick={() => setExpanded(!expanded)}>
-                  <IconArrowsMaximize size={18} />
-                </ActionIcon>
-                <CopyButton value={friend.address} timeout={2000}>
-                  {({ copied, copy }) => (
-                    <ActionIcon 
-                      color={copied ? 'teal' : 'gray'}
-                      variant="subtle"
-                      onClick={copy}
-                    >
-                      {copied ? <IconCheck size={18} /> : <IconCopy size={18} />}
-                    </ActionIcon>
-                  )}
-                </CopyButton>
-              </Group>
-            </div>
-          ) : (
-            <Group justify="center" align="center" style={{ width: '100%' }}>
-              <Text size="lg" fw={500}>{formatAddress(friend.address)}</Text>
-              <Group gap="xs">
-                <ActionIcon 
-                  variant="subtle" 
-                  onClick={() => setExpanded(!expanded)}>
-                  <IconArrowsMaximize size={18} />
-                </ActionIcon>
-                <CopyButton value={friend.address} timeout={2000}>
-                  {({ copied, copy }) => (
-                    <ActionIcon 
-                      color={copied ? 'teal' : 'gray'}
-                      variant="subtle"
-                      onClick={copy}
-                    >
-                      {copied ? <IconCheck size={18} /> : <IconCopy size={18} />}
-                    </ActionIcon>
-                  )}
-                </CopyButton>
-              </Group>
-            </Group>
-          )}
-        </div>
-        
-        <Group justify="center" mb="md" mt="md">
-          <Badge 
-            leftSection={<IconCrown size={14} />}
-            size="lg"
-            style={styles.vipBadge(friend.level || 0)}
-          >
-            {t('friends.level')} {friend.level}
-          </Badge>
-        </Group>
-
-        <Divider my="sm" />
-        
-        {/* Stats grid with 4 metrics */}
-        <Grid>
-          <Grid.Col span={6}>
-            <Stack align="center" gap="xs">
-              <Group align="center" gap={5}>
-                <IconNfc size={16} />
-                <Text size="sm" c="dimmed">{t('friends.nodeCount')}</Text>
-              </Group>
-              <Text size="xl" fw={700}>{friend.nodeCount}</Text>
-            </Stack>
-          </Grid.Col>
-          <Grid.Col span={6}>
-            <Stack align="center" gap="xs">
-              <Group align="center" gap={5}>
-                <IconUsers size={16} />
-                <Text size="sm" c="dimmed">{t('friends.directReferrals')}</Text>
-              </Group>
-              <Text size="xl" fw={700}>{friend.directReferrals}</Text>
-            </Stack>
-          </Grid.Col>
-          <Grid.Col span={6} mt="md">
-            <Stack align="center" gap="xs">
-              <Group align="center" gap={5}>
-                <IconTree size={16} />
-                <Text size="sm" c="dimmed">{t('friends.teamNodes')}</Text>
-              </Group>
-              <Text size="xl" fw={700}>{friend.teamNodesCount}</Text>
-            </Stack>
-          </Grid.Col>
-          <Grid.Col span={6} mt="md">
-            <Stack align="center" gap="xs">
-              <Group align="center" gap={5}>
-                <IconCoin size={16} />
-                <Text size="sm" c="dimmed">{t('friends.income')}</Text>
-              </Group>
-              <Text size="xl" fw={700}>${friend.income || '0'}</Text>
-            </Stack>
-          </Grid.Col>
-        </Grid>
-        
-        <Button fullWidth style={{ background: '#F2AE00' }} onClick={onClose} mt="md">
-          {t('common.close')}
-        </Button>
-      </div>
-    </Modal>
-  );
-}
-
 // Create a client-only version of the FriendList component to avoid hydration issues
 const FriendListClient = dynamic(() => Promise.resolve(FriendListComponent), {
   ssr: false
@@ -283,8 +142,8 @@ function FriendListComponent() {
   const [userData, setUserData] = useState<User | null>(null);
   const [friends, setFriends] = useState<User[]>([]);
   
-  const [selectedFriend, setSelectedFriend] = useState<FriendDetail | null>(null);
-  const [opened, { open: openDetailModal, close: closeDetailModal }] = useDisclosure(false);
+  const [selectedFriend, setSelectedFriend] = useState<UserDetail | null>(null);
+  const [modalOpened, setModalOpened] = useState(false);
   const [inviteModalOpened, { open: openInviteModal, close: closeInviteModal }] = useDisclosure(false);
   
   // Fetch user data from TheGraph
@@ -315,16 +174,16 @@ function FriendListComponent() {
     // Find the friend in user data
     const friendData = friends.find(f => f.id === friend);
     if (friendData) {
-      // Format friend data for modal
+      // Open user detail modal with this friend's data
       setSelectedFriend({
         address: friendData.id,
+        level: friendData.vipLevel || 0,
         nodeCount: friendData.nodePurchasedTotal?.toString() || '0',
         directReferrals: friendData.referrals?.length || 0,
-        level: friendData.vipLevel || 0,
         teamNodesCount: friendData.childrenAmountIn10Levels || 0,
         income: formatEther(BigInt(friendData.income || 0)).toString() // Placeholder - replace with real income data when available
       });
-      openDetailModal();
+      setModalOpened(true);
     }
   };
 
@@ -415,8 +274,12 @@ function FriendListComponent() {
         )}
       </Container>
       
-      {/* Friend detail modal */}
-      <FriendDetailModal opened={opened} onClose={closeDetailModal} friend={selectedFriend} />
+      {/* User Detail Modal for friends */}
+      <UserDetailModal
+        opened={modalOpened}
+        onClose={() => setModalOpened(false)}
+        user={selectedFriend}
+      />
       
       {/* Invite Modal */}
       <InviteModal opened={inviteModalOpened} onClose={closeInviteModal} />
