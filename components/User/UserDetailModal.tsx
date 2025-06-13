@@ -1,5 +1,5 @@
 import { Modal, Text, Group, ActionIcon, CopyButton, Badge, Divider, Grid, Stack, Button, rem } from '@mantine/core';
-import { IconArrowsMaximize, IconCheck, IconCoin, IconCopy, IconCrown, IconNfc, IconTree, IconUsers } from '@tabler/icons-react';
+import { IconArrowsMaximize, IconCheck, IconCoin, IconCopy, IconCrown, IconPackages, IconUsers, IconHierarchy3 } from '@tabler/icons-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { colors, styles, vipColors } from '../../theme';
@@ -127,7 +127,7 @@ export function UserDetailModal({
           <Grid.Col span={6}>
             <Stack align="center" gap="xs">
               <Group align="center" gap={5}>
-                <IconNfc size={16} />
+                <IconPackages size={16} />
                 <Text size="sm" c="dimmed">{t('friends.nodeCount')}</Text>
               </Group>
               <Text size="xl" fw={700}>{user.nodeCount || '0'}</Text>
@@ -145,7 +145,7 @@ export function UserDetailModal({
           <Grid.Col span={6} mt="md">
             <Stack align="center" gap="xs">
               <Group align="center" gap={5}>
-                <IconTree size={16} />
+                <IconHierarchy3 size={16} />
                 <Text size="sm" c="dimmed">{t('friends.teamNodes')}</Text>
               </Group>
               <Text size="xl" fw={700}>{user.teamNodesCount || '0'}</Text>

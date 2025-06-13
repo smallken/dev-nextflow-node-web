@@ -1,7 +1,7 @@
 import { Card, Text, Group, Container, Stack, Paper, Badge, Modal, Button, Grid, Divider, rem, Loader, ActionIcon, CopyButton, Avatar, Tooltip, Center } from '@mantine/core';
 import dynamic from 'next/dynamic';
 import { colors, styles, vipColors } from '../../theme';
-import { IconUsers, IconCrown, IconCopy, IconCheck, IconArrowsMaximize, IconNfc, IconTree, IconInfoCircle, IconCoin, IconEye, IconWindow, IconUserPlus } from '@tabler/icons-react';
+import { IconUsers,  IconEye, IconUserPlus, IconPackages } from '@tabler/icons-react';
 import { useState, useEffect } from 'react';
 import { useUser } from '../../context/UserContext';
 import { useTranslation } from 'react-i18next';
@@ -79,7 +79,7 @@ function FriendCard({ friend, friendData, onClick }: { friend: string; friendDat
 
           {/* Node count */}
           <Group gap="xs" align="center">
-            <IconNfc size={16} stroke={1.5} />
+            <IconPackages size={16} stroke={1.5} />
             <Text size="sm" fw={700}>{friendData.nodePurchasedTotal || '0'}</Text>
           </Group>
           
