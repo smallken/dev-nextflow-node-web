@@ -357,9 +357,7 @@ function TeamTree2Component() {
               data={treeData}
               tree={tree}
               styles={(theme) => ({
-                root: {
-                  '--mantine-tree-item-padding-left': '16px'
-                },
+                root: {},  // Don't override default indentation
                 node: {
                   marginBottom: '4px',
                   borderRadius: '4px',
@@ -367,8 +365,7 @@ function TeamTree2Component() {
                   backgroundColor: 'transparent'
                 },
                 label: {
-                  width: '100%',
-                  paddingLeft: '8px' // Add padding to align the icon and text better
+                  width: '100%'
                 }
               })}
             />
