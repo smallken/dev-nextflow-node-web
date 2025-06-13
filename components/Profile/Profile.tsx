@@ -216,8 +216,6 @@ export function Profile() {
                 value={contractUserInfo?.friends?.length  || 0} 
                 buttonText={t('common.details')} 
                 onClick={() => window.location.href = '/friend-list'}
-                secondaryAction={true}
-                onSecondaryAction={openInviteModal}
               />
             </Grid.Col>
             <Grid.Col span={6}>

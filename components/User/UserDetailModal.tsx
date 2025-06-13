@@ -116,7 +116,7 @@ export function UserDetailModal({
             size="lg"
             style={styles.vipBadge(user.level || 0)}
           >
-            {t('friends.level')} {user.level || 0}
+            {t('friends.vip')} {user.level || 0}
           </Badge>
         </Group>
 
