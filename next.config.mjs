@@ -28,8 +28,8 @@ export default withBundleAnalyzer({
     ignoreDuringBuilds: true,
   },
   i18n: {
-    locales: ['en-US', 'zh-CN'],
-    defaultLocale: 'en-US',
+    locales: ['en', 'ja', 'es', 'zh', 'zh-TW', 'vi'],
+  defaultLocale: 'en',
   },
   devIndicators: false,
   
