@@ -3,39 +3,13 @@ import { Tree, TreeNodeData, useTree } from '@mantine/core';
 import dynamic from 'next/dynamic';
 import { colors, styles, vipColors } from '../../theme';
 import { IconUsers, IconTree, IconRefresh, IconNfc, IconCloudOff, IconInfoCircle, IconEye, 
-  IconChevronRight, IconChevronDown, IconFile, IconFolder, IconFolderOpen,
-IconSquarePlus, IconSquareMinus, IconUser } from '@tabler/icons-react';
+  IconChevronRight, IconChevronDown, IconSquarePlus, IconSquareMinus, IconUser } from '@tabler/icons-react';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAccount } from 'wagmi';
-import { getAddressFromUrl, User } from '../../services/thegraph';
-import { graphClient } from '../../services/thegraph';
-import { gql } from 'graphql-request';
-import { UserDetailModal, UserDetail } from '../../components/User/UserDetailModal';
 import { formatEther } from 'viem';
-
-// Query to get a user's direct referrals
-const GET_USER_REFERRALS = gql`
-  query GetUserReferrals($userId: String!) {
-    user(id: $userId) {
-      id
-      vipLevel
-      nodePurchasedTotal
-      childrenAmountIn10Levels
-      income
-      referrals {
-        id
-        vipLevel
-        nodePurchasedTotal
-        childrenAmountIn10Levels
-        income
-        referrals {
-          id
-        }
-      }
-    }
-  }
-`;
+import { graphClient, GET_USER_WITH_FRIENDS, User, getAddressFromUrl } from '../../services/thegraph';
+import { UserDetailModal, UserDetail } from '../User/UserDetailModal';
 
 // Helper function to format wallet address for display
 function formatAddress(address: string | undefined): string {
@@ -180,16 +154,16 @@ function TeamTree2Component() {
       
       setLoading(true);
       try {
-        const { user } = await graphClient.request<{ user: User }>(GET_USER_REFERRALS, {
-          userId: effectiveAddress.toLowerCase(),
+        // Call GraphQL API to fetch user data
+        const { user } = await graphClient.request<{ user: User }>(GET_USER_WITH_FRIENDS, { 
+          userId: effectiveAddress.toLowerCase() 
         });
-        
         setRootUser(user);
         
         // Get initial tree data from the root user
         if (user) {
           // If root has referrals, set them as children in the tree
-          const treeItems = user.referrals?.map(user => mapUserToTreeNode(user)) || [];
+          const treeItems = user.referrals?.map((user: User) => mapUserToTreeNode(user)) || [];
           setTreeData(treeItems);
         }
       } catch (error) {
@@ -286,14 +260,14 @@ function TeamTree2Component() {
     setLoadingNodes(prev => ({ ...prev, [nodeValue]: true }));
     
     try {
-      // Fetch children data
-      const { user } = await graphClient.request<{ user: User }>(GET_USER_REFERRALS, {
-        userId: nodeValue.toLowerCase(),
+      // Get user data from GraphQL
+      const { user } = await graphClient.request<{ user: User }>(GET_USER_WITH_FRIENDS, { 
+        userId: nodeValue.toLowerCase() 
       });
       
       if (user && user.referrals) {
         // Create children nodes
-        const childNodes = user.referrals.map(user => mapUserToTreeNode(user, tree.expandedState));
+        const childNodes = user.referrals.map((user: User) => mapUserToTreeNode(user, tree.expandedState));
         
         // Update tree data with new children
         
