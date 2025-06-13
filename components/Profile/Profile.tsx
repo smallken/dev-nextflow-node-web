@@ -1,47 +1,49 @@
-import { Card, Text, Group, Button, Container, Stack, rem, Box, Paper, Grid, Space, Progress, CopyButton, ActionIcon, Tooltip, Divider } from '@mantine/core';
+import { Card, Text, Group, Button, Container, Stack, rem, Box, Paper, Grid, Space, Progress, CopyButton, ActionIcon, Tooltip, Divider, NavLink } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { colors, styles, vipColors } from '../../theme';
 import { formatEther } from 'viem';
-import { IconCrown, IconChevronRight, IconCopy, IconCheck, IconUserPlus } from '@tabler/icons-react';
+import { IconCrown, IconChevronRight, IconCopy, IconCheck, IconUserPlus, IconCirclesRelation, IconEdit } from '@tabler/icons-react';
 import { useState } from 'react';
 import { useUser } from '../../context/UserContext';
 import { useTranslation } from 'react-i18next';
 import { InviteModal } from '../User/InviteModal';
-import {scanBaseURL, getConfigLink} from '../../config'
+import { scanBaseURL, getConfigLink } from '../../config'
 import { useChainId } from 'wagmi';
+import { useEnv } from '../../hooks/useEnv';
+
 
 
 
 // StatCard component for the four info boxes
-function StatCard({ 
-  title, 
-  value, 
-  buttonText, 
-  onClick, 
+function StatCard({
+  title,
+  value,
+  buttonText,
+  onClick,
   secondaryAction,
-  onSecondaryAction 
-}: { 
-  title: string; 
-  value: string | number; 
-  buttonText: string; 
+  onSecondaryAction
+}: {
+  title: string;
+  value: string | number;
+  buttonText: string;
   onClick?: () => void;
   secondaryAction?: boolean;
-  onSecondaryAction?: () => void; 
+  onSecondaryAction?: () => void;
 }) {
   const { t } = useTranslation();
   return (
     <Paper radius="md" withBorder p="md" style={{ height: '100%', position: 'relative' }}>
       {/* Top-right corner action button */}
       {secondaryAction && onSecondaryAction && (
-        <ActionIcon 
-          variant="light" 
-          size="md" 
-          radius="xl" 
+        <ActionIcon
+          variant="light"
+          size="md"
+          radius="xl"
           onClick={onSecondaryAction}
           title={t('common.invite')}
-          style={{ 
-            position: 'absolute', 
-            top: '8px', 
+          style={{
+            position: 'absolute',
+            top: '8px',
             right: '8px',
             zIndex: 2,
             color: colors.secondary
@@ -50,7 +52,7 @@ function StatCard({
           <IconUserPlus size={18} stroke={1.5} />
         </ActionIcon>
       )}
-      
+
       <Stack gap="xs" align="center">
         <Text c="dimmed" size="sm" ta="center">
           {title}
@@ -58,10 +60,10 @@ function StatCard({
         <Text fw={700} size="xl" ta="center">
           {value}
         </Text>
-        
+
         {/* Main action button */}
-        <Button 
-          variant="filled" 
+        <Button
+          variant="filled"
           onClick={onClick}
           rightSection={<IconChevronRight size={16} />}
           size="xs"
@@ -90,6 +92,9 @@ export function Profile() {
   const [bgColor] = useState('#FFF'); // Default light green background
   const [inviteModalOpened, { open: openInviteModal, close: closeInviteModal }] = useDisclosure(false);
 
+  const { isTestnet } = useEnv();
+
+
   // If user is not connected or data is not loaded, show a placeholder
   if (!address) {
     return (
@@ -107,13 +112,13 @@ export function Profile() {
       <Group px="md" py="lg" justify="space-between">
         <Text size="lg" fw={700}>{t('profile.title')}</Text>
       </Group>
-      
+
       {/* User profile card with level and info */}
       <Container size="md" mb="md">
         <Card withBorder radius="md" shadow="sm" p="md">
           <Group justify="space-between" mb="sm">
             <Text fw={700} size="lg">{t('profile.userInfo')}</Text>
-            <Box 
+            <Box
               style={{
                 background: vipColors[(contractUserInfo?.level || 0) as keyof typeof vipColors] || vipColors[0],
                 borderRadius: '4px',
@@ -127,7 +132,7 @@ export function Profile() {
               </Group>
             </Box>
           </Group>
-          
+
           <Stack gap="sm">
             {/* Level progress */}
             <Box>
@@ -136,7 +141,7 @@ export function Profile() {
                 <Text size="sm" fw={500}>VIP {contractUserInfo?.level} / VIP 5</Text>
               </Group>
               <Progress
-                value={(contractUserInfo?.level ||0) * 20} /* Each level represents 20% */
+                value={(contractUserInfo?.level || 0) * 20} /* Each level represents 20% */
                 size="md"
                 radius="xl"
                 color={colors.primary}
@@ -145,8 +150,8 @@ export function Profile() {
 
             {/* User info */}
             <Divider my="xs" variant="dashed" />
-          
-            
+
+
             {/* Inviter address row */}
             <Group justify="space-between" w="100%">
               <Text size="xs" c="dimmed" w={80}>{t('profile.inviter')}:</Text>
@@ -169,7 +174,7 @@ export function Profile() {
                 </Group>
               )}
             </Group>
-            
+
             {/* Wallet address row */}
             <Group justify="space-between" w="100%">
               <Text size="xs" c="dimmed" w={80}>{t('profile.myWallet')}:</Text>
@@ -187,6 +192,47 @@ export function Profile() {
               </Group>
             </Group>
           </Stack>
+
+          <Space h="xs" />
+          {
+            /* 
+             bind solana address area 
+             TODO: get solana address from contract
+            */
+            isTestnet && <Stack >
+              <Group justify="space-between" w="100%">
+                <Text size="xs" c="dimmed" w={80}>{t('bindSolana.addressLabel')}:</Text>
+                <Group wrap="nowrap" align="center" gap={4} style={{ flex: 1 }}>
+                  <Text size="xs" c="dimmed">{formatAddress(address)}</Text>
+                  <CopyButton value={address || ''} timeout={2000}>
+                    {({ copied, copy }) => (
+                      <Tooltip label={copied ? t('common.copied') : t('common.copy')} withArrow position="top">
+                        <ActionIcon variant="subtle" color={copied ? 'teal' : 'gray'} onClick={copy} size="xs">
+                          {copied ? <IconCheck size={14} /> : <IconCopy size={14} />}
+                        </ActionIcon>
+                      </Tooltip>
+                    )}
+                  </CopyButton>
+
+                  <NavLink
+                    href="/bind-solana"
+                    leftSection={<IconEdit size={16} stroke={1.5} />}
+                    variant="subtle"
+                  />
+
+                </Group>
+              </Group>
+
+              <Button
+                leftSection={<IconCirclesRelation size={16} />}
+                variant="filled"
+                color="#F2AE00"
+                onClick={() => window.location.href = '/bind-solana'}
+              >
+                {t('bindSolana.title')}
+              </Button>
+            </Stack>
+          }
         </Card>
       </Container>
 
@@ -195,34 +241,34 @@ export function Profile() {
         <Card shadow="sm" radius="lg" withBorder>
           <Grid gutter={16}>
             <Grid.Col span={6}>
-              <StatCard 
-                title={t('profile.myNodes')} 
-                value={contractUserInfo?.nftCount || '0'} 
-                buttonText={t('common.details')} 
-                onClick={() => window.open(getConfigLink(chainId,"myNodeLink",address), '_blank')}
+              <StatCard
+                title={t('profile.myNodes')}
+                value={contractUserInfo?.nftCount || '0'}
+                buttonText={t('common.details')}
+                onClick={() => window.open(getConfigLink(chainId, "myNodeLink", address), '_blank')}
               />
             </Grid.Col>
             <Grid.Col span={6}>
-              <StatCard 
-                title={t('profile.myEarnings')} 
-                value={formatEther(contractUserInfo?.income || BigInt(0)).substring(0, 8)} 
-                buttonText={t('common.details')} 
-                onClick={() => window.open(getConfigLink(chainId,"myIncomeLink",address), '_blank')}
+              <StatCard
+                title={t('profile.myEarnings')}
+                value={formatEther(contractUserInfo?.income || BigInt(0)).substring(0, 8)}
+                buttonText={t('common.details')}
+                onClick={() => window.open(getConfigLink(chainId, "myIncomeLink", address), '_blank')}
               />
             </Grid.Col>
             <Grid.Col span={6}>
-              <StatCard 
-                title={t('profile.myFriends')} 
-                value={contractUserInfo?.friends?.length  || 0} 
-                buttonText={t('common.details')} 
+              <StatCard
+                title={t('profile.myFriends')}
+                value={contractUserInfo?.friends?.length || 0}
+                buttonText={t('common.details')}
                 onClick={() => window.location.href = '/friend-list'}
               />
             </Grid.Col>
             <Grid.Col span={6}>
-              <StatCard 
-                title={t('profile.teamNodes')} 
-                value={contractUserInfo?.teamNodeCount || 0} 
-                buttonText={t('common.details')} 
+              <StatCard
+                title={t('profile.teamNodes')}
+                value={contractUserInfo?.teamNodeCount || 0}
+                buttonText={t('common.details')}
                 onClick={() => window.location.href = `/team?address=${address}`}
               />
             </Grid.Col>
@@ -230,7 +276,21 @@ export function Profile() {
         </Card>
 
         {/* Add some bottom padding */}
-        <Space h="xl" />
+        <Space h="xs" />
+      </Container>
+
+      <Container size="md">
+        <Card withBorder radius="md" shadow="sm">
+          <Button
+            leftSection={<IconUserPlus size={16} />}
+            variant="filled"
+            color="#40c057"
+            onClick={openInviteModal}
+          >
+            {t('common.invite')}
+          </Button>
+        </Card>
+
       </Container>
 
       {/* Invite Modal */}

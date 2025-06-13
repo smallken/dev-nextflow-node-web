@@ -1,26 +1,13 @@
 import { AppShell, Box, NavLink, Skeleton, Stack, Text, Group, ActionIcon, Tooltip } from '@mantine/core';
-import { IconHome2, IconUser, IconCirclesRelation,IconNetwork, IconBrandTwitter, IconBrandTelegram, IconBrandGithub, IconBrandMedium } from '@tabler/icons-react';
+import { IconHome2, IconUser, IconCirclesRelation, IconNetwork, IconBrandTwitter, IconBrandTelegram, IconBrandGithub, IconBrandMedium } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEnv } from '../../hooks/useEnv';
 
 export function Navbar() {
   const { t, i18n } = useTranslation();
   const router = useRouter();
-  const [isTestnetEnabled, setIsTestnetEnabled] = useState(false);
-
-  // Check if testnet is enabled via environment variable or URL parameter
-  useEffect(() => {
-    const isTestnetEnabledByEnv = process.env.NEXT_PUBLIC_ENABLE_TESTNETS === 'true';
-    
-    // Check URL parameter
-    const isTestnetEnabledByUrl = () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get('__test__') === '1';
-    };
-    
-    setIsTestnetEnabled(isTestnetEnabledByEnv || isTestnetEnabledByUrl());
-  }, [router.query]);
+  const { isTestnet: isTestnetEnabled } = useEnv();
   
   const currentLanguage = i18n.language;
   return (
