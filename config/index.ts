@@ -11,7 +11,7 @@ export const scanBaseURL: Record<number, string> = {
 
 export const myIncomeLink: Record<string, string> = {
   // for mainnet
-  [bsc.id]: "https://bscscan.com/advanced-filtered?tkn=0x55d398326f99059ff775485246999027b3197955&txntype=2&fadd=0xd0FB85E347f5894904C6592D597CBFB6222226ab&tadd=",
+  [bsc.id]: "https://bscscan.com/advanced-filtered?tkn=0x55d398326f99059ff775485246999027b3197955&txntype=2&fadd=0xd0FB85E347f5894904C6592D597CBFB6222226ab&qt=1&tadd=",
 }
 
 export const myNodeLink: Record<string, string> = {
