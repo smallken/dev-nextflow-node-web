@@ -4,7 +4,11 @@ import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/router';
 import { useEnv } from '../../hooks/useEnv';
 
-export function Navbar() {
+interface NavbarProps {
+  toggleMobile?: () => void;
+}
+
+export function Navbar({ toggleMobile }: NavbarProps) {
   const { t, i18n } = useTranslation();
   const router = useRouter();
   const { isTestnet: isTestnetEnabled } = useEnv();
@@ -14,7 +18,11 @@ export function Navbar() {
     <AppShell.Navbar p='md' style={{ display: 'flex', flexDirection: 'column' }}>
       <div style={{ flex: 1 }}>
         <NavLink
-          onClick={() => router.push('/')}
+          onClick={() => {
+            router.push('/');
+            // Close mobile navbar after navigation
+            if (toggleMobile) toggleMobile();
+          }}
           label={t('home')}
           leftSection={<IconHome2 size={16} stroke={1.5} />}
           active={router.pathname === '/'}
@@ -22,7 +30,11 @@ export function Navbar() {
         />
 
         <NavLink
-          onClick={() => router.push('/profile')}
+          onClick={() => {
+            router.push('/profile');
+            // Close mobile navbar after navigation
+            if (toggleMobile) toggleMobile();
+          }}
           label={t('nav_profile')}
           leftSection={<IconUser size={16} stroke={1.5} />}
           active={router.pathname === '/profile'}
@@ -31,7 +43,11 @@ export function Navbar() {
 
         {isTestnetEnabled && (
           <NavLink
-            onClick={() => router.push('/bind-solana')}
+            onClick={() => {
+              router.push('/bind-solana');
+              // Close mobile navbar after navigation
+              if (toggleMobile) toggleMobile();
+            }}
             label={t('nav_bind_solana')}
             leftSection={<IconCirclesRelation size={16} stroke={1.5} />}
             active={router.pathname === '/bind-solana'}

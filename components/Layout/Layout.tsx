@@ -50,7 +50,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </Group>
       </AppShell.Header>
 
-      <Navbar />
+      <Navbar toggleMobile={toggleMobile} />
 
       <AppShell.Main>
         {children}
