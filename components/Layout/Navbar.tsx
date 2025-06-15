@@ -14,7 +14,7 @@ export function Navbar() {
     <AppShell.Navbar p='md' style={{ display: 'flex', flexDirection: 'column' }}>
       <div style={{ flex: 1 }}>
         <NavLink
-          href="/"
+          onClick={() => router.push('/')}
           label={t('home')}
           leftSection={<IconHome2 size={16} stroke={1.5} />}
           active={router.pathname === '/'}
@@ -22,7 +22,7 @@ export function Navbar() {
         />
 
         <NavLink
-          href="/profile"
+          onClick={() => router.push('/profile')}
           label={t('nav_profile')}
           leftSection={<IconUser size={16} stroke={1.5} />}
           active={router.pathname === '/profile'}
@@ -31,7 +31,7 @@ export function Navbar() {
 
         {isTestnetEnabled && (
           <NavLink
-            href="/bind-solana"
+            onClick={() => router.push('/bind-solana')}
             label={t('nav_bind_solana')}
             leftSection={<IconCirclesRelation size={16} stroke={1.5} />}
             active={router.pathname === '/bind-solana'}
