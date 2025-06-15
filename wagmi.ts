@@ -19,9 +19,9 @@ const walletList = [
     groupName: 'Recommended',
     wallets: [
       // These are wallet connector factories that return a wallet connector function
+      injectedWallet,
+      tokenPocketWallet,
       metaMaskWallet,
-      tokenPocketWallet, 
-      injectedWallet
     ]
   },
   {
