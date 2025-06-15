@@ -1,6 +1,8 @@
 import { Container, Text, Card, Stack, Loader, Group, Badge, ActionIcon, Tooltip, Box, Center } from '@mantine/core';
+import { ProfileBreadcrumbs } from '../Layout/ProfileBreadcrumbs';
 import { Tree, TreeNodeData, useTree } from '@mantine/core';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
 import { colors, styles, vipColors } from '../../theme';
 import { IconUsers, IconTree, IconRefresh, IconNfc, IconCloudOff, IconInfoCircle, IconEye, 
   IconChevronRight, IconChevronDown, IconSquarePlus, IconSquareMinus, IconUser } from '@tabler/icons-react';
@@ -111,6 +113,7 @@ export function TeamTree() {
 // Main implementation of the component
 function TeamTree2Component() {
   const { t } = useTranslation();
+  const router = useRouter();
   const { address: connectedAddress } = useAccount();
   
   // Get address from URL if present, otherwise use connected wallet address
@@ -291,7 +294,10 @@ function TeamTree2Component() {
   // If user is not connected or data is not loaded, show a placeholder
   if (!effectiveAddress) {
     return (
-      <Container size="md" py="xl">
+      <Container size="md" py="md">
+        {/* Breadcrumbs navigation */}
+        <ProfileBreadcrumbs currentPage="team" />
+        
         <Card withBorder radius="md" padding="xl">
           <Text ta="center" fw={500} size="lg">{t('profile.connectWallet')}</Text>
         </Card>
@@ -302,7 +308,10 @@ function TeamTree2Component() {
   // Show loading state
   if (loading) {
     return (
-      <Container size="md" py="xl">
+      <Container size="md" py="md">
+        {/* Breadcrumbs navigation */}
+        <ProfileBreadcrumbs currentPage="team" />
+        
         <Card withBorder radius="md" padding="xl">
           <Stack align="center" gap="md">
             <Loader size="md" />
@@ -316,7 +325,10 @@ function TeamTree2Component() {
   // If no user data found
   if (!rootUser) {
     return (
-      <Container size="md" py="xl">
+      <Container size="md" py="md">
+        {/* Breadcrumbs navigation */}
+        <ProfileBreadcrumbs currentPage="team" />
+        
         <Card withBorder radius="md" padding="xl">
           <Stack align="center" gap="md">
             <Text ta="center" size="sm" c="dimmed">{t('team.userNotFound')}</Text>
@@ -328,6 +340,9 @@ function TeamTree2Component() {
   
   return (
     <Container size="md" py="md">
+      {/* Breadcrumbs navigation */}
+      <ProfileBreadcrumbs currentPage="team" />
+      
       {/* Header with title */}
       <Group justify="space-between" align="center" mb="md">
         <Group gap="md" align="center">

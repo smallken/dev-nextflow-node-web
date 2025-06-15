@@ -1,4 +1,5 @@
 import { Card, Text, Group, Button, Container, Stack, rem, Box, Paper, Grid, Space, Progress, CopyButton, ActionIcon, Tooltip, Divider, NavLink } from '@mantine/core';
+import { useRouter } from 'next/router';
 import { useDisclosure } from '@mantine/hooks';
 import { colors, styles, vipColors } from '../../theme';
 import { formatEther } from 'viem';
@@ -85,6 +86,7 @@ function formatAddress(address: string | undefined): string {
 }
 
 export function Profile() {
+  const router = useRouter();
   const { t } = useTranslation();
   const chainId = useChainId();
   // 使用自定义 hook 获取全局用户数据
@@ -227,7 +229,7 @@ export function Profile() {
                 leftSection={<IconCirclesRelation size={16} />}
                 variant="filled"
                 color="#F2AE00"
-                onClick={() => window.location.href = '/bind-solana'}
+                onClick={() => router.push('/bind-solana')}
               >
                 {t('bindSolana.title')}
               </Button>
@@ -261,7 +263,7 @@ export function Profile() {
                 title={t('profile.myFriends')}
                 value={contractUserInfo?.friends?.length || 0}
                 buttonText={t('common.details')}
-                onClick={() => window.location.href = '/friend-list'}
+                onClick={() => router.push('/friend-list')}
               />
             </Grid.Col>
             <Grid.Col span={6}>
@@ -269,7 +271,7 @@ export function Profile() {
                 title={t('profile.teamNodes')}
                 value={contractUserInfo?.teamNodeCount || 0}
                 buttonText={t('common.details')}
-                onClick={() => window.location.href = `/team?address=${address}`}
+                onClick={() => router.push(`/team?address=${address}`)}
               />
             </Grid.Col>
           </Grid>

@@ -1,5 +1,7 @@
 import { Card, Text, Group, Container, Stack, Paper, Badge, Modal, Button, Grid, Divider, rem, Loader, ActionIcon, CopyButton, Avatar, Tooltip, Center } from '@mantine/core';
+import { ProfileBreadcrumbs } from '../Layout/ProfileBreadcrumbs';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
 import { colors, styles, vipColors } from '../../theme';
 import { IconUsers,  IconEye, IconUserPlus, IconPackages } from '@tabler/icons-react';
 import { useState, useEffect } from 'react';
@@ -128,6 +130,7 @@ export function FriendList() {
 // Main implementation of the component
 function FriendListComponent() {
   const { t } = useTranslation();
+  const router = useRouter();
   // Use wagmi to get connected wallet address
   const { address: connectedAddress } = useAccount();
   
@@ -190,7 +193,10 @@ function FriendListComponent() {
   // If user is not connected or data is not loaded, show a placeholder
   if (!effectiveAddress) {
     return (
-      <Container size="md" py="xl">
+      <Container size="md" py="md">
+        {/* Breadcrumbs navigation */}
+        <ProfileBreadcrumbs currentPage="friends" />
+        
         <Card withBorder radius="md" padding="xl">
           <Text ta="center" fw={500} size="lg">{t('profile.connectWallet')}</Text>
         </Card>
@@ -201,7 +207,10 @@ function FriendListComponent() {
   // Show loading state
   if (loading) {
     return (
-      <Container size="md" py="xl">
+      <Container size="md" py="md">
+        {/* Breadcrumbs navigation */}
+        <ProfileBreadcrumbs currentPage="friends" />
+        
         <Card withBorder radius="md" padding="xl">
           <Stack align="center" gap="md">
             <Loader size="md" />
@@ -214,6 +223,11 @@ function FriendListComponent() {
 
   return (
     <div style={{ background: bgColor, minHeight: '100vh', paddingBottom: rem(20) }}>
+      {/* Breadcrumbs navigation */}
+      <Container size="md" mt="md">
+        <ProfileBreadcrumbs currentPage="friends" />
+      </Container>
+      
       {/* Header */}
       <Container size="md" mt="md" mb="xl">
         {/* Header with title, count badge and invite button */}
