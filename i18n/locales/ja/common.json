@@ -129,7 +129,7 @@
     "bindAddress": "アドレスを紐付け",
     "addressRequired": "Solanaアドレスを入力してください",
     "addressInvalid": "Solanaアドレス形式が無効です",
-    "registrationRequired": "紐付ける前に、まずFlipFlop DappでこのSolanaアドレスを登録する必要があります",
+    "registrationRequired": "紐付ける前に、まずFlipFlop (https://www.flipflop.plus/)でこのSolanaアドレスを登録する必要があります",
     "nodeNftRequired": "Solanaアドレスを紐付けるには少なくとも1つのノードNFTが必要です",
     "checkingNftBalance": "NFT残高を確認中..."
   }

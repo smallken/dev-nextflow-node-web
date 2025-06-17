@@ -129,7 +129,7 @@
     "bindAddress": "绑定地址",
     "addressRequired": "请输入Solana地址",
     "addressInvalid": "Solana地址格式不正确",
-    "registrationRequired": "您需要先在 FlipFlop Dapp中注册该 Solana 地址才能绑定",
+    "registrationRequired": "您需要先在 FlipFlop (https://www.flipflop.plus/) 中注册该 Solana 地址才能绑定",
     "nodeNftRequired": "您需要至少拥有一个节点NFT才能绑定Solana地址",
     "checkingNftBalance": "正在检查NFT余额..."
   }

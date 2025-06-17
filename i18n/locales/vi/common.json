@@ -129,7 +129,7 @@
     "bindAddress": "Liên kết địa chỉ",
     "addressRequired": "Vui lòng nhập địa chỉ Solana",
     "addressInvalid": "Định dạng địa chỉ Solana không hợp lệ",
-    "registrationRequired": "Bạn cần đăng ký địa chỉ Solana này trong FlipFlop Dapp trước khi liên kết",
+    "registrationRequired": "Bạn cần đăng ký địa chỉ Solana này trong FlipFlop (https://www.flipflop.plus/) trước khi liên kết",
     "nodeNftRequired": "Bạn cần có ít nhất một Node NFT để liên kết địa chỉ Solana",
     "checkingNftBalance": "Đang kiểm tra số dư NFT..."
   }

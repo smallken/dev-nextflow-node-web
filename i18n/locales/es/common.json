@@ -129,7 +129,7 @@
     "bindAddress": "Vincular Dirección",
     "addressRequired": "Por favor ingresa una dirección Solana",
     "addressInvalid": "Formato de dirección Solana inválido",
-    "registrationRequired": "Necesitas registrar esta dirección Solana en la Dapp FlipFlop primero antes de vincularla",
+    "registrationRequired": "Necesitas registrar esta dirección Solana en FlipFlop (https://www.flipflop.plus/) antes de vincularla",
     "nodeNftRequired": "Necesitas al menos un Nodo NFT para vincular una dirección Solana",
     "checkingNftBalance": "Verificando saldo de NFT..."
   }
