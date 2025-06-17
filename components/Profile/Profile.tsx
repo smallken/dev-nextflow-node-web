@@ -1,4 +1,4 @@
-import { Card, Text, Group, Button, Container, Stack, rem, Box, Paper, Grid, Space, Progress, CopyButton, ActionIcon, Tooltip, Divider, NavLink } from '@mantine/core';
+import { Card, Text, Group, Button, Container, Stack, rem, Box, Paper, Grid, Space, Progress, CopyButton, ActionIcon, Tooltip, Divider } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useDisclosure } from '@mantine/hooks';
 import { colors, styles, vipColors } from '../../theme';
@@ -6,6 +6,7 @@ import { formatEther } from 'viem';
 import { IconCrown, IconChevronRight, IconCopy, IconCheck, IconUserPlus, IconCirclesRelation, IconEdit } from '@tabler/icons-react';
 import { useState } from 'react';
 import { useUser } from '../../context/UserContext';
+import { SolanaBindStatus } from './SolanaBindStatus';
 import { useTranslation } from 'react-i18next';
 import { InviteModal } from '../User/InviteModal';
 import { scanBaseURL, getConfigLink } from '../../config'
@@ -199,41 +200,8 @@ export function Profile() {
           {
             /* 
              bind solana address area 
-             TODO: get solana address from contract
             */
-            isTestnet && <Stack >
-              <Group justify="space-between" w="100%">
-                <Text size="xs" c="dimmed" w={80}>{t('bindSolana.addressLabel')}:</Text>
-                <Group wrap="nowrap" align="center" gap={4} style={{ flex: 1 }}>
-                  <Text size="xs" c="dimmed">{formatAddress(address)}</Text>
-                  <CopyButton value={address || ''} timeout={2000}>
-                    {({ copied, copy }) => (
-                      <Tooltip label={copied ? t('common.copied') : t('common.copy')} withArrow position="top">
-                        <ActionIcon variant="subtle" color={copied ? 'teal' : 'gray'} onClick={copy} size="xs">
-                          {copied ? <IconCheck size={14} /> : <IconCopy size={14} />}
-                        </ActionIcon>
-                      </Tooltip>
-                    )}
-                  </CopyButton>
-
-                  <NavLink
-                    href="/bind-solana"
-                    leftSection={<IconEdit size={16} stroke={1.5} />}
-                    variant="subtle"
-                  />
-
-                </Group>
-              </Group>
-
-              <Button
-                leftSection={<IconCirclesRelation size={16} />}
-                variant="filled"
-                color="#F2AE00"
-                onClick={() => router.push('/bind-solana')}
-              >
-                {t('bindSolana.title')}
-              </Button>
-            </Stack>
+            isTestnet && <SolanaBindStatus />
           }
         </Card>
       </Container>
