@@ -18,7 +18,7 @@ export const addresses: Record<number, ChainAddresses> = {
     "nft": "0x05c0d03ca1831964f1674499F05856157d762E6C" as Address,
     "priceOracle": "0x0f143cD7b7C219b271F03a35E3BB8BC80f144Fb5" as Address,
     "usdt": "0x55d398326f99059ff775485246999027b3197955" as Address,
-    'bindSolana': zeroAddress // TODO update after deployment
+    'bindSolana': "0xEA48b92d8177344BD3B2b656d1572977cd854786" as Address
   },
 
   [bscTestnet.id]: {

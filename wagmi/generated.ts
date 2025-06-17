@@ -10,7 +10,7 @@ import {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -382,18 +382,18 @@ export const bindSolanaAbi = [
 ] as const
 
 /**
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
 export const bindSolanaAddress = {
-  56: '0x0000000000000000000000000000000000000000',
+  56: '0xEA48b92d8177344BD3B2b656d1572977cd854786',
   97: '0x715d0c928FF80256Aa92af14D34312BD79cA0209',
   31337: '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9',
 } as const
 
 /**
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -1943,7 +1943,7 @@ export const usdtConfig = { address: usdtAddress, abi: usdtAbi } as const
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link bindSolanaAbi}__
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -1955,7 +1955,7 @@ export const useReadBindSolana = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link bindSolanaAbi}__ and `functionName` set to `"UPGRADE_INTERFACE_VERSION"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -1969,7 +1969,7 @@ export const useReadBindSolanaUpgradeInterfaceVersion =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link bindSolanaAbi}__ and `functionName` set to `"ethToSolanaAddress"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -1983,7 +1983,7 @@ export const useReadBindSolanaEthToSolanaAddress =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link bindSolanaAbi}__ and `functionName` set to `"getSolanaAddress"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -1997,7 +1997,7 @@ export const useReadBindSolanaGetSolanaAddress =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link bindSolanaAbi}__ and `functionName` set to `"hasMappedAddress"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -2011,7 +2011,7 @@ export const useReadBindSolanaHasMappedAddress =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link bindSolanaAbi}__ and `functionName` set to `"isValidSolanaFormat"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -2025,7 +2025,7 @@ export const useReadBindSolanaIsValidSolanaFormat =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link bindSolanaAbi}__ and `functionName` set to `"isWhitelisted"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -2039,7 +2039,7 @@ export const useReadBindSolanaIsWhitelisted =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link bindSolanaAbi}__ and `functionName` set to `"modificationCutoffDate"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -2053,7 +2053,7 @@ export const useReadBindSolanaModificationCutoffDate =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link bindSolanaAbi}__ and `functionName` set to `"nodeNFT"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -2066,7 +2066,7 @@ export const useReadBindSolanaNodeNft = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link bindSolanaAbi}__ and `functionName` set to `"owner"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -2079,7 +2079,7 @@ export const useReadBindSolanaOwner = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link bindSolanaAbi}__ and `functionName` set to `"proxiableUUID"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -2093,7 +2093,7 @@ export const useReadBindSolanaProxiableUuid =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link bindSolanaAbi}__ and `functionName` set to `"requiredTokenId"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -2107,7 +2107,7 @@ export const useReadBindSolanaRequiredTokenId =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link bindSolanaAbi}__ and `functionName` set to `"whitelistMerkleRoot"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -2121,7 +2121,7 @@ export const useReadBindSolanaWhitelistMerkleRoot =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link bindSolanaAbi}__ and `functionName` set to `"whitelistingEnabled"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -2135,7 +2135,7 @@ export const useReadBindSolanaWhitelistingEnabled =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link bindSolanaAbi}__
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -2147,7 +2147,7 @@ export const useWriteBindSolana = /*#__PURE__*/ createUseWriteContract({
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link bindSolanaAbi}__ and `functionName` set to `"bindSolana"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -2161,7 +2161,7 @@ export const useWriteBindSolanaBindSolana =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link bindSolanaAbi}__ and `functionName` set to `"initialize"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -2175,7 +2175,7 @@ export const useWriteBindSolanaInitialize =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link bindSolanaAbi}__ and `functionName` set to `"renounceOwnership"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -2189,7 +2189,7 @@ export const useWriteBindSolanaRenounceOwnership =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link bindSolanaAbi}__ and `functionName` set to `"setModificationCutoffDate"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -2203,7 +2203,7 @@ export const useWriteBindSolanaSetModificationCutoffDate =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link bindSolanaAbi}__ and `functionName` set to `"setNodeNFTAndTokenId"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -2217,7 +2217,7 @@ export const useWriteBindSolanaSetNodeNftAndTokenId =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link bindSolanaAbi}__ and `functionName` set to `"setWhitelistMerkleRoot"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -2231,7 +2231,7 @@ export const useWriteBindSolanaSetWhitelistMerkleRoot =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link bindSolanaAbi}__ and `functionName` set to `"setWhitelistingEnabled"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -2245,7 +2245,7 @@ export const useWriteBindSolanaSetWhitelistingEnabled =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link bindSolanaAbi}__ and `functionName` set to `"transferOwnership"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -2259,7 +2259,7 @@ export const useWriteBindSolanaTransferOwnership =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link bindSolanaAbi}__ and `functionName` set to `"upgradeToAndCall"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -2273,7 +2273,7 @@ export const useWriteBindSolanaUpgradeToAndCall =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link bindSolanaAbi}__
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -2285,7 +2285,7 @@ export const useSimulateBindSolana = /*#__PURE__*/ createUseSimulateContract({
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link bindSolanaAbi}__ and `functionName` set to `"bindSolana"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -2299,7 +2299,7 @@ export const useSimulateBindSolanaBindSolana =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link bindSolanaAbi}__ and `functionName` set to `"initialize"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -2313,7 +2313,7 @@ export const useSimulateBindSolanaInitialize =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link bindSolanaAbi}__ and `functionName` set to `"renounceOwnership"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -2327,7 +2327,7 @@ export const useSimulateBindSolanaRenounceOwnership =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link bindSolanaAbi}__ and `functionName` set to `"setModificationCutoffDate"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -2341,7 +2341,7 @@ export const useSimulateBindSolanaSetModificationCutoffDate =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link bindSolanaAbi}__ and `functionName` set to `"setNodeNFTAndTokenId"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -2355,7 +2355,7 @@ export const useSimulateBindSolanaSetNodeNftAndTokenId =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link bindSolanaAbi}__ and `functionName` set to `"setWhitelistMerkleRoot"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -2369,7 +2369,7 @@ export const useSimulateBindSolanaSetWhitelistMerkleRoot =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link bindSolanaAbi}__ and `functionName` set to `"setWhitelistingEnabled"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -2383,7 +2383,7 @@ export const useSimulateBindSolanaSetWhitelistingEnabled =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link bindSolanaAbi}__ and `functionName` set to `"transferOwnership"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -2397,7 +2397,7 @@ export const useSimulateBindSolanaTransferOwnership =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link bindSolanaAbi}__ and `functionName` set to `"upgradeToAndCall"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -2411,7 +2411,7 @@ export const useSimulateBindSolanaUpgradeToAndCall =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link bindSolanaAbi}__
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -2424,7 +2424,7 @@ export const useWatchBindSolanaEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link bindSolanaAbi}__ and `eventName` set to `"CutoffDateUpdated"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -2438,7 +2438,7 @@ export const useWatchBindSolanaCutoffDateUpdatedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link bindSolanaAbi}__ and `eventName` set to `"Initialized"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -2452,7 +2452,7 @@ export const useWatchBindSolanaInitializedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link bindSolanaAbi}__ and `eventName` set to `"NodeNFTAndTokenIdUpdated"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -2466,7 +2466,7 @@ export const useWatchBindSolanaNodeNftAndTokenIdUpdatedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link bindSolanaAbi}__ and `eventName` set to `"OwnershipTransferred"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -2480,7 +2480,7 @@ export const useWatchBindSolanaOwnershipTransferredEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link bindSolanaAbi}__ and `eventName` set to `"SolanaAddressMapped"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -2494,7 +2494,7 @@ export const useWatchBindSolanaSolanaAddressMappedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link bindSolanaAbi}__ and `eventName` set to `"Upgraded"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -2508,7 +2508,7 @@ export const useWatchBindSolanaUpgradedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link bindSolanaAbi}__ and `eventName` set to `"WhitelistRootUpdated"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
@@ -2522,7 +2522,7 @@ export const useWatchBindSolanaWhitelistRootUpdatedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link bindSolanaAbi}__ and `eventName` set to `"WhitelistingEnabled"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xEA48b92d8177344BD3B2b656d1572977cd854786)
  * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x715d0c928FF80256Aa92af14D34312BD79cA0209)
  * -
  */
