@@ -207,8 +207,8 @@ export function BindSolana() {
 
       notifications.update({
         id: 'bind-solana-tx',
-        title: t('error'),
-        message: t('something_went_wrong'), //error?.shortMessagegs
+        title: t('error_title'),
+        message: t('transaction_error'), //error?.shortMessagegs
         color: 'red',
         icon: <IconX />,
         autoClose: 3000,
@@ -255,7 +255,7 @@ export function BindSolana() {
         message: confirmErrorData instanceof Error ? (confirmErrorData.message) : t('transaction_failed'),
         color: 'red',
         icon: <IconX />,
-        autoClose: 6000,
+        autoClose: 3000,
       });
     }
 
