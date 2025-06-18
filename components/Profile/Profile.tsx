@@ -197,12 +197,9 @@ export function Profile() {
           </Stack>
 
           <Space h="xs" />
-          {
-            /* 
-             bind solana address area 
-            */
-            isTestnet && <SolanaBindStatus />
-          }
+          
+          <SolanaBindStatus />
+
         </Card>
       </Container>
 

@@ -12,7 +12,7 @@ export function Navbar({ toggleMobile }: NavbarProps) {
   const { t, i18n } = useTranslation();
   const router = useRouter();
   const { isTestnet: isTestnetEnabled } = useEnv();
-  
+
   const currentLanguage = i18n.language;
   return (
     <AppShell.Navbar p='md' style={{ display: 'flex', flexDirection: 'column' }}>
@@ -41,19 +41,18 @@ export function Navbar({ toggleMobile }: NavbarProps) {
           variant="subtle"
         />
 
-        {isTestnetEnabled && (
-          <NavLink
-            onClick={() => {
-              router.push('/bind-solana');
-              // Close mobile navbar after navigation
-              if (toggleMobile) toggleMobile();
-            }}
-            label={t('nav_bind_solana')}
-            leftSection={<IconCirclesRelation size={16} stroke={1.5} />}
-            active={router.pathname === '/bind-solana'}
-            variant="subtle"
-          />
-        )}
+        <NavLink
+          onClick={() => {
+            router.push('/bind-solana');
+            // Close mobile navbar after navigation
+            if (toggleMobile) toggleMobile();
+          }}
+          label={t('nav_bind_solana')}
+          leftSection={<IconCirclesRelation size={16} stroke={1.5} />}
+          active={router.pathname === '/bind-solana'}
+          variant="subtle"
+        />
+
       </div>
 
       {/* Social media links */}
@@ -68,7 +67,7 @@ export function Navbar({ toggleMobile }: NavbarProps) {
             href="https://x.com/flipfloplaunch"
             target="_blank"
           />
-          
+
           <NavLink
             label="Telegram"
             leftSection={
@@ -78,7 +77,7 @@ export function Navbar({ toggleMobile }: NavbarProps) {
             href={currentLanguage === 'zh' ? "https://t.me/flipflopChi" : "https://t.me/flipflopEng"}
             target="_blank"
           />
-          
+
           <NavLink
             label="GitHub"
             leftSection={
@@ -88,7 +87,7 @@ export function Navbar({ toggleMobile }: NavbarProps) {
             href="https://github.com/flipflop-fun"
             target="_blank"
           />
-          
+
           <NavLink
             label="Medium"
             leftSection={
@@ -99,7 +98,7 @@ export function Navbar({ toggleMobile }: NavbarProps) {
             target="_blank"
           />
         </Stack>
-        
+
         {/* Version info */}
         <Stack gap="xs" fz="xs" c="dimmed" ta="center">
           <Text>v{process.env.APP_VERSION || '1.0.0'}</Text>
