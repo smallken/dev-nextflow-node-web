@@ -19,14 +19,6 @@ const storage = typeof window !== 'undefined'
 // We don't need a real projectId since we're not using WalletConnect
 const dummyProjectId = '0';
 
-// Get current URL for MetaMask deep link
-const getAppUrl = () => {
-  if (typeof window !== 'undefined') {
-    return window.location.origin;
-  }
-  return 'https://your-app-url.com';
-};
-
 // Configure recommended wallets: MetaMask, TokenPocket, Trust, and OKX
 // For RainbowKit v2, configure MetaMask with proper mobile support
 const walletList = [

@@ -3,7 +3,6 @@ import { Card, Text } from '@mantine/core';
 import { Register } from '../User/Register'
 import { Invite } from '../User/Invite'
 import { BuyNode } from '../Node/BuyNode'
-import { MobileWalletTip } from '../Layout/MobileWalletTip'
 import { useTranslation } from 'react-i18next';
 
 
@@ -28,7 +27,6 @@ export function HomeContent({ isConnected, contractUserInfo }: HomeContentProps)
   if (!isConnected) {
     return (
       <>
-        <MobileWalletTip />
         <BuyNode />
         <Space h="xl" />
         {/* <Invite /> */}
