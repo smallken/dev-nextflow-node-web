@@ -10,20 +10,19 @@ dotenv.config();
 
 
 // load pool abi from abis
-const poolAbi = require('./abis/pool.json')
-const nodeNftAbi = require('./abis/nft.json')
-const bindSolanaAbi = require('./abis/SolanaRegistry.json')
+const poolAbi = require('./abis/PhoneDistribution.json')
+const tokenAbi = require('./abis/NextflowToken.json')
+const tokenPoolAbi = require('./abis/TokenPool.json')
 
 
 
 type Address = `0x${string}`
 const localAddresses= {
   [hardhat.id]: {
-    "pool": process.env.NEXT_PUBLIC_POOL as Address || zeroAddress,
-    "nft": process.env.NEXT_PUBLIC_NFT as Address || zeroAddress,
-    "priceOracle": process.env.NEXT_PUBLIC_PRICE_ORACLE as Address || zeroAddress,
+    "pool": process.env.NEXT_PUBLIC_PHONE_DISTRIBUTION as Address || zeroAddress,
     "usdt": process.env.NEXT_PUBLIC_USDT as Address || zeroAddress,
-    'bindSolana': process.env.NEXT_PUBLIC_BIND_SOLANA as Address || zeroAddress,
+    "token": process.env.NEXT_PUBLIC_NEXTFLOW_TOKEN as Address || zeroAddress,
+    "tokenPool": process.env.NEXT_PUBLIC_TOKEN_POOL as Address || zeroAddress,
   }
 }
 
@@ -52,24 +51,22 @@ export default defineConfig({
       abi: poolAbi,
     },
     {
-      name: 'nodeNft',
+      name: 'token',
       address: {
-        [bsc.id]: addresses[bsc.id].nft,
-        [bscTestnet.id]: addresses[bscTestnet.id].nft,
-        [hardhat.id]:localAddresses[hardhat.id].nft,
-
-
+        [bsc.id]: addresses[bsc.id].token,
+        [bscTestnet.id]: addresses[bscTestnet.id].token,
+        [hardhat.id]: localAddresses[hardhat.id].token,
       },
-      abi: nodeNftAbi,
+      abi: tokenAbi,
     },
     {
-      name: 'bindSolana',
+      name: 'tokenPool',
       address: {
-        [bsc.id]: addresses[bsc.id].bindSolana,
-        [bscTestnet.id]: addresses[bscTestnet.id].bindSolana,
-        [hardhat.id]:localAddresses[hardhat.id].bindSolana
+        [bsc.id]: addresses[bsc.id].tokenPool,
+        [bscTestnet.id]: addresses[bscTestnet.id].tokenPool,
+        [hardhat.id]: localAddresses[hardhat.id].tokenPool,
       },
-      abi: bindSolanaAbi,
+      abi: tokenPoolAbi,
     },
   ],
   plugins: [react()],

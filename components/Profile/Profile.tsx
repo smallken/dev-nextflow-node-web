@@ -6,11 +6,8 @@ import { formatEther } from 'viem';
 import { IconCrown, IconChevronRight, IconCopy, IconCheck, IconUserPlus, IconCirclesRelation, IconEdit } from '@tabler/icons-react';
 import { useState } from 'react';
 import { useUser } from '../../context/UserContext';
-import { SolanaBindStatus } from './SolanaBindStatus';
 import { useTranslation } from 'react-i18next';
 import { InviteModal } from '../User/InviteModal';
-import { scanBaseURL, getConfigLink } from '../../config'
-import { useChainId } from 'wagmi';
 import { useEnv } from '../../hooks/useEnv';
 
 
@@ -23,7 +20,8 @@ function StatCard({
   buttonText,
   onClick,
   secondaryAction,
-  onSecondaryAction
+  onSecondaryAction,
+  showButton = true
 }: {
   title: string;
   value: string | number;
@@ -31,6 +29,7 @@ function StatCard({
   onClick?: () => void;
   secondaryAction?: boolean;
   onSecondaryAction?: () => void;
+  showButton?: boolean;
 }) {
   const { t } = useTranslation();
   return (
@@ -63,17 +62,19 @@ function StatCard({
           {value}
         </Text>
 
-        {/* Main action button */}
-        <Button
-          variant="filled"
-          onClick={onClick}
-          rightSection={<IconChevronRight size={16} />}
-          size="xs"
-          fullWidth
-          style={styles.primaryButton}
-        >
-          {buttonText}
-        </Button>
+        {/* Main action button - only show if showButton is true */}
+        {showButton && (
+          <Button
+            variant="filled"
+            onClick={onClick}
+            rightSection={<IconChevronRight size={16} />}
+            size="xs"
+            fullWidth
+            style={styles.primaryButton}
+          >
+            {buttonText}
+          </Button>
+        )}
       </Stack>
     </Paper>
   );
@@ -89,13 +90,10 @@ function formatAddress(address: string | undefined): string {
 export function Profile() {
   const router = useRouter();
   const { t } = useTranslation();
-  const chainId = useChainId();
   // 使用自定义 hook 获取全局用户数据
-  const { address, contractUserInfo, usdtBalance, usdtAllowanceForPool } = useUser();
+  const { address, contractUserInfo } = useUser();
   const [bgColor] = useState('#FFF'); // Default light green background
   const [inviteModalOpened, { open: openInviteModal, close: closeInviteModal }] = useDisclosure(false);
-
-  const { isTestnet } = useEnv();
 
 
   // If user is not connected or data is not loaded, show a placeholder
@@ -197,8 +195,6 @@ export function Profile() {
           </Stack>
 
           <Space h="xs" />
-          
-          <SolanaBindStatus />
 
         </Card>
       </Container>
@@ -209,34 +205,26 @@ export function Profile() {
           <Grid gutter={16}>
             <Grid.Col span={6}>
               <StatCard
-                title={t('profile.myNodes')}
-                value={contractUserInfo?.nftCount || '0'}
-                buttonText={t('common.details')}
-                onClick={() => window.open(getConfigLink(chainId, "myNodeLink", address), '_blank')}
-              />
-            </Grid.Col>
-            <Grid.Col span={6}>
-              <StatCard
                 title={t('profile.myEarnings')}
-                value={formatEther(contractUserInfo?.income || BigInt(0)).substring(0, 8)}
+                value={formatEther(contractUserInfo?.usdtIncome || BigInt(0)).substring(0, 8)}
                 buttonText={t('common.details')}
-                onClick={() => window.open(getConfigLink(chainId, "myIncomeLink", address), '_blank')}
+                onClick={() => window.open('https://thegrape.io', '_blank')}
               />
             </Grid.Col>
             <Grid.Col span={6}>
               <StatCard
                 title={t('profile.myFriends')}
-                value={contractUserInfo?.friends?.length || 0}
+                value={contractUserInfo?.downlineCount || 0}
                 buttonText={t('common.details')}
-                onClick={() => router.push('/friend-list')}
+                onClick={() => window.open('https://thegrape.io', '_blank')}
               />
             </Grid.Col>
-            <Grid.Col span={6}>
+            <Grid.Col span={12}>
               <StatCard
                 title={t('profile.teamNodes')}
-                value={contractUserInfo?.teamNodeCount || 0}
+                value={contractUserInfo?.teamSalesCount || 0}
                 buttonText={t('common.details')}
-                onClick={() => router.push(`/team?address=${address}`)}
+                onClick={() => window.open('https://thegrape.io', '_blank')}
               />
             </Grid.Col>
           </Grid>
@@ -251,7 +239,14 @@ export function Profile() {
           <Button
             leftSection={<IconUserPlus size={16} />}
             variant="filled"
-            color="#40c057"
+            styles={{
+              root: {
+                background: 'linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)',
+                '&:hover': {
+                  background: 'linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%)',
+                }
+              }
+            }}
             onClick={openInviteModal}
           >
             {t('common.invite')}

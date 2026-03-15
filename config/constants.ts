@@ -6,29 +6,23 @@ type Address = `0x${string}`
 
 interface ChainAddresses {
   pool: Address
-  nft: Address
-  priceOracle: Address
   usdt: Address
-  bindSolana: Address
+  token: Address
+  tokenPool: Address
 }
 
 export const addresses: Record<number, ChainAddresses> = {
   [bsc.id]: {
     "pool": "0xd0FB85E347f5894904C6592D597CBFB6222226ab" as Address,
-    "nft": "0x05c0d03ca1831964f1674499F05856157d762E6C" as Address,
-    "priceOracle": "0x0f143cD7b7C219b271F03a35E3BB8BC80f144Fb5" as Address,
     "usdt": "0x55d398326f99059ff775485246999027b3197955" as Address,
-    'bindSolana': "0xEA48b92d8177344BD3B2b656d1572977cd854786" as Address
+    "token": "0x464c9503d58b37fb673C47AD056a1a0e8e70555b" as Address,
+    "tokenPool": "0xd7d85a8e063345186E9E6e5ab03d54Aa46b78f90" as Address
   },
 
   [bscTestnet.id]: {
-    "pool": "0xAf0ba19C15eb9D220960491d0c5768D5939e7D80" as Address,
-    "nft": "0x446407c09B4daaDd2e69b1F6BCc88aC434abcD34" as Address,
-    "priceOracle": "0x55B525b5af22a031b7ac857ea26053099C07DdeE" as Address,
-    "usdt": "0x7C6F0E991D28a7355dEe193B4e5923CC7Dd78CA2" as Address,
-    'bindSolana': '0x715d0c928FF80256Aa92af14D34312BD79cA0209' as Address 
+    "pool": "0x59fEbf632f1E22227f8daDe303438d9A4BbE0548" as Address,
+    "usdt": "0x337610d27c682E347C9cD60BD4b3b107C9d34dDd" as Address,
+    "token": "0x464c9503d58b37fb673C47AD056a1a0e8e70555b" as Address,
+    "tokenPool": "0xd7d85a8e063345186E9E6e5ab03d54Aa46b78f90" as Address
   }
 }
-
-
-export const NODE_NFT_TOKEN_ID = BigInt(1)

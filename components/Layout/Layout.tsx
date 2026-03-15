@@ -1,60 +1,114 @@
 // import { ConnectButton } from '@rainbow-me/rainbowkit'
 import CustomConnectButton from './CustomConnectButton'
-// import { MantineLogo } from '@mantinex/mantine-logo';
-import { AppShell, Burger, Group, Space } from '@mantine/core'
+import { AppShell, Burger, Group } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
+import { useTranslation } from 'react-i18next'
 import Navbar from './Navbar'
 import LanguageSwitcher from './LanguageSwitcher'
+import { BottomNavigation } from './BottomNavigation'
+import { useState, useEffect, useCallback } from 'react'
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  // const [opened, { toggle }] = useDisclosure()
-  const [mobileOpened, { toggle: toggleMobile }] = useDisclosure()
-  const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure()
+  const { i18n } = useTranslation()
+  const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true)
+
+  // 移动端检测 - 使用 matchMedia 更可靠
+  const [isMobile, setIsMobile] = useState(false)
+
+  const checkMobile = useCallback(() => {
+    // 优先使用 matchMedia（更可靠）
+    if (typeof window !== 'undefined') {
+      const mobile = window.matchMedia('(max-width: 767px)').matches
+      setIsMobile(mobile)
+      console.log('检测到移动端:', mobile, '窗口宽度:', window.innerWidth)
+    }
+  }, [])
+
+  useEffect(() => {
+    // 初始检测
+    checkMobile()
+
+    // 监听媒体查询变化
+    const mediaQuery = window.matchMedia('(max-width: 767px)')
+    const handler = (e: MediaQueryListEvent) => {
+      console.log('媒体查询变化:', e.matches)
+      setIsMobile(e.matches)
+    }
+
+    mediaQuery.addEventListener('change', handler)
+
+    // 也监听 resize 作为备用
+    window.addEventListener('resize', checkMobile)
+
+    return () => {
+      mediaQuery.removeEventListener('change', handler)
+      window.removeEventListener('resize', checkMobile)
+    }
+  }, [checkMobile])
+
+  // 获取slogan：中文显示"智科技，链未来"，英文显示"Smart Tech, Link Future"
+  const slogan = i18n.language === 'zh' ? '智科技，链未来' : 'Smart Tech, Link Future'
 
   return (
     <AppShell
-      header={{ height: 60 }}
-      navbar={{
-        width: { sm: 150, lg: 300 },
+      header={{ height: isMobile ? 50 : 60 }}
+      navbar={isMobile ? undefined : {
+        width: { sm: 150, lg: 200 },
         breakpoint: 'sm',
-        collapsed: { mobile: !mobileOpened, desktop: !desktopOpened }
+        collapsed: { mobile: true, desktop: !desktopOpened }
       }}
       padding='md'
+      style={{
+        // 移动端底部padding (底部导航55px + 间距)
+        paddingBottom: isMobile ? '70px' : undefined
+      }}
     >
       <AppShell.Header>
-        <Group h='100%' px='md' justify='space-between' gap='xs'>
-          <Group gap='xs'>
-            <Burger
-              opened={mobileOpened}
-              onClick={toggleMobile}
-              hiddenFrom='sm'
-              size='sm'
-            />
-            <Burger
-              opened={desktopOpened}
-              onClick={toggleDesktop}
-              visibleFrom='sm'
-              size='sm'
-            />
-            <img src="/images/flip-flops-64_64.png" style={{ width: '32px', height: '32px' }} alt="Logo" />
+        <Group
+          h='100%'
+          px={isMobile ? 'xs' : 'md'}
+          justify='space-between'
+          gap={isMobile ? 'xs' : 'xs'}
+          style={{ flexWrap: 'nowrap' }}
+        >
+          {/* Logo区域 */}
+          <Group gap={isMobile ? 'xs' : 'md'} style={{ display: 'flex', alignItems: 'center', flexWrap: 'nowrap', flex: 1 }}>
+            {/* 桌面端显示Burger按钮，移动端隐藏 */}
+            {!isMobile && (
+              <Burger
+                opened={desktopOpened}
+                onClick={toggleDesktop}
+                size='sm'
+              />
+            )}
+            <img src="/logo-black.png" style={{ height: isMobile ? '24px' : '28px', width: 'auto' }} alt="NextFlow Logo" />
+            <div style={{ display: 'flex', flexDirection: 'column', minWidth: isMobile ? '80px' : '100px' }}>
+              <img src="/logo-black-word.png" style={{ height: isMobile ? '16px' : '18px', width: 'auto', objectFit: 'contain', objectPosition: 'left', marginBottom: '1px' }} alt="NextFlow" />
+              {!isMobile && (
+                <span style={{ fontSize: '9px', color: '#64748b', fontWeight: 500, letterSpacing: '0.5px', whiteSpace: 'nowrap', lineHeight: 1 }}>
+                  {slogan}
+                </span>
+              )}
+            </div>
+          </Group>
 
-          </Group>
-          <Group gap="xs">
+          {/* 右侧按钮组 */}
+          <Group gap="xs" style={{ flexWrap: 'nowrap', flexShrink: 0 }}>
             <CustomConnectButton />
             <LanguageSwitcher />
           </Group>
-          {/* <Group gap="xs" hiddenFrom="sm" justify="center" mt="xs">
-            <CustomConnectButton />
-            <LanguageSwitcher />
-          </Group> */}
         </Group>
       </AppShell.Header>
 
-      <Navbar toggleMobile={toggleMobile} />
+      {/* 桌面端显示左侧导航栏 */}
+      {!isMobile && <Navbar />}
 
       <AppShell.Main>
         {children}
       </AppShell.Main>
+
+      {/* 移动端显示底部导航栏 */}
+      {isMobile && <BottomNavigation />}
     </AppShell>
   )
 }

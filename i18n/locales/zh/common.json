@@ -6,8 +6,14 @@
   "buy": "认购节点",
   "register": "注册",
   "buy_one_node":"认购 1 个节点",
+  "buy_one_phone":"认购 1 部手机",
   "buy_five_node":"认购 5 个节点",
-  "progress":"FlipFlop节点认购（第二期）",
+  "buy_phone":"认购手机",
+  "buy_node":"认购节点",
+  "connect_wallet_title":"请连接钱包",
+  "connect_wallet_message":"您需要连接钱包才能进行操作",
+  "progress":"NextFlow手机认购（第一期）",
+  "phase": "第 {{number}} 期",
   "custom_quantity":"自定义数量",
   "userDetails":"用户详情",
   "total_cost":"总费用",
@@ -20,6 +26,8 @@
   "submitting":"提交中...",
   "no_invite_detected":"未检测到邀请链接",
   "use_friend_link":"请通过好友分享的邀请链接进入网站",
+  "no_referrer_title": "无推荐人",
+  "no_referrer_message": "您需要推荐码才能进行购买。请使用带有推荐码的邀请链接。",
   "approve_usdt":"授权USDT",
   "approval_required":"继续操作需要授权USDT",
   "approval_description":"在继续认购前，您需要授权智能合约使用您的USDT",
@@ -52,8 +60,9 @@
   "try_again_later":"请稍后再试",
   "usdt_balance":"USDT余额",
   "nodes_owned":"节点数",
+  "phones_purchased":"已购买手机",
   "invite_friends":"邀请好友",
-  "need_one_node_to_invite":"购买节点，解锁邀请权限",
+  "need_one_node_to_invite":"购买手机，解锁邀请权限",
   "scan_or_copy":"扫描二维码或复制链接邀请好友",
   "copy_link":"复制链接",
   "invite_reward_desc":"分享此链接给你的朋友，当他们注册成功后，你将获得奖励。",
@@ -63,7 +72,7 @@
   "please_register_before_invite": "您需要先注册才能邀请好友。",
   "go_to_register": "去注册",
   "node_purchase_required": "需要购买节点",
-  "please_purchase_node_before_invite": "购买节点，解锁邀请权限",
+  "please_purchase_node_before_invite": "购买手机，解锁邀请权限",
   "go_to_purchase": "去购买",
 
   "common": {
@@ -83,10 +92,9 @@
     "levelProgress": "等级进度",
     "inviter": "邀请者",
     "myWallet": "我的钱包",
-    "myNodes": "我的节点",
     "myEarnings": "收益(USDT)",
-    "myFriends": "我的好友",
-    "teamNodes": "团队节点"
+    "myFriends": "我的推荐",
+    "teamNodes": "团队业绩"
   },
 
   "friends": {
@@ -129,8 +137,35 @@
     "bindAddress": "绑定地址",
     "addressRequired": "请输入Solana地址",
     "addressInvalid": "Solana地址格式不正确",
-    "registrationRequired": "您需要先在 FlipFlop (https://www.flipflop.plus/) 中注册该 Solana 地址才能绑定",
+    "registrationRequired": "您需要先在 NextFlow (https://www.nextflowai.io/) 中注册该 Solana 地址才能绑定",
     "nodeNftRequired": "您需要至少拥有一个节点NFT才能绑定Solana地址",
     "checkingNftBalance": "正在检查NFT余额..."
-  }
+  },
+
+  "tokens": {
+    "title": "代币",
+    "connectWallet": "请连接钱包查看代币",
+    "rewardTokens": "奖励代币",
+    "tokens": "代币",
+    "claimed": "已领取",
+    "pending": "待释放",
+    "immediate": "立即释放",
+    "claimable": "可领取",
+    "claim": "领取",
+    "claiming": "领取中...",
+    "claimSuccess": "领取成功",
+    "claimSuccessMessage": "您的代币已成功领取",
+    "refresh": "刷新",
+    "history": "交易记录",
+    "noPendingTokens": "暂无待领取的代币",
+    "noHistory": "暂无交易记录"
+  },
+
+  "nav_home": "首页",
+  "nav_tokens": "代币",
+  "nav_more": "更多",
+  "social_title": "关注我们",
+  "social_twitter": "Twitter",
+  "social_telegram": "Telegram",
+  "social_website": "官网"
 }

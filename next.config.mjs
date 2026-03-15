@@ -27,10 +27,7 @@ export default withBundleAnalyzer({
   eslint: {
     ignoreDuringBuilds: true,
   },
-  i18n: {
-    locales: ['en', 'ja', 'es', 'zh', 'zh-TW', 'vi'],
-  defaultLocale: 'en',
-  },
+  // i18n is handled by react-i18next, not Next.js built-in i18n
   devIndicators: false,
   
   // Make version info available as environment variables

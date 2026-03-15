@@ -1,12 +1,9 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-import { createPublicClient, http } from 'viem';
-import { useAccount, useChainId, useReadContract } from 'wagmi';
+import { useAccount, useChainId } from 'wagmi';
 import {
-  useReadPoolGetUserInfo, useReadPoolUpline, useReadPoolGetNodePrice,
-  useReadUsdtBalanceOf, useReadUsdtAllowance, poolAddress, usdtAddress, useReadPoolGetUserDownlines,
-  useReadNodeNftTotalSupply, nodeNftAbi, nodeNftAddress,
-  useReadNodeNftBalanceOf,
-
+  useReadPoolGetUserInfo, useReadPoolUpline, useReadPoolUsdtPrice,
+  useReadUsdtBalanceOf, useReadUsdtAllowance, poolAddress, useReadPoolGetUserDownlines,
+  useReadPoolSalesCount, useReadPoolGetActiveBatch, useReadPoolGetBatch,
 } from '../wagmi/generated';
 
 import MINT_STAGE from '../config/min.stage';
@@ -15,6 +12,12 @@ import MINT_STAGE from '../config/min.stage';
 // 定义全局应用信息类型
 type AppInfo = {
   price: bigint; // 节点价格（usdt计算）
+
+  // 批次信息
+  activeBatchIndex: number; // 当前活跃批次索引
+  batchTotalStock: number; // 批次总库存
+  batchRemainingStock: number; // 批次剩余库存
+  batchSoldCount: number; // 批次已售数量
 
   // NFT全局信息
   nftCurrentTotal: bigint; // total mint of different stage
@@ -34,7 +37,12 @@ type ContractUserInfo = {
   teamNodeCount: number,
   income: bigint,
   friends: string[],
-  nftCount:number,
+  salesCount: number, // 用户购买手机数量
+
+  // 新增字段
+  usdtIncome: bigint, // USDT 收益
+  downlineCount: number, // 直接推荐人数
+  teamSalesCount: number, // 团队业绩
 
   // 扩展信息 - 我们计算的属性
   parent?: string; // 需要从其他地方获取
@@ -71,14 +79,23 @@ export function UserProvider({ children }: { children: ReactNode }) {
     args: address ? [address] : undefined,
     query: {
       enabled: !!address,
+      refetchInterval: 5000, // 每5秒自动刷新
     }
   });
+
+  // 调试：打印用户数据状态
+  console.log('=== 用户数据状态调试 ===');
+  console.log('address:', address);
+  console.log('userData:', userData);
+  console.log('isError:', isError);
+  console.log('isLoading:', isLoading);
 
   // 使用 useReadPoolUpline 获取用户的推荐人地址
   const { data: parentAddress, refetch: refetchParentAddress } = useReadPoolUpline({
     args: address ? [address] : undefined,
     query: {
       enabled: !!address,
+      refetchInterval: 5000,
     }
   });
 
@@ -87,17 +104,42 @@ export function UserProvider({ children }: { children: ReactNode }) {
     args: address ? [address] : undefined,
     query: {
       enabled: !!address,
+      refetchInterval: 5000,
     }
   });
 
-  // 使用 useReadPoolGetNodePrice 获取全局节点价格
-  const { data: nftPrice, refetch: refetchNftPrice } = useReadPoolGetNodePrice();
+  // 使用 useReadPoolUsdtPrice 获取全局节点价格
+  const { data: nftPrice, refetch: refetchNftPrice } = useReadPoolUsdtPrice();
+
+  // 获取活跃批次信息
+  const { data: activeBatchData, refetch: refetchActiveBatch } = useReadPoolGetActiveBatch({
+    query: {
+      refetchInterval: 5000,
+    }
+  });
+
+  // 获取批次详情（如果有活跃批次）
+  const { data: batchDetails, refetch: refetchBatchDetails } = useReadPoolGetBatch({
+    args: activeBatchData ? [activeBatchData[0]] : undefined,
+    query: {
+      enabled: !!activeBatchData,
+      refetchInterval: 5000,
+    }
+  });
+
+  // 调试：打印批次数据
+  console.log('=== 批次数据调试 ===');
+  console.log('activeBatchData:', activeBatchData);
+  console.log('activeBatchData[0]:', activeBatchData ? activeBatchData[0] : 'undefined');
+  console.log('batchDetails:', batchDetails);
+  console.log('batchDetails 长度:', batchDetails ? batchDetails.length : 'undefined');
 
   // 使用 useReadUsdtBalanceOf 获取用户的USDT余额
   const { data: usdtBalanceData, refetch: refetchUsdtBalance } = useReadUsdtBalanceOf({
     args: address ? [address] : undefined,
     query: {
       enabled: !!address,
+      refetchInterval: 5000,
     }
   });
 
@@ -111,40 +153,27 @@ export function UserProvider({ children }: { children: ReactNode }) {
       undefined,
     query: {
       enabled: !!address && !!poolAddress[chainId as keyof typeof poolAddress],
+      refetchInterval: 5000,
     }
   });
 
   // 默认授权额度为0
   const usdtAllowanceForPool = usdtAllowanceData || BigInt(0);
 
- 
-  const tokenId = BigInt(1); // Node NFT 的 tokenId
-  const { data: nftBalanceData, refetch: refetchNftBalance } = useReadNodeNftBalanceOf({
-    args: address ? [address as `0x${string}`, tokenId] : undefined,
+  // 获取用户购买手机数量 (salesCount)
+  const { data: salesCountData, refetch: refetchSalesCount } = useReadPoolSalesCount({
+    args: address ? [address] : undefined,
     query: {
       enabled: !!address,
+      refetchInterval: 5000,
     }
   });
 
-  // 默认 NFT 数量为 0
-  const nftBalance = nftBalanceData ? Number(nftBalanceData) : 0;
+  // 默认购买数量为 0
+  const salesCount = salesCountData ? Number(salesCountData) : 0;
 
-  // 使用 useReadContract 直接读取 NFT 总供应量，不依赖用户登录状态
-  const { data: nftTotalSupplyData, refetch: refetchNftTotalSupply } = useReadContract({
-    address: nodeNftAddress[chainId as keyof typeof nodeNftAddress] as `0x${string}`,
-    abi: nodeNftAbi,
-    functionName: 'totalSupply',
-    args: [BigInt(1)],
-    query: {
-      enabled: true,
-      retry: 3,
-    }
-  });
-
-  console.log('nftTotalSupplyData', nftTotalSupplyData);
-
-  // Actual mint total amount
-  const nftCurrentTotal = nftTotalSupplyData || BigInt(0);
+  // 固定当前数量为 0，不从区块链读取
+  const nftCurrentTotal = BigInt(0);
 
   // NFT铸造目标和起始值
   const nftMintTarget = MINT_STAGE.nftMintTarget;
@@ -205,12 +234,13 @@ export function UserProvider({ children }: { children: ReactNode }) {
         refetchPromises.push(refetchFriendsList());
         refetchPromises.push(refetchUsdtBalance());
         refetchPromises.push(refetchUsdtAllowance());
-        refetchPromises.push(refetchNftBalance());
+        refetchPromises.push(refetchSalesCount());
       }
 
       // Global data (always refetch)
       refetchPromises.push(refetchNftPrice());
-      refetchPromises.push(refetchNftTotalSupply());
+      refetchPromises.push(refetchActiveBatch());
+      refetchPromises.push(refetchBatchDetails());
 
       // Wait for all refetch operations to complete
       await Promise.all(refetchPromises);
@@ -226,16 +256,44 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
   // Initialize application global information only when key values change
   useEffect(() => {
+    // Debug: Log all dependencies
+    console.log('=== appInfo useEffect 检查 ===');
+    console.log('nftPrice:', nftPrice);
+    console.log('activeBatchData:', activeBatchData);
+    console.log('batchDetails:', batchDetails);
+    console.log('所有条件满足?', !!nftPrice && !!activeBatchData && !!batchDetails);
+
     // Only initialize or update global info when critical values are available
-    if (nftPrice) {
-      const shouldUpdate =
+    if (nftPrice && activeBatchData && batchDetails) {
+      // getBatch 返回: endCount, purchaseReward, referralReward, totalStock, soldCount, isActive
+      const batchTotalStock = Number(batchDetails[3]);
+      const batchSoldCount = Number(batchDetails[4]);
+      const batchRemainingStock = Number(activeBatchData[1]);
+      const activeBatchIndex = Number(activeBatchData[0]);
+
+      // Check if any critical value has changed
+      const hasChanged =
         !appInfo ||
         appInfo.price !== nftPrice ||
-        appInfo.nftCurrentTotal !== nftCurrentTotal;
+        appInfo.activeBatchIndex !== activeBatchIndex ||
+        appInfo.batchTotalStock !== batchTotalStock ||
+        appInfo.batchRemainingStock !== batchRemainingStock ||
+        appInfo.batchSoldCount !== batchSoldCount;
 
-      if (shouldUpdate) {
+      if (hasChanged) {
+        console.log('✅ 更新 appInfo - 批次信息:', {
+          batchTotalStock,
+          batchRemainingStock,
+          batchSoldCount,
+          activeBatchIndex
+        });
+
         setAppInfo({
           price: nftPrice,
+          activeBatchIndex,
+          batchTotalStock,
+          batchRemainingStock,
+          batchSoldCount,
           nftCurrentTotal,
           nftCurrentStageMinted,
           nftMintTarget,
@@ -244,40 +302,67 @@ export function UserProvider({ children }: { children: ReactNode }) {
           nftMintTargetAmount,
           isNftMintComplete,
         });
+      } else {
+        console.log('⏭️ appInfo 无需更新，值未变化');
       }
+    } else {
+      console.log('❌ 缺少必要数据，无法设置 appInfo');
+      if (!nftPrice) console.log('  - nftPrice 为空');
+      if (!activeBatchData) console.log('  - activeBatchData 为空');
+      if (!batchDetails) console.log('  - batchDetails 为空');
     }
-  }, [nftPrice, nftCurrentTotal, nftTotalSupplyData]);
+  }, [nftPrice, activeBatchData, batchDetails]);
 
   // 当地址变化时重置用户相关信息
   useEffect(() => {
     if (!address) {
       setContractUserInfo(null);
+    } else {
+      // 地址变化时，先重置旧数据，等待新的数据加载
+      setContractUserInfo(null);
     }
-    // 对于地址存在的情况，我们依赖上面的useReadPoolGetUserInfo来获取数据
-    // 所以这里不需要额外的操作
   }, [address]);
 
   // 将userData和parentAddress结合更新contractUserInfo
   useEffect(() => {
     if (userData && address) {
+      // 调试：打印用户数据
+      console.log('=== 用户数据调试 ===');
+      console.log('userData:', userData);
+      console.log('address:', address);
+
       // 从数组解构各个属性
-      const [nodeCount, income, level, teamNodeCount] = userData;
+      // getUserInfo 返回: salesCount, teamSalesCount, usdtIncome, tokenIncome, upline, downlineCount, usdtCommissionRate, tokenCommissionRate
+      const [salesCountRes, teamSalesCountRes, usdtIncomeRes, , uplineRes, downlineCountRes] = userData;
+
+      console.log('解析用户数据:', {
+        salesCount: salesCountRes,
+        teamSalesCount: teamSalesCountRes,
+        usdtIncome: usdtIncomeRes,
+        upline: uplineRes,
+        downlineCount: downlineCountRes
+      });
 
       const transformedData: ContractUserInfo = {
-        nodeCount: Number(nodeCount),
-        income,
-        level: Number(level),
-        teamNodeCount: Number(teamNodeCount),
-        nftCount: nftBalance, // 添加用户持有的 NFT 数量
+        nodeCount: Number(salesCountRes), // 个人购买数量
+        income: usdtIncomeRes, // USDT 收益
+        level: 0, // 等级计算需要其他数据
+        teamNodeCount: Number(teamSalesCountRes), // 团队业绩
+        salesCount: Number(salesCountRes), // 用户购买手机数量
+        usdtIncome: usdtIncomeRes, // USDT 收益
+        downlineCount: Number(downlineCountRes), // 直接推荐人数
+        teamSalesCount: Number(teamSalesCountRes), // 团队业绩
         parent: parentAddress || undefined, // 添加父级推荐人地址
         address, // 添加用户自己的地址
         friends: friendsList ? [...friendsList] : [], // 添加好友列表 - 转换为可变数组
       };
 
+      console.log('转换后的用户数据:', transformedData);
+
       // 更新状态
       setContractUserInfo(transformedData);
     }
-  }, [userData, address, parentAddress, friendsList, nftBalance]);
+  }, [userData, address, parentAddress, friendsList]);
 
 
   useEffect(() => {

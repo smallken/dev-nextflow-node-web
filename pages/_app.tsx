@@ -7,18 +7,17 @@ import '../styles/global.css'
 // Import only on client-side to prevent SSR issues
 import dynamic from 'next/dynamic';
 import type { AppProps } from 'next/app'
-import { useRouter } from 'next/router'
 import Head from 'next/head'
 import { MantineProvider } from '@mantine/core'
 import { isBrowser, isServer } from '../utils/environment'
 
 import { Notifications } from '@mantine/notifications';
 
-import { theme, customLightTheme, customDarkTheme } from '../theme'
+import { theme, customLightTheme } from '../theme'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { WagmiProvider, useAccount, useConnect } from 'wagmi'
-import { RainbowKitProvider, type Locale, lightTheme } from '@rainbow-me/rainbowkit'
+import { WagmiProvider } from 'wagmi'
+import { RainbowKitProvider } from '@rainbow-me/rainbowkit'
 import { useTranslation, I18nextProvider } from 'react-i18next';
 import initI18Next from '../i18n/i18n-server';
 
@@ -36,18 +35,12 @@ import { UserProvider } from '../context/UserContext'
 const queryClient = new QueryClient()
 
 function App({ Component, pageProps }: AppProps) {
-  const router = useRouter();
-  
-  // Determine language for server-side and client-side consistently
-  // Use router locale for SSR (matches URL) and i18n.language for client
-  const language = isServer ? (router.locale || 'en') : undefined;
-  
   // Use server instance in SSR, client instance on client-side
-  const i18n = isServer ? initI18Next(language) : i18nInstance;
-  
+  const i18n = isServer ? initI18Next('en') : i18nInstance;
+
   // When rendering on the server, the server determines the language
   const { t } = useTranslation(undefined, { i18n });
-  
+
   // Get current language for RainbowKit
   const currentLocale = i18n?.language === 'en' ? 'en' : 'zh-CN';
 
@@ -65,14 +58,20 @@ function App({ Component, pageProps }: AppProps) {
             >
             <UserProvider>
               <Head>
-                <title>FlipFlop Never Node</title>
+                <title>NextFlow — 全球领先的AI+Web4终端生态</title>
+                <meta name='description' content='成为全球领先的AI+Web4 终端生态服务商，推动AI+Web4 技术从行业小众应用走向大众普及' />
                 <meta
                   name='viewport'
-                  content='minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no'
+                  content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover'
                 />
-                <link rel='shortcut icon' href='/favicon.ico' />
-                <link rel="apple-touch-icon" href="/logo192.png" />
-
+                <meta name="theme-color" content="#8b5cf6" />
+                <meta name="apple-mobile-web-app-capable" content="yes" />
+                <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+                <meta name="apple-mobile-web-app-title" content="NextFlow" />
+                <link rel='shortcut icon' href='/logo-black.png' />
+                <link rel="apple-touch-icon" href="/logo-black.png" />
+                <link rel="icon" type="image/png" sizes="32x32" href="/logo-black.png" />
+                <link rel="icon" type="image/png" sizes="16x16" href="/logo-black.png" />
               </Head>
               <Layout>
                 <Component {...pageProps} />

@@ -1,13 +1,20 @@
-import { http, createConfig } from 'wagmi';
+import { http, createConfig, createStorage } from 'wagmi';
 import { bsc, hardhat, bscTestnet, type Chain } from 'wagmi/chains';
 import { connectorsForWallets } from '@rainbow-me/rainbowkit';
-import { 
+import {
   metaMaskWallet,
   trustWallet,
   okxWallet,
   injectedWallet,
   tokenPocketWallet
 } from '@rainbow-me/rainbowkit/wallets';
+
+// 创建存储，仅在客户端使用 localStorage
+const storage = typeof window !== 'undefined'
+  ? createStorage({
+      storage: window.localStorage,
+    })
+  : undefined;
 
 // We don't need a real projectId since we're not using WalletConnect
 const dummyProjectId = '0';
@@ -38,7 +45,7 @@ const walletList = [
 // Create the connectors with our wallet list
 const connectors = connectorsForWallets(walletList, {
   projectId: dummyProjectId,
-  appName: 'FlipFlop Never Node'
+  appName: 'NextFlow Node'
 });
 
 // Define chains with proper tuple typing for Wagmi v2
@@ -68,5 +75,5 @@ export const config = createConfig({
     [hardhat.id]: http('http://127.0.0.1:8545')
   },
   connectors,
-  ssr: true,
+  storage,
 });

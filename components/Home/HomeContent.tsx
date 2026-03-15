@@ -14,6 +14,7 @@ interface HomeContentProps {
     level: number;
     teamNodeCount: number;
     income: bigint;
+    salesCount: number;
     parent?: string;
     address?: `0x${string}`;
   } | null;
@@ -43,16 +44,26 @@ export function HomeContent({ isConnected, contractUserInfo }: HomeContentProps)
     <>
       <BuyNode />
       <Space h="xl" />
-      {contractUserInfo && contractUserInfo.nodeCount > 0 ? (
-        // Case 3a: User has purchased at least one node
+      {contractUserInfo && contractUserInfo.salesCount > 0 ? (
+        // Case 3a: User has purchased at least one phone
         <Invite />
       ) : (
-        // Case 3b: User hasn't purchased any nodes
+        // Case 3b: User hasn't purchased any phones
         <Card shadow="sm" padding="lg" radius="md" withBorder>
           <Text color="dimmed" size="sm" mb="sm" ta="center">
             {t('need_one_node_to_invite')}
           </Text>
-          <Button fullWidth color="#F2AE00" disabled>{t('common.invite')}</Button>
+          <Button
+            fullWidth
+            disabled
+            styles={{
+              root: {
+                background: 'linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)',
+              }
+            }}
+          >
+            {t('common.invite')}
+          </Button>
         </Card>
       )}
     </>

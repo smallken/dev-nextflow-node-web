@@ -17,44 +17,12 @@
   },
   {
     "inputs": [],
-    "name": "AlreadyRegistered",
+    "name": "Blacklisted",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "AmountMustBePositive",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "recipient",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "CommissionTransferFailed",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint8",
-        "name": "depth",
-        "type": "uint8"
-      }
-    ],
-    "name": "DepthExceedsMaximum",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "DepthMustBePositive",
+    "name": "ClaimAmountTooSmall",
     "type": "error"
   },
   {
@@ -74,40 +42,13 @@
     "type": "error"
   },
   {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "newTotal",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "limit",
-        "type": "uint256"
-      }
-    ],
-    "name": "ExceedsMaxCumulativePurchase",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "limit",
-        "type": "uint256"
-      }
-    ],
-    "name": "ExceedsMaxSinglePurchase",
+    "inputs": [],
+    "name": "FailedCall",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "FailedCall",
+    "name": "InsufficientTokenBalance",
     "type": "error"
   },
   {
@@ -121,24 +62,13 @@
     "type": "error"
   },
   {
-    "inputs": [
-      {
-        "internalType": "uint8",
-        "name": "level",
-        "type": "uint8"
-      }
-    ],
-    "name": "InvalidLevel",
+    "inputs": [],
+    "name": "InvalidPercent",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "InvalidPriceOracleAddress",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "MaxSinglePurchaseMustBePositive",
+    "name": "InvalidVestingDuration",
     "type": "error"
   },
   {
@@ -148,7 +78,12 @@
   },
   {
     "inputs": [],
-    "name": "NotRegistered",
+    "name": "NothingToClaim",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "OnlyDistribution",
     "type": "error"
   },
   {
@@ -174,17 +109,6 @@
     "type": "error"
   },
   {
-    "inputs": [
-      {
-        "internalType": "uint8",
-        "name": "rate",
-        "type": "uint8"
-      }
-    ],
-    "name": "RateTooHigh",
-    "type": "error"
-  },
-  {
     "inputs": [],
     "name": "ReentrancyGuardReentrantCall",
     "type": "error"
@@ -193,43 +117,11 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "referrer",
+        "name": "token",
         "type": "address"
       }
     ],
-    "name": "ReferrerHasNoNodes",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "referrer",
-        "type": "address"
-      }
-    ],
-    "name": "ReferrerNotRegistered",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "expectedToken",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "providedToken",
-        "type": "address"
-      }
-    ],
-    "name": "TokenMismatch",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "TokenTransferFailed",
+    "name": "SafeERC20FailedOperation",
     "type": "error"
   },
   {
@@ -254,54 +146,30 @@
       {
         "indexed": true,
         "internalType": "address",
-        "name": "from",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "to",
+        "name": "user",
         "type": "address"
       },
       {
         "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint8",
-        "name": "fromLevel",
-        "type": "uint8"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint8",
-        "name": "toLevel",
-        "type": "uint8"
+        "internalType": "bool",
+        "name": "status",
+        "type": "bool"
       }
     ],
-    "name": "CommissionPaid",
+    "name": "BlacklistUpdated",
     "type": "event"
   },
   {
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
-        "internalType": "uint8",
-        "name": "level",
-        "type": "uint8"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint8",
-        "name": "rate",
-        "type": "uint8"
+        "indexed": true,
+        "internalType": "address",
+        "name": "distribution",
+        "type": "address"
       }
     ],
-    "name": "CommissionRateSet",
+    "name": "DistributionUpdated",
     "type": "event"
   },
   {
@@ -321,25 +189,19 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": true,
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "available",
+        "type": "uint256"
       },
       {
         "indexed": false,
-        "internalType": "uint8",
-        "name": "oldLevel",
-        "type": "uint8"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint8",
-        "name": "newLevel",
-        "type": "uint8"
+        "internalType": "uint256",
+        "name": "required",
+        "type": "uint256"
       }
     ],
-    "name": "LevelUpdated",
+    "name": "InsufficientBalance",
     "type": "event"
   },
   {
@@ -348,37 +210,11 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "maxCumulativePurchase",
+        "name": "minClaimAmount",
         "type": "uint256"
       }
     ],
-    "name": "MaxCumulativePurchaseSet",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint8",
-        "name": "maxReferralDepth",
-        "type": "uint8"
-      }
-    ],
-    "name": "MaxReferralDepthSet",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "maxSinglePurchase",
-        "type": "uint256"
-      }
-    ],
-    "name": "MaxSinglePurchaseSet",
+    "name": "MinClaimAmountSet",
     "type": "event"
   },
   {
@@ -387,36 +223,17 @@
       {
         "indexed": true,
         "internalType": "address",
-        "name": "nodeNFT",
+        "name": "previousOwner",
         "type": "address"
       },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
-      }
-    ],
-    "name": "NodeNFTSet",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
       {
         "indexed": true,
         "internalType": "address",
-        "name": "user",
+        "name": "newOwner",
         "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
       }
     ],
-    "name": "NodePurchased",
+    "name": "OwnershipTransferStarted",
     "type": "event"
   },
   {
@@ -444,11 +261,23 @@
       {
         "indexed": true,
         "internalType": "address",
-        "name": "priceOracle",
+        "name": "token",
         "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
       }
     ],
-    "name": "PriceOracleSet",
+    "name": "TokenWithdrawn",
     "type": "event"
   },
   {
@@ -461,13 +290,13 @@
         "type": "address"
       },
       {
-        "indexed": true,
-        "internalType": "address",
-        "name": "referrer",
-        "type": "address"
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
       }
     ],
-    "name": "ReferralRegistered",
+    "name": "TokensClaimed",
     "type": "event"
   },
   {
@@ -480,7 +309,7 @@
         "type": "address"
       }
     ],
-    "name": "TreasurySet",
+    "name": "TreasuryUpdated",
     "type": "event"
   },
   {
@@ -497,6 +326,68 @@
     "type": "event"
   },
   {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "immediatePercent",
+        "type": "uint8"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "vestingPercent",
+        "type": "uint8"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "vestingDuration",
+        "type": "uint256"
+      }
+    ],
+    "name": "VestingConfigUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "totalAmount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "immediateAmount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "vestingAmount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "treasuryAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "VestingCreated",
+    "type": "event"
+  },
+  {
     "inputs": [],
     "name": "UPGRADE_INTERFACE_VERSION",
     "outputs": [
@@ -510,14 +401,8 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "buyNode",
+    "inputs": [],
+    "name": "acceptOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -525,60 +410,147 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "commissionRates",
-    "outputs": [
-      {
-        "internalType": "uint8",
-        "name": "",
-        "type": "uint8"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "directPurchaseCount",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
+        "name": "user",
         "type": "address"
       },
       {
         "internalType": "uint256",
-        "name": "",
+        "name": "totalAmount",
         "type": "uint256"
       }
     ],
-    "name": "downlines",
+    "name": "addVesting",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "claim",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "distribution",
     "outputs": [
       {
         "internalType": "address",
         "name": "",
         "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      }
+    ],
+    "name": "getClaimable",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "index",
+        "type": "uint256"
+      }
+    ],
+    "name": "getSchedule",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "totalAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "claimed",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "startTime",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "vested",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      }
+    ],
+    "name": "getScheduleCount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      }
+    ],
+    "name": "getVestingInfo",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "_totalVested",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_totalClaimed",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_claimable",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_scheduleCount",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -586,7 +558,7 @@
   },
   {
     "inputs": [],
-    "name": "getNodePrice",
+    "name": "globalTotalClaimed",
     "outputs": [
       {
         "internalType": "uint256",
@@ -598,125 +570,26 @@
     "type": "function"
   },
   {
-    "inputs": [
+    "inputs": [],
+    "name": "globalTotalVested",
+    "outputs": [
       {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "immediatePercent",
+    "outputs": [
       {
         "internalType": "uint8",
-        "name": "_level",
+        "name": "",
         "type": "uint8"
-      }
-    ],
-    "name": "getTeamNodeBaseline",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      }
-    ],
-    "name": "getUserDownlines",
-    "outputs": [
-      {
-        "internalType": "address[]",
-        "name": "",
-        "type": "address[]"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      }
-    ],
-    "name": "getUserInfo",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "_nodeCount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_income",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint8",
-        "name": "_level",
-        "type": "uint8"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_teamNodeCount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "_upline",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_friendCount",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      }
-    ],
-    "name": "getUserUpline",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "income",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -731,12 +604,12 @@
       },
       {
         "internalType": "address",
-        "name": "_treasury",
+        "name": "_distribution",
         "type": "address"
       },
       {
         "internalType": "address",
-        "name": "_referrer0",
+        "name": "_treasury",
         "type": "address"
       }
     ],
@@ -753,7 +626,7 @@
         "type": "address"
       }
     ],
-    "name": "isRegistered",
+    "name": "isBlacklisted",
     "outputs": [
       {
         "internalType": "bool",
@@ -765,117 +638,8 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "level",
-    "outputs": [
-      {
-        "internalType": "uint8",
-        "name": "",
-        "type": "uint8"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "levelRequirements",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [],
-    "name": "maxCumulativePurchase",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "maxReferralDepth",
-    "outputs": [
-      {
-        "internalType": "uint8",
-        "name": "",
-        "type": "uint8"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "maxSinglePurchase",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "nodeCount",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "nodeNFT",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "nodeTokenId",
+    "name": "minClaimAmount",
     "outputs": [
       {
         "internalType": "uint256",
@@ -901,7 +665,7 @@
   },
   {
     "inputs": [],
-    "name": "priceOracle",
+    "name": "pendingOwner",
     "outputs": [
       {
         "internalType": "address",
@@ -927,32 +691,6 @@
   },
   {
     "inputs": [],
-    "name": "referrer0",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "referrer",
-        "type": "address"
-      }
-    ],
-    "name": "register",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "renounceOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -961,74 +699,17 @@
   {
     "inputs": [
       {
-        "internalType": "uint8",
-        "name": "_level",
-        "type": "uint8"
-      },
-      {
-        "internalType": "uint8",
-        "name": "_rate",
-        "type": "uint8"
-      }
-    ],
-    "name": "setCommissionRate",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_maxCumulativePurchase",
-        "type": "uint256"
-      }
-    ],
-    "name": "setMaxCumulativePurchase",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint8",
-        "name": "_maxReferralDepth",
-        "type": "uint8"
-      }
-    ],
-    "name": "setMaxReferralDepth",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_maxSinglePurchase",
-        "type": "uint256"
-      }
-    ],
-    "name": "setMaxSinglePurchase",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "address",
-        "name": "_nodeNFT",
+        "name": "user",
         "type": "address"
       },
       {
-        "internalType": "uint256",
-        "name": "_nodeTokenId",
-        "type": "uint256"
+        "internalType": "bool",
+        "name": "status",
+        "type": "bool"
       }
     ],
-    "name": "setNodeNFT",
+    "name": "setBlacklist",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1037,11 +718,24 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_priceOracle",
+        "name": "_distribution",
         "type": "address"
       }
     ],
-    "name": "setPriceOracle",
+    "name": "setDistribution",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_minClaimAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "setMinClaimAmount",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1050,7 +744,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_wallet",
+        "name": "_treasury",
         "type": "address"
       }
     ],
@@ -1062,44 +756,24 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
+        "internalType": "uint8",
+        "name": "_immediatePercent",
+        "type": "uint8"
       },
       {
         "internalType": "uint8",
-        "name": "",
+        "name": "_vestingPercent",
         "type": "uint8"
-      }
-    ],
-    "name": "teamNodeBaseline",
-    "outputs": [
+      },
       {
         "internalType": "uint256",
-        "name": "",
+        "name": "_vestingDuration",
         "type": "uint256"
       }
     ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "teamNodeCount",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
+    "name": "setVestingConfig",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -1116,8 +790,52 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "totalProjectIncome",
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "totalClaimedAmount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "totalImmediateAmount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "totalVestedAmount",
     "outputs": [
       {
         "internalType": "uint256",
@@ -1173,22 +891,52 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "upline",
+    "inputs": [],
+    "name": "vestingDuration",
     "outputs": [
       {
-        "internalType": "address",
+        "internalType": "uint256",
         "name": "",
-        "type": "address"
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "vestingPercent",
+    "outputs": [
+      {
+        "internalType": "uint8",
+        "name": "",
+        "type": "uint8"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_token",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "withdrawToken",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   }
 ]

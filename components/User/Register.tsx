@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next';
 import { IconCheck, IconX, IconInfoCircle, IconAlertCircle } from '@tabler/icons-react';
 
 import { useUser } from '../../context/UserContext';
-import { isNonZeroAddress, isValidEthAddress } from '../../utils';
+import { isNonZeroAddress, isValidEthAddress, parseContractError } from '../../utils';
 
 // test abi
 import { usdtAbi, usdtAddress, useReadUsdtBalanceOf, useWritePoolRegister } from '../../wagmi/generated';
@@ -101,22 +101,24 @@ export function Register() {
     } catch (err) {
       // Transaction failed to send
       console.error('Transaction error:', err);
+      const errorMessage = parseContractError(err);
       notifications.update({
         id: 'register-tx',
         title: t('transaction_failed'),
-        message: err instanceof Error ? err.message : t('transaction_error'),
+        message: errorMessage,
         color: 'red',
         icon: <IconX />,
-        autoClose: 3000,
+        autoClose: 5000,
       });
     }
   }
 
-  const { isLoading: isConfirming, isSuccess: isConfirmed,isError: isConfirmingError, error: confirmErrorData  } =
+  const { isLoading: isConfirming, isSuccess: isConfirmed, isError: isConfirmingError, error: confirmErrorData } =
     useWaitForTransactionReceipt({
       hash,
+      confirmations: 3, // BSC主网建议3个确认 (~9秒)
     })
-  console.log('useWaitForTransactionReceipt', hash, isConfirming, isConfirmed, isConfirmingError, confirmErrorData)
+  console.log('useWaitForTransactionReceipt 状态:', { hash, isConfirming, isConfirmed, isConfirmingError, confirmErrorData })
 
 
   // Effect to handle transaction confirmation
@@ -150,17 +152,18 @@ export function Register() {
     }
 
     if (isConfirmingError) {
-      // Transaction failed  
+      // Transaction failed
+      const errorMessage = parseContractError(confirmErrorData);
       notifications.update({
         id: 'register-tx',
         title: t('transaction_failed'),
-        message: confirmErrorData instanceof Error ? (confirmErrorData.message) : t('transaction_failed'),
+        message: errorMessage,
         color: 'red',
         icon: <IconX />,
-        autoClose: 3000,
+        autoClose: 5000,
       });
     }
-  }, [hash, isConfirming, isConfirmed, , isConfirmingError, confirmErrorData])
+  }, [hash, isConfirming, isConfirmed, isConfirmingError, confirmErrorData])
 
 
   return (
@@ -197,8 +200,15 @@ export function Register() {
                 onClick={submitBind}
                 disabled={isPending}
                 fullWidth
-                color="#F2AE00"
                 mt="md"
+                styles={{
+                  root: {
+                    background: 'linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)',
+                    '&:hover': {
+                      background: 'linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%)',
+                    }
+                  }
+                }}
               >
                 {isPending ? t('submitting') : t('accept_invite')}
               </Button>

@@ -2,12 +2,19 @@
   "home": "Home",
   "nav_profile": "Profile",
   "nav_bind_solana": "Bind Solana",
+  "nav_tokens": "Tokens",
   "connect": "Connect Wallet",
   "buy": "Mint Node NFTs",
   "register": "Register",
   "buy_one_node":"Mint 1 Node NFT",
+  "buy_one_phone":"Buy 1 Phone",
   "buy_five_node":"Mint 5 Node NFTs",
-  "progress":"FlipFlop Node NFT - Phase Two",
+  "buy_phone":"Buy Phone",
+  "buy_node":"Mint Node",
+  "connect_wallet_title":"Connect Wallet",
+  "connect_wallet_message":"Please connect your wallet to proceed",
+  "progress":"NextFlow Phone Purchase - Phase One",
+  "phase": "Phase {{number}}",
   "custom_quantity":"Custom quantity",
   "userDetails":"User Details",
   "total_cost":"Total Cost",
@@ -20,6 +27,8 @@
   "submitting":"Submitting...",
   "no_invite_detected":"No Invitation Link Detected",
   "use_friend_link":"Please enter the site through an invitation link shared by a friend",
+  "no_referrer_title": "No Referrer",
+  "no_referrer_message": "You need a referral code to make a purchase. Please use an invitation link with a referral code.",
   "approve_usdt":"Approve USDT",
   "approval_required":"USDT approval required to continue",
   "approval_description":"You need to approve the smart contract to spend your USDT before continuing with the purchase",
@@ -52,8 +61,9 @@
   "try_again_later":"Please try again later",
   "usdt_balance":"USDT Balance",
   "nodes_owned":"Nodes",
+  "phones_purchased":"Phones Purchased",
   "invite_friends":"Invite Friends",
-  "need_one_node_to_invite":"Purchase node to unlock invitation privileges",
+  "need_one_node_to_invite":"Purchase phone to unlock invitation privileges",
   "scan_or_copy":"Scan QR code or copy the link to invite friends",
   "copy_link":"Copy Link",
   "invite_reward_desc":"Share this link with your friends. When they successfully register, you'll receive rewards.",
@@ -63,7 +73,7 @@
   "please_register_before_invite": "You need to register first before you can invite friends.",
   "go_to_register": "Go to Register",
   "node_purchase_required": "Node Purchase Required",
-  "please_purchase_node_before_invite": "Purchase node to unlock invitation privileges",
+  "please_purchase_node_before_invite": "Purchase phone to unlock invitation privileges",
   "go_to_purchase": "Go to Purchase",
 
   "common": {
@@ -83,10 +93,9 @@
     "levelProgress": "Level Progress",
     "inviter": "Inviter",
     "myWallet": "My Wallet",
-    "myNodes": "My Nodes",
     "myEarnings": "Income(USDT)",
-    "myFriends": "My Friends",
-    "teamNodes": "Team Nodes"
+    "myFriends": "My Referrals",
+    "teamNodes": "Team Performance"
   },
 
   "friends": {
@@ -129,8 +138,34 @@
     "bindAddress": "Bind Address",
     "addressRequired": "Please enter a Solana address",
     "addressInvalid": "Invalid Solana address format",
-    "registrationRequired": "You need to register this Solana address on FlipFlop (https://www.flipflop.plus/) before binding",
+    "registrationRequired": "You need to register this Solana address on NextFlow (https://www.nextflowai.io/) before binding",
     "nodeNftRequired": "You need at least one Node NFT to bind a Solana address",
     "checkingNftBalance": "Checking NFT balance..."
-  }
+  },
+
+  "tokens": {
+    "title": "Tokens",
+    "connectWallet": "Please connect wallet to view tokens",
+    "rewardTokens": "Reward Tokens",
+    "tokens": "Tokens",
+    "claimed": "Claimed",
+    "pending": "Locked",
+    "immediate": "Immediate Release",
+    "claimable": "Claimable",
+    "claim": "Claim",
+    "claiming": "Claiming...",
+    "claimSuccess": "Claim Successful",
+    "claimSuccessMessage": "Your tokens have been successfully claimed",
+    "refresh": "Refresh",
+    "history": "Transaction History",
+    "noPendingTokens": "No pending tokens to claim",
+    "noHistory": "No transaction history yet"
+  },
+
+  "nav_home": "Home",
+  "nav_more": "More",
+  "social_title": "Follow Us",
+  "social_twitter": "Twitter",
+  "social_telegram": "Telegram",
+  "social_website": "Website"
 }

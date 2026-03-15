@@ -39,6 +39,7 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
     error: confirmErrorData
   } = useWaitForTransactionReceipt({
     hash,
+    confirmations: 3, // BSC主网建议3个确认 (~9秒)
   });
 
   // console.log('useWriteUsdtApprove', hash, isPending, isError, error);
@@ -154,7 +155,14 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
 
       <Group justify="center">
         <Button
-          color="#F2AE00"
+          styles={{
+            root: {
+              background: 'linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)',
+              '&:hover': {
+                background: 'linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%)',
+              }
+            }
+          }}
           onClick={submitApprove}
           disabled={isPending || isConfirming}
           loading={isPending || isConfirming}
