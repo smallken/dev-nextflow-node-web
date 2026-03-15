@@ -20,24 +20,27 @@ const storage = typeof window !== 'undefined'
 const dummyProjectId = '0';
 
 // Configure recommended wallets: MetaMask, TokenPocket, Trust, and OKX
-// For RainbowKit v2, we call the wallets with an options object
+// For RainbowKit v2, wallets are functions that need to be called with proper config
 const walletList = [
   {
     groupName: 'Recommended',
     wallets: [
-      // These are wallet connector factories that return a wallet connector function
-      injectedWallet,
-      tokenPocketWallet,
+      // MetaMask should be first - supports both desktop extension and mobile app
       metaMaskWallet,
+      // TokenPocket - good mobile support
+      tokenPocketWallet,
+      // Trust Wallet - good mobile support
+      trustWallet,
     ]
   },
   {
     groupName: 'Other',
     wallets: [
-      trustWallet,
-      okxWallet
-      // Include the generic injected wallet for any other browser wallets
-     
+      // OKX Wallet
+      okxWallet,
+      // Generic injected wallet for other browser extensions (desktop only)
+      // Note: injectedWallet won't work on mobile since there's no injection context
+      injectedWallet,
     ]
   }
 ];
