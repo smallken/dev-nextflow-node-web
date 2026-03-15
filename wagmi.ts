@@ -19,25 +19,33 @@ const storage = typeof window !== 'undefined'
 // We don't need a real projectId since we're not using WalletConnect
 const dummyProjectId = '0';
 
+// Get current URL for MetaMask deep link
+const getAppUrl = () => {
+  if (typeof window !== 'undefined') {
+    return window.location.origin;
+  }
+  return 'https://your-app-url.com';
+};
+
 // Configure recommended wallets: MetaMask, TokenPocket, Trust, and OKX
-// For RainbowKit v2, wallets are functions that need to be called with proper config
+// For RainbowKit v2, configure MetaMask with proper mobile support
 const walletList = [
   {
     groupName: 'Recommended',
     wallets: [
-      // MetaMask should be first - supports both desktop extension and mobile app
-      metaMaskWallet,
+      // MetaMask with mobile-friendly configuration
+      () => metaMaskWallet({ projectId: dummyProjectId }),
       // TokenPocket - good mobile support
-      tokenPocketWallet,
+      () => tokenPocketWallet({ projectId: dummyProjectId }),
       // Trust Wallet - good mobile support
-      trustWallet,
+      () => trustWallet({ projectId: dummyProjectId }),
     ]
   },
   {
     groupName: 'Other',
     wallets: [
       // OKX Wallet
-      okxWallet,
+      () => okxWallet({ projectId: dummyProjectId }),
       // Generic injected wallet for other browser extensions (desktop only)
       // Note: injectedWallet won't work on mobile since there's no injection context
       injectedWallet,

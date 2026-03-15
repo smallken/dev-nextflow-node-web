@@ -1,8 +1,9 @@
-import { Button, Space, NumberInput, Group, Progress, Collapse } from '@mantine/core';
-import { Image, Card, Text, Center, Badge } from '@mantine/core';
+import { Button, Space } from '@mantine/core';
+import { Card, Text } from '@mantine/core';
 import { Register } from '../User/Register'
 import { Invite } from '../User/Invite'
 import { BuyNode } from '../Node/BuyNode'
+import { MobileWalletTip } from '../Layout/MobileWalletTip'
 import { useTranslation } from 'react-i18next';
 
 
@@ -27,6 +28,7 @@ export function HomeContent({ isConnected, contractUserInfo }: HomeContentProps)
   if (!isConnected) {
     return (
       <>
+        <MobileWalletTip />
         <BuyNode />
         <Space h="xl" />
         {/* <Invite /> */}
@@ -50,7 +52,7 @@ export function HomeContent({ isConnected, contractUserInfo }: HomeContentProps)
       ) : (
         // Case 3b: User hasn't purchased any phones
         <Card shadow="sm" padding="lg" radius="md" withBorder>
-          <Text color="dimmed" size="sm" mb="sm" ta="center">
+          <Text c="dimmed" size="sm" mb="sm" ta="center">
             {t('need_one_node_to_invite')}
           </Text>
           <Button
