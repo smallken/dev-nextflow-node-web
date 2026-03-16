@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { colors, styles } from '../../theme';
 import { IconUsers, IconTree, IconRefresh, IconCloudOff, IconEye,
-  IconSquarePlus, IconSquareMinus, IconUser } from '@tabler/icons-react';
+  IconSquarePlus, IconSquareMinus, IconUser, IconDeviceMobile } from '@tabler/icons-react';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAccount } from 'wagmi';
@@ -84,10 +84,21 @@ function TreeNodeLabel({ node, isExpanded }: { node: TeamNodeData, isExpanded?: 
         </Group>
 
         <Group gap={8} wrap="nowrap">
-          <Group gap={4} wrap="nowrap">
-            <IconUsers size={12} />
-            <Text size="xs">{teamSalesCount}</Text>
-          </Group>
+          {/* 个人购买数量 */}
+          <Tooltip label={t('team.salesCountTooltip')} withArrow position="top" openDelay={500}>
+            <Group gap={4} wrap="nowrap" style={{ cursor: 'help' }}>
+              <IconDeviceMobile size={12} />
+              <Text size="xs">{salesCount}</Text>
+            </Group>
+          </Tooltip>
+
+          {/* 团队业绩 */}
+          <Tooltip label={t('team.teamSalesCountTooltip')} withArrow position="top" openDelay={500}>
+            <Group gap={4} wrap="nowrap" style={{ cursor: 'help' }}>
+              <IconUsers size={12} />
+              <Text size="xs">{teamSalesCount}</Text>
+            </Group>
+          </Tooltip>
 
           <ActionIcon
             variant="subtle"

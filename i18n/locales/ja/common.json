@@ -90,10 +90,12 @@
     "levelProgress": "レベル進捗",
     "inviter": "招待者",
     "myWallet": "マイウォレット",
-    "myNodes": "マイノード",
     "myEarnings": "収入(USDT)",
-    "myFriends": "マイフレンド",
-    "teamNodes": "チームノード"
+    "myFriends": "マイ紹介",
+    "teamNodes": "マイチーム",
+    "myEarningsTooltip": "このアドレスが獲得したUSDT収益",
+    "friendsTooltip": "このアドレスの下のチーム",
+    "teamNodesTooltip": "このアドレスが購入したスマートフォン"
   },
 
   "friends": {
@@ -121,7 +123,9 @@
     "noMembers": "チームメンバーが見つかりません",
     "emptyTeam": "このユーザーにはまだチームメンバーがいません",
     "viewDetails": "詳細を表示",
-    "vipPrefix": "VIP"
+    "vipPrefix": "VIP",
+    "salesCountTooltip": "このアドレスが購入したスマートフォン",
+    "teamSalesCountTooltip": "このアドレスの下のチーム"
   },
 
   "bindSolana": {

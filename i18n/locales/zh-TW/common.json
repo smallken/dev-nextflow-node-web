@@ -90,10 +90,12 @@
     "levelProgress": "等級進度",
     "inviter": "邀請者",
     "myWallet": "我的錢包",
-    "myNodes": "我的節點",
     "myEarnings": "收益(USDT)",
-    "myFriends": "我的好友",
-    "teamNodes": "團隊節點"
+    "myFriends": "我的推薦",
+    "teamNodes": "我的團隊",
+    "myEarningsTooltip": "該地址獲得的USDT收益",
+    "friendsTooltip": "該地址傘下團隊",
+    "teamNodesTooltip": "該地址購買手機數"
   },
 
   "friends": {
@@ -121,7 +123,9 @@
     "noMembers": "未找到團隊成員",
     "emptyTeam": "該用戶暫無團隊成員",
     "viewDetails": "查看詳情",
-    "vipPrefix": "VIP"
+    "vipPrefix": "VIP",
+    "salesCountTooltip": "該地址購買手機數",
+    "teamSalesCountTooltip": "該地址傘下團隊"
   },
 
   "bindSolana": {

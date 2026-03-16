@@ -90,10 +90,12 @@
     "levelProgress": "Progreso de Nivel",
     "inviter": "Invitador",
     "myWallet": "Mi Billetera",
-    "myNodes": "Mis Nodos",
     "myEarnings": "Ingresos(USDT)",
-    "myFriends": "Mis Amigos",
-    "teamNodes": "Nodos del Equipo"
+    "myFriends": "Mis Referidos",
+    "teamNodes": "Mi Equipo",
+    "myEarningsTooltip": "Ingresos USDT obtenidos por esta dirección",
+    "friendsTooltip": "Equipo bajo esta dirección",
+    "teamNodesTooltip": "Teléfonos comprados por esta dirección"
   },
 
   "friends": {
@@ -121,7 +123,9 @@
     "noMembers": "No se encontraron miembros del equipo",
     "emptyTeam": "Este usuario aún no tiene miembros en su equipo",
     "viewDetails": "Ver Detalles",
-    "vipPrefix": "VIP"
+    "vipPrefix": "VIP",
+    "salesCountTooltip": "Teléfonos comprados por esta dirección",
+    "teamSalesCountTooltip": "Equipo bajo esta dirección"
   },
 
   "bindSolana": {

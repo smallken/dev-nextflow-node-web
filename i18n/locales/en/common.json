@@ -95,7 +95,10 @@
     "myWallet": "My Wallet",
     "myEarnings": "Income(USDT)",
     "myFriends": "My Referrals",
-    "teamNodes": "Team Performance"
+    "teamNodes": "My Team",
+    "myEarningsTooltip": "USDT income earned by this address",
+    "friendsTooltip": "Team under this address",
+    "teamNodesTooltip": "Phones purchased by this address"
   },
 
   "friends": {
@@ -123,7 +126,9 @@
     "noMembers": "No team members found",
     "emptyTeam": "This user has no team members yet",
     "viewDetails": "View Details",
-    "vipPrefix": "VIP"
+    "vipPrefix": "VIP",
+    "salesCountTooltip": "Phones purchased by this address",
+    "teamSalesCountTooltip": "Team under this address"
   },
 
   "bindSolana": {

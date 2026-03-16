@@ -4,7 +4,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { useChainId } from 'wagmi';
 import { colors, styles, vipColors } from '../../theme';
 import { formatEther } from 'viem';
-import { IconCrown, IconChevronRight, IconCopy, IconCheck, IconUserPlus } from '@tabler/icons-react';
+import { IconCrown, IconChevronRight, IconCopy, IconCheck, IconUserPlus, IconDeviceMobile, IconUsers, IconWallet } from '@tabler/icons-react';
 import { useState } from 'react';
 import { useUser } from '../../context/UserContext';
 import { useTranslation } from 'react-i18next';
@@ -22,7 +22,9 @@ function StatCard({
   onClick,
   secondaryAction,
   onSecondaryAction,
-  showButton = true
+  showButton = true,
+  icon,
+  iconTooltip
 }: {
   title: string;
   value: string | number;
@@ -31,10 +33,12 @@ function StatCard({
   secondaryAction?: boolean;
   onSecondaryAction?: () => void;
   showButton?: boolean;
+  icon?: React.ReactNode;
+  iconTooltip?: string;
 }) {
   const { t } = useTranslation();
   return (
-    <Paper radius="md" withBorder p="md" style={{ height: '100%', position: 'relative' }}>
+    <Paper radius="md" withBorder p="md" style={{ height: '100%', position: 'relative', display: 'flex', flexDirection: 'column' }}>
       {/* Top-right corner action button */}
       {secondaryAction && onSecondaryAction && (
         <ActionIcon
@@ -55,7 +59,16 @@ function StatCard({
         </ActionIcon>
       )}
 
-      <Stack gap="xs" align="center">
+      <Stack gap="xs" align="center" style={{ flex: 1, justifyContent: 'center' }}>
+        {/* Icon with tooltip */}
+        {icon && iconTooltip && (
+          <Tooltip label={iconTooltip} withArrow position="top" openDelay={500}>
+            <div style={{ cursor: 'help' }}>
+              {icon}
+            </div>
+          </Tooltip>
+        )}
+
         <Text c="dimmed" size="sm" ta="center">
           {title}
         </Text>
@@ -211,6 +224,8 @@ export function Profile() {
                 value={formatEther(contractUserInfo?.usdtIncome || BigInt(0)).substring(0, 8)}
                 buttonText={t('common.details')}
                 onClick={() => window.open(getConfigLink(chainId, "myIncomeLink", address), '_blank')}
+                icon={<IconWallet size={32} color={colors.secondary} />}
+                iconTooltip={t('profile.myEarningsTooltip')}
               />
             </Grid.Col>
             <Grid.Col span={6}>
@@ -219,6 +234,8 @@ export function Profile() {
                 value={contractUserInfo?.downlineCount || 0}
                 buttonText={t('common.details')}
                 onClick={() => router.push('/friend-list')}
+                icon={<IconUsers size={32} color={colors.secondary} />}
+                iconTooltip={t('profile.friendsTooltip')}
               />
             </Grid.Col>
             <Grid.Col span={12}>
@@ -227,6 +244,8 @@ export function Profile() {
                 value={contractUserInfo?.teamSalesCount || 0}
                 buttonText={t('common.details')}
                 onClick={() => router.push(`/team?address=${address}`)}
+                icon={<IconDeviceMobile size={32} color={colors.secondary} />}
+                iconTooltip={t('profile.teamNodesTooltip')}
               />
             </Grid.Col>
           </Grid>

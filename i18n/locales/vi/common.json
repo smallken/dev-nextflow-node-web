@@ -90,10 +90,12 @@
     "levelProgress": "Tiến độ cấp độ",
     "inviter": "Người mời",
     "myWallet": "Ví của tôi",
-    "myNodes": "Node của tôi",
     "myEarnings": "Thu nhập(USDT)",
-    "myFriends": "Bạn bè của tôi",
-    "teamNodes": "Node của đội"
+    "myFriends": "Người giới thiệu",
+    "teamNodes": "Đội của tôi",
+    "myEarningsTooltip": "Thu nhập USDT kiếm được bởi địa chỉ này",
+    "friendsTooltip": "Đội dưới địa chỉ này",
+    "teamNodesTooltip": "Điện thoại được mua bởi địa chỉ này"
   },
 
   "friends": {
@@ -121,7 +123,9 @@
     "noMembers": "Không tìm thấy thành viên nhóm",
     "emptyTeam": "Người dùng này chưa có thành viên nhóm",
     "viewDetails": "Xem Chi Tiết",
-    "vipPrefix": "VIP"
+    "vipPrefix": "VIP",
+    "salesCountTooltip": "Điện thoại được mua bởi địa chỉ này",
+    "teamSalesCountTooltip": "Đội dưới địa chỉ này"
   },
 
   "bindSolana": {
