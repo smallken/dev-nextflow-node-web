@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { useAccount, useChainId } from 'wagmi';
+import { formatEther } from 'viem';
 import {
   useReadPoolGetUserInfo, useReadPoolUpline, useReadPoolUsdtPrice,
   useReadUsdtBalanceOf, useReadUsdtAllowance, poolAddress, useReadPoolGetUserDownlines,
@@ -7,6 +8,19 @@ import {
 } from '../wagmi/generated';
 
 import MINT_STAGE from '../config/min.stage';
+
+/**
+ * 根据团队业绩计算用户等级
+ * @param teamSales 团队业绩（手机数量）
+ * @returns 等级 1-5
+ */
+function calculateLevelByTeamSales(teamSales: number): number {
+  if (teamSales >= 300) return 5;
+  if (teamSales >= 100) return 4;
+  if (teamSales >= 30) return 3;
+  if (teamSales >= 10) return 2;
+  return 1;
+}
 
 
 // 定义全局应用信息类型
@@ -43,6 +57,7 @@ type ContractUserInfo = {
   usdtIncome: bigint, // USDT 收益
   downlineCount: number, // 直接推荐人数
   teamSalesCount: number, // 团队业绩
+  usdtCommissionRate: number, // USDT 佣金费率（等级进度）
 
   // 扩展信息 - 我们计算的属性
   parent?: string; // 需要从其他地方获取
@@ -333,25 +348,39 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
       // 从数组解构各个属性
       // getUserInfo 返回: salesCount, teamSalesCount, usdtIncome, tokenIncome, upline, downlineCount, usdtCommissionRate, tokenCommissionRate
-      const [salesCountRes, teamSalesCountRes, usdtIncomeRes, , uplineRes, downlineCountRes] = userData;
+      const [
+        salesCountRes,
+        teamSalesCountRes,
+        usdtIncomeRes,
+        tokenIncomeRes,
+        uplineRes,
+        downlineCountRes,
+        usdtCommissionRateRes,
+        tokenCommissionRateRes
+      ] = userData;
 
-      console.log('解析用户数据:', {
-        salesCount: salesCountRes,
-        teamSalesCount: teamSalesCountRes,
-        usdtIncome: usdtIncomeRes,
-        upline: uplineRes,
-        downlineCount: downlineCountRes
-      });
+      console.log('=== 合约 getUserInfo 返回值详细打印 ===');
+      console.log('原始返回数组 userData:', userData);
+      console.log('1. salesCount (个人购买数量):', salesCountRes, '→', Number(salesCountRes));
+      console.log('2. teamSalesCount (团队业绩):', teamSalesCountRes, '→', Number(teamSalesCountRes));
+      console.log('3. usdtIncome (USDT收益):', usdtIncomeRes, '→', formatEther(usdtIncomeRes));
+      console.log('4. tokenIncome (代币收益):', tokenIncomeRes);
+      console.log('5. upline (推荐人):', uplineRes);
+      console.log('6. downlineCount (直推人数):', downlineCountRes, '→', Number(downlineCountRes));
+      console.log('7. usdtCommissionRate (USDT佣金费率):', usdtCommissionRateRes, '→', Number(usdtCommissionRateRes));
+      console.log('8. tokenCommissionRate (代币佣金费率):', tokenCommissionRateRes, '→', Number(tokenCommissionRateRes));
 
       const transformedData: ContractUserInfo = {
         nodeCount: Number(salesCountRes), // 个人购买数量
         income: usdtIncomeRes, // USDT 收益
-        level: 0, // 等级计算需要其他数据
+        // 根据团队业绩计算等级
+        level: calculateLevelByTeamSales(Number(teamSalesCountRes)),
         teamNodeCount: Number(teamSalesCountRes), // 团队业绩
         salesCount: Number(salesCountRes), // 用户购买手机数量
         usdtIncome: usdtIncomeRes, // USDT 收益
         downlineCount: Number(downlineCountRes), // 直接推荐人数
         teamSalesCount: Number(teamSalesCountRes), // 团队业绩
+        usdtCommissionRate: Number(usdtCommissionRateRes), // USDT 佣金费率（实际百分比，如5表示5%）
         parent: parentAddress || undefined, // 添加父级推荐人地址
         address, // 添加用户自己的地址
         friends: friendsList ? [...friendsList] : [], // 添加好友列表 - 转换为可变数组

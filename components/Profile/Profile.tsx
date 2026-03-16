@@ -1,14 +1,15 @@
 import { Card, Text, Group, Button, Container, Stack, rem, Box, Paper, Grid, Space, Progress, CopyButton, ActionIcon, Tooltip, Divider } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useDisclosure } from '@mantine/hooks';
+import { useChainId } from 'wagmi';
 import { colors, styles, vipColors } from '../../theme';
 import { formatEther } from 'viem';
-import { IconCrown, IconChevronRight, IconCopy, IconCheck, IconUserPlus, IconCirclesRelation, IconEdit } from '@tabler/icons-react';
+import { IconCrown, IconChevronRight, IconCopy, IconCheck, IconUserPlus } from '@tabler/icons-react';
 import { useState } from 'react';
 import { useUser } from '../../context/UserContext';
 import { useTranslation } from 'react-i18next';
 import { InviteModal } from '../User/InviteModal';
-import { useEnv } from '../../hooks/useEnv';
+import { getConfigLink } from '../../config';
 
 
 
@@ -90,6 +91,7 @@ function formatAddress(address: string | undefined): string {
 export function Profile() {
   const router = useRouter();
   const { t } = useTranslation();
+  const chainId = useChainId();
   // 使用自定义 hook 获取全局用户数据
   const { address, contractUserInfo } = useUser();
   const [bgColor] = useState('#FFF'); // Default light green background
@@ -208,7 +210,7 @@ export function Profile() {
                 title={t('profile.myEarnings')}
                 value={formatEther(contractUserInfo?.usdtIncome || BigInt(0)).substring(0, 8)}
                 buttonText={t('common.details')}
-                onClick={() => window.open('https://thegrape.io', '_blank')}
+                onClick={() => window.open(getConfigLink(chainId, "myIncomeLink", address), '_blank')}
               />
             </Grid.Col>
             <Grid.Col span={6}>
@@ -216,7 +218,7 @@ export function Profile() {
                 title={t('profile.myFriends')}
                 value={contractUserInfo?.downlineCount || 0}
                 buttonText={t('common.details')}
-                onClick={() => window.open('https://thegrape.io', '_blank')}
+                onClick={() => router.push('/friend-list')}
               />
             </Grid.Col>
             <Grid.Col span={12}>
@@ -224,7 +226,7 @@ export function Profile() {
                 title={t('profile.teamNodes')}
                 value={contractUserInfo?.teamSalesCount || 0}
                 buttonText={t('common.details')}
-                onClick={() => window.open('https://thegrape.io', '_blank')}
+                onClick={() => router.push(`/team?address=${address}`)}
               />
             </Grid.Col>
           </Grid>

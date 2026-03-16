@@ -58,33 +58,50 @@ function Stat({ label, value, icon }: StatProps) {
   );
 }
 
+/**
+ * 根据团队业绩计算等级
+ * 与合约中的等级规则保持一致
+ */
+function calculateLevelByTeamSales(teamSales: number): number {
+  if (teamSales >= 300) return 5;
+  if (teamSales >= 100) return 4;
+  if (teamSales >= 30) return 3;
+  if (teamSales >= 10) return 2;
+  return 1;
+}
+
 // Friend card component
 function FriendCard({ friend, friendData, onClick }: { friend: string; friendData: User; onClick: () => void }) {
   const { t } = useTranslation();
-  
+
+  // 从nextflow-subgraph schema获取字段并计算等级
+  const teamSalesCount = Number(friendData.teamSalesCount || 0);
+  const level = calculateLevelByTeamSales(teamSalesCount);
+  const salesCount = Number(friendData.salesCount || 0);
+
   return (
     <Paper radius="md" withBorder p="sm" mb="sm" onClick={onClick} style={{ cursor: 'pointer', position: 'relative' }}>
       <Group align="center">
         {/* Left side: Address and VIP */}
         <Group gap="xs">
-          <Badge 
+          <Badge
             size="sm"
             variant="filled"
             radius="xl"
-            style={styles.vipBadge(friendData.vipLevel || 0)}
+            style={styles.vipBadge(level)}
           >
-            {t('friends.vip')} {friendData.vipLevel || 0}
+            {t('friends.vip')} {level}
           </Badge>
           <Text size="sm" fw={500} style={{ fontFamily: '"Pixel", monospace' }}>
             {formatAddress(friend)}
           </Text>
 
-          {/* Node count */}
+          {/* Node count - 使用salesCount */}
           <Group gap="xs" align="center">
             <IconPackages size={16} stroke={1.5} />
-            <Text size="sm" fw={700}>{friendData.nodePurchasedTotal || '0'}</Text>
+            <Text size="sm" fw={700}>{salesCount}</Text>
           </Group>
-          
+
           {/* Direct referrals */}
           <Group gap="xs" align="center">
             <IconUsers size={16} stroke={1.5} />
@@ -92,16 +109,16 @@ function FriendCard({ friend, friendData, onClick }: { friend: string; friendDat
           </Group>
         </Group>
       </Group>
-      
+
       {/* Detail icon - positioned absolutely at right edge */}
-      <ActionIcon 
+      <ActionIcon
         variant="light"
         color="gray"
         radius="xl"
         size="sm"
-        style={{ 
-          position: 'absolute', 
-          top: '50%', 
+        style={{
+          position: 'absolute',
+          top: '50%',
           right: '12px',
           transform: 'translateY(-50%)',
           zIndex: 2
@@ -177,14 +194,20 @@ function FriendListComponent() {
     // Find the friend in user data
     const friendData = friends.find(f => f.id === friend);
     if (friendData) {
+      // 从nextflow-subgraph schema获取字段并计算等级
+      const teamSalesCount = Number(friendData.teamSalesCount || 0);
+      const level = calculateLevelByTeamSales(teamSalesCount);
+      const salesCount = Number(friendData.salesCount || 0);
+      const usdtIncome = friendData.usdtIncome || '0';
+
       // Open user detail modal with this friend's data
       setSelectedFriend({
         address: friendData.id,
-        level: friendData.vipLevel || 0,
-        nodeCount: friendData.nodePurchasedTotal?.toString() || '0',
+        level: level,
+        nodeCount: salesCount.toString(),
         directReferrals: friendData.referrals?.length || 0,
-        teamNodesCount: friendData.childrenAmountIn10Levels || 0,
-        income: formatEther(BigInt(friendData.income || 0)).toString() // Placeholder - replace with real income data when available
+        teamNodesCount: teamSalesCount,
+        income: formatEther(BigInt(usdtIncome)).toString()
       });
       setModalOpened(true);
     }

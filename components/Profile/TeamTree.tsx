@@ -1,22 +1,34 @@
-import { Container, Text, Card, Stack, Loader, Group, Badge, ActionIcon, Tooltip, Box, Center } from '@mantine/core';
+import { Container, Text, Card, Stack, Loader, Group, Badge, ActionIcon, Tooltip, Box } from '@mantine/core';
 import { ProfileBreadcrumbs } from '../Layout/ProfileBreadcrumbs';
 import { Tree, TreeNodeData, useTree } from '@mantine/core';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import { colors, styles, vipColors } from '../../theme';
-import { IconUsers, IconTree, IconRefresh, IconNfc, IconCloudOff, IconInfoCircle, IconEye, 
-  IconChevronRight, IconChevronDown, IconSquarePlus, IconSquareMinus, IconUser } from '@tabler/icons-react';
+import { colors, styles } from '../../theme';
+import { IconUsers, IconTree, IconRefresh, IconCloudOff, IconEye,
+  IconSquarePlus, IconSquareMinus, IconUser } from '@tabler/icons-react';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAccount } from 'wagmi';
 import { formatEther } from 'viem';
-import { graphClient, GET_USER_WITH_FRIENDS, User, getAddressFromUrl } from '../../services/thegraph';
+import { getUserWithTeam, getAddressFromUrl, User } from '../../services/thegraph';
 import { UserDetailModal, UserDetail } from '../User/UserDetailModal';
 
 // Helper function to format wallet address for display
 function formatAddress(address: string | undefined): string {
   if (!address) return '';
   return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
+}
+
+/**
+ * 根据团队业绩计算等级
+ * 与合约中的等级规则保持一致
+ */
+function calculateLevelByTeamSales(teamSales: number): number {
+  if (teamSales >= 300) return 5;
+  if (teamSales >= 100) return 4;
+  if (teamSales >= 30) return 3;
+  if (teamSales >= 10) return 2;
+  return 1;
 }
 
 // Interface for team node data
@@ -35,21 +47,26 @@ function TreeNodeLabel({ node, isExpanded }: { node: TeamNodeData, isExpanded?: 
   const { t } = useTranslation();
   const [modalOpened, setModalOpened] = useState(false);
   const [selectedUser, setSelectedUser] = useState<UserDetail | null>(null);
-  // isExpanded is passed from the parent
+
+  // 从nextflow-subgraph schema获取字段并计算等级
+  const teamSalesCount = Number(node.teamSalesCount || 0);
+  const level = calculateLevelByTeamSales(teamSalesCount);
+  const salesCount = Number(node.salesCount || 0);
+  const usdtIncome = node.usdtIncome || '0';
 
   const openUserDetail = (e: React.MouseEvent) => {
     e.stopPropagation();
     setSelectedUser({
       address: node.id,
-      level: node.vipLevel,
-      nodeCount: node.nodePurchasedTotal,
+      level: level,
+      nodeCount: salesCount.toString(),
       directReferrals: node.referrals?.length || 0,
-      teamNodesCount: node.childrenAmountIn10Levels,
-      income: formatEther(BigInt(node.income || 0)).toString() 
+      teamNodesCount: teamSalesCount,
+      income: formatEther(BigInt(usdtIncome)).toString()
     });
     setModalOpened(true);
   };
-  
+
   // Determine which icon to show based on node type and expand state
   const nodeIcon = node.hasChildren
     ? isExpanded
@@ -57,29 +74,22 @@ function TreeNodeLabel({ node, isExpanded }: { node: TeamNodeData, isExpanded?: 
       : <IconSquarePlus size={18} color="#228be6" />
     : <IconUser size={18} color="#868e96" />;
 
-  // Determine expand/collapse arrow icon
-  const expandIcon = node.hasChildren
-    ? isExpanded
-      ? <IconChevronDown size={14} />
-      : <IconChevronRight size={14} />
-    : null;
-
   return (
     <>
       <Group justify="space-between" align="center" wrap="nowrap" style={{ minHeight: '28px', width: '100%', padding: '0 4px' }}>
         <Group gap="xs" wrap="nowrap" style={{ flex: 1, overflow: 'hidden'}}>
           {nodeIcon}
           <Text size="xs" fw={500} lineClamp={1}>{formatAddress(node.id)}</Text>
-          <Badge size="xs" variant="filled" style={{ ...styles.vipBadge(node.vipLevel || 0), whiteSpace: 'nowrap' }}>{t('team.vipPrefix')} {node.vipLevel || 0}</Badge>
+          <Badge size="xs" variant="filled" style={{ ...styles.vipBadge(level), whiteSpace: 'nowrap' }}>{t('team.vipPrefix')} {level}</Badge>
         </Group>
-        
+
         <Group gap={8} wrap="nowrap">
           <Group gap={4} wrap="nowrap">
             <IconUsers size={12} />
-            <Text size="xs">{node.childrenAmountIn10Levels || 0}</Text>
+            <Text size="xs">{teamSalesCount}</Text>
           </Group>
-          
-          <ActionIcon 
+
+          <ActionIcon
             variant="subtle"
             color="gray"
             radius="xl"
@@ -154,19 +164,23 @@ function TeamTree2Component() {
         setLoading(false);
         return;
       }
-      
+
       setLoading(true);
       try {
-        // Call GraphQL API to fetch user data
-        const { user } = await graphClient.request<{ user: User }>(GET_USER_WITH_FRIENDS, { 
-          userId: effectiveAddress.toLowerCase() 
-        });
+        // 使用 getUserWithTeam 获取完整团队数据
+        const user = await getUserWithTeam(effectiveAddress);
+        console.log('=== TeamTree Root User Data ===');
+        console.log('Root user:', user);
+        console.log('Direct referrals count:', user?.referrals?.length || 0);
+        console.log('Direct referrals:', user?.referrals);
+
         setRootUser(user);
-        
+
         // Get initial tree data from the root user
         if (user) {
           // If root has referrals, set them as children in the tree
           const treeItems = user.referrals?.map((user: User) => mapUserToTreeNode(user)) || [];
+          console.log('Initial tree items:', treeItems);
           setTreeData(treeItems);
         }
       } catch (error) {
@@ -175,7 +189,7 @@ function TeamTree2Component() {
         setLoading(false);
       }
     }
-    
+
     fetchRootUser();
   }, [effectiveAddress]);
 
@@ -243,7 +257,9 @@ function TeamTree2Component() {
   async function handleNodeExpand(nodeValue: string) {
     // Skip if already loaded or loading
     if (loadedNodes[nodeValue] || loadingNodes[nodeValue]) return;
-    
+
+    console.log(`=== Expanding node: ${nodeValue} ===`);
+
     // Find the node in treeData
     const findNodeInTree = (nodes: ExtendedTreeNodeData[], value: string): ExtendedTreeNodeData | null => {
       for (const node of nodes) {
@@ -257,27 +273,33 @@ function TeamTree2Component() {
     };
 
     const node = findNodeInTree(treeData, nodeValue);
-    if (!node || !node.userData?.hasChildren) return;
+    if (!node || !node.userData?.hasChildren) {
+      console.log(`Node ${nodeValue} not found or has no children`);
+      return;
+    }
 
     // Mark as loading
     setLoadingNodes(prev => ({ ...prev, [nodeValue]: true }));
-    
+
     try {
-      // Get user data from GraphQL
-      const { user } = await graphClient.request<{ user: User }>(GET_USER_WITH_FRIENDS, { 
-        userId: nodeValue.toLowerCase() 
-      });
-      
+      // 使用 getUserWithTeam 获取用户数据
+      const user = await getUserWithTeam(nodeValue);
+      console.log(`Fetched data for ${nodeValue}:`, user);
+      console.log(`Referrals count for ${nodeValue}:`, user?.referrals?.length || 0);
+      console.log(`Referrals for ${nodeValue}:`, user?.referrals);
+
       if (user && user.referrals) {
         // Create children nodes
         const childNodes = user.referrals.map((user: User) => mapUserToTreeNode(user, tree.expandedState));
-        
+        console.log(`Created ${childNodes.length} child nodes for ${nodeValue}`);
+
         // Update tree data with new children
-        
         setTreeData(current => updateNodeChildren(current, nodeValue, childNodes, tree.expandedState));
-        
+
         // Mark as loaded
         setLoadedNodes(prev => ({ ...prev, [nodeValue]: true }));
+      } else {
+        console.log(`No referrals found for ${nodeValue}`);
       }
     } catch (error) {
       console.error(`Error loading children for ${nodeValue}:`, error);
@@ -328,7 +350,7 @@ function TeamTree2Component() {
       <Container size="md" py="md">
         {/* Breadcrumbs navigation */}
         <ProfileBreadcrumbs currentPage="team" />
-        
+
         <Card withBorder radius="md" padding="xl">
           <Stack align="center" gap="md">
             <Text ta="center" size="sm" c="dimmed">{t('team.userNotFound')}</Text>
@@ -337,12 +359,15 @@ function TeamTree2Component() {
       </Container>
     );
   }
-  
+
+  // 从nextflow-subgraph schema获取团队总业绩
+  const teamSalesCount = Number(rootUser.teamSalesCount || 0);
+
   return (
     <Container size="md" py="md">
       {/* Breadcrumbs navigation */}
       <ProfileBreadcrumbs currentPage="team" />
-      
+
       {/* Header with title */}
       <Group justify="space-between" align="center" mb="md">
         <Group gap="md" align="center">
@@ -352,17 +377,17 @@ function TeamTree2Component() {
           <Badge size="lg" radius="xl" style={{ background: colors.secondary, color: 'white' }}>
             <Group gap="xs">
               <IconTree size={16} />
-              {rootUser?.childrenAmountIn10Levels || 0}
+              {teamSalesCount}
             </Group>
           </Badge>
         </Group>
-        
+
         <Tooltip label={t('team.refresh')} withArrow position="left">
-          <ActionIcon 
-            variant="light" 
-            style={{ color: colors.secondary }} 
-            size="lg" 
-            radius="xl" 
+          <ActionIcon
+            variant="light"
+            style={{ color: colors.secondary }}
+            size="lg"
+            radius="xl"
             onClick={() => window.location.reload()}
           >
             <IconRefresh size={24} stroke={1.5} />
@@ -377,7 +402,7 @@ function TeamTree2Component() {
             <Tree
               data={treeData}
               tree={tree}
-              styles={(theme) => ({
+              styles={() => ({
                 root: {
                   maxWidth: '100%', // Ensure tree doesn't overflow container
                   overflow: 'auto'  // Add scrolling when needed

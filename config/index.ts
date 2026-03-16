@@ -2,33 +2,48 @@
 import { bscTestnet, bsc } from 'wagmi/chains'
 import { addresses } from './constants'
 
-// const TEST = process.env.NEXT_PUBLIC_IS_MAINNET_TEST ? '_test': ''
-
-// Export a simple map of chainId to URL string
+// BSCScan 基础 URL
 export const scanBaseURL: Record<number, string> = {
-  [bsc.id]: 'https://bscscan.com'
+  [bsc.id]: 'https://bscscan.com',
+  [bscTestnet.id]: 'https://testnet.bscscan.com'
 }
 
-export const myIncomeLink: Record<string, string> = {
-  // for mainnet
-  [bsc.id]: "https://bscscan.com/advanced-filtered?tkn=0x55d398326f99059ff775485246999027b3197955&txntype=2&fadd=0xd0FB85E347f5894904C6592D597CBFB6222226ab&qt=1&tadd=",
+/**
+ * USDT 收益详情链接
+ * 使用BSCScan的ERC20转账筛选功能
+ * 直接显示用户收到某代币的所有转账记录
+ */
+export const myIncomeLink: Record<number, string> = {
+  // BSC 主网 - 显示用户收到的USDT转账
+  [bsc.id]: `https://bscscan.com/token/${addresses[bsc.id].usdt}?a=`,
+  // BSC 测试网
+  [bscTestnet.id]: `https://testnet.bscscan.com/token/${addresses[bscTestnet.id].usdt}?a=`,
 }
 
-export const myNodeLink: Record<string, string> = {
-  // for mainnet
-  [bsc.id]: `https://bscscan.com/advanced-filter?tkn=0x05c0d03ca1831964f1674499F05856157d762E6C&txntype=4&fadd=0x0000e39736ebcF3cba0f22E54C2bAc4CaC61f520%2c0x0000000000000000000000000000000000000000&qt=1&tadd=`,
+/**
+ * 我的手机节点详情链接
+ * 暂未实现，显示普通地址页面
+ */
+export const myNodeLink: Record<number, string> = {
+  [bsc.id]: `${scanBaseURL[bsc.id]}/address/`,
+  [bscTestnet.id]: `${scanBaseURL[bscTestnet.id]}/address/`,
 }
 
+/**
+ * 获取配置链接
+ * @param chainId 链ID
+ * @param type 链接类型 ('myIncomeLink' | 'myNodeLink')
+ * @param address 用户地址
+ * @returns 完整的BSCScan URL
+ */
 export function getConfigLink(chainId: number, type: string, address: string): string {
-
-  // type is the name of above functions
   if (type === 'myIncomeLink') {
     console.log('myIncomeLink', chainId, myIncomeLink[chainId])
+    // 返回 token 页面 + 用户地址，会显示该代币的转账记录
     return `${myIncomeLink[chainId]}${address}`;
   } else if (type === 'myNodeLink') {
     return `${myNodeLink[chainId]}${address}`;
-  } 
+  }
 
   return `${scanBaseURL[chainId] || 'https://bscscan.com'}/address/${address}`;
-
 }

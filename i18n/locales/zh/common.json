@@ -98,16 +98,16 @@
   },
 
   "friends": {
-    "title": "我的好友",
+    "title": "我的推荐",
     "nodeCount": "节点数",
     "directReferrals": "直接推荐",
     "teamNodes": "团队节点",
     "income": "收益 (USDT)",
-    "noFriends": "暂无好友",
-    "inviteMessage": "邀请你的好友加入，他们将会显示在这里",
-    "friendDetails": "好友详情",
-    "loading": "好友加载中...",
-    "error": "加载好友数据出错",
+    "noFriends": "暂无推荐",
+    "inviteMessage": "邀请用户加入，他们将会显示在这里",
+    "friendDetails": "推荐详情",
+    "loading": "推荐加载中...",
+    "error": "加载推荐数据出错",
     "vip": "VIP",
     "level": "等级"
   },
