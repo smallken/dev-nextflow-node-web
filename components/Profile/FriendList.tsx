@@ -3,7 +3,7 @@ import { ProfileBreadcrumbs } from '../Layout/ProfileBreadcrumbs';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { colors, styles, vipColors } from '../../theme';
-import { IconUsers,  IconEye, IconUserPlus, IconPackages } from '@tabler/icons-react';
+import { IconUsers,  IconEye, IconUserPlus, IconDeviceMobile } from '@tabler/icons-react';
 import { useState, useEffect } from 'react';
 import { useUser } from '../../context/UserContext';
 import { useTranslation } from 'react-i18next';
@@ -73,11 +73,33 @@ function calculateLevelByTeamSales(teamSales: number): number {
 // Friend card component
 function FriendCard({ friend, friendData, onClick }: { friend: string; friendData: User; onClick: () => void }) {
   const { t } = useTranslation();
+  const [salesTooltipOpened, setSalesTooltipOpened] = useState(false);
+  const [teamTooltipOpened, setTeamTooltipOpened] = useState(false);
 
   // 从nextflow-subgraph schema获取字段并计算等级
   const teamSalesCount = Number(friendData.teamSalesCount || 0);
   const level = calculateLevelByTeamSales(teamSalesCount);
   const salesCount = Number(friendData.salesCount || 0);
+
+  // 处理销售数量提示点击
+  const handleSalesClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setSalesTooltipOpened(true);
+    // 2秒后自动关闭
+    setTimeout(() => {
+      setSalesTooltipOpened(false);
+    }, 2000);
+  };
+
+  // 处理团队业绩提示点击
+  const handleTeamClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setTeamTooltipOpened(true);
+    // 2秒后自动关闭
+    setTimeout(() => {
+      setTeamTooltipOpened(false);
+    }, 2000);
+  };
 
   return (
     <Paper radius="md" withBorder p="sm" mb="sm" onClick={onClick} style={{ cursor: 'pointer', position: 'relative' }}>
@@ -97,16 +119,42 @@ function FriendCard({ friend, friendData, onClick }: { friend: string; friendDat
           </Text>
 
           {/* Node count - 使用salesCount */}
-          <Group gap="xs" align="center">
-            <IconPackages size={16} stroke={1.5} />
-            <Text size="sm" fw={700}>{salesCount}</Text>
-          </Group>
+          <Tooltip
+            label={t('team.salesCountTooltip')}
+            withArrow
+            position="top"
+            opened={salesTooltipOpened}
+            transitionProps={{ transition: 'pop', duration: 200 }}
+          >
+            <Group
+              gap="xs"
+              align="center"
+              onClick={handleSalesClick}
+              style={{ cursor: 'pointer' }}
+            >
+              <IconDeviceMobile size={16} stroke={1.5} />
+              <Text size="sm" fw={700}>{salesCount}</Text>
+            </Group>
+          </Tooltip>
 
           {/* Direct referrals */}
-          <Group gap="xs" align="center">
-            <IconUsers size={16} stroke={1.5} />
-            <Text size="sm" fw={700}>{friendData.referrals?.length || 0}</Text>
-          </Group>
+          <Tooltip
+            label={t('team.teamSalesCountTooltip')}
+            withArrow
+            position="top"
+            opened={teamTooltipOpened}
+            transitionProps={{ transition: 'pop', duration: 200 }}
+          >
+            <Group
+              gap="xs"
+              align="center"
+              onClick={handleTeamClick}
+              style={{ cursor: 'pointer' }}
+            >
+              <IconUsers size={16} stroke={1.5} />
+              <Text size="sm" fw={700}>{friendData.referrals?.length || 0}</Text>
+            </Group>
+          </Tooltip>
         </Group>
       </Group>
 

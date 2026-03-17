@@ -47,6 +47,8 @@ function TreeNodeLabel({ node, isExpanded }: { node: TeamNodeData, isExpanded?: 
   const { t } = useTranslation();
   const [modalOpened, setModalOpened] = useState(false);
   const [selectedUser, setSelectedUser] = useState<UserDetail | null>(null);
+  const [salesTooltipOpened, setSalesTooltipOpened] = useState(false);
+  const [teamTooltipOpened, setTeamTooltipOpened] = useState(false);
 
   // 从nextflow-subgraph schema获取字段并计算等级
   const teamSalesCount = Number(node.teamSalesCount || 0);
@@ -67,6 +69,26 @@ function TreeNodeLabel({ node, isExpanded }: { node: TeamNodeData, isExpanded?: 
     setModalOpened(true);
   };
 
+  // 处理销售数量提示点击
+  const handleSalesClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setSalesTooltipOpened(true);
+    // 2秒后自动关闭
+    setTimeout(() => {
+      setSalesTooltipOpened(false);
+    }, 2000);
+  };
+
+  // 处理团队业绩提示点击
+  const handleTeamClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setTeamTooltipOpened(true);
+    // 2秒后自动关闭
+    setTimeout(() => {
+      setTeamTooltipOpened(false);
+    }, 2000);
+  };
+
   // Determine which icon to show based on node type and expand state
   const nodeIcon = node.hasChildren
     ? isExpanded
@@ -85,16 +107,38 @@ function TreeNodeLabel({ node, isExpanded }: { node: TeamNodeData, isExpanded?: 
 
         <Group gap={8} wrap="nowrap">
           {/* 个人购买数量 */}
-          <Tooltip label={t('team.salesCountTooltip')} withArrow position="top" openDelay={500}>
-            <Group gap={4} wrap="nowrap" style={{ cursor: 'help' }}>
+          <Tooltip
+            label={t('team.salesCountTooltip')}
+            withArrow
+            position="top"
+            opened={salesTooltipOpened}
+            transitionProps={{ transition: 'pop', duration: 200 }}
+          >
+            <Group
+              gap={4}
+              wrap="nowrap"
+              style={{ cursor: 'pointer' }}
+              onClick={handleSalesClick}
+            >
               <IconDeviceMobile size={12} />
               <Text size="xs">{salesCount}</Text>
             </Group>
           </Tooltip>
 
           {/* 团队业绩 */}
-          <Tooltip label={t('team.teamSalesCountTooltip')} withArrow position="top" openDelay={500}>
-            <Group gap={4} wrap="nowrap" style={{ cursor: 'help' }}>
+          <Tooltip
+            label={t('team.teamSalesCountTooltip')}
+            withArrow
+            position="top"
+            opened={teamTooltipOpened}
+            transitionProps={{ transition: 'pop', duration: 200 }}
+          >
+            <Group
+              gap={4}
+              wrap="nowrap"
+              style={{ cursor: 'pointer' }}
+              onClick={handleTeamClick}
+            >
               <IconUsers size={12} />
               <Text size="xs">{teamSalesCount}</Text>
             </Group>
