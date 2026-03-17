@@ -69,21 +69,19 @@ function TreeNodeLabel({ node, isExpanded }: { node: TeamNodeData, isExpanded?: 
     setModalOpened(true);
   };
 
-  // 处理销售数量提示点击
+  // 处理销售数量提示点击（移动端）
   const handleSalesClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     setSalesTooltipOpened(true);
-    // 2秒后自动关闭
     setTimeout(() => {
       setSalesTooltipOpened(false);
     }, 2000);
   };
 
-  // 处理团队业绩提示点击
+  // 处理团队业绩提示点击（移动端）
   const handleTeamClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     setTeamTooltipOpened(true);
-    // 2秒后自动关闭
     setTimeout(() => {
       setTeamTooltipOpened(false);
     }, 2000);
@@ -112,13 +110,14 @@ function TreeNodeLabel({ node, isExpanded }: { node: TeamNodeData, isExpanded?: 
             withArrow
             position="top"
             opened={salesTooltipOpened}
-            transitionProps={{ transition: 'pop', duration: 200 }}
           >
             <Group
               gap={4}
               wrap="nowrap"
               style={{ cursor: 'pointer' }}
               onClick={handleSalesClick}
+              onMouseEnter={() => setSalesTooltipOpened(true)}
+              onMouseLeave={() => setSalesTooltipOpened(false)}
             >
               <IconDeviceMobile size={12} />
               <Text size="xs">{salesCount}</Text>
@@ -131,13 +130,14 @@ function TreeNodeLabel({ node, isExpanded }: { node: TeamNodeData, isExpanded?: 
             withArrow
             position="top"
             opened={teamTooltipOpened}
-            transitionProps={{ transition: 'pop', duration: 200 }}
           >
             <Group
               gap={4}
               wrap="nowrap"
               style={{ cursor: 'pointer' }}
               onClick={handleTeamClick}
+              onMouseEnter={() => setTeamTooltipOpened(true)}
+              onMouseLeave={() => setTeamTooltipOpened(false)}
             >
               <IconUsers size={12} />
               <Text size="xs">{teamSalesCount}</Text>

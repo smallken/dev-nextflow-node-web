@@ -81,21 +81,19 @@ function FriendCard({ friend, friendData, onClick }: { friend: string; friendDat
   const level = calculateLevelByTeamSales(teamSalesCount);
   const salesCount = Number(friendData.salesCount || 0);
 
-  // 处理销售数量提示点击
+  // 处理销售数量提示点击（移动端）
   const handleSalesClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     setSalesTooltipOpened(true);
-    // 2秒后自动关闭
     setTimeout(() => {
       setSalesTooltipOpened(false);
     }, 2000);
   };
 
-  // 处理团队业绩提示点击
+  // 处理团队业绩提示点击（移动端）
   const handleTeamClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     setTeamTooltipOpened(true);
-    // 2秒后自动关闭
     setTimeout(() => {
       setTeamTooltipOpened(false);
     }, 2000);
@@ -124,12 +122,13 @@ function FriendCard({ friend, friendData, onClick }: { friend: string; friendDat
             withArrow
             position="top"
             opened={salesTooltipOpened}
-            transitionProps={{ transition: 'pop', duration: 200 }}
           >
             <Group
               gap="xs"
               align="center"
               onClick={handleSalesClick}
+              onMouseEnter={() => setSalesTooltipOpened(true)}
+              onMouseLeave={() => setSalesTooltipOpened(false)}
               style={{ cursor: 'pointer' }}
             >
               <IconDeviceMobile size={16} stroke={1.5} />
@@ -143,12 +142,13 @@ function FriendCard({ friend, friendData, onClick }: { friend: string; friendDat
             withArrow
             position="top"
             opened={teamTooltipOpened}
-            transitionProps={{ transition: 'pop', duration: 200 }}
           >
             <Group
               gap="xs"
               align="center"
               onClick={handleTeamClick}
+              onMouseEnter={() => setTeamTooltipOpened(true)}
+              onMouseLeave={() => setTeamTooltipOpened(false)}
               style={{ cursor: 'pointer' }}
             >
               <IconUsers size={16} stroke={1.5} />
