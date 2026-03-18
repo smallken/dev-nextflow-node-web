@@ -30,7 +30,10 @@ export const NavItem = forwardRef<HTMLButtonElement, NavItemProps>(
             border: 'none',
             cursor: 'pointer',
             position: 'relative',
-            transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+            transition: 'background 0.15s ease, color 0.15s ease',
+            touchAction: 'manipulation',
+            WebkitTapHighlightColor: 'transparent',
+            userSelect: 'none',
             '&:hover': {
               background: 'rgba(255, 255, 255, 0.1)',
             },

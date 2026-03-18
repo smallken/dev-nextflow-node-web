@@ -203,7 +203,7 @@ export function Home() {
               fw={400}
               style={{ 
                 letterSpacing: '0.06em',
-                fontFamily: '"Ma Shan Zheng", "KaiTi", "STKaiti", cursive',
+                fontFamily: '"Long Cang", "KaiTi", "STKaiti", cursive',
                 fontStyle: 'normal',
                 textShadow: '0 1px 0 rgba(255, 255, 255, 0.65)',
                 fontSize: 'clamp(16px, 2.8vw, 26px)',

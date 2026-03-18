@@ -1,6 +1,5 @@
 /* Import Inter Font */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap');
 
 /* NextFlow Global Styles - Light Theme */
 :root {
@@ -47,6 +46,8 @@ body {
   width: 100%;
   /* 确保移动端正确响应 */
   overflow-x: hidden;
+  /* 消除移动端300ms点击延迟 */
+  touch-action: manipulation;
 }
 
 body {
@@ -280,6 +281,10 @@ img {
   cursor: pointer;
   position: relative;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .bottom-nav-item:hover {
