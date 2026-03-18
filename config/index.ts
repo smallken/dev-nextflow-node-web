@@ -1,12 +1,24 @@
 
 import { bscTestnet, bsc } from 'wagmi/chains'
-import { addresses } from './constants'
+import dotenv from 'dotenv'
+
+dotenv.config();
 
 // BSCScan 基础 URL
 export const scanBaseURL: Record<number, string> = {
   [bsc.id]: 'https://bscscan.com',
   [bscTestnet.id]: 'https://testnet.bscscan.com'
 }
+
+// 从环境变量读取合约地址
+const addresses = {
+  [bsc.id]: {
+    usdt: process.env.NEXT_PUBLIC_USDT,
+  },
+  [bscTestnet.id]: {
+    usdt: process.env.NEXT_PUBLIC_USDT,
+  }
+};
 
 /**
  * USDT 收益详情链接

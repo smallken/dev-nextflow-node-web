@@ -38,7 +38,7 @@
   "transaction_failed":"Transacción Fallida",
   "transaction_processing":"Procesando Transacción",
   "purchase_successful":"Compra Exitosa",
-  "purchase_confirmed":"¡Tu compra de nodo ha sido confirmada!",
+  "purchase_confirmed":"¡Tu compra de teléfono ha sido confirmada!",
   "approval_submitted":"Aprobación Enviada",
   "approval_failed":"Aprobación Fallida",
   "approval_error":"Error al enviar aprobación",

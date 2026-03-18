@@ -12,6 +12,7 @@ import { useCallback, useEffect } from 'react';
 import { notifications } from '@mantine/notifications';
 import { useTranslation } from 'react-i18next';
 import { IconCheck, IconX, IconInfoCircle, IconAlertCircle } from '@tabler/icons-react';
+import { getAddress } from 'viem';
 
 import { useUser } from '../../context/UserContext';
 import { isNonZeroAddress, isValidEthAddress, parseContractError } from '../../utils';
@@ -33,7 +34,13 @@ export function Register() {
 
     // Check if inviter exists, is a valid Ethereum address, and not zero address
     if (inviter && typeof inviter === 'string' && isValidEthAddress(inviter) && isNonZeroAddress(inviter)) {
-      return inviter as `0x${string}`;
+      // Normalize address to proper EIP-55 checksum
+      try {
+        return getAddress(inviter as `0x${string}`);
+      } catch (error) {
+        console.error('Invalid address checksum:', error);
+        return undefined;
+      }
     }
 
     // No fallback - return undefined if no valid inviter in query

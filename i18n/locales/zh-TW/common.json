@@ -38,7 +38,7 @@
   "transaction_failed":"交易失敗",
   "transaction_processing":"交易處理中",
   "purchase_successful":"認購成功",
-  "purchase_confirmed":"您的節點認購已確認！",
+  "purchase_confirmed":"您的手機認購已確認！",
   "approval_submitted":"授權已提交",
   "approval_failed":"授權失敗",
   "approval_error":"提交授權時出錯",

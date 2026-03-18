@@ -38,7 +38,7 @@
   "transaction_failed":"Giao dịch thất bại",
   "transaction_processing":"Đang xử lý giao dịch",
   "purchase_successful":"Mua hàng thành công",
-  "purchase_confirmed":"Việc mua node của bạn đã được xác nhận!",
+  "purchase_confirmed":"Việc mua điện thoại của bạn đã được xác nhận!",
   "approval_submitted":"Đã gửi phê duyệt",
   "approval_failed":"Phê duyệt thất bại",
   "approval_error":"Lỗi khi gửi phê duyệt",

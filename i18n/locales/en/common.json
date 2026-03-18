@@ -41,7 +41,7 @@
   "transaction_failed":"Transaction Failed",
   "transaction_processing":"Transaction Processing",
   "purchase_successful":"Purchase Successful",
-  "purchase_confirmed":"Your node purchase has been confirmed!",
+  "purchase_confirmed":"Your phone purchase has been confirmed!",
   "approval_submitted":"Approval Submitted",
   "approval_failed":"Approval Failed",
   "approval_error":"Error submitting approval",

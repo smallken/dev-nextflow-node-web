@@ -38,7 +38,7 @@
   "transaction_failed":"取引失敗",
   "transaction_processing":"取引処理中",
   "purchase_successful":"購入成功",
-  "purchase_confirmed":"ノード購入が確認されました！",
+  "purchase_confirmed":"携帯電話の購入が確認されました！",
   "approval_submitted":"承認が送信されました",
   "approval_failed":"承認失敗",
   "approval_error":"承認の送信中にエラーが発生しました",

@@ -124,14 +124,27 @@ export function UserProvider({ children }: { children: ReactNode }) {
   });
 
   // 使用 useReadPoolUsdtPrice 获取全局节点价格
-  const { data: nftPrice, refetch: refetchNftPrice } = useReadPoolUsdtPrice();
+  const { data: nftPrice, refetch: refetchNftPrice, isError: isPriceError, isLoading: isPriceLoading } = useReadPoolUsdtPrice();
+
+  // 调试：打印价格获取状态
+  console.log('=== getPrice 调试 ===');
+  console.log('isPriceLoading:', isPriceLoading);
+  console.log('isPriceError:', isPriceError);
+  console.log('nftPrice:', nftPrice);
 
   // 获取活跃批次信息
-  const { data: activeBatchData, refetch: refetchActiveBatch } = useReadPoolGetActiveBatch({
+  const { data: activeBatchData, refetch: refetchActiveBatch, isError: isActiveBatchError, isLoading: isActiveBatchLoading } = useReadPoolGetActiveBatch({
     query: {
       refetchInterval: 5000,
     }
   });
+
+  // 调试：打印批次获取状态
+  console.log('=== getActiveBatch 调试 ===');
+  console.log('chainId:', chainId);
+  console.log('isActiveBatchLoading:', isActiveBatchLoading);
+  console.log('isActiveBatchError:', isActiveBatchError);
+  console.log('activeBatchData:', activeBatchData);
 
   // 获取批次详情（如果有活跃批次）
   const { data: batchDetails, refetch: refetchBatchDetails } = useReadPoolGetBatch({
