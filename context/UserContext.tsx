@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { useAccount, useChainId } from 'wagmi';
 import { formatEther } from 'viem';
 import {
@@ -84,8 +85,29 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 export function UserProvider({ children }: { children: ReactNode }) {
   const { address } = useAccount();
   const chainId = useChainId();
+  const router = useRouter();
   const isDev = process.env.NODE_ENV !== 'production';
   if (isDev) console.log('chainId', chainId);
+  
+  // 路由切换时暂停轮询，减少移动端卡顿
+  const [isRouteChanging, setIsRouteChanging] = useState(false);
+  
+  useEffect(() => {
+    const handleRouteChangeStart = () => setIsRouteChanging(true);
+    const handleRouteChangeComplete = () => setIsRouteChanging(false);
+    const handleRouteChangeError = () => setIsRouteChanging(false);
+    
+    router.events.on('routeChangeStart', handleRouteChangeStart);
+    router.events.on('routeChangeComplete', handleRouteChangeComplete);
+    router.events.on('routeChangeError', handleRouteChangeError);
+    
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChangeStart);
+      router.events.off('routeChangeComplete', handleRouteChangeComplete);
+      router.events.off('routeChangeError', handleRouteChangeError);
+    };
+  }, [router]);
+  
   // 初始化应用全局数据状态
   const [appInfo, setAppInfo] = useState<AppInfo | null>(null);
   const [contractUserInfo, setContractUserInfo] = useState<ContractUserInfo | null>(null);
@@ -95,7 +117,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
     args: address ? [address] : undefined,
     query: {
       enabled: !!address,
-      refetchInterval: 15000, // 每15秒自动刷新
+      refetchInterval: isRouteChanging ? false : 15000,
     }
   });
 
@@ -113,7 +135,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
     args: address ? [address] : undefined,
     query: {
       enabled: !!address,
-      refetchInterval: 15000,
+      refetchInterval: isRouteChanging ? false : 15000,
     }
   });
 
@@ -122,7 +144,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
     args: address ? [address] : undefined,
     query: {
       enabled: !!address,
-      refetchInterval: 15000,
+      refetchInterval: isRouteChanging ? false : 15000,
     }
   });
 
@@ -140,7 +162,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   // 获取活跃批次信息
   const { data: activeBatchData, refetch: refetchActiveBatch, isError: isActiveBatchError, isLoading: isActiveBatchLoading } = useReadPoolGetActiveBatch({
     query: {
-      refetchInterval: 15000,
+      refetchInterval: isRouteChanging ? false : 15000,
     }
   });
 
@@ -158,7 +180,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
     args: activeBatchData ? [activeBatchData[0]] : undefined,
     query: {
       enabled: !!activeBatchData,
-      refetchInterval: 15000,
+      refetchInterval: isRouteChanging ? false : 15000,
     }
   });
 
@@ -176,7 +198,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
     args: address ? [address] : undefined,
     query: {
       enabled: !!address,
-      refetchInterval: 15000,
+      refetchInterval: isRouteChanging ? false : 15000,
     }
   });
 
@@ -190,7 +212,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
       undefined,
     query: {
       enabled: !!address && !!poolAddress[chainId as keyof typeof poolAddress],
-      refetchInterval: 15000,
+      refetchInterval: isRouteChanging ? false : 15000,
     }
   });
 
@@ -202,7 +224,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
     args: address ? [address] : undefined,
     query: {
       enabled: !!address,
-      refetchInterval: 15000,
+      refetchInterval: isRouteChanging ? false : 15000,
     }
   });
 
