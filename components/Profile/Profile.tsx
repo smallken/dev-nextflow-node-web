@@ -194,10 +194,10 @@ export function Profile() {
             <Box>
               <Group justify="space-between" mb={4}>
                 <Text size="sm" c="dimmed">{t('profile.levelProgress')}</Text>
-                <Text size="sm" fw={500}>VIP {contractUserInfo?.level} / VIP 5</Text>
+                <Text size="sm" fw={500}>VIP {contractUserInfo?.level} / VIP 7</Text>
               </Group>
               <Progress
-                value={(contractUserInfo?.level || 0) * 20} /* Each level represents 20% */
+                value={(contractUserInfo?.level || 0) * (100 / 7)} /* Each level represents 100/7 % */
                 size="md"
                 radius="xl"
                 color={colors.primary}

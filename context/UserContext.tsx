@@ -11,16 +11,43 @@ import {
 import MINT_STAGE from '../config/min.stage';
 
 /**
- * 根据团队业绩计算用户等级
+ * 根据个人销售数量计算用户等级
+ * @param salesCount 个人销售数量（手机数量）
+ * @returns 等级 0-7
+ * Tier 0: 0 sales → 0%
+ * Tier 1: 1-5 sales → 10%
+ * Tier 2: 6-20 sales → 12%
+ * Tier 3: 21-50 sales → 14%
+ * Tier 4: 51-100 sales → 16%
+ * Tier 5: 101-150 sales → 18%
+ * Tier 6: 151-200 sales → 20%
+ * Tier 7: 201+ sales → 22%
+ */
+function calculateLevelBySales(salesCount: number): number {
+  if (salesCount >= 201) return 7;
+  if (salesCount >= 151) return 6;
+  if (salesCount >= 101) return 5;
+  if (salesCount >= 51) return 4;
+  if (salesCount >= 21) return 3;
+  if (salesCount >= 6) return 2;
+  if (salesCount >= 1) return 1;
+  return 0;
+}
+
+/**
+ * 根据团队业绩计算用户等级（旧版兼容）
  * @param teamSales 团队业绩（手机数量）
- * @returns 等级 1-5
+ * @returns 等级 0-7
  */
 function calculateLevelByTeamSales(teamSales: number): number {
-  if (teamSales >= 300) return 5;
-  if (teamSales >= 100) return 4;
-  if (teamSales >= 30) return 3;
-  if (teamSales >= 10) return 2;
-  return 1;
+  if (teamSales >= 201) return 7;
+  if (teamSales >= 151) return 6;
+  if (teamSales >= 101) return 5;
+  if (teamSales >= 51) return 4;
+  if (teamSales >= 21) return 3;
+  if (teamSales >= 6) return 2;
+  if (teamSales >= 1) return 1;
+  return 0;
 }
 
 
@@ -93,15 +120,32 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const [isRouteChanging, setIsRouteChanging] = useState(false);
   
   useEffect(() => {
-    const handleRouteChangeStart = () => setIsRouteChanging(true);
-    const handleRouteChangeComplete = () => setIsRouteChanging(false);
-    const handleRouteChangeError = () => setIsRouteChanging(false);
-    
+    let routeChangeTimeout: NodeJS.Timeout | null = null;
+
+    const handleRouteChangeStart = () => {
+      // 立即暂停轮询
+      if (routeChangeTimeout) clearTimeout(routeChangeTimeout);
+      setIsRouteChanging(true);
+    };
+
+    const handleRouteChangeComplete = () => {
+      // 延迟 300ms 恢复轮询，让页面先完成渲染
+      routeChangeTimeout = setTimeout(() => {
+        setIsRouteChanging(false);
+      }, 300);
+    };
+
+    const handleRouteChangeError = () => {
+      if (routeChangeTimeout) clearTimeout(routeChangeTimeout);
+      setIsRouteChanging(false);
+    };
+
     router.events.on('routeChangeStart', handleRouteChangeStart);
     router.events.on('routeChangeComplete', handleRouteChangeComplete);
     router.events.on('routeChangeError', handleRouteChangeError);
-    
+
     return () => {
+      if (routeChangeTimeout) clearTimeout(routeChangeTimeout);
       router.events.off('routeChangeStart', handleRouteChangeStart);
       router.events.off('routeChangeComplete', handleRouteChangeComplete);
       router.events.off('routeChangeError', handleRouteChangeError);
@@ -227,9 +271,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
       refetchInterval: isRouteChanging ? false : 15000,
     }
   });
-
-  // 默认购买数量为 0
-  const salesCount = salesCountData ? Number(salesCountData) : 0;
 
   // 固定当前数量为 0，不从区块链读取
   const nftCurrentTotal = BigInt(0);
