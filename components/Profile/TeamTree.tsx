@@ -419,40 +419,63 @@ function TeamTree2Component() {
   const teamSalesCount = Number(rootUser.teamSalesCount || 0);
 
   return (
-    <Container size="md" py="md">
-      {/* Breadcrumbs navigation */}
-      <ProfileBreadcrumbs currentPage="team" />
+    <div style={{ 
+      background: 'linear-gradient(135deg, #E8F4FF 0%, #F0F9FF 100%)', 
+      minHeight: '100vh', 
+      paddingBottom: '80px' 
+    }}>
+      <Container size="md" py="md">
+        {/* Breadcrumbs navigation */}
+        <ProfileBreadcrumbs currentPage="team" />
 
-      {/* Header with title */}
-      <Group justify="space-between" align="center" mb="md">
-        <Group gap="md" align="center">
-          <Text fw={700} size="xl" style={{ fontFamily: '"Pixel", monospace' }}>
-            {t('team.title')}
-          </Text>
-          <Badge size="lg" radius="xl" style={{ background: colors.secondary, color: 'white' }}>
-            <Group gap="xs">
-              <IconTree size={16} />
-              {teamSalesCount}
-            </Group>
-          </Badge>
+        {/* Header with title */}
+        <Group justify="space-between" align="center" mb="md">
+          <Group gap="md" align="center">
+            <Text fw={700} size="xl" c="#1e293b">
+              {t('team.title')}
+            </Text>
+            <Badge size="lg" radius="xl" style={{ background: '#00A8FF', color: 'white' }}>
+              <Group gap="xs">
+                <IconTree size={16} />
+                {teamSalesCount}
+              </Group>
+            </Badge>
+          </Group>
+
+          <Tooltip label={t('team.refresh')} withArrow position="left">
+            <ActionIcon
+              variant="filled"
+              size="lg"
+              radius="xl"
+              onClick={() => window.location.reload()}
+              styles={{
+                root: {
+                  background: '#00A8FF',
+                  '&:hover': {
+                    background: '#0096E6',
+                  }
+                }
+              }}
+            >
+              <IconRefresh size={24} stroke={1.5} />
+            </ActionIcon>
+          </Tooltip>
         </Group>
-
-        <Tooltip label={t('team.refresh')} withArrow position="left">
-          <ActionIcon
-            variant="light"
-            style={{ color: colors.secondary }}
-            size="lg"
-            radius="xl"
-            onClick={() => window.location.reload()}
+        
+        {/* Team tree with Mantine Tree component */}
+        {treeData.length > 0 ? (
+          <Card 
+            radius="lg" 
+            padding="md"
+            styles={{
+              root: {
+                background: 'rgba(255, 255, 255, 0.8)',
+                backdropFilter: 'blur(10px)',
+                border: '1px solid rgba(255, 255, 255, 0.9)',
+                boxShadow: '0 4px 20px rgba(59, 130, 246, 0.1)',
+              }
+            }}
           >
-            <IconRefresh size={24} stroke={1.5} />
-          </ActionIcon>
-        </Tooltip>
-      </Group>
-      
-      {/* Team tree with Mantine Tree component */}
-      {treeData.length > 0 ? (
-        <Card withBorder radius="md" padding="md">
           <Box style={{ maxWidth: '100%', overflow: 'auto' }}>
             <Tree
               data={treeData}
@@ -492,6 +515,7 @@ function TeamTree2Component() {
           </Stack>
         </Card>
       )}
-    </Container>
+      </Container>
+    </div>
   );
 }

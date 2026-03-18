@@ -1,33 +1,40 @@
-import { Button, Modal, Text, Group, Space } from '@mantine/core';
-import { useUser } from '../../context/UserContext';
+import { Button, Modal, Text, Group } from '@mantine/core';
 import { useWriteUsdtApprove } from '../../wagmi/generated';
-import { useWaitForTransactionReceipt } from 'wagmi';
+import { useWaitForTransactionReceipt, useChainId } from 'wagmi';
 import { notifications } from '@mantine/notifications';
 import { IconCheck, IconX } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { poolAddress } from '../../wagmi/generated';
-import { useChainId } from 'wagmi';
-import { formatEther } from 'viem';
 
 interface ApproveUsdtProps {
   opened: boolean;
   onClose: () => void;
-  amount: bigint; // Amount to be approved
-  onApproveSuccess: () => void; // Callback after successful approval
+  amount: bigint;
+  onApproveSuccess: () => void;
+  blueColor?: string;
+  blueGradient?: string;
+  blueDark?: string;
+  blueLight?: string;
 }
 
-export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: ApproveUsdtProps) {
+export function ApproveUsdt({
+  opened,
+  onClose,
+  amount,
+  onApproveSuccess,
+  blueColor = '#3B82F6',
+  blueGradient = 'linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)',
+  blueDark = '#2563EB',
+  blueLight = '#60A5FA'
+}: ApproveUsdtProps) {
   const { t } = useTranslation();
-  const { usdtBalance, usdtAllowanceForPool } = useUser();
   const chainId = useChainId();
 
   // Use Wagmi's useWriteUsdtApprove hook to perform authorization
   const {
     data: hash,
-    error,
     isPending,
-    isError,
     writeContractAsync: approveUsdt
   } = useWriteUsdtApprove();
 
@@ -39,16 +46,12 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
     error: confirmErrorData
   } = useWaitForTransactionReceipt({
     hash,
-    confirmations: 3, // BSC主网建议3个确认 (~9秒)
+    confirmations: 3,
   });
-
-  // console.log('useWriteUsdtApprove', hash, isPending, isError, error);
-  // console.log('useWaitForTransactionReceipt', hash, isConfirming, isConfirmed, isConfirmingError, confirmErrorData);
 
   // Submit approval request
   async function submitApprove() {
     try {
-      // Show loading notification
       notifications.show({
         id: 'approve-tx',
         title: t('approval_processing'),
@@ -58,10 +61,8 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
         withCloseButton: false,
       });
 
-      // Send approval transaction
-      // Approve a sufficiently large amount to avoid frequent approvals
-      // If you only want to approve a specific amount, you can use the amount parameter
-      const approveAmount = BigInt('0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
+      // Approve exact amount for security - user needs to approve each time
+      const approveAmount = amount;
 
       await approveUsdt({
         args: [
@@ -70,7 +71,6 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
         ],
       });
 
-      // Transaction sent successfully - update notification
       notifications.update({
         id: 'approve-tx',
         title: t('approval_submitted'),
@@ -80,7 +80,6 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
       });
 
     } catch (err) {
-      // Transaction sending failed
       console.error('Approve error:', err);
       notifications.update({
         id: 'approve-tx',
@@ -98,7 +97,6 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
     if (!hash) return;
 
     if (isConfirming) {
-      // Update notification, show transaction confirmation in progress
       notifications.update({
         id: 'approve-tx',
         title: t('approval_processing'),
@@ -118,21 +116,15 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
         autoClose: 3000,
       });
 
-      //setTimeout(() => {
-      // After successful approval, call the callback
       onApproveSuccess();
-      // Close the modal
       onClose();
-      //}, 0);
-
     }
 
     if (isConfirmingError) {
-      // Transaction failed  
       notifications.update({
         id: 'approve-tx',
         title: t('transaction_failed'),
-        message: confirmErrorData instanceof Error ? (confirmErrorData.message) : t('transaction_failed'),
+        message: confirmErrorData instanceof Error ? confirmErrorData.message : t('transaction_failed'),
         color: 'red',
         icon: <IconX />,
         autoClose: 3000,
@@ -140,36 +132,48 @@ export function ApproveUsdt({ opened, onClose, amount, onApproveSuccess }: Appro
     }
   }, [hash, isConfirming, isConfirmed, isConfirmingError, onApproveSuccess, onClose]);
 
-
   return (
-    <Modal opened={opened} onClose={onClose} title={t('approve_usdt')} centered>
-
-      <Space h="md" />
-
-      <Group>
+    <Modal
+      opened={opened}
+      onClose={onClose}
+      title={t('approve_usdt')}
+      centered
+      styles={{
+        title: {
+          fontSize: '1.2rem',
+          fontWeight: 600,
+          color: blueColor,
+        }
+      }}
+    >
+      <Group mb="md">
         <Text fw={700} size="lg">{t('approval_required')}</Text>
-        <Text size="sm" c="dimmed">{t('approval_description')}</Text>
       </Group>
 
-      <Space h="xl" />
+      <Text size="sm" c="dimmed" mb="xl">
+        {t('approval_description')}
+      </Text>
 
-      <Group justify="center">
-        <Button
-          styles={{
-            root: {
-              background: 'linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)',
-              '&:hover': {
-                background: 'linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%)',
-              }
-            }
-          }}
-          onClick={submitApprove}
-          disabled={isPending || isConfirming}
-          loading={isPending || isConfirming}
-        >
-          {isPending || isConfirming ? t('processing') : t('approve_button')}
-        </Button>
-      </Group>
+      <Button
+        fullWidth
+        size="lg"
+        radius="xl"
+        onClick={submitApprove}
+        disabled={isPending || isConfirming}
+        loading={isPending || isConfirming}
+        styles={{
+          root: {
+            background: blueGradient,
+            fontWeight: 600,
+            boxShadow: '0 4px 20px rgba(37, 99, 235, 0.25)',
+            '&:hover:not(:disabled)': {
+              background: 'linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%)',
+            },
+          }
+        }}
+      >
+        {isPending || isConfirming ? t('processing') : t('approve_button')}
+      </Button>
     </Modal>
   );
 }

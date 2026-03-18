@@ -9,9 +9,20 @@ import { useUser } from '../../context/UserContext';
 type InviteModalProps = {
   opened: boolean;
   onClose: () => void;
+  blueColor?: string;
+  blueGradient?: string;
+  blueDark?: string;
+  blueLight?: string;
 };
 
-export function InviteModal({ opened, onClose }: InviteModalProps) {
+export function InviteModal({
+  opened,
+  onClose,
+  blueColor = '#3B82F6',
+  blueGradient = 'linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)',
+  blueDark = '#2563EB',
+  blueLight = '#60A5FA'
+}: InviteModalProps) {
   const { t, i18n } = useTranslation();
   const { address, contractUserInfo } = useUser();
   const [inviteUrl, setInviteUrl] = useState('');
@@ -20,15 +31,12 @@ export function InviteModal({ opened, onClose }: InviteModalProps) {
   // Generate the invitation URL with the user's address and current language
   useEffect(() => {
     if (address) {
-      // Get the base URL (without query parameters)
       const baseUrl = typeof window !== 'undefined'
         ? window.location.origin
         : '';
 
-      // Get current language
       const currentLang = i18n.language || 'en';
 
-      // Create the full invitation URL with language parameter
       setInviteUrl(`${baseUrl}/?lng=${currentLang}&inviter=${address}`);
     }
   }, [address, i18n.language]);
@@ -41,17 +49,18 @@ export function InviteModal({ opened, onClose }: InviteModalProps) {
       centered
       size="md"
       styles={{
-        title: { fontSize: '1.2rem', fontWeight: 600 }
+        title: { fontSize: '1.2rem', fontWeight: 600, color: blueColor }
       }}
     >
       <Stack gap="lg">
         {/* Case 1: User is not registered (parent address is zero) */}
         {(!contractUserInfo?.parent || contractUserInfo?.parent === '0x0000000000000000000000000000000000000000') ? (
           <Alert
-            variant="#e5fff1"
-            color="yellow"
+            variant="light"
+            color="orange"
             title={t('registration_required')}
-            icon={<IconAlertCircle />}
+            icon={<IconAlertCircle size={20} />}
+            radius="lg"
           >
             <Text mb="md">{t('please_register_before_invite')}</Text>
             <Button
@@ -62,9 +71,9 @@ export function InviteModal({ opened, onClose }: InviteModalProps) {
               }}
               styles={{
                 root: {
-                  background: 'linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)',
+                  background: blueGradient,
                   '&:hover': {
-                    background: 'linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%)',
+                    background: 'linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%)',
                   }
                 }
               }}
@@ -75,10 +84,11 @@ export function InviteModal({ opened, onClose }: InviteModalProps) {
         ) : contractUserInfo && contractUserInfo.nodeCount <= 0 ? (
           // Case 2: User is registered but hasn't purchased any nodes
           <Alert
-            variant="filled"
-            color="#e5fff1"
+            variant="light"
+            color="blue"
             title={t('node_purchase_required')}
-            icon={<IconInfoCircle />}
+            icon={<IconInfoCircle size={20} />}
+            radius="lg"
           >
             <Text mb="md">{t('please_purchase_node_before_invite')}</Text>
             <Button
@@ -89,9 +99,9 @@ export function InviteModal({ opened, onClose }: InviteModalProps) {
               }}
               styles={{
                 root: {
-                  background: 'linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)',
+                  background: blueGradient,
                   '&:hover': {
-                    background: 'linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%)',
+                    background: 'linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%)',
                   }
                 }
               }}
@@ -102,38 +112,51 @@ export function InviteModal({ opened, onClose }: InviteModalProps) {
         ) : (
           // Case 3: User is registered and has purchased nodes
           <>
-            <Text ta="center" fw={500} size="lg" c="#8b5cf6">{t('scan_or_copy')}</Text>
+            <Text ta="center" fw={600} size="lg" c={blueColor}>{t('scan_or_copy')}</Text>
 
-            <Paper shadow="xs" withBorder radius="md" p="md" style={{ background: '#FAFAFA' }}>
+            <Paper shadow="sm" withBorder radius="lg" p="md" styles={{
+              root: {
+                background: '#FAFAFA',
+                borderColor: 'rgba(37, 99, 235, 0.1)',
+              }
+            }}>
               <Center py="md">
-                <Box style={{ padding: '10px', background: 'white', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
+                <Box style={{ padding: '12px', background: 'white', borderRadius: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.08)' }}>
                   <QRCodeSVG
                     value={inviteUrl}
                     size={200}
-                    bgColor={"#ffffff"}
-                    fgColor={"#000000"}
-                    level={"L"}
+                    bgColor="#ffffff"
+                    fgColor="#000000"
+                    level="L"
                   />
                 </Box>
               </Center>
             </Paper>
 
-            <Paper p="xs" withBorder radius="md" bg="var(--mantine-color-gray-0)">
-              <Group style={{ width: '100%' }} wrap="nowrap">
+            <Paper p="sm" withBorder radius="lg" styles={{
+              root: {
+                background: 'rgba(37, 99, 235, 0.03)',
+                borderColor: 'rgba(37, 99, 235, 0.15)',
+              }
+            }}>
+              <Group gap="sm" wrap="nowrap">
                 <Box style={{ flex: 1, overflow: 'hidden' }}>
-                  <Group gap={4} wrap="nowrap">
-                    {/* Complete URL for easy selection/copying */}
-                    <Text fw={500} style={{ fontSize: '0.9rem', wordBreak: 'break-all' }}>
-                      {inviteUrl}
-                    </Text>
-                  </Group>
+                  <Text fw={500} size="sm" style={{ wordBreak: 'break-all' }}>
+                    {inviteUrl}
+                  </Text>
                 </Box>
 
                 <CopyButton value={inviteUrl} timeout={2000}>
                   {({ copied, copy }) => (
                     <Tooltip label={copied ? t('copied') : t('copy_link')} withArrow position="top">
-                      <ActionIcon color={copied ? 'teal' : '#8b5cf6'} variant={copied ? 'filled' : 'light'} onClick={copy}>
-                        {copied ? <IconCheck size={16} /> : <IconCopy size={16} />}
+                      <ActionIcon
+                        color={copied ? 'teal' : blueColor}
+                        variant={copied ? 'filled' : 'light'}
+                        onClick={copy}
+                        radius="lg"
+                        size="lg"
+                      >
+                        {copied ? <IconCheck size={18} /> : <IconCopy size={18} />}
                       </ActionIcon>
                     </Tooltip>
                   )}

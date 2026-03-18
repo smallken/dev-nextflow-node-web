@@ -149,15 +149,27 @@ export function Tokens() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', paddingBottom: '80px' }}>
+    <div style={{ 
+      background: 'linear-gradient(135deg, #E8F4FF 0%, #F0F9FF 100%)',
+      minHeight: '100vh', 
+      paddingBottom: '80px' 
+    }}>
       {/* Header with title */}
       <Group px="md" py="lg" justify="space-between">
-        <Text size="lg" fw={700}>{t('tokens.title')}</Text>
+        <Text size="lg" fw={700} c="#1e293b">{t('tokens.title')}</Text>
         <Button
           variant="light"
           size="xs"
           leftSection={<IconRefresh size={16} />}
           onClick={handleRefresh}
+          styles={{
+            root: {
+              background: 'rgba(255, 255, 255, 0.8)',
+              '&:hover': {
+                background: 'rgba(255, 255, 255, 0.9)',
+              }
+            }
+          }}
         >
           {t('tokens.refresh')}
         </Button>
@@ -165,11 +177,22 @@ export function Tokens() {
 
       <Container size="md">
         {/* Main Token Stats Card */}
-        <Card shadow="sm" radius="md" withBorder mb="md">
+        <Card 
+          radius="lg" 
+          mb="md"
+          styles={{
+            root: {
+              background: 'rgba(255, 255, 255, 0.8)',
+              backdropFilter: 'blur(10px)',
+              border: '1px solid rgba(255, 255, 255, 0.9)',
+              boxShadow: '0 4px 20px rgba(59, 130, 246, 0.1)',
+            }
+          }}
+        >
           <Stack gap="md">
             <Group justify="space-between" align="center">
               <Group gap="xs">
-                <IconCoin size={24} color="#8b5cf6" />
+                <IconCoin size={24} color="#2563eb" />
                 <Text fw={600} size="lg">{t('tokens.rewardTokens')}</Text>
               </Group>
               <Badge color="blue" variant="light" size="lg">
@@ -228,15 +251,24 @@ export function Tokens() {
                 <Button
                   fullWidth
                   size="lg"
+                  radius="lg"
                   leftSection={<IconCoin size={20} />}
                   onClick={handleClaim}
                   loading={isClaiming || isConfirming}
                   styles={{
                     root: {
-                      background: 'linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)',
-                      '&:hover': {
-                        background: 'linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%)',
-                      }
+                      background: '#00A8FF',
+                      border: 'none',
+                      fontWeight: 600,
+                      height: '48px',
+                      fontSize: '16px',
+                      '&:hover:not(:disabled)': {
+                        background: '#0096E6',
+                      },
+                      '&:disabled': {
+                        background: '#94C9E8',
+                        opacity: 0.6,
+                      },
                     }
                   }}
                 >

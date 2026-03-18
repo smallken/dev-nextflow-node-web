@@ -57,10 +57,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
         breakpoint: 'sm',
         collapsed: { mobile: true, desktop: !desktopOpened }
       }}
-      padding='md'
-      style={{
-        // 移动端底部padding (底部导航55px + 间距)
-        paddingBottom: isMobile ? '70px' : undefined
+      padding='0'
+      styles={{
+        main: {
+          paddingBottom: isMobile ? '70px' : '0',
+        }
       }}
     >
       <AppShell.Header>

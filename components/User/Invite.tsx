@@ -4,31 +4,62 @@ import { IconShare } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { InviteModal } from './InviteModal';
 
-export function Invite() {
+interface InviteProps {
+  blueColor?: string;
+  blueGradient?: string;
+  blueDark?: string;
+  blueLight?: string;
+}
+
+export function Invite({
+  blueColor = '#3B82F6',
+  blueGradient = 'linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)',
+  blueDark = '#2563EB',
+  blueLight = '#60A5FA'
+}: InviteProps) {
   const { t } = useTranslation();
   const [opened, { open, close }] = useDisclosure(false);
-  
+
   return (
     <>
-      <Card shadow="sm" padding="lg" radius="md" withBorder>
+      <Card
+        withBorder
+        radius="xl"
+        p="xl"
+        className="home-card"
+        styles={{
+          root: {
+            background: 'rgba(255, 255, 255, 0.8)',
+            backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(255, 255, 255, 0.9)',
+            boxShadow: '0 4px 20px rgba(59, 130, 246, 0.1)',
+          }
+        }}
+      >
         <Button
           fullWidth
+          size="xl"
+          radius="lg"
           onClick={open}
-          leftSection={<IconShare size={16} />}
+          leftSection={<IconShare size={20} />}
           styles={{
             root: {
-              background: 'linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)',
+              background: '#00A8FF',
+              border: 'none',
+              fontWeight: 600,
+              height: '56px',
+              fontSize: '16px',
               '&:hover': {
-                background: 'linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%)',
-              }
+                background: '#0096E6',
+              },
             }
           }}
         >
           {t('common.invite')}
         </Button>
       </Card>
-      
-      <InviteModal opened={opened} onClose={close} />
+
+      <InviteModal opened={opened} onClose={close} blueColor={blueColor} blueGradient={blueGradient} />
     </>
   );
 }

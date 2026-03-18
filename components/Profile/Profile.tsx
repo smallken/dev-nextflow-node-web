@@ -38,7 +38,22 @@ function StatCard({
 }) {
   const { t } = useTranslation();
   return (
-    <Paper radius="md" withBorder p="md" style={{ height: '100%', position: 'relative', display: 'flex', flexDirection: 'column' }}>
+    <Paper 
+      radius="lg" 
+      p="md" 
+      styles={{
+        root: {
+          height: '100%',
+          position: 'relative',
+          display: 'flex',
+          flexDirection: 'column',
+          background: 'rgba(255, 255, 255, 0.6)',
+          backdropFilter: 'blur(10px)',
+          border: '1px solid rgba(255, 255, 255, 0.8)',
+          boxShadow: '0 2px 10px rgba(59, 130, 246, 0.08)',
+        }
+      }}
+    >
       {/* Top-right corner action button */}
       {secondaryAction && onSecondaryAction && (
         <ActionIcon
@@ -84,7 +99,17 @@ function StatCard({
             rightSection={<IconChevronRight size={16} />}
             size="xs"
             fullWidth
-            style={styles.primaryButton}
+            radius="lg"
+            styles={{
+              root: {
+                background: '#00A8FF',
+                border: 'none',
+                fontWeight: 600,
+                '&:hover': {
+                  background: '#0096E6',
+                }
+              }
+            }}
           >
             {buttonText}
           </Button>
@@ -123,15 +148,30 @@ export function Profile() {
   }
 
   return (
-    <div style={{ backgroundColor: bgColor, minHeight: '100vh', paddingBottom: rem(80) }}>
+    <div style={{ 
+      background: 'linear-gradient(135deg, #E8F4FF 0%, #F0F9FF 100%)', 
+      minHeight: '100vh', 
+      paddingBottom: rem(80) 
+    }}>
       {/* Header with title */}
       <Group px="md" py="lg" justify="space-between">
-        <Text size="lg" fw={700}>{t('profile.title')}</Text>
+        <Text size="lg" fw={700} c="#1e293b">{t('profile.title')}</Text>
       </Group>
 
       {/* User profile card with level and info */}
       <Container size="md" mb="md">
-        <Card withBorder radius="md" shadow="sm" p="md">
+        <Card 
+          radius="lg" 
+          p="md"
+          styles={{
+            root: {
+              background: 'rgba(255, 255, 255, 0.8)',
+              backdropFilter: 'blur(10px)',
+              border: '1px solid rgba(255, 255, 255, 0.9)',
+              boxShadow: '0 4px 20px rgba(59, 130, 246, 0.1)',
+            }
+          }}
+        >
           <Group justify="space-between" mb="sm">
             <Text fw={700} size="lg">{t('profile.userInfo')}</Text>
             <Box
@@ -216,7 +256,17 @@ export function Profile() {
 
       {/* Stats grid */}
       <Container size="md">
-        <Card shadow="sm" radius="lg" withBorder>
+        <Card 
+          radius="lg"
+          styles={{
+            root: {
+              background: 'rgba(255, 255, 255, 0.8)',
+              backdropFilter: 'blur(10px)',
+              border: '1px solid rgba(255, 255, 255, 0.9)',
+              boxShadow: '0 4px 20px rgba(59, 130, 246, 0.1)',
+            }
+          }}
+        >
           <Grid gutter={16}>
             <Grid.Col span={6}>
               <StatCard
@@ -256,15 +306,31 @@ export function Profile() {
       </Container>
 
       <Container size="md">
-        <Card withBorder radius="md" shadow="sm">
+        <Card 
+          radius="lg"
+          styles={{
+            root: {
+              background: 'rgba(255, 255, 255, 0.8)',
+              backdropFilter: 'blur(10px)',
+              border: '1px solid rgba(255, 255, 255, 0.9)',
+              boxShadow: '0 4px 20px rgba(59, 130, 246, 0.1)',
+            }
+          }}
+        >
           <Button
+            fullWidth
+            size="lg"
+            radius="lg"
             leftSection={<IconUserPlus size={16} />}
-            variant="filled"
             styles={{
               root: {
-                background: 'linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)',
+                background: '#00A8FF',
+                border: 'none',
+                fontWeight: 600,
+                height: '48px',
+                fontSize: '16px',
                 '&:hover': {
-                  background: 'linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%)',
+                  background: '#0096E6',
                 }
               }
             }}

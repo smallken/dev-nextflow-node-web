@@ -67,6 +67,13 @@
   "copy_link":"复制链接",
   "invite_reward_desc":"分享此链接给你的朋友，当他们注册成功后，你将获得奖励。",
   "share_invitation":"分享邀请",
+
+  "home_hero_greeting": "Hi, I'm Lil Nai",
+  "home_hero_subtitle": "Here to help you",
+  "home_hero_title_line1": "Smart Tech",
+  "home_hero_title_line2": "Link Future",
+  "home_purchase_title": "小奈手机认购冲鸭",
+  "home_slogan": "把会赚钱、会办事的小奈抱回家！",
   
   "registration_required": "需要注册",
   "please_register_before_invite": "您需要先注册才能邀请好友。",

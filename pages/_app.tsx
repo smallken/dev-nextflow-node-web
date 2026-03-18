@@ -47,7 +47,7 @@ function App({ Component, pageProps }: AppProps) {
   return (
     <I18nextProvider i18n={i18n}>
       <MantineProvider theme={theme}>
-        <Notifications />
+        <Notifications position="top-center" zIndex={4000} />
         <WagmiProvider config={config}>
           <QueryClientProvider client={queryClient}>
             <RainbowKitProvider

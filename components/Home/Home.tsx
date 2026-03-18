@@ -1,8 +1,7 @@
-import { Button, Space, NumberInput, Group, Progress, Collapse } from '@mantine/core';
-import { Image, Card, Text, Center, Badge } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+import { Group, Progress, Stack, Paper, Container, Text, SimpleGrid } from '@mantine/core';
+import { Image, Card, Badge } from '@mantine/core';
 
-import { useChainId, useAccount } from 'wagmi';
+import { useAccount } from 'wagmi';
 import { useTranslation } from 'react-i18next';
 
 import { useUser } from '../../context/UserContext';
@@ -10,95 +9,238 @@ import { HomeContent } from './HomeContent';
 
 export function Home() {
   const { t } = useTranslation();
-
-  const [opened, { toggle }] = useDisclosure(false);
-
-  const chainId = useChainId();
   const account = useAccount();
-  // 使用全局用户上下文获取应用信息
   const { contractUserInfo, appInfo } = useUser();
+
+  // 蓝色主题色 (参考 5.jpg)
+  const blueColor = '#3B82F6';
+  const blueDark = '#2563EB';
+  const blueLight = '#60A5FA';
+  const blueGradient = 'linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)';
 
   return (
     <>
-      <Image
-        h={200}
-        src="/cover-1.jpg"
-      />
-      <Space h="sm" />
+      {/* 全局样式 */}
+      <style jsx global>{`
+        body {
+          background: linear-gradient(135deg, #E8F4FF 0%, #F0F9FF 100%) !important;
+          min-height: 100vh;
+        }
+        .home-progress-bar .mantine-Progress-bar {
+          background: linear-gradient(90deg, #3B82F6, #60A5FA, #3B82F6) !important;
+          background-size: 200% 100%;
+          animation: progressGradient 3s ease infinite;
+        }
+        @keyframes progressGradient {
+          0% { background-position: 0% 50% }
+          50% { background-position: 100% 50% }
+          100% { background-position: 0% 50% }
+        }
+        .nai-logo-hero {
+          transform: rotate(-20deg);
+          transition: all 0.3s ease;
+          filter: drop-shadow(0 4px 12px rgba(59, 130, 246, 0.15));
+        }
+        .nai-logo-hero:hover {
+          transform: rotate(-20deg) scale(1.05);
+          filter: drop-shadow(0 6px 20px rgba(59, 130, 246, 0.25));
+        }
 
-      <Card
-        withBorder
-        radius="lg"
-        padding="xl"
-        bg="var(--mantine-color-body)"
-        className="progress-card"
-        styles={(theme) => ({
-          root: {
-            position: 'relative',
-            overflow: 'hidden',
-            boxShadow: '0 4px 16px rgba(139, 92, 246, 0.12)',
-            transition: 'all 0.3s ease',
-            border: '1px solid rgba(139, 92, 246, 0.2)',
-            background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.95) 100%)',
-            '&:hover': {
-              transform: 'translateY(-2px)',
-              boxShadow: '0 8px 24px rgba(139, 92, 246, 0.18)',
-              borderColor: 'rgba(139, 92, 246, 0.35)'
-            }
-          },
-        })}
-      >
-        <style jsx global>{`
-          .progress-card .mantine-Progress-root .mantine-Progress-bar {
-            background: linear-gradient(90deg, #8b5cf6, #a78bfa, #8b5cf6);
-            background-size: 200% 100%;
-            animation: progressGradient 3s ease infinite;
-            transition: width 1s ease-in-out;
+        @media (max-width: 48em) {
+          .home-hero {
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
           }
-          @keyframes progressGradient {
-            0% { background-position: 0% 50% }
-            50% { background-position: 100% 50% }
-            100% { background-position: 0% 50% }
+          .home-hero-left {
+            width: 100%;
+            justify-content: center;
           }
-        `}</style>
-        <Text fz="md" fw={700} c="#8b5cf6" mb="xs">
-          {t('progress')}
-        </Text>
-        <Group mt="lg" justify="space-between">
-          {appInfo ? (
-            <>
-              <Text fz="lg" fw={600}>
-                <span style={{ fontSize: '1.2em', color: '#8b5cf6' }}>{appInfo.batchRemainingStock}</span>
-                <span style={{ opacity: 0.7 }}> / {appInfo.batchTotalStock}</span>
+          .home-hero-title {
+            width: 100%;
+            align-items: center;
+          }
+          .home-hero-title-text {
+            text-align: center;
+          }
+          .home-title-row {
+            flex-wrap: wrap;
+            align-items: flex-end;
+            gap: 6px;
+          }
+          .home-slogan {
+            white-space: normal;
+            text-align: right;
+            flex: 1;
+            min-width: 140px;
+          }
+        }
+      `}</style>
+
+      <div style={{ 
+        minHeight: '100vh',
+        background: 'linear-gradient(135deg, #E8F4FF 0%, #F0F9FF 100%)',
+        padding: '0'
+      }}>
+        <Container size="lg" px="md">
+          {/* 主要Hero Section - 根据参考图片优化，无卡片背景 */}
+          <div style={{ 
+            padding: '16px 0',
+            marginBottom: '12px',
+            position: 'relative'
+          }}>
+            <Group className="home-hero" align="flex-start" justify="space-between" wrap="nowrap" gap="lg">
+              {/* 左侧：NAI Logo + 介绍文字 */}
+              <Group className="home-hero-left" align="center" gap="md" wrap="nowrap" style={{ flex: '0 0 auto' }}>
+                <Image
+                  src="/nai.png"
+                  h={{ base: 130, sm: 200, md: 240 }}
+                  w="auto"
+                  fit="contain"
+                  alt="NAI Logo"
+                  className="nai-logo-hero"
+                  style={{ flexShrink: 0 }}
+                />
+                <Stack gap={4}>
+                  <Text size="lg" fw={700} c="#1e293b" style={{ lineHeight: 1.3 }}>
+                    {t('home_hero_greeting')}
+                  </Text>
+                  <Text size="md" c="#64748b" style={{ lineHeight: 1.3 }}>
+                    {t('home_hero_subtitle')}
+                  </Text>
+                </Stack>
+              </Group>
+
+              {/* 右侧：大标题 - 往右对齐 */}
+              <Stack className="home-hero-title" gap={6} align="flex-end" style={{ flex: '1 1 auto', minWidth: 0 }}>
+                <Text 
+                  className="home-hero-title-text"
+                  size="48px"
+                  fw={900} 
+                  c="#1e293b"
+                  ta="right"
+                  style={{ 
+                    lineHeight: 1.1,
+                    letterSpacing: '-0.02em',
+                    fontSize: 'clamp(28px, 5.5vw, 52px)',
+                    width: '100%'
+                  }}
+                >
+                  {t('home_hero_title_line1')}
+                </Text>
+                <Text 
+                  className="home-hero-title-text"
+                  size="48px"
+                  fw={900} 
+                  c="#1e293b"
+                  ta="right"
+                  style={{ 
+                    lineHeight: 1.1,
+                    letterSpacing: '-0.02em',
+                    fontSize: 'clamp(28px, 5.5vw, 52px)',
+                    width: '100%'
+                  }}
+                >
+                  {t('home_hero_title_line2')}
+                </Text>
+              </Stack>
+            </Group>
+
+          </div>
+
+          {/* 标题区域 - 在淡蓝色背景上，加大字体 */}
+          <Group className="home-title-row" justify="space-between" align="center" mb="sm" wrap="wrap">
+            <Text 
+              size="28px"
+              fw={700} 
+              c="#1e293b"
+              style={{
+                fontFamily: '"FZLanTingHei-R-GBK", "FZLanTingHeiS-R-GB", "方正兰亭黑", sans-serif',
+                fontSize: 'clamp(20px, 3.5vw, 32px)',
+              }}
+            >
+              {t('home_purchase_title')}
+            </Text>
+            <Text 
+              className="home-slogan"
+              size="24px"
+              c="#3B9FE8" 
+              fw={400}
+              style={{ 
+                letterSpacing: '0.1em',
+                fontFamily: 'cursive, "Comic Sans MS", "Apple Chancery", "Bradley Hand", sans-serif',
+                fontStyle: 'italic',
+                fontSize: 'clamp(16px, 2.8vw, 26px)',
+              }}
+            >
+              {t('home_slogan')}
+            </Text>
+          </Group>
+
+          {/* 进度卡片 - 按照参考图片设计 */}
+          <Paper
+            radius="lg"
+            p="md"
+            mb="sm"
+            styles={{
+              root: {
+                background: 'rgba(255, 255, 255, 0.8)',
+                backdropFilter: 'blur(10px)',
+                border: '1px solid rgba(255, 255, 255, 0.9)',
+                boxShadow: '0 4px 20px rgba(59, 130, 246, 0.1)',
+              }
+            }}
+          >
+            <Stack gap="sm">
+              {/* 进度数字 - 显示剩余数量 */}
+              <Text size="xl" fw={700} c="#1e293b">
+                {appInfo?.batchRemainingStock ?? 0}/{appInfo?.batchTotalStock ?? 0}
               </Text>
-              <Badge size="xl" radius="md" variant="filled" style={{ fontSize: '1em', background: 'linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)' }}>
-                {t('phase', { number: appInfo.activeBatchIndex + 1 })}
-              </Badge>
-            </>
-          ) : (
-            <>
-              <Text fz="lg" fw={600}><span style={{ fontSize: '1.2em', color: '#8b5cf6' }}>0</span> <span style={{ opacity: 0.7 }}>/ 0</span></Text>
-              <Badge size="xl" radius="md" variant="filled" style={{ fontSize: '1em', background: 'linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)' }}>{t('common.loading')}</Badge>
-            </>
-          )}
-        </Group>
-        <Progress
-          value={appInfo ? (appInfo.batchTotalStock > 0 ? ((appInfo.batchTotalStock - appInfo.batchRemainingStock) / appInfo.batchTotalStock * 100) : 0) : 0}
-          mt="md"
-          size="xl"
-          radius="xl"
-          animated
-          striped
-        />
-      </Card>
 
-      <Space h="xl" />
-      
-      <HomeContent 
-        isConnected={account.isConnected} 
-        contractUserInfo={contractUserInfo} 
-      />
+              {/* 进度条和阶段badge */}
+              <Group align="center" gap="md" wrap="nowrap">
+                <Progress
+                  value={appInfo ? (appInfo.batchTotalStock > 0 ? (appInfo.batchSoldCount / appInfo.batchTotalStock * 100) : 0) : 0}
+                  size="lg"
+                  radius="xl"
+                  className="home-progress-bar"
+                  style={{ flex: 1 }}
+                  styles={{
+                    root: {
+                      backgroundColor: '#E5E7EB',
+                    }
+                  }}
+                />
+                {appInfo && (
+                  <Badge
+                    size="sm"
+                    variant="filled"
+                    radius="md"
+                    style={{
+                      background: '#FF9500',
+                      fontWeight: 600,
+                      padding: '4px 12px',
+                      flexShrink: 0,
+                    }}
+                  >
+                    {t('phase', { number: appInfo.activeBatchIndex + 1 })}
+                  </Badge>
+                )}
+              </Group>
+            </Stack>
+          </Paper>
 
+          {/* 购买和邀请区域 */}
+          <HomeContent
+            isConnected={account.isConnected}
+            contractUserInfo={contractUserInfo}
+            blueColor={blueColor}
+            blueGradient={blueGradient}
+            blueDark={blueDark}
+            blueLight={blueLight}
+          />
+        </Container>
+      </div>
     </>
   );
 }

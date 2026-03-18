@@ -100,7 +100,22 @@ function FriendCard({ friend, friendData, onClick }: { friend: string; friendDat
   };
 
   return (
-    <Paper radius="md" withBorder p="sm" mb="sm" onClick={onClick} style={{ cursor: 'pointer', position: 'relative' }}>
+    <Paper 
+      radius="lg" 
+      p="sm" 
+      mb="sm" 
+      onClick={onClick} 
+      styles={{
+        root: {
+          cursor: 'pointer',
+          position: 'relative',
+          background: 'rgba(255, 255, 255, 0.8)',
+          backdropFilter: 'blur(10px)',
+          border: '1px solid rgba(255, 255, 255, 0.9)',
+          boxShadow: '0 2px 10px rgba(59, 130, 246, 0.08)',
+        }
+      }}
+    >
       <Group align="center">
         {/* Left side: Address and VIP */}
         <Group gap="xs">
@@ -293,19 +308,23 @@ function FriendListComponent() {
   }
 
   return (
-    <div style={{ background: bgColor, minHeight: '100vh', paddingBottom: rem(20) }}>
+    <div style={{ 
+      background: 'linear-gradient(135deg, #E8F4FF 0%, #F0F9FF 100%)', 
+      minHeight: '100vh', 
+      paddingBottom: rem(80) 
+    }}>
       {/* Breadcrumbs navigation */}
-      <Container size="md" mt="md">
+      <Container size="md" pt="md" pb="xs">
         <ProfileBreadcrumbs currentPage="friends" />
       </Container>
       
       {/* Header */}
-      <Container size="md" mt="md" mb="xl">
+      <Container size="md" mb="md">
         {/* Header with title, count badge and invite button */}
         <Group justify="space-between" align="center" mb="md">
           <Group gap="md" align="center">
-            <Text fw={700} size="xl" style={{ fontFamily: '"Pixel", monospace' }}>{t('friends.title')}</Text>
-            <Badge size="lg" radius="xl" style={{ background: colors.secondary, color: 'white' }}>
+            <Text fw={700} size="xl" c="#1e293b">{t('friends.title')}</Text>
+            <Badge size="lg" radius="xl" style={{ background: '#00A8FF', color: 'white' }}>
               <Group gap="xs">
                 <IconUsers size={16} />
                 {userData?.referrals?.length || 0}
@@ -314,12 +333,19 @@ function FriendListComponent() {
           </Group>
           
           <ActionIcon 
-            variant="light" 
-            color="green" 
+            variant="filled"
             size="lg" 
             radius="xl" 
             onClick={openInviteModal}
             title={t('common.invite')}
+            styles={{
+              root: {
+                background: '#00A8FF',
+                '&:hover': {
+                  background: '#0096E6',
+                }
+              }
+            }}
           >
             <IconUserPlus size={24} stroke={1.5} />
           </ActionIcon>
@@ -349,9 +375,19 @@ function FriendListComponent() {
             <Button
               leftSection={<IconUserPlus size={16} />}
               variant="filled"
-              color="#40c057"
               mt="md"
+              radius="lg"
               onClick={openInviteModal}
+              styles={{
+                root: {
+                  background: '#00A8FF',
+                  border: 'none',
+                  fontWeight: 600,
+                  '&:hover': {
+                    background: '#0096E6',
+                  }
+                }
+              }}
             >
               {t('common.invite')}
             </Button>
