@@ -1,6 +1,7 @@
 import { Box, Paper, Group } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { navItems } from './navConfig';
 import { NavItem } from './NavItem';
@@ -11,12 +12,18 @@ export function BottomNavigation() {
   const { t } = useTranslation();
   const [opened, { toggle, close }] = useDisclosure(false);
 
+  useEffect(() => {
+    navItems.forEach((item) => {
+      if (item.path) router.prefetch(item.path);
+    });
+  }, [router]);
+
   const handleNavClick = (path: string | null) => {
     if (path === null) {
       // 点击"更多"按钮，打开社交菜单
       toggle();
     } else {
-      router.push(path);
+      if (router.pathname !== path) router.push(path);
     }
   };
 

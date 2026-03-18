@@ -34,9 +34,6 @@ export const NavItem = forwardRef<HTMLButtonElement, NavItemProps>(
             '&:hover': {
               background: 'rgba(255, 255, 255, 0.1)',
             },
-            '&:active': {
-              transform: 'scale(0.95)',
-            },
           },
         }}
       >

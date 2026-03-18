@@ -91,7 +91,7 @@ export function Home() {
           }}>
             <Group className="home-hero" align="flex-start" justify="space-between" wrap="nowrap" gap="lg">
               {/* 左侧：NAI Logo + 介绍文字 */}
-              <Group className="home-hero-left" align="center" gap="md" wrap="nowrap" style={{ flex: '0 0 auto' }}>
+              <Group className="home-hero-left" align="center" gap="xs" wrap="nowrap" style={{ flex: '0 0 auto' }}>
                 <Image
                   src="/nai.png"
                   h={{ base: 130, sm: 200, md: 240 }}
@@ -101,47 +101,82 @@ export function Home() {
                   className="nai-logo-hero"
                   style={{ flexShrink: 0 }}
                 />
-                <Stack gap={4}>
-                  <Text size="lg" fw={700} c="#1e293b" style={{ lineHeight: 1.3 }}>
-                    {t('home_hero_greeting')}
-                  </Text>
-                  <Text size="md" c="#64748b" style={{ lineHeight: 1.3 }}>
-                    {t('home_hero_subtitle')}
-                  </Text>
-                </Stack>
+                <div
+                  style={{
+                    position: 'relative',
+                    background: 'rgba(255, 255, 255, 0.65)',
+                    border: '1px solid rgba(59, 130, 246, 0.12)',
+                    borderRadius: 16,
+                    padding: '10px 12px',
+                    boxShadow: '0 6px 18px rgba(59, 130, 246, 0.08)',
+                    backdropFilter: 'blur(10px)',
+                    WebkitBackdropFilter: 'blur(10px)',
+                    maxWidth: 210,
+                    marginLeft: -4,
+                  }}
+                >
+                  <div
+                    style={{
+                      position: 'absolute',
+                      left: -13,
+                      top: 26,
+                      width: 0,
+                      height: 0,
+                      borderTop: '10px solid transparent',
+                      borderBottom: '10px solid transparent',
+                      borderRight: '13px solid rgba(59, 130, 246, 0.12)',
+                    }}
+                  />
+                  <div
+                    style={{
+                      position: 'absolute',
+                      left: -12,
+                      top: 26,
+                      width: 0,
+                      height: 0,
+                      borderTop: '10px solid transparent',
+                      borderBottom: '10px solid transparent',
+                      borderRight: '13px solid rgba(255, 255, 255, 0.65)',
+                    }}
+                  />
+                  <Stack gap={2}>
+                    <Text size="lg" fw={600} c="#334155" style={{ lineHeight: 1.25 }}>
+                      {t('home_hero_greeting')}
+                    </Text>
+                    <Text size="md" c="#94a3b8" style={{ lineHeight: 1.25 }}>
+                      {t('home_hero_subtitle')}
+                    </Text>
+                  </Stack>
+                </div>
               </Group>
 
               {/* 右侧：大标题 - 往右对齐 */}
-              <Stack className="home-hero-title" gap={6} align="flex-end" style={{ flex: '1 1 auto', minWidth: 0 }}>
+              <Stack
+                className="home-hero-title"
+                gap={6}
+                align="flex-end"
+                style={{
+                  flex: '1 1 auto',
+                  minWidth: 0,
+                  paddingRight: 12,
+                  marginTop: 10,
+                }}
+              >
                 <Text 
                   className="home-hero-title-text"
                   size="48px"
-                  fw={900} 
+                  fw={600} 
                   c="#1e293b"
                   ta="right"
                   style={{ 
                     lineHeight: 1.1,
                     letterSpacing: '-0.02em',
+                    fontFamily: '"Arial Rounded MT Bold", "Arial Rounded MT", Arial, sans-serif',
                     fontSize: 'clamp(28px, 5.5vw, 52px)',
                     width: '100%'
                   }}
                 >
-                  {t('home_hero_title_line1')}
-                </Text>
-                <Text 
-                  className="home-hero-title-text"
-                  size="48px"
-                  fw={900} 
-                  c="#1e293b"
-                  ta="right"
-                  style={{ 
-                    lineHeight: 1.1,
-                    letterSpacing: '-0.02em',
-                    fontSize: 'clamp(28px, 5.5vw, 52px)',
-                    width: '100%'
-                  }}
-                >
-                  {t('home_hero_title_line2')}
+                  {t('home_hero_title_line1')} {t('home_hero_title_line2')}
                 </Text>
               </Stack>
             </Group>
@@ -167,9 +202,10 @@ export function Home() {
               c="#3B9FE8" 
               fw={400}
               style={{ 
-                letterSpacing: '0.1em',
-                fontFamily: 'cursive, "Comic Sans MS", "Apple Chancery", "Bradley Hand", sans-serif',
-                fontStyle: 'italic',
+                letterSpacing: '0.06em',
+                fontFamily: '"Ma Shan Zheng", "KaiTi", "STKaiti", cursive',
+                fontStyle: 'normal',
+                textShadow: '0 1px 0 rgba(255, 255, 255, 0.65)',
                 fontSize: 'clamp(16px, 2.8vw, 26px)',
               }}
             >

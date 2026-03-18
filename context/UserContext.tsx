@@ -84,7 +84,8 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 export function UserProvider({ children }: { children: ReactNode }) {
   const { address } = useAccount();
   const chainId = useChainId();
-  console.log('chainId', chainId);
+  const isDev = process.env.NODE_ENV !== 'production';
+  if (isDev) console.log('chainId', chainId);
   // 初始化应用全局数据状态
   const [appInfo, setAppInfo] = useState<AppInfo | null>(null);
   const [contractUserInfo, setContractUserInfo] = useState<ContractUserInfo | null>(null);
@@ -94,23 +95,25 @@ export function UserProvider({ children }: { children: ReactNode }) {
     args: address ? [address] : undefined,
     query: {
       enabled: !!address,
-      refetchInterval: 5000, // 每5秒自动刷新
+      refetchInterval: 15000, // 每15秒自动刷新
     }
   });
 
   // 调试：打印用户数据状态
-  console.log('=== 用户数据状态调试 ===');
-  console.log('address:', address);
-  console.log('userData:', userData);
-  console.log('isError:', isError);
-  console.log('isLoading:', isLoading);
+  if (isDev) {
+    console.log('=== 用户数据状态调试 ===');
+    console.log('address:', address);
+    console.log('userData:', userData);
+    console.log('isError:', isError);
+    console.log('isLoading:', isLoading);
+  }
 
   // 使用 useReadPoolUpline 获取用户的推荐人地址
   const { data: parentAddress, refetch: refetchParentAddress } = useReadPoolUpline({
     args: address ? [address] : undefined,
     query: {
       enabled: !!address,
-      refetchInterval: 5000,
+      refetchInterval: 15000,
     }
   });
 
@@ -119,7 +122,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
     args: address ? [address] : undefined,
     query: {
       enabled: !!address,
-      refetchInterval: 5000,
+      refetchInterval: 15000,
     }
   });
 
@@ -127,47 +130,53 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const { data: nftPrice, refetch: refetchNftPrice, isError: isPriceError, isLoading: isPriceLoading } = useReadPoolUsdtPrice();
 
   // 调试：打印价格获取状态
-  console.log('=== getPrice 调试 ===');
-  console.log('isPriceLoading:', isPriceLoading);
-  console.log('isPriceError:', isPriceError);
-  console.log('nftPrice:', nftPrice);
+  if (isDev) {
+    console.log('=== getPrice 调试 ===');
+    console.log('isPriceLoading:', isPriceLoading);
+    console.log('isPriceError:', isPriceError);
+    console.log('nftPrice:', nftPrice);
+  }
 
   // 获取活跃批次信息
   const { data: activeBatchData, refetch: refetchActiveBatch, isError: isActiveBatchError, isLoading: isActiveBatchLoading } = useReadPoolGetActiveBatch({
     query: {
-      refetchInterval: 5000,
+      refetchInterval: 15000,
     }
   });
 
   // 调试：打印批次获取状态
-  console.log('=== getActiveBatch 调试 ===');
-  console.log('chainId:', chainId);
-  console.log('isActiveBatchLoading:', isActiveBatchLoading);
-  console.log('isActiveBatchError:', isActiveBatchError);
-  console.log('activeBatchData:', activeBatchData);
+  if (isDev) {
+    console.log('=== getActiveBatch 调试 ===');
+    console.log('chainId:', chainId);
+    console.log('isActiveBatchLoading:', isActiveBatchLoading);
+    console.log('isActiveBatchError:', isActiveBatchError);
+    console.log('activeBatchData:', activeBatchData);
+  }
 
   // 获取批次详情（如果有活跃批次）
   const { data: batchDetails, refetch: refetchBatchDetails } = useReadPoolGetBatch({
     args: activeBatchData ? [activeBatchData[0]] : undefined,
     query: {
       enabled: !!activeBatchData,
-      refetchInterval: 5000,
+      refetchInterval: 15000,
     }
   });
 
   // 调试：打印批次数据
-  console.log('=== 批次数据调试 ===');
-  console.log('activeBatchData:', activeBatchData);
-  console.log('activeBatchData[0]:', activeBatchData ? activeBatchData[0] : 'undefined');
-  console.log('batchDetails:', batchDetails);
-  console.log('batchDetails 长度:', batchDetails ? batchDetails.length : 'undefined');
+  if (isDev) {
+    console.log('=== 批次数据调试 ===');
+    console.log('activeBatchData:', activeBatchData);
+    console.log('activeBatchData[0]:', activeBatchData ? activeBatchData[0] : 'undefined');
+    console.log('batchDetails:', batchDetails);
+    console.log('batchDetails 长度:', batchDetails ? batchDetails.length : 'undefined');
+  }
 
   // 使用 useReadUsdtBalanceOf 获取用户的USDT余额
   const { data: usdtBalanceData, refetch: refetchUsdtBalance } = useReadUsdtBalanceOf({
     args: address ? [address] : undefined,
     query: {
       enabled: !!address,
-      refetchInterval: 5000,
+      refetchInterval: 15000,
     }
   });
 
@@ -181,7 +190,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
       undefined,
     query: {
       enabled: !!address && !!poolAddress[chainId as keyof typeof poolAddress],
-      refetchInterval: 5000,
+      refetchInterval: 15000,
     }
   });
 
@@ -193,7 +202,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
     args: address ? [address] : undefined,
     query: {
       enabled: !!address,
-      refetchInterval: 5000,
+      refetchInterval: 15000,
     }
   });
 
@@ -242,14 +251,14 @@ export function UserProvider({ children }: { children: ReactNode }) {
   // Function to refresh data after transactions by refetching from the blockchain
   const refreshData = async () => {
     try {
-      console.log('Refreshing blockchain data after transaction...');
+      if (isDev) console.log('Refreshing blockchain data after transaction...');
 
       // Force a small delay to allow blockchain state to update
       // This is important because the RPC needs time to reflect the new state
       await new Promise(resolve => setTimeout(resolve, 500));
 
       // After immediate UI feedback, now refetch actual blockchain data
-      console.log('Refetching data from blockchain...');
+      if (isDev) console.log('Refetching data from blockchain...');
 
       // Execute all refetch operations in parallel for efficiency
       const refetchPromises = [];
@@ -273,7 +282,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
       // Wait for all refetch operations to complete
       await Promise.all(refetchPromises);
 
-      console.log('Blockchain data refresh complete')
+      if (isDev) console.log('Blockchain data refresh complete')
     } catch (error) {
       console.error('Error refreshing data:', error);
     }
@@ -285,11 +294,13 @@ export function UserProvider({ children }: { children: ReactNode }) {
   // Initialize application global information only when key values change
   useEffect(() => {
     // Debug: Log all dependencies
-    console.log('=== appInfo useEffect 检查 ===');
-    console.log('nftPrice:', nftPrice);
-    console.log('activeBatchData:', activeBatchData);
-    console.log('batchDetails:', batchDetails);
-    console.log('所有条件满足?', !!nftPrice && !!activeBatchData && !!batchDetails);
+    if (isDev) {
+      console.log('=== appInfo useEffect 检查 ===');
+      console.log('nftPrice:', nftPrice);
+      console.log('activeBatchData:', activeBatchData);
+      console.log('batchDetails:', batchDetails);
+      console.log('所有条件满足?', !!nftPrice && !!activeBatchData && !!batchDetails);
+    }
 
     // Only initialize or update global info when critical values are available
     if (nftPrice && activeBatchData && batchDetails) {
@@ -309,7 +320,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
         appInfo.batchSoldCount !== batchSoldCount;
 
       if (hasChanged) {
-        console.log('✅ 更新 appInfo - 批次信息:', {
+        if (isDev) console.log('✅ 更新 appInfo - 批次信息:', {
           batchTotalStock,
           batchRemainingStock,
           batchSoldCount,
@@ -331,13 +342,15 @@ export function UserProvider({ children }: { children: ReactNode }) {
           isNftMintComplete,
         });
       } else {
-        console.log('⏭️ appInfo 无需更新，值未变化');
+        if (isDev) console.log('⏭️ appInfo 无需更新，值未变化');
       }
     } else {
-      console.log('❌ 缺少必要数据，无法设置 appInfo');
-      if (!nftPrice) console.log('  - nftPrice 为空');
-      if (!activeBatchData) console.log('  - activeBatchData 为空');
-      if (!batchDetails) console.log('  - batchDetails 为空');
+      if (isDev) {
+        console.log('❌ 缺少必要数据，无法设置 appInfo');
+        if (!nftPrice) console.log('  - nftPrice 为空');
+        if (!activeBatchData) console.log('  - activeBatchData 为空');
+        if (!batchDetails) console.log('  - batchDetails 为空');
+      }
     }
   }, [nftPrice, activeBatchData, batchDetails]);
 
@@ -355,9 +368,11 @@ export function UserProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (userData && address) {
       // 调试：打印用户数据
-      console.log('=== 用户数据调试 ===');
-      console.log('userData:', userData);
-      console.log('address:', address);
+      if (isDev) {
+        console.log('=== 用户数据调试 ===');
+        console.log('userData:', userData);
+        console.log('address:', address);
+      }
 
       // 从数组解构各个属性
       // getUserInfo 返回: salesCount, teamSalesCount, usdtIncome, tokenIncome, upline, downlineCount, usdtCommissionRate, tokenCommissionRate
@@ -372,16 +387,18 @@ export function UserProvider({ children }: { children: ReactNode }) {
         tokenCommissionRateRes
       ] = userData;
 
-      console.log('=== 合约 getUserInfo 返回值详细打印 ===');
-      console.log('原始返回数组 userData:', userData);
-      console.log('1. salesCount (个人购买数量):', salesCountRes, '→', Number(salesCountRes));
-      console.log('2. teamSalesCount (团队业绩):', teamSalesCountRes, '→', Number(teamSalesCountRes));
-      console.log('3. usdtIncome (USDT收益):', usdtIncomeRes, '→', formatEther(usdtIncomeRes));
-      console.log('4. tokenIncome (代币收益):', tokenIncomeRes);
-      console.log('5. upline (推荐人):', uplineRes);
-      console.log('6. downlineCount (直推人数):', downlineCountRes, '→', Number(downlineCountRes));
-      console.log('7. usdtCommissionRate (USDT佣金费率):', usdtCommissionRateRes, '→', Number(usdtCommissionRateRes));
-      console.log('8. tokenCommissionRate (代币佣金费率):', tokenCommissionRateRes, '→', Number(tokenCommissionRateRes));
+      if (isDev) {
+        console.log('=== 合约 getUserInfo 返回值详细打印 ===');
+        console.log('原始返回数组 userData:', userData);
+        console.log('1. salesCount (个人购买数量):', salesCountRes, '→', Number(salesCountRes));
+        console.log('2. teamSalesCount (团队业绩):', teamSalesCountRes, '→', Number(teamSalesCountRes));
+        console.log('3. usdtIncome (USDT收益):', usdtIncomeRes, '→', formatEther(usdtIncomeRes));
+        console.log('4. tokenIncome (代币收益):', tokenIncomeRes);
+        console.log('5. upline (推荐人):', uplineRes);
+        console.log('6. downlineCount (直推人数):', downlineCountRes, '→', Number(downlineCountRes));
+        console.log('7. usdtCommissionRate (USDT佣金费率):', usdtCommissionRateRes, '→', Number(usdtCommissionRateRes));
+        console.log('8. tokenCommissionRate (代币佣金费率):', tokenCommissionRateRes, '→', Number(tokenCommissionRateRes));
+      }
 
       const transformedData: ContractUserInfo = {
         nodeCount: Number(salesCountRes), // 个人购买数量
@@ -399,7 +416,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
         friends: friendsList ? [...friendsList] : [], // 添加好友列表 - 转换为可变数组
       };
 
-      console.log('转换后的用户数据:', transformedData);
+      if (isDev) console.log('转换后的用户数据:', transformedData);
 
       // 更新状态
       setContractUserInfo(transformedData);
@@ -409,7 +426,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (address) {
-      console.log('Chain ID changed, refreshing data...');
+      if (isDev) console.log('Chain ID changed, refreshing data...');
       refreshData();
     }
   }, [chainId, address]); 
