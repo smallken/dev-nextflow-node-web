@@ -33,7 +33,7 @@ export function Register({
   const [txHash, setTxHash] = React.useState<`0x${string}` | undefined>(undefined);
 
   React.useEffect(() => {
-    if (contractUserInfo && isNonZeroAddress(contractUserInfo.parent)) {
+    if (contractUserInfo && isNonZeroAddress(contractUserInfo.upline)) {
       notifications.hide('register-tx');
       setTxHash(undefined);
     }
@@ -186,10 +186,10 @@ export function Register({
         }
       }}
     >
-      {contractUserInfo && isNonZeroAddress(contractUserInfo.parent) ? (
+      {contractUserInfo && isNonZeroAddress(contractUserInfo.upline) ? (
         <>
           <Text fw={600} size="lg" mb="xs" c={blueColor}>{t('registered')}</Text>
-          <Text size="sm" c="dimmed" mb="md">{t('inviter')}: {contractUserInfo.parent}</Text>
+          <Text size="sm" c="dimmed" mb="md">{t('inviter')}: {contractUserInfo.upline}</Text>
         </>
       ) : (
         <Stack gap="md">

@@ -4,18 +4,18 @@ import { Register } from '../User/Register'
 import { Invite } from '../User/Invite'
 import { BuyNode } from '../Node/BuyNode'
 import { useTranslation } from 'react-i18next';
+import { useState, useEffect } from 'react';
 
 // HomeContent component to handle rendering different views based on user state
 interface HomeContentProps {
   isConnected: boolean;
   contractUserInfo: {
-    nodeCount: number;
-    level: number;
-    teamNodeCount: number;
-    income: bigint;
-    salesCount: number;
-    parent?: string;
-    address?: `0x${string}`;
+    salesCount: number;       // 已购买手机数
+    teamSalesCount: number;   // 我的团队
+    usdtIncome: bigint;       // 收益
+    downlineCount: number;    // 我的推荐
+    level: number;            // 用户等级
+    upline: string;           // 推荐人
   } | null;
   blueColor?: string;
   blueGradient?: string;
@@ -32,6 +32,26 @@ export function HomeContent({
   blueLight = '#60A5FA'
 }: HomeContentProps) {
   const { t } = useTranslation();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Prevent hydration error by not rendering wallet-dependent content until mounted
+  if (!mounted) {
+    return (
+      <>
+        <BuyNode
+          blueColor={blueColor}
+          blueGradient={blueGradient}
+          blueDark={blueDark}
+          blueLight={blueLight}
+        />
+        <Space h="lg" />
+      </>
+    );
+  }
 
   // Case 1: User is not connected to wallet
   if (!isConnected) {
@@ -48,8 +68,8 @@ export function HomeContent({
     );
   }
 
-  // Case 2: User is connected but needs to register (parent address is zero or undefined)
-  if (!contractUserInfo?.parent || contractUserInfo.parent === '0x0000000000000000000000000000000000000000') {
+  // Case 2: User is connected but needs to register (upline address is zero or undefined)
+  if (!contractUserInfo?.upline || contractUserInfo.upline === '0x0000000000000000000000000000000000000000') {
     return <Register
       blueColor={blueColor}
       blueGradient={blueGradient}

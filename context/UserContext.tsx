@@ -3,13 +3,12 @@ import { useRouter } from 'next/router';
 import { useAccount, useChainId } from 'wagmi';
 import { formatEther } from 'viem';
 import {
-  useReadPoolGetUserInfo, useReadPoolUpline, useReadPoolUsdtPrice,
-  useReadUsdtBalanceOf, useReadUsdtAllowance, poolAddress, useReadPoolGetUserDownlines,
-  useReadPoolSalesCount, useReadPoolGetActiveBatch, useReadPoolGetBatch,
+  useReadPoolGetUserInfo, useReadPoolUsdtPrice,
+  useReadUsdtBalanceOf, useReadUsdtAllowance, poolAddress,
+  useReadPoolGetActiveBatch, useReadPoolGetBatch,
 } from '../wagmi/generated';
 
 import MINT_STAGE from '../config/min.stage';
-import { useContractEvents } from '../hooks/useContractEvents';
 
 /**
  * 根据个人销售数量计算用户等级
@@ -51,6 +50,30 @@ function calculateLevelByTeamSales(teamSales: number): number {
   return 0;
 }
 
+/**
+ * 根据 USDT 佣金费率映射到等级
+ * @param commissionRate USDT 佣金费率（百分比，如 12 表示 12%）
+ * @returns 等级 0-7
+ * 0% → Tier 0
+ * 10% → Tier 1
+ * 12% → Tier 2
+ * 14% → Tier 3
+ * 16% → Tier 4
+ * 18% → Tier 5
+ * 20% → Tier 6
+ * 22% → Tier 7
+ */
+function calculateLevelByCommissionRate(commissionRate: number): number {
+  if (commissionRate >= 22) return 7;
+  if (commissionRate >= 20) return 6;
+  if (commissionRate >= 18) return 5;
+  if (commissionRate >= 16) return 4;
+  if (commissionRate >= 14) return 3;
+  if (commissionRate >= 12) return 2;
+  if (commissionRate >= 10) return 1;
+  return 0;
+}
+
 
 // 定义全局应用信息类型
 type AppInfo = {
@@ -73,24 +96,14 @@ type AppInfo = {
   // 其他全局信息
 };
 
-// 定义合约用户信息类型
+// 定义合约用户信息类型（简化版，只包含 getUserInfo 返回的必要字段）
 type ContractUserInfo = {
-  nodeCount: number,
-  level: number,
-  teamNodeCount: number,
-  income: bigint,
-  friends: string[],
-  salesCount: number, // 用户购买手机数量
-
-  // 新增字段
-  usdtIncome: bigint, // USDT 收益
-  downlineCount: number, // 直接推荐人数
-  teamSalesCount: number, // 团队业绩
-  usdtCommissionRate: number, // USDT 佣金费率（等级进度）
-
-  // 扩展信息 - 我们计算的属性
-  parent?: string; // 需要从其他地方获取
-  address?: `0x${string}`; // 用户地址
+  salesCount: number,       // 已购买手机数
+  teamSalesCount: number,   // 我的团队
+  usdtIncome: bigint,       // 收益
+  downlineCount: number,    // 我的推荐
+  level: number,            // 用户等级（基于 usdtCommissionRate）
+  upline: string,           // 推荐人（从 getUserInfo 获取）
 };
 
 // 用户上下文类型
@@ -153,9 +166,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
     };
   }, [router]);
   
-  // 使用事件驱动刷新替代高频轮询
-  useContractEvents();
-  
   // 初始化应用全局数据状态
   const [appInfo, setAppInfo] = useState<AppInfo | null>(null);
   const [contractUserInfo, setContractUserInfo] = useState<ContractUserInfo | null>(null);
@@ -176,22 +186,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
     console.log('isError:', isError);
     console.log('isLoading:', isLoading);
   }
-
-  // 使用 useReadPoolUpline 获取用户的推荐人地址
-  const { data: parentAddress, refetch: refetchParentAddress } = useReadPoolUpline({
-    args: address ? [address] : undefined,
-    query: {
-      enabled: !!address,
-    }
-  });
-
-  // 使用 useReadPoolGetUserDownlines 获取用户的好友列表
-  const { data: friendsList, refetch: refetchFriendsList } = useReadPoolGetUserDownlines({
-    args: address ? [address] : undefined,
-    query: {
-      enabled: !!address,
-    }
-  });
 
   // 使用 useReadPoolUsdtPrice 获取全局节点价格
   const { data: nftPrice, refetch: refetchNftPrice, isError: isPriceError, isLoading: isPriceLoading } = useReadPoolUsdtPrice();
@@ -218,22 +212,13 @@ export function UserProvider({ children }: { children: ReactNode }) {
     console.log('activeBatchData:', activeBatchData);
   }
 
-  // 获取批次详情（如果有活跃批次）
+  // 获取批次详情（获取 totalStock）
   const { data: batchDetails, refetch: refetchBatchDetails } = useReadPoolGetBatch({
     args: activeBatchData ? [activeBatchData[0]] : undefined,
     query: {
       enabled: !!activeBatchData,
     }
   });
-
-  // 调试：打印批次数据
-  if (isDev) {
-    console.log('=== 批次数据调试 ===');
-    console.log('activeBatchData:', activeBatchData);
-    console.log('activeBatchData[0]:', activeBatchData ? activeBatchData[0] : 'undefined');
-    console.log('batchDetails:', batchDetails);
-    console.log('batchDetails 长度:', batchDetails ? batchDetails.length : 'undefined');
-  }
 
   // 使用 useReadUsdtBalanceOf 获取用户的USDT余额
   const { data: usdtBalanceData, refetch: refetchUsdtBalance } = useReadUsdtBalanceOf({
@@ -258,14 +243,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
   // 默认授权额度为0
   const usdtAllowanceForPool = usdtAllowanceData || BigInt(0);
-
-  // 获取用户购买手机数量 (salesCount)
-  const { data: salesCountData, refetch: refetchSalesCount } = useReadPoolSalesCount({
-    args: address ? [address] : undefined,
-    query: {
-      enabled: !!address,
-    }
-  });
 
   // 固定当前数量为 0，不从区块链读取
   const nftCurrentTotal = BigInt(0);
@@ -325,17 +302,16 @@ export function UserProvider({ children }: { children: ReactNode }) {
       if (address) {
         // User-specific data only if user is connected
         refetchPromises.push(refetchUserData());
-        refetchPromises.push(refetchParentAddress());
-        refetchPromises.push(refetchFriendsList());
         refetchPromises.push(refetchUsdtBalance());
         refetchPromises.push(refetchUsdtAllowance());
-        refetchPromises.push(refetchSalesCount());
       }
 
       // Global data (always refetch)
       refetchPromises.push(refetchNftPrice());
       refetchPromises.push(refetchActiveBatch());
-      refetchPromises.push(refetchBatchDetails());
+      if (activeBatchData) {
+        refetchPromises.push(refetchBatchDetails());
+      }
 
       // Wait for all refetch operations to complete
       await Promise.all(refetchPromises);
@@ -362,11 +338,12 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
     // Only initialize or update global info when critical values are available
     if (nftPrice && activeBatchData && batchDetails) {
+      // getActiveBatch 返回: batchIndex, remainingStock
+      const activeBatchIndex = Number(activeBatchData[0]);
+      const batchRemainingStock = Number(activeBatchData[1]);
       // getBatch 返回: endCount, purchaseReward, referralReward, totalStock, soldCount, isActive
       const batchTotalStock = Number(batchDetails[3]);
       const batchSoldCount = Number(batchDetails[4]);
-      const batchRemainingStock = Number(activeBatchData[1]);
-      const activeBatchIndex = Number(activeBatchData[0]);
 
       // Check if any critical value has changed
       const hasChanged =
@@ -422,7 +399,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
     }
   }, [address]);
 
-  // 将userData和parentAddress结合更新contractUserInfo
+  // 将userData更新contractUserInfo
   useEffect(() => {
     if (userData && address) {
       // 调试：打印用户数据
@@ -459,19 +436,12 @@ export function UserProvider({ children }: { children: ReactNode }) {
       }
 
       const transformedData: ContractUserInfo = {
-        nodeCount: Number(salesCountRes), // 个人购买数量
-        income: usdtIncomeRes, // USDT 收益
-        // 根据团队业绩计算等级
-        level: calculateLevelByTeamSales(Number(teamSalesCountRes)),
-        teamNodeCount: Number(teamSalesCountRes), // 团队业绩
-        salesCount: Number(salesCountRes), // 用户购买手机数量
-        usdtIncome: usdtIncomeRes, // USDT 收益
-        downlineCount: Number(downlineCountRes), // 直接推荐人数
-        teamSalesCount: Number(teamSalesCountRes), // 团队业绩
-        usdtCommissionRate: Number(usdtCommissionRateRes), // USDT 佣金费率（实际百分比，如5表示5%）
-        parent: parentAddress || undefined, // 添加父级推荐人地址
-        address, // 添加用户自己的地址
-        friends: friendsList ? [...friendsList] : [], // 添加好友列表 - 转换为可变数组
+        salesCount: Number(salesCountRes), // 已购买手机数
+        teamSalesCount: Number(teamSalesCountRes), // 我的团队
+        usdtIncome: usdtIncomeRes, // 收益
+        downlineCount: Number(downlineCountRes), // 我的推荐
+        level: calculateLevelByCommissionRate(Number(usdtCommissionRateRes)), // 用户等级（0-7）
+        upline: uplineRes, // 推荐人（直接从 getUserInfo 获取）
       };
 
       if (isDev) console.log('转换后的用户数据:', transformedData);
@@ -479,7 +449,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
       // 更新状态
       setContractUserInfo(transformedData);
     }
-  }, [userData, address, parentAddress, friendsList]);
+  }, [userData, address]);
 
 
   useEffect(() => {

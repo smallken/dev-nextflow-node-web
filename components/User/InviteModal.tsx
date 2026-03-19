@@ -53,8 +53,8 @@ export function InviteModal({
       }}
     >
       <Stack gap="lg">
-        {/* Case 1: User is not registered (parent address is zero) */}
-        {(!contractUserInfo?.parent || contractUserInfo?.parent === '0x0000000000000000000000000000000000000000') ? (
+        {/* Case 1: User is not registered (upline address is zero) */}
+        {(!contractUserInfo?.upline || contractUserInfo?.upline === '0x0000000000000000000000000000000000000000') ? (
           <Alert
             variant="light"
             color="orange"
@@ -81,7 +81,7 @@ export function InviteModal({
               {t('go_to_register')}
             </Button>
           </Alert>
-        ) : contractUserInfo && contractUserInfo.nodeCount <= 0 ? (
+        ) : contractUserInfo && contractUserInfo.salesCount <= 0 ? (
           // Case 2: User is registered but hasn't purchased any nodes
           <Alert
             variant="light"

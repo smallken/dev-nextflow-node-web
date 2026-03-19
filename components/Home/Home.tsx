@@ -1,5 +1,6 @@
 import { Group, Progress, Stack, Paper, Container, Text, SimpleGrid } from '@mantine/core';
 import { Image, Card, Badge } from '@mantine/core';
+import { useState, useEffect } from 'react';
 
 import { useAccount } from 'wagmi';
 import { useTranslation } from 'react-i18next';
@@ -11,6 +12,11 @@ export function Home() {
   const { t } = useTranslation();
   const account = useAccount();
   const { contractUserInfo, appInfo } = useUser();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // 蓝色主题色 (参考 5.jpg)
   const blueColor = '#3B82F6';
@@ -268,8 +274,8 @@ export function Home() {
 
           {/* 购买和邀请区域 */}
           <HomeContent
-            isConnected={account.isConnected}
-            contractUserInfo={contractUserInfo}
+            isConnected={mounted ? account.isConnected : false}
+            contractUserInfo={mounted ? contractUserInfo : null}
             blueColor={blueColor}
             blueGradient={blueGradient}
             blueDark={blueDark}

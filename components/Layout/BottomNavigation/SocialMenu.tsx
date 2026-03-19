@@ -49,6 +49,8 @@ export function SocialMenu({ opened, onClose }: SocialMenuProps) {
       withCloseButton={false}
       size="auto"
       padding={0}
+      lockScroll={false}
+      trapFocus={false}
       styles={{
         body: {
           padding: 0,
@@ -56,6 +58,9 @@ export function SocialMenu({ opened, onClose }: SocialMenuProps) {
         content: {
           margin: 0,
           padding: 0,
+        },
+        inner: {
+          paddingBottom: 'calc(70px + env(safe-area-inset-bottom, 0px))',
         },
       }}
       centered

@@ -70,8 +70,8 @@ export function BuyNode({
 
   const isNftMintComplete = appInfo?.isNftMintComplete;
 
-  // Check if user has already registered (has a parent)
-  const isRegistered = contractUserInfo?.parent && contractUserInfo.parent !== '0x0000000000000000000000000000000000000000';
+  // Check if user has already registered (has an upline)
+  const isRegistered = contractUserInfo?.upline && contractUserInfo.upline !== '0x0000000000000000000000000000000000000000';
 
   // Check approval and handle purchase operation
   const handleBuyNode = useCallback((amount: number, buttonType: 'one' | 'custom') => {

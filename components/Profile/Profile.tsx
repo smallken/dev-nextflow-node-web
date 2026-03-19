@@ -211,10 +211,10 @@ export function Profile() {
             {/* Inviter address row */}
             <Group justify="space-between" w="100%">
               <Text size="xs" c="dimmed" w={80}>{t('profile.inviter')}:</Text>
-              {contractUserInfo?.parent && contractUserInfo?.parent !== '0x0000000000000000000000000000000000000000' ? (
+              {contractUserInfo?.upline && contractUserInfo?.upline !== '0x0000000000000000000000000000000000000000' ? (
                 <Group wrap="nowrap" align="center" gap={4} style={{ flex: 1 }}>
-                  <Text size="xs" c="dimmed">{formatAddress(contractUserInfo.parent)}</Text>
-                  {/* <CopyButton value={contractUserInfo.parent || ''} timeout={2000}>
+                  <Text size="xs" c="dimmed">{formatAddress(contractUserInfo.upline)}</Text>
+                  {/* <CopyButton value={contractUserInfo.upline || ''} timeout={2000}>
                     {({ copied, copy }) => (
                       <Tooltip label={copied ? t('common.copied') : t('common.copy')} withArrow position="top">
                         <ActionIcon variant="subtle" color={copied ? 'teal' : 'gray'} onClick={copy} size="xs">
