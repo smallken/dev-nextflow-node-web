@@ -165,7 +165,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
     args: address ? [address] : undefined,
     query: {
       enabled: !!address,
-      refetchInterval: isRouteChanging ? false : 60000,
     }
   });
 
@@ -183,7 +182,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
     args: address ? [address] : undefined,
     query: {
       enabled: !!address,
-      refetchInterval: isRouteChanging ? false : 60000,
     }
   });
 
@@ -192,7 +190,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
     args: address ? [address] : undefined,
     query: {
       enabled: !!address,
-      refetchInterval: isRouteChanging ? false : 60000,
     }
   });
 
@@ -209,9 +206,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
   // 获取活跃批次信息
   const { data: activeBatchData, refetch: refetchActiveBatch, isError: isActiveBatchError, isLoading: isActiveBatchLoading } = useReadPoolGetActiveBatch({
-    query: {
-      refetchInterval: isRouteChanging ? false : 60000,
-    }
+    query: {}
   });
 
   // 调试：打印批次获取状态
@@ -228,7 +223,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
     args: activeBatchData ? [activeBatchData[0]] : undefined,
     query: {
       enabled: !!activeBatchData,
-      refetchInterval: isRouteChanging ? false : 60000,
     }
   });
 
@@ -246,7 +240,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
     args: address ? [address] : undefined,
     query: {
       enabled: !!address,
-      refetchInterval: isRouteChanging ? false : 60000,
     }
   });
 
@@ -260,7 +253,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
       undefined,
     query: {
       enabled: !!address && !!poolAddress[chainId as keyof typeof poolAddress],
-      refetchInterval: isRouteChanging ? false : 60000,
     }
   });
 
@@ -272,7 +264,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
     args: address ? [address] : undefined,
     query: {
       enabled: !!address,
-      refetchInterval: isRouteChanging ? false : 60000,
     }
   });
 

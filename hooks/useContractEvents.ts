@@ -14,17 +14,11 @@ export function useContractEvents() {
     onBlockNumber: (blockNumber) => {
       // Only refresh every 5 blocks (~15s) to avoid too frequent updates
       if (Number(blockNumber) % 5 === 0) {
-        // Invalidate all user-related queries to trigger refresh
-        queryClient.invalidateQueries({ queryKey: ['readPoolGetUserInfo'] });
-        queryClient.invalidateQueries({ queryKey: ['readPoolUpline'] });
-        queryClient.invalidateQueries({ queryKey: ['readPoolGetUserDownlines'] });
-        queryClient.invalidateQueries({ queryKey: ['readUsdtBalanceOf'] });
-        queryClient.invalidateQueries({ queryKey: ['readUsdtAllowance'] });
-        queryClient.invalidateQueries({ queryKey: ['readPoolSalesCount'] });
-        
-        // Invalidate batch-related queries
-        queryClient.invalidateQueries({ queryKey: ['readPoolGetActiveBatch'] });
-        queryClient.invalidateQueries({ queryKey: ['readPoolGetBatch'] });
+        // Invalidate all contract read queries
+        // wagmi uses 'readContract' as the base queryKey for all useReadContract hooks
+        queryClient.invalidateQueries({ 
+          queryKey: ['readContract']
+        });
       }
     },
     // Enable only when component is mounted

@@ -14,6 +14,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
   // 移动端检测 - 使用 matchMedia 更可靠
   const [isMobile, setIsMobile] = useState(false)
+  const [mounted, setMounted] = useState(false)
 
   const checkMobile = useCallback(() => {
     // 优先使用 matchMedia（更可靠）
@@ -27,6 +28,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
   }, [])
 
   useEffect(() => {
+    // 标记组件已挂载，避免 SSR hydration 错误
+    setMounted(true)
     // 初始检测
     checkMobile()
 
@@ -56,7 +59,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <AppShell
       header={{ height: isMobile ? 50 : 60 }}
-      navbar={isMobile ? undefined : {
+      navbar={!mounted || isMobile ? undefined : {
         width: { sm: 150, lg: 200 },
         breakpoint: 'sm',
         collapsed: { mobile: true, desktop: !desktopOpened }
@@ -106,14 +109,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </AppShell.Header>
 
       {/* 桌面端显示左侧导航栏 */}
-      {!isMobile && <Navbar />}
+      {mounted && !isMobile && <Navbar />}
 
       <AppShell.Main>
         {children}
       </AppShell.Main>
 
       {/* 移动端显示底部导航栏 */}
-      {isMobile && <BottomNavigation />}
+      {mounted && isMobile && <BottomNavigation />}
     </AppShell>
   )
 }
