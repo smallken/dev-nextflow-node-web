@@ -1,7 +1,7 @@
 import { Box, Paper, Group } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { navItems } from './navConfig';
 import { NavItem } from './NavItem';
@@ -11,8 +11,10 @@ export function BottomNavigation() {
   const router = useRouter();
   const { t } = useTranslation();
   const [opened, { toggle, close }] = useDisclosure(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     navItems.forEach((item) => {
       if (item.path) router.prefetch(item.path);
     });
@@ -69,7 +71,7 @@ export function BottomNavigation() {
                   key={item.id}
                   icon={Icon}
                   label={t(item.label)}
-                  isActive={currentPath === item.path}
+                  isActive={mounted && currentPath === item.path}
                   onClick={() => handleNavClick(item.path)}
                 />
               );

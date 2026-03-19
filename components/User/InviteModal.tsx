@@ -1,10 +1,42 @@
-import { Modal, Stack, Text, Paper, Center, Box, Group, CopyButton, ActionIcon, Tooltip, Alert, Button } from '@mantine/core';
+import { Modal, Stack, Text, Paper, Center, Box, Group, ActionIcon, Tooltip, Alert, Button } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { QRCodeSVG } from 'qrcode.react';
 import { useEffect, useState } from 'react';
 import { IconCopy, IconCheck, IconAlertCircle, IconInfoCircle } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { useUser } from '../../context/UserContext';
+
+// 兼容移动端的复制函数
+async function copyToClipboard(text: string): Promise<boolean> {
+  // 优先使用现代 API
+  if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch (err) {
+      console.warn('navigator.clipboard.writeText failed:', err);
+    }
+  }
+
+  // Fallback: 使用 execCommand (兼容微信、钱包内置浏览器)
+  try {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    // 防止页面滚动
+    textArea.style.cssText = 'position:fixed;left:-9999px;top:-9999px;opacity:0;';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    // iOS 需要设置选中范围
+    textArea.setSelectionRange(0, text.length);
+    const success = document.execCommand('copy');
+    document.body.removeChild(textArea);
+    return success;
+  } catch (err) {
+    console.error('execCommand copy failed:', err);
+    return false;
+  }
+}
 
 type InviteModalProps = {
   opened: boolean;
@@ -146,21 +178,7 @@ export function InviteModal({
                   </Text>
                 </Box>
 
-                <CopyButton value={inviteUrl} timeout={2000}>
-                  {({ copied, copy }) => (
-                    <Tooltip label={copied ? t('copied') : t('copy_link')} withArrow position="top">
-                      <ActionIcon
-                        color={copied ? 'teal' : blueColor}
-                        variant={copied ? 'filled' : 'light'}
-                        onClick={copy}
-                        radius="lg"
-                        size="lg"
-                      >
-                        {copied ? <IconCheck size={18} /> : <IconCopy size={18} />}
-                      </ActionIcon>
-                    </Tooltip>
-                  )}
-                </CopyButton>
+                <CopyButtonComponent url={inviteUrl} />
               </Group>
             </Paper>
 
@@ -171,5 +189,33 @@ export function InviteModal({
         )}
       </Stack>
     </Modal>
+  );
+}
+
+// 自定义复制按钮组件（兼容移动端）
+function CopyButtonComponent({ url }: { url: string }) {
+  const { t } = useTranslation();
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async () => {
+    const success = await copyToClipboard(url);
+    if (success) {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
+  return (
+    <Tooltip label={copied ? t('copied') : t('copy_link')} withArrow position="top">
+      <ActionIcon
+        color={copied ? 'teal' : '#3B82F6'}
+        variant={copied ? 'filled' : 'light'}
+        onClick={handleCopy}
+        radius="lg"
+        size="lg"
+      >
+        {copied ? <IconCheck size={18} /> : <IconCopy size={18} />}
+      </ActionIcon>
+    </Tooltip>
   );
 }

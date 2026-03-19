@@ -410,7 +410,7 @@ img {
 }
 
 .nav-item-label {
-  font-size: 11px;
+  font-size: 12px;
 }
 
 /* 移动端样式调整 */
@@ -428,26 +428,21 @@ img {
 
   /* 底部导航栏整体高度 */
   .bottom-nav-paper {
-    height: 55px !important;
+    height: 65px !important;
   }
 
   .nav-item-button {
-    height: 55px !important;
-    padding: 4px !important;
+    height: 65px !important;
   }
 
-  /* 图标和文字 */
-  .nav-item-icon {
-    margin-bottom: 2px !important;
-  }
-
+  /* 图标和文字 - 使用更大尺寸 */
   .nav-item-icon svg {
-    width: 18px !important;
-    height: 18px !important;
+    width: 24px !important;
+    height: 24px !important;
   }
 
   .nav-item-label {
-    font-size: 9px !important;
+    font-size: 12px !important;
   }
 
   /* 活跃指示器 */
