@@ -115,8 +115,6 @@ export function Home() {
                     borderRadius: 16,
                     padding: '10px 12px',
                     boxShadow: '0 6px 18px rgba(59, 130, 246, 0.08)',
-                    backdropFilter: 'blur(10px)',
-                    WebkitBackdropFilter: 'blur(10px)',
                     maxWidth: 210,
                     marginLeft: -4,
                   }}
@@ -226,9 +224,8 @@ export function Home() {
             mb="sm"
             styles={{
               root: {
-                background: 'rgba(255, 255, 255, 0.8)',
-                backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255, 255, 255, 0.9)',
+                background: '#FFFFFF',
+                border: '1px solid rgba(59, 130, 246, 0.08)',
                 boxShadow: '0 4px 20px rgba(59, 130, 246, 0.1)',
               }
             }}

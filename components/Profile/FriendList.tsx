@@ -109,9 +109,8 @@ function FriendCard({ friend, friendData, onClick }: { friend: string; friendDat
         root: {
           cursor: 'pointer',
           position: 'relative',
-          background: 'rgba(255, 255, 255, 0.8)',
-          backdropFilter: 'blur(10px)',
-          border: '1px solid rgba(255, 255, 255, 0.9)',
+          background: '#FFFFFF',
+          border: '1px solid rgba(59, 130, 246, 0.08)',
           boxShadow: '0 2px 10px rgba(59, 130, 246, 0.08)',
         }
       }}

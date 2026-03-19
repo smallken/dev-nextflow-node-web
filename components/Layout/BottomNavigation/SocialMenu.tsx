@@ -79,7 +79,6 @@ export function SocialMenu({ opened, onClose }: SocialMenuProps) {
         radius="xl"
         style={{
           background: 'rgba(255, 255, 255, 0.98)',
-          backdropFilter: 'blur(20px)',
           margin: '16px',
         }}
       >

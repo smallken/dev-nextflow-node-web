@@ -47,9 +47,8 @@ function StatCard({
           position: 'relative',
           display: 'flex',
           flexDirection: 'column',
-          background: 'rgba(255, 255, 255, 0.6)',
-          backdropFilter: 'blur(10px)',
-          border: '1px solid rgba(255, 255, 255, 0.8)',
+          background: '#FFFFFF',
+          border: '1px solid rgba(59, 130, 246, 0.08)',
           boxShadow: '0 2px 10px rgba(59, 130, 246, 0.08)',
         }
       }}
@@ -165,9 +164,8 @@ export function Profile() {
           p="md"
           styles={{
             root: {
-              background: 'rgba(255, 255, 255, 0.8)',
-              backdropFilter: 'blur(10px)',
-              border: '1px solid rgba(255, 255, 255, 0.9)',
+              background: '#FFFFFF',
+              border: '1px solid rgba(59, 130, 246, 0.08)',
               boxShadow: '0 4px 20px rgba(59, 130, 246, 0.1)',
             }
           }}
@@ -260,9 +258,8 @@ export function Profile() {
           radius="lg"
           styles={{
             root: {
-              background: 'rgba(255, 255, 255, 0.8)',
-              backdropFilter: 'blur(10px)',
-              border: '1px solid rgba(255, 255, 255, 0.9)',
+              background: '#FFFFFF',
+              border: '1px solid rgba(59, 130, 246, 0.08)',
               boxShadow: '0 4px 20px rgba(59, 130, 246, 0.1)',
             }
           }}
@@ -310,9 +307,8 @@ export function Profile() {
           radius="lg"
           styles={{
             root: {
-              background: 'rgba(255, 255, 255, 0.8)',
-              backdropFilter: 'blur(10px)',
-              border: '1px solid rgba(255, 255, 255, 0.9)',
+              background: '#FFFFFF',
+              border: '1px solid rgba(59, 130, 246, 0.08)',
               boxShadow: '0 4px 20px rgba(59, 130, 246, 0.1)',
             }
           }}
