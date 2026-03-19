@@ -31,7 +31,24 @@ import { config } from '../wagmi'
 import { Layout } from '../components/Layout/Layout'
 import { UserProvider } from '../context/UserContext'
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      // 数据在 5 分钟内被视为新鲜的，不会自动重新获取
+      staleTime: 5 * 60 * 1000,
+      // 缓存数据保留 10 分钟
+      gcTime: 10 * 60 * 1000,
+      // 禁用窗口获得焦点时自动重新获取
+      refetchOnWindowFocus: false,
+      // 禁用组件重新挂载时自动重新获取
+      refetchOnMount: false,
+      // 网络重新连接时不自动重新获取
+      refetchOnReconnect: false,
+      // 失败时不重试
+      retry: false,
+    },
+  },
+})
 
 function App({ Component, pageProps }: AppProps) {
   // Use server instance in SSR, client instance on client-side
