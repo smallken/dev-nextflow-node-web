@@ -5,7 +5,6 @@ import '../styles/global.css'
 
 // Import i18n configuration
 // Import only on client-side to prevent SSR issues
-import dynamic from 'next/dynamic';
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { MantineProvider } from '@mantine/core'
@@ -85,7 +84,4 @@ function App({ Component, pageProps }: AppProps) {
   )
 }
 
-// Prevent the _app component from being run during SSR
-export default dynamic(() => Promise.resolve(App), {
-  ssr: false
-})
+export default App

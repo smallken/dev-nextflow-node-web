@@ -20,7 +20,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
     if (typeof window !== 'undefined') {
       const mobile = window.matchMedia('(max-width: 767px)').matches
       setIsMobile(mobile)
-      console.log('检测到移动端:', mobile, '窗口宽度:', window.innerWidth)
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('检测到移动端:', mobile, '窗口宽度:', window.innerWidth)
+      }
     }
   }, [])
 
@@ -31,7 +33,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
     // 监听媒体查询变化
     const mediaQuery = window.matchMedia('(max-width: 767px)')
     const handler = (e: MediaQueryListEvent) => {
-      console.log('媒体查询变化:', e.matches)
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('媒体查询变化:', e.matches)
+      }
       setIsMobile(e.matches)
     }
 

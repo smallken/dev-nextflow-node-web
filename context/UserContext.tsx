@@ -9,6 +9,7 @@ import {
 } from '../wagmi/generated';
 
 import MINT_STAGE from '../config/min.stage';
+import { useContractEvents } from '../hooks/useContractEvents';
 
 /**
  * 根据个人销售数量计算用户等级
@@ -152,6 +153,9 @@ export function UserProvider({ children }: { children: ReactNode }) {
     };
   }, [router]);
   
+  // 使用事件驱动刷新替代高频轮询
+  useContractEvents();
+  
   // 初始化应用全局数据状态
   const [appInfo, setAppInfo] = useState<AppInfo | null>(null);
   const [contractUserInfo, setContractUserInfo] = useState<ContractUserInfo | null>(null);
@@ -161,7 +165,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
     args: address ? [address] : undefined,
     query: {
       enabled: !!address,
-      refetchInterval: isRouteChanging ? false : 15000,
+      refetchInterval: isRouteChanging ? false : 60000,
     }
   });
 
@@ -179,7 +183,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
     args: address ? [address] : undefined,
     query: {
       enabled: !!address,
-      refetchInterval: isRouteChanging ? false : 15000,
+      refetchInterval: isRouteChanging ? false : 60000,
     }
   });
 
@@ -188,7 +192,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
     args: address ? [address] : undefined,
     query: {
       enabled: !!address,
-      refetchInterval: isRouteChanging ? false : 15000,
+      refetchInterval: isRouteChanging ? false : 60000,
     }
   });
 
@@ -206,7 +210,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   // 获取活跃批次信息
   const { data: activeBatchData, refetch: refetchActiveBatch, isError: isActiveBatchError, isLoading: isActiveBatchLoading } = useReadPoolGetActiveBatch({
     query: {
-      refetchInterval: isRouteChanging ? false : 15000,
+      refetchInterval: isRouteChanging ? false : 60000,
     }
   });
 
@@ -224,7 +228,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
     args: activeBatchData ? [activeBatchData[0]] : undefined,
     query: {
       enabled: !!activeBatchData,
-      refetchInterval: isRouteChanging ? false : 15000,
+      refetchInterval: isRouteChanging ? false : 60000,
     }
   });
 
@@ -242,7 +246,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
     args: address ? [address] : undefined,
     query: {
       enabled: !!address,
-      refetchInterval: isRouteChanging ? false : 15000,
+      refetchInterval: isRouteChanging ? false : 60000,
     }
   });
 
@@ -256,7 +260,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
       undefined,
     query: {
       enabled: !!address && !!poolAddress[chainId as keyof typeof poolAddress],
-      refetchInterval: isRouteChanging ? false : 15000,
+      refetchInterval: isRouteChanging ? false : 60000,
     }
   });
 
@@ -268,7 +272,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
     args: address ? [address] : undefined,
     query: {
       enabled: !!address,
-      refetchInterval: isRouteChanging ? false : 15000,
+      refetchInterval: isRouteChanging ? false : 60000,
     }
   });
 

@@ -252,8 +252,8 @@ img {
   right: 0;
   z-index: 1000;
   background: linear-gradient(180deg, rgba(139, 92, 246, 0.95) 0%, rgba(124, 58, 237, 0.95) 100%);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 -4px 20px rgba(139, 92, 246, 0.3);
 }
