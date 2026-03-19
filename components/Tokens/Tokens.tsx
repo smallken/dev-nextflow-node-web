@@ -7,8 +7,6 @@ import { formatEther } from 'viem';
 import { useChainId, useWaitForTransactionReceipt } from 'wagmi';
 import { notifications } from '@mantine/notifications';
 import {
-  useReadTokenPoolTotalVestedAmount,
-  useReadTokenPoolTotalClaimedAmount,
   useReadTokenPoolTotalImmediateAmount,
   useWriteTokenPoolClaim,
   useReadTokenPoolGetVestingInfo,
@@ -25,24 +23,8 @@ export function Tokens() {
   // 获取 TokenPool 合约地址
   const poolAddr = tokenPoolAddress[chainId as keyof typeof tokenPoolAddress];
 
-  // 读取用户的锁仓信息
-  const { refetch: refetchVestingInfo } = useReadTokenPoolGetVestingInfo({
-    args: address ? [address] : undefined,
-    query: {
-      enabled: !!address && !!poolAddr,
-    }
-  });
-
-  // 读取 totalVestedAmount（总的待领取）
-  const { data: totalVested, refetch: refetchTotalVested } = useReadTokenPoolTotalVestedAmount({
-    args: address ? [address] : undefined,
-    query: {
-      enabled: !!address && !!poolAddr,
-    }
-  });
-
-  // 读取 totalClaimedAmount（已领取）
-  const { data: totalClaimed, refetch: refetchTotalClaimed } = useReadTokenPoolTotalClaimedAmount({
+  // 读取用户的锁仓信息（包含 totalVested 和 totalClaimed）
+  const { data: vestingInfo, refetch: refetchVestingInfo } = useReadTokenPoolGetVestingInfo({
     args: address ? [address] : undefined,
     query: {
       enabled: !!address && !!poolAddr,
@@ -73,8 +55,8 @@ export function Tokens() {
   });
 
   // 处理数值
-  const totalVestedAmount = totalVested ? BigInt(totalVested.toString()) : BigInt(0);
-  const claimedAmount = totalClaimed ? BigInt(totalClaimed.toString()) : BigInt(0);
+  const totalVestedAmount = vestingInfo ? BigInt(vestingInfo[0].toString()) : BigInt(0);
+  const claimedAmount = vestingInfo ? BigInt(vestingInfo[1].toString()) : BigInt(0);
   const immediateAmount = totalImmediate ? BigInt(totalImmediate.toString()) : BigInt(0);
   const claimableAmount = claimable ? BigInt(claimable.toString()) : BigInt(0);
 
@@ -130,12 +112,10 @@ export function Tokens() {
       
       // 刷新所有代币数据
       refetchVestingInfo();
-      refetchTotalVested();
-      refetchTotalClaimed();
       refetchTotalImmediate();
       refetchClaimable();
     }
-  }, [isClaimed, refetchVestingInfo, refetchTotalVested, refetchTotalClaimed, refetchTotalImmediate, refetchClaimable]);
+  }, [isClaimed, refetchVestingInfo, refetchTotalImmediate, refetchClaimable]);
 
   // 检查是否连接钱包
   if (!address) {
