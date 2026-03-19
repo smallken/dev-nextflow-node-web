@@ -1,5 +1,4 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-import { useRouter } from 'next/router';
 import { useAccount, useChainId } from 'wagmi';
 import { formatEther } from 'viem';
 import {
@@ -126,46 +125,8 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 export function UserProvider({ children }: { children: ReactNode }) {
   const { address } = useAccount();
   const chainId = useChainId();
-  const router = useRouter();
   const isDev = process.env.NODE_ENV !== 'production';
-  if (isDev) console.log('chainId', chainId);
-  
-  // 路由切换时暂停轮询，减少移动端卡顿
-  const [isRouteChanging, setIsRouteChanging] = useState(false);
-  
-  useEffect(() => {
-    let routeChangeTimeout: NodeJS.Timeout | null = null;
 
-    const handleRouteChangeStart = () => {
-      // 立即暂停轮询
-      if (routeChangeTimeout) clearTimeout(routeChangeTimeout);
-      setIsRouteChanging(true);
-    };
-
-    const handleRouteChangeComplete = () => {
-      // 延迟 300ms 恢复轮询，让页面先完成渲染
-      routeChangeTimeout = setTimeout(() => {
-        setIsRouteChanging(false);
-      }, 300);
-    };
-
-    const handleRouteChangeError = () => {
-      if (routeChangeTimeout) clearTimeout(routeChangeTimeout);
-      setIsRouteChanging(false);
-    };
-
-    router.events.on('routeChangeStart', handleRouteChangeStart);
-    router.events.on('routeChangeComplete', handleRouteChangeComplete);
-    router.events.on('routeChangeError', handleRouteChangeError);
-
-    return () => {
-      if (routeChangeTimeout) clearTimeout(routeChangeTimeout);
-      router.events.off('routeChangeStart', handleRouteChangeStart);
-      router.events.off('routeChangeComplete', handleRouteChangeComplete);
-      router.events.off('routeChangeError', handleRouteChangeError);
-    };
-  }, [router]);
-  
   // 初始化应用全局数据状态
   const [appInfo, setAppInfo] = useState<AppInfo | null>(null);
   const [contractUserInfo, setContractUserInfo] = useState<ContractUserInfo | null>(null);
