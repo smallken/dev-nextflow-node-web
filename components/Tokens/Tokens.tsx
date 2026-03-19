@@ -26,7 +26,7 @@ export function Tokens() {
   const poolAddr = tokenPoolAddress[chainId as keyof typeof tokenPoolAddress];
 
   // 读取用户的锁仓信息
-  useReadTokenPoolGetVestingInfo({
+  const { refetch: refetchVestingInfo } = useReadTokenPoolGetVestingInfo({
     args: address ? [address] : undefined,
     query: {
       enabled: !!address && !!poolAddr,
@@ -34,7 +34,7 @@ export function Tokens() {
   });
 
   // 读取 totalVestedAmount（总的待领取）
-  const { data: totalVested } = useReadTokenPoolTotalVestedAmount({
+  const { data: totalVested, refetch: refetchTotalVested } = useReadTokenPoolTotalVestedAmount({
     args: address ? [address] : undefined,
     query: {
       enabled: !!address && !!poolAddr,
@@ -42,7 +42,7 @@ export function Tokens() {
   });
 
   // 读取 totalClaimedAmount（已领取）
-  const { data: totalClaimed } = useReadTokenPoolTotalClaimedAmount({
+  const { data: totalClaimed, refetch: refetchTotalClaimed } = useReadTokenPoolTotalClaimedAmount({
     args: address ? [address] : undefined,
     query: {
       enabled: !!address && !!poolAddr,
@@ -50,7 +50,7 @@ export function Tokens() {
   });
 
   // 读取 totalImmediateAmount（立即释放的部分）
-  const { data: totalImmediate } = useReadTokenPoolTotalImmediateAmount({
+  const { data: totalImmediate, refetch: refetchTotalImmediate } = useReadTokenPoolTotalImmediateAmount({
     args: address ? [address] : undefined,
     query: {
       enabled: !!address && !!poolAddr,
@@ -58,7 +58,7 @@ export function Tokens() {
   });
 
   // 读取可领取金额
-  const { data: claimable } = useReadTokenPoolGetClaimable({
+  const { data: claimable, refetch: refetchClaimable } = useReadTokenPoolGetClaimable({
     args: address ? [address] : undefined,
     query: {
       enabled: !!address && !!poolAddr,
@@ -127,8 +127,15 @@ export function Tokens() {
         color: 'green',
       });
       setIsClaiming(false);
+      
+      // 刷新所有代币数据
+      refetchVestingInfo();
+      refetchTotalVested();
+      refetchTotalClaimed();
+      refetchTotalImmediate();
+      refetchClaimable();
     }
-  }, [isClaimed]);
+  }, [isClaimed, refetchVestingInfo, refetchTotalVested, refetchTotalClaimed, refetchTotalImmediate, refetchClaimable]);
 
   // 检查是否连接钱包
   if (!address) {

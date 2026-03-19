@@ -7,8 +7,6 @@ import {
   useReadPoolGetActiveBatch, useReadPoolGetBatch,
 } from '../wagmi/generated';
 
-import MINT_STAGE from '../config/min.stage';
-
 /**
  * 根据个人销售数量计算用户等级
  * @param salesCount 个人销售数量（手机数量）
@@ -84,15 +82,7 @@ type AppInfo = {
   batchRemainingStock: number; // 批次剩余库存
   batchSoldCount: number; // 批次已售数量
 
-  // NFT全局信息
-  nftCurrentTotal: bigint; // total mint of different stage
-  nftCurrentStageMinted: bigint; // total mint of this stage
-  nftMintTarget: bigint; // target for the end of this loop
-  nftMintStart: bigint; // number start for a stage
-  nftMintProgress: number; // 当前铸造进度百分比
-  nftMintTargetAmount: bigint;
-  isNftMintComplete: boolean;
-  // 其他全局信息
+  isNftMintComplete: boolean; // NFT铸造是否完成（用于禁用购买按钮）
 };
 
 // 定义合约用户信息类型（简化版，只包含 getUserInfo 返回的必要字段）
@@ -205,44 +195,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
   // 默认授权额度为0
   const usdtAllowanceForPool = usdtAllowanceData || BigInt(0);
 
-  // 固定当前数量为 0，不从区块链读取
-  const nftCurrentTotal = BigInt(0);
-
-  // NFT铸造目标和起始值
-  const nftMintTarget = MINT_STAGE.nftMintTarget;
-  const nftMintStart = MINT_STAGE.nftMintStart;
-
-  // 计算NFT铸造进度
-  const calculateMintProgress = () => {
-    // 当前铸造数量和目标铸造数量
-    const currentMinted = nftCurrentTotal === BigInt(0) ? BigInt(0) : nftCurrentTotal - nftMintStart + BigInt(1);
-    const targetMinted = nftMintTarget - nftMintStart + BigInt(1);
-    
-    // 计算进度值
-    let progress = 0;
-    
-    if (nftCurrentTotal === BigInt(0)) {
-      progress = 0;
-    } else if (nftMintTarget <= BigInt(nftCurrentTotal)) {
-      progress = 100;
-    } else {
-      // 计算百分比 - Convert BigInt to number before calculation
-      const currentMintedNum = Number(currentMinted);
-      const targetMintedNum = Number(targetMinted);
-      progress = Math.round(((currentMintedNum / targetMintedNum) * 100) * 100) / 100; // Round to 2 decimal places
-      // 限制在 0-100% 范围内
-      progress = Math.max(0, Math.min(100, progress));
-    }
-
-    return { progress, currentMinted, targetMinted };
-  };
-
-  // 当前铸造进度百分比
-  const mintProgressResult = calculateMintProgress();
-  const nftMintProgress = mintProgressResult.progress;
-  const nftMintTargetAmount = mintProgressResult.targetMinted;
-  const nftCurrentStageMinted = mintProgressResult.currentMinted;
-  const isNftMintComplete = nftMintTarget == nftCurrentTotal
+  // NFT铸造完成状态（目前固定为 false，未来可根据实际需求从合约读取）
+  const isNftMintComplete = false;
 
   // Function to refresh data after transactions by refetching from the blockchain
   const refreshData = async () => {
@@ -329,12 +283,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
           batchTotalStock,
           batchRemainingStock,
           batchSoldCount,
-          nftCurrentTotal,
-          nftCurrentStageMinted,
-          nftMintTarget,
-          nftMintStart,
-          nftMintProgress,
-          nftMintTargetAmount,
           isNftMintComplete,
         });
       } else {
