@@ -60,8 +60,9 @@ export function Tokens() {
   const immediateAmount = totalImmediate ? BigInt(totalImmediate.toString()) : BigInt(0);
   const claimableAmount = claimable ? BigInt(claimable.toString()) : BigInt(0);
 
-  // 计算待释放（锁仓中）
-  const pendingAmount = totalVestedAmount - claimedAmount - immediateAmount;
+  // 计算待释放（锁仓中），不包含立即释放的部分，这2部分是不同的，立即释放是用户购买时直接到账的，
+  // 而锁仓中的是待释放，需要按时间解锁
+  const pendingAmount = totalVestedAmount - claimedAmount;
 
   // 格式化显示
   const formatToken = (val: bigint) => {
