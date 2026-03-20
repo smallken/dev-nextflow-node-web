@@ -17,6 +17,13 @@ const tokenPoolAbi = require('./abis/TokenPool.json')
 type Address = `0x${string}`
 
 // 从环境变量读取合约地址
+console.log('=== Wagmi Generate - Environment Variables ===');
+console.log('NEXT_PUBLIC_PHONE_DISTRIBUTION:', process.env.NEXT_PUBLIC_PHONE_DISTRIBUTION);
+console.log('NEXT_PUBLIC_USDT:', process.env.NEXT_PUBLIC_USDT);
+console.log('NEXT_PUBLIC_NEXTFLOW_TOKEN:', process.env.NEXT_PUBLIC_NEXTFLOW_TOKEN);
+console.log('NEXT_PUBLIC_TOKEN_POOL:', process.env.NEXT_PUBLIC_TOKEN_POOL);
+console.log('===============================================');
+
 const addresses = {
   [bsc.id]: {
     "pool": process.env.NEXT_PUBLIC_PHONE_DISTRIBUTION as Address || zeroAddress,
