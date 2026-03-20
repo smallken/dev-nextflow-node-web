@@ -182,7 +182,7 @@ export function Tokens() {
                 <Text fw={600} size="lg">{t('tokens.rewardTokens')}</Text>
               </Group>
               <Badge color="blue" variant="light" size="lg">
-                {formatDisplay(totalVestedAmount)} {t('tokens.tokens')}
+                {formatDisplay(totalVestedAmount + immediateAmount)} {t('tokens.tokens')}
               </Badge>
             </Group>
 
