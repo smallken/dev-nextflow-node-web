@@ -114,9 +114,9 @@
 
   "friends": {
     "title": "My Friends",
-    "nodeCount": "Nodes",
+    "nodeCount": "Phones Purchased",
     "directReferrals": "Direct Referrals",
-    "teamNodes": "Team Nodes",
+    "teamNodes": "Team Phones Purchased",
     "income": "Income (USDT)",
     "noFriends": "No friends yet",
     "inviteMessage": "Invite your friends to join and they will appear here",

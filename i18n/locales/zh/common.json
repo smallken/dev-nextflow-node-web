@@ -113,9 +113,9 @@
 
   "friends": {
     "title": "我的推荐",
-    "nodeCount": "节点数",
+    "nodeCount": "购买手机数",
     "directReferrals": "直接推荐",
-    "teamNodes": "团队节点",
+    "teamNodes": "团队购买手机数",
     "income": "收益 (USDT)",
     "noFriends": "暂无推荐",
     "inviteMessage": "邀请用户加入，他们将会显示在这里",

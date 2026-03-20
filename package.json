@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "wagmi generate && next build",
     "analyze": "ANALYZE=true next build",
     "start": "next start",
     "export": "next build && next export",
@@ -18,7 +18,8 @@
     "prettier:write": "prettier --write \"**/*.{ts,tsx}\"",
     "test": "npm run prettier:check && npm run lint && npm run typecheck && npm run jest",
     "storybook": "storybook dev -p 6006",
-    "storybook:build": "storybook build"
+    "storybook:build": "storybook build",
+    "wagmi:generate": "wagmi generate"
   },
   "dependencies": {
     "@mantine/core": "7.17.4",
