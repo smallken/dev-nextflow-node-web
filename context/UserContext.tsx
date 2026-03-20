@@ -179,11 +179,15 @@ export function UserProvider({ children }: { children: ReactNode }) {
     console.log('activeBatchData:', activeBatchData);
   }
 
+  // 当 getActiveBatch 失败时（售罄情况），回退到批次 0
+  const fallbackBatchIndex = isActiveBatchError && !isActiveBatchLoading ? BigInt(0) : undefined;
+  const batchIndexToQuery = activeBatchData ? activeBatchData[0] : fallbackBatchIndex;
+
   // 获取批次详情（获取 totalStock）
   const { data: batchDetails, refetch: refetchBatchDetails } = useReadPoolGetBatch({
-    args: activeBatchData ? [activeBatchData[0]] : undefined,
+    args: batchIndexToQuery !== undefined ? [batchIndexToQuery] : undefined,
     query: {
-      enabled: !!activeBatchData,
+      enabled: batchIndexToQuery !== undefined,
       retry: 3,
       retryDelay: 1000,
       staleTime: 30000,
@@ -276,14 +280,14 @@ export function UserProvider({ children }: { children: ReactNode }) {
       console.log('nftPrice:', nftPrice);
       console.log('activeBatchData:', activeBatchData);
       console.log('batchDetails:', batchDetails);
-      console.log('所有条件满足?', !!nftPrice && !!activeBatchData && !!batchDetails);
+      console.log('所有条件满足?', !!nftPrice && !!batchDetails);
     }
 
     // Only initialize or update global info when critical values are available
-    if (nftPrice && activeBatchData && batchDetails) {
-      // getActiveBatch 返回: batchIndex, remainingStock
-      const activeBatchIndex = Number(activeBatchData[0]);
-      const batchRemainingStock = Number(activeBatchData[1]);
+    if (nftPrice && batchDetails) {
+      // 如果 getActiveBatch 成功，使用其返回值；否则使用批次 0 的数据（售罄情况）
+      const activeBatchIndex = activeBatchData ? Number(activeBatchData[0]) : 0;
+      const batchRemainingStock = activeBatchData ? Number(activeBatchData[1]) : 0;
       // getBatch 返回: endCount, purchaseReward, referralReward, totalStock, soldCount, isActive
       const batchTotalStock = Number(batchDetails[3]);
       const batchSoldCount = Number(batchDetails[4]);
@@ -320,11 +324,10 @@ export function UserProvider({ children }: { children: ReactNode }) {
       if (isDev) {
         console.log('❌ 缺少必要数据，无法设置 appInfo');
         if (!nftPrice) console.log('  - nftPrice 为空');
-        if (!activeBatchData) console.log('  - activeBatchData 为空');
         if (!batchDetails) console.log('  - batchDetails 为空');
       }
     }
-  }, [nftPrice, activeBatchData, batchDetails]);
+  }, [nftPrice, activeBatchData, batchDetails, isActiveBatchError, isActiveBatchLoading]);
 
   // 当地址变化时重置用户相关信息
   useEffect(() => {

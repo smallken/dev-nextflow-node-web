@@ -68,10 +68,14 @@ export function BuyNode({
     writeContractAsync: buyNft
   } = useWritePoolBuyPhone();
 
-  const isNftMintComplete = appInfo?.isNftMintComplete;
-
   // Check if user has already registered (has an upline)
   const isRegistered = contractUserInfo?.upline && contractUserInfo.upline !== '0x0000000000000000000000000000000000000000';
+
+  // 计算最大可购买数量
+  const maxBuyAmount = Math.min(50, appInfo?.batchRemainingStock || 0);
+
+  // 售罄标志
+  const isNftMintComplete = appInfo?.batchRemainingStock === 0;
 
   // Check approval and handle purchase operation
   const handleBuyNode = useCallback((amount: number, buttonType: 'one' | 'custom') => {
@@ -349,6 +353,7 @@ export function BuyNode({
           radius="lg"
           onClick={() => handleBuyNode(1, 'one')}
           disabled={(loadingButton === 'one' && (isPending || isConfirming)) || isNftMintComplete}
+          style={{ cursor: isNftMintComplete ? 'not-allowed' : 'pointer' }}
           styles={{
             root: {
               background: '#00A8FF',
@@ -366,17 +371,19 @@ export function BuyNode({
             }
           }}
         >
-          {loadingButton === 'one' && (isPending || isConfirming)
-            ? t('processing')
-            : (isRegistered ? t('buy_one_phone') : t('buy_one_node')) +
-              ' (' + formatEther(BigInt(1) * (nftPrice || BigInt(0))) + ' USDT)'
+          {isNftMintComplete
+            ? t('sold_out')
+            : (loadingButton === 'one' && (isPending || isConfirming)
+              ? t('processing')
+              : (isRegistered ? t('buy_one_phone') : t('buy_one_node')) +
+                ' (' + formatEther(BigInt(1) * (nftPrice || BigInt(0))) + ' USDT)')
           }
         </Button>
 
         <Space h="xs" />
 
         {/* 展开/收起按钮 */}
-        <Group justify="center" onClick={toggle} style={{ cursor: 'pointer' }}>
+        <Group justify="center" onClick={toggle} style={{ cursor: isNftMintComplete ? 'not-allowed' : 'pointer' }}>
           {opened ? (
             <Group gap={4}>
               <Text size="sm" c="dimmed">{t('collapse')}</Text>
@@ -409,7 +416,7 @@ export function BuyNode({
 
               <NumberInput
                 size="md"
-                placeholder="1-50"
+                placeholder={`1-${maxBuyAmount}`}
                 clampBehavior="strict"
                 allowNegative={false}
                 allowDecimal={false}
@@ -417,10 +424,11 @@ export function BuyNode({
                 stepHoldInterval={100}
                 defaultValue={1}
                 min={1}
-                max={50}
+                max={maxBuyAmount}
                 value={buyAmount || ''}
                 onChange={(val) => setBuyAmount(Number(val))}
-                description={t('max_50_phones_hint')}
+                disabled={isNftMintComplete}
+                description={isNftMintComplete ? t('sold_out') : (maxBuyAmount < 50 ? t('remaining_phones', { count: maxBuyAmount }) : t('max_50_phones_hint'))}
                 styles={{
                   input: {
                     borderColor: 'rgba(37, 99, 235, 0.2)',
@@ -471,7 +479,9 @@ export function BuyNode({
                   }
                 }}
               >
-                {loadingButton === 'custom' && (isPending || isConfirming) ? t('processing') : (isRegistered ? t('buy_phone') : t('buy_node'))}
+                {isNftMintComplete
+                  ? t('sold_out')
+                  : (loadingButton === 'custom' && (isPending || isConfirming) ? t('processing') : (isRegistered ? t('buy_phone') : t('buy_node')))}
               </Button>
             </Stack>
           </Card>

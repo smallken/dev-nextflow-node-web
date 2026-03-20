@@ -251,19 +251,25 @@ export function Home() {
                   }}
                 />
                 {appInfo && (
-                  <Badge
-                    size="sm"
-                    variant="filled"
-                    radius="md"
-                    style={{
-                      background: '#FF9500',
-                      fontWeight: 600,
-                      padding: '4px 12px',
-                      flexShrink: 0,
-                    }}
-                  >
-                    {t('phase', { number: appInfo.activeBatchIndex + 1 })}
-                  </Badge>
+                  appInfo.batchRemainingStock === 0 ? (
+                    <Text size="sm" c="dimmed" ta="center">
+                      {t('first_phase_sold_out')}
+                    </Text>
+                  ) : (
+                    <Badge
+                      size="sm"
+                      variant="filled"
+                      radius="md"
+                      style={{
+                        background: '#FF9500',
+                        fontWeight: 600,
+                        padding: '4px 12px',
+                        flexShrink: 0,
+                      }}
+                    >
+                      {t('phase', { number: appInfo.activeBatchIndex + 1 })}
+                    </Badge>
+                  )
                 )}
               </Group>
             </Stack>
