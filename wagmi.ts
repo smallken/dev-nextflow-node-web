@@ -73,7 +73,7 @@ const chains = isTestnetEnabled ? testnetChains : mainnetChains;
 export const config = createConfig({
   chains,
   transports: {
-    [bsc.id]: webSocket(process.env.NEXT_PUBLIC_BSC_MAINNET_WSS || 'wss://bsc-ws-node.nariox.org'),
+    [bsc.id]: http(process.env.NEXT_PUBLIC_BSC_MAINNET_RPC || 'https://bsc-dataseed.binance.org'),
     [bscTestnet.id]: http(process.env.NEXT_PUBLIC_BSC_TESTNET_RPC || 'https://bsc-testnet-dataseed.bnbchain.org'),
     [hardhat.id]: http('http://127.0.0.1:8545')
   },
