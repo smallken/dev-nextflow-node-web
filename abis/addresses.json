@@ -1,0 +1,10 @@
+{
+  "bscTestnet": {
+    "NextflowToken": "0x464c9503d58b37fb673C47AD056a1a0e8e70555b",
+    "TokenPool": "0xd7d85a8e063345186E9E6e5ab03d54Aa46b78f90",
+    "PhoneDistribution": "0x59fEbf632f1E22227f8daDe303438d9A4BbE0548",
+    "USDT": "0x337610d27c682E347C9cD60BD4b3b107C9d34dDd",
+    "Treasury": "0xA71EC938e19d1809f34788af6354eccD1B8246fc",
+    "Referrer0": "0xA71EC938e19d1809f34788af6354eccD1B8246fc"
+  }
+}
