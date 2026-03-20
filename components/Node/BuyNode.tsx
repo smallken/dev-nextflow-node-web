@@ -409,7 +409,7 @@ export function BuyNode({
 
               <NumberInput
                 size="md"
-                placeholder="1-100"
+                placeholder="1-50"
                 clampBehavior="strict"
                 allowNegative={false}
                 allowDecimal={false}
@@ -417,9 +417,10 @@ export function BuyNode({
                 stepHoldInterval={100}
                 defaultValue={1}
                 min={1}
-                max={100}
+                max={50}
                 value={buyAmount || ''}
                 onChange={(val) => setBuyAmount(Number(val))}
+                description={t('max_50_phones_hint')}
                 styles={{
                   input: {
                     borderColor: 'rgba(37, 99, 235, 0.2)',

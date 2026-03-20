@@ -16,6 +16,7 @@
   "progress":"NextFlow Phone Purchase - Phase One",
   "phase": "Phase {{number}}",
   "custom_quantity":"Custom quantity",
+  "max_50_phones_hint":"Maximum 50 phones per transaction",
   "userDetails":"User Details",
   "total_cost":"Total Cost",
   "wrong_network":"Wrong Network",

@@ -15,6 +15,7 @@
   "progress":"NextFlow手机认购（第一期）",
   "phase": "第 {{number}} 期",
   "custom_quantity":"自定义数量",
+  "max_50_phones_hint":"每次最多购买50台",
   "userDetails":"用户详情",
   "total_cost":"总费用",
   "wrong_network":"网络错误",
