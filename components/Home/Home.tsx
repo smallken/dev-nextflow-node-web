@@ -231,9 +231,9 @@ export function Home() {
             }}
           >
             <Stack gap="sm">
-              {/* 进度数字 - 显示剩余数量 */}
+              {/* 进度数字 - 显示已售数量/总库存 */}
               <Text size="xl" fw={700} c="#1e293b">
-                {appInfo?.batchRemainingStock ?? 0}/{appInfo?.batchTotalStock ?? 0}
+                {appInfo?.batchSoldCount ?? 0}/{appInfo?.batchTotalStock ?? 0}
               </Text>
 
               {/* 进度条和阶段badge */}
