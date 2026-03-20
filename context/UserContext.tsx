@@ -327,7 +327,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
         if (!batchDetails) console.log('  - batchDetails 为空');
       }
     }
-  }, [nftPrice, activeBatchData, batchDetails, isActiveBatchError, isActiveBatchLoading]);
+  }, [nftPrice, activeBatchData, batchDetails]);
 
   // 当地址变化时重置用户相关信息
   useEffect(() => {
