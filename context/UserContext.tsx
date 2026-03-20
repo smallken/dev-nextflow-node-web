@@ -126,6 +126,10 @@ export function UserProvider({ children }: { children: ReactNode }) {
     args: address ? [address] : undefined,
     query: {
       enabled: !!address,
+      retry: 3,
+      retryDelay: 1000,
+      staleTime: 30000,
+      gcTime: 60000,
     }
   });
 
@@ -139,7 +143,14 @@ export function UserProvider({ children }: { children: ReactNode }) {
   }
 
   // 使用 useReadPoolUsdtPrice 获取全局节点价格
-  const { data: nftPrice, refetch: refetchNftPrice, isError: isPriceError, isLoading: isPriceLoading } = useReadPoolUsdtPrice();
+  const { data: nftPrice, refetch: refetchNftPrice, isError: isPriceError, isLoading: isPriceLoading } = useReadPoolUsdtPrice({
+    query: {
+      retry: 3,
+      retryDelay: 1000,
+      staleTime: 30000,
+      gcTime: 60000,
+    }
+  });
 
   // 调试：打印价格获取状态
   if (isDev) {
@@ -151,7 +162,12 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
   // 获取活跃批次信息
   const { data: activeBatchData, refetch: refetchActiveBatch, isError: isActiveBatchError, isLoading: isActiveBatchLoading } = useReadPoolGetActiveBatch({
-    query: {}
+    query: {
+      retry: 3,
+      retryDelay: 1000,
+      staleTime: 30000,
+      gcTime: 60000,
+    }
   });
 
   // 调试：打印批次获取状态
@@ -168,6 +184,10 @@ export function UserProvider({ children }: { children: ReactNode }) {
     args: activeBatchData ? [activeBatchData[0]] : undefined,
     query: {
       enabled: !!activeBatchData,
+      retry: 3,
+      retryDelay: 1000,
+      staleTime: 30000,
+      gcTime: 60000,
     }
   });
 
@@ -176,6 +196,10 @@ export function UserProvider({ children }: { children: ReactNode }) {
     args: address ? [address] : undefined,
     query: {
       enabled: !!address,
+      retry: 3,
+      retryDelay: 1000,
+      staleTime: 30000,
+      gcTime: 60000,
     }
   });
 
@@ -189,6 +213,10 @@ export function UserProvider({ children }: { children: ReactNode }) {
       undefined,
     query: {
       enabled: !!address && !!poolAddress[chainId as keyof typeof poolAddress],
+      retry: 3,
+      retryDelay: 1000,
+      staleTime: 30000,
+      gcTime: 60000,
     }
   });
 
