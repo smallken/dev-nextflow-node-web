@@ -1,15 +1,18 @@
 // import { ConnectButton } from '@rainbow-me/rainbowkit'
 import CustomConnectButton from './CustomConnectButton'
-import { AppShell, Burger, Group } from '@mantine/core'
+import { AppShell, Burger, Group, Progress, Button } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { useTranslation } from 'react-i18next'
 import Navbar from './Navbar'
 import LanguageSwitcher from './LanguageSwitcher'
 import { BottomNavigation } from './BottomNavigation'
 import { useState, useEffect, useCallback } from 'react'
+import { useUser } from '../../context/UserContext'
+import { IconRefresh } from '@tabler/icons-react'
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  const { i18n } = useTranslation()
+  const { i18n, t } = useTranslation()
+  const { isLoadingBlockchainData, hasBlockchainError, refreshData } = useUser()
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true)
 
   // 移动端检测 - 使用 matchMedia 更可靠
@@ -102,10 +105,39 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
           {/* 右侧按钮组 */}
           <Group gap="xs" style={{ flexWrap: 'nowrap', flexShrink: 0 }}>
+            {/* 区块链数据加载失败时显示刷新按钮 */}
+            {hasBlockchainError && (
+              <Button
+                color="red"
+                size={isMobile ? "compact-sm" : "sm"}
+                leftSection={<IconRefresh size={16} />}
+                onClick={refreshData}
+                loading={isLoadingBlockchainData}
+                variant="filled"
+              >
+                {!isMobile && t('refresh_bsc_data')}
+              </Button>
+            )}
             <CustomConnectButton />
             <LanguageSwitcher />
           </Group>
         </Group>
+
+        {/* Loading progress bar */}
+        {isLoadingBlockchainData && (
+          <Progress
+            value={100}
+            animated
+            size="xs"
+            color="blue"
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              right: 0,
+            }}
+          />
+        )}
       </AppShell.Header>
 
       {/* 桌面端显示左侧导航栏 */}

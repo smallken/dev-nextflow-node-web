@@ -106,6 +106,9 @@ type UserContextType = {
   usdtAllowanceForPool: bigint,
   // Method to refresh data after transactions
   refreshData: () => void,
+  // Loading and error states for blockchain data
+  isLoadingBlockchainData: boolean,
+  hasBlockchainError: boolean,
 };
 
 // 创建上下文
@@ -126,10 +129,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
     args: address ? [address] : undefined,
     query: {
       enabled: !!address,
-      retry: 3,
-      retryDelay: 1000,
-      staleTime: 30000,
-      gcTime: 60000,
     }
   });
 
@@ -143,14 +142,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   }
 
   // 使用 useReadPoolUsdtPrice 获取全局节点价格
-  const { data: nftPrice, refetch: refetchNftPrice, isError: isPriceError, isLoading: isPriceLoading } = useReadPoolUsdtPrice({
-    query: {
-      retry: 3,
-      retryDelay: 1000,
-      staleTime: 30000,
-      gcTime: 60000,
-    }
-  });
+  const { data: nftPrice, refetch: refetchNftPrice, isError: isPriceError, isLoading: isPriceLoading } = useReadPoolUsdtPrice();
 
   // 调试：打印价格获取状态
   if (isDev) {
@@ -161,14 +153,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   }
 
   // 获取活跃批次信息
-  const { data: activeBatchData, refetch: refetchActiveBatch, isError: isActiveBatchError, isLoading: isActiveBatchLoading } = useReadPoolGetActiveBatch({
-    query: {
-      retry: 3,
-      retryDelay: 1000,
-      staleTime: 30000,
-      gcTime: 60000,
-    }
-  });
+  const { data: activeBatchData, refetch: refetchActiveBatch, isError: isActiveBatchError, isLoading: isActiveBatchLoading } = useReadPoolGetActiveBatch();
 
   // 调试：打印批次获取状态
   if (isDev) {
@@ -188,10 +173,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
     args: batchIndexToQuery !== undefined ? [batchIndexToQuery] : undefined,
     query: {
       enabled: batchIndexToQuery !== undefined,
-      retry: 3,
-      retryDelay: 1000,
-      staleTime: 30000,
-      gcTime: 60000,
     }
   });
 
@@ -200,10 +181,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
     args: address ? [address] : undefined,
     query: {
       enabled: !!address,
-      retry: 3,
-      retryDelay: 1000,
-      staleTime: 30000,
-      gcTime: 60000,
     }
   });
 
@@ -217,10 +194,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
       undefined,
     query: {
       enabled: !!address && !!poolAddress[chainId as keyof typeof poolAddress],
-      retry: 3,
-      retryDelay: 1000,
-      staleTime: 30000,
-      gcTime: 60000,
     }
   });
 
@@ -229,6 +202,12 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
   // NFT铸造完成状态（目前固定为 false，未来可根据实际需求从合约读取）
   const isNftMintComplete = false;
+
+  // Calculate global loading state for blockchain data
+  const isLoadingBlockchainData = isPriceLoading || isActiveBatchLoading || (!!address && isLoading);
+
+  // Calculate global error state for blockchain data
+  const hasBlockchainError = isPriceError || isActiveBatchError;
 
   // Function to refresh data after transactions by refetching from the blockchain
   const refreshData = async () => {
@@ -409,6 +388,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
         usdtBalance,
         usdtAllowanceForPool,
         refreshData,
+        isLoadingBlockchainData,
+        hasBlockchainError,
       }}
     >
       {children}

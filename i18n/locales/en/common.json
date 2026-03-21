@@ -17,6 +17,7 @@
   "phase": "Phase {{number}}",
   "sold_out": "Sold Out",
   "first_phase_sold_out": "Phase 1 Sold Out",
+  "refresh_bsc_data": "Refresh BSC Data",
   "custom_quantity":"Custom quantity",
   "max_50_phones_hint":"Maximum 50 phones per transaction",
   "remaining_phones":"{{count}} phones remaining",
