@@ -74,7 +74,7 @@ function calculateLevelByCommissionRate(commissionRate: number): number {
 
 // 定义全局应用信息类型
 type AppInfo = {
-  price: bigint; // 节点价格（usdt计算）
+  price: bigint; // 手机价格（以 USDT 为单位，从合约 usdtPrice() 获取）
 
   // 批次信息
   activeBatchIndex: number; // 当前活跃批次索引
@@ -132,8 +132,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
     }
   });
 
-  // 使用 useReadPoolUsdtPrice 获取全局节点价格
-  const { data: nftPrice, refetch: refetchNftPrice, isError: isPriceError, isLoading: isPriceLoading } = useReadPoolUsdtPrice();
+  // 使用 useReadPoolUsdtPrice 获取手机价格（以 USDT 为单位）
+  const { data: phonePrice, refetch: refetchPhonePrice, isError: isPriceError, isLoading: isPriceLoading } = useReadPoolUsdtPrice();
 
   // 获取活跃批次信息
   const { data: activeBatchData, refetch: refetchActiveBatch, isError: isActiveBatchError, isLoading: isActiveBatchLoading } = useReadPoolGetActiveBatch();
@@ -202,7 +202,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
       }
 
       // Global data (always refetch)
-      refetchPromises.push(refetchNftPrice());
+      refetchPromises.push(refetchPhonePrice());
       refetchPromises.push(refetchActiveBatch());
       if (activeBatchData) {
         refetchPromises.push(refetchBatchDetails());
@@ -223,14 +223,14 @@ export function UserProvider({ children }: { children: ReactNode }) {
     // Debug: Log all dependencies
     if (isDev) {
       console.log('=== appInfo useEffect 检查 ===');
-      console.log('nftPrice:', nftPrice);
+      console.log('phonePrice:', phonePrice);
       console.log('activeBatchData:', activeBatchData);
       console.log('batchDetails:', batchDetails);
-      console.log('所有条件满足?', !!nftPrice && !!batchDetails);
+      console.log('所有条件满足?', !!phonePrice && !!batchDetails);
     }
 
     // Only initialize or update global info when critical values are available
-    if (nftPrice && batchDetails) {
+    if (phonePrice && batchDetails) {
       // 如果 getActiveBatch 成功，使用其返回值；否则使用批次 0 的数据（售罄情况）
       const activeBatchIndex = activeBatchData ? Number(activeBatchData[0]) : 0;
       const batchRemainingStock = activeBatchData ? Number(activeBatchData[1]) : 0;
@@ -241,7 +241,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
       // Check if any critical value has changed
       const hasChanged =
         !appInfo ||
-        appInfo.price !== nftPrice ||
+        appInfo.price !== phonePrice ||
         appInfo.activeBatchIndex !== activeBatchIndex ||
         appInfo.batchTotalStock !== batchTotalStock ||
         appInfo.batchRemainingStock !== batchRemainingStock ||
@@ -249,7 +249,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
       if (hasChanged) {
         setAppInfo({
-          price: nftPrice,
+          price: phonePrice,
           activeBatchIndex,
           batchTotalStock,
           batchRemainingStock,
@@ -258,7 +258,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
         });
       }
     }
-  }, [nftPrice, activeBatchData, batchDetails]);
+  }, [phonePrice, activeBatchData, batchDetails]);
 
   // 当地址变化时重置用户相关信息
   useEffect(() => {
