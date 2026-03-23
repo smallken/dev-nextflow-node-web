@@ -13,14 +13,30 @@ export function SocialMenu({ opened, onClose }: SocialMenuProps) {
   const router = useRouter();
   const currentLanguage = router.locale || 'en';
 
-  // 手机端只显示官网链接
   const socialItems = [
+    {
+      id: 'twitter',
+      icon: IconBrandTwitter,
+      label: 'social_twitter',
+      url: '', // 禁用链接
+      color: '#1DA1F2',
+      disabled: true,
+    },
+    {
+      id: 'telegram',
+      icon: IconBrandTelegram,
+      label: 'social_telegram',
+      url: '', // 禁用链接
+      color: '#0088cc',
+      disabled: true,
+    },
     {
       id: 'website',
       icon: IconWorld,
       label: 'social_website',
       url: 'https://www.nextflowai.io/',
       color: '#8b5cf6',
+      disabled: false,
     },
   ];
 
@@ -83,7 +99,7 @@ export function SocialMenu({ opened, onClose }: SocialMenuProps) {
               return (
                 <UnstyledButton
                   key={item.id}
-                  onClick={() => handleSocialClick(item.url)}
+                  onClick={() => !item.disabled && handleSocialClick(item.url)}
                   styles={{
                     root: {
                       display: 'flex',
@@ -93,8 +109,10 @@ export function SocialMenu({ opened, onClose }: SocialMenuProps) {
                       borderRadius: '12px',
                       background: 'transparent',
                       transition: 'background 0.2s ease',
+                      opacity: item.disabled ? 0.5 : 1,
+                      cursor: item.disabled ? 'default' : 'pointer',
                       '&:hover': {
-                        background: 'rgba(139, 92, 246, 0.1)',
+                        background: item.disabled ? 'transparent' : 'rgba(139, 92, 246, 0.1)',
                       },
                     },
                   }}

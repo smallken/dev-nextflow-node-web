@@ -81,7 +81,7 @@ export function Home() {
             width: 100%;
           }
           .nai-logo-hero {
-            transform: rotate(10deg);
+            transform: rotate(-10deg);
           }
           .mobile-bubble {
             margin-left: 0 !important;
@@ -97,7 +97,7 @@ export function Home() {
             display: block !important;
             text-align: center;
             width: 100%;
-            margin-bottom: 8px;
+            margin-bottom: 16px;
           }
           .desktop-hero-title {
             display: none !important;
@@ -119,19 +119,11 @@ export function Home() {
           .mobile-progress-only {
             display: none !important;
           }
-          .bubble-arrow-left {
-            display: block !important;
-          }
           .home-title-row {
             align-items: flex-start !important;
           }
           .home-slogan {
             text-align: left !important;
-          }
-        }
-        @media (max-width: 48em) {
-          .bubble-arrow-left {
-            display: none !important;
           }
         }
       `}</style>
@@ -164,7 +156,7 @@ export function Home() {
                       fontFamily: '"Arial Rounded MT Bold", "Arial Rounded MT", Arial, sans-serif',
                     }}
                   >
-                    Smart Tech<br />Link Future
+                    SmartTech<br />Link Future
                   </Text>
                 </div>
                 <Image
