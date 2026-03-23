@@ -202,11 +202,11 @@ export function Tokens() {
             )}
 
             {/* 待释放（36个月） */}
-            {purchaseClaimable > BigInt(0) && (
+            {purchaseVested > BigInt(0) && (
               <Paper p="sm" withBorder radius="md" bg="orange.0">
                 <Group justify="space-between">
                   <Text size="sm" c="dimmed">{t('tokens.pending36')}</Text>
-                  <Text fw={600} c="orange">{formatDisplay(purchaseClaimable)} {t('tokens.tokens')}</Text>
+                  <Text fw={600} c="orange">{formatDisplay(purchaseVested)} {t('tokens.tokens')}</Text>
                 </Group>
               </Paper>
             )}
@@ -263,11 +263,11 @@ export function Tokens() {
             )}
 
             {/* 待释放（36个月） */}
-            {referralClaimable > BigInt(0) && (
+            {referralVested > BigInt(0) && (
               <Paper p="sm" withBorder radius="md" bg="orange.0">
                 <Group justify="space-between">
                   <Text size="sm" c="dimmed">{t('tokens.pending36')}</Text>
-                  <Text fw={600} c="orange">{formatDisplay(referralClaimable)} {t('tokens.tokens')}</Text>
+                  <Text fw={600} c="orange">{formatDisplay(referralVested)} {t('tokens.tokens')}</Text>
                 </Group>
               </Paper>
             )}
