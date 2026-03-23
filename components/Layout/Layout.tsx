@@ -69,8 +69,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
       }}
       padding='0'
       styles={{
+        root: {
+          background: 'linear-gradient(180deg, #EFF6FF 0%, #DBEAFE 50%, #FFFFFF 100%)',
+          minHeight: '100vh',
+        },
         main: {
           paddingBottom: isMobile ? '70px' : '0',
+          background: 'transparent',
         }
       }}
     >

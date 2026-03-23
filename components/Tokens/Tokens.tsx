@@ -138,8 +138,6 @@ export function Tokens() {
 
   return (
     <div style={{ 
-      background: 'linear-gradient(180deg, #EFF6FF 0%, #DBEAFE 50%, #FFFFFF 100%)',
-      minHeight: '100vh', 
       paddingBottom: '80px' 
     }}>
       {/* Header with title */}
