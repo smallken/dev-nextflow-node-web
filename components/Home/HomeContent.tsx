@@ -1,4 +1,4 @@
-import { Space } from '@mantine/core';
+import { Space, Button } from '@mantine/core';
 import { Card, Text } from '@mantine/core';
 import { Register } from '../User/Register'
 import { Invite } from '../User/Invite'
@@ -98,32 +98,25 @@ export function HomeContent({
         />
       ) : (
         // Case 3b: User hasn't purchased any phones
-        <Card
-          withBorder
-          radius="xl"
-          p="xl"
+        <Button
+          fullWidth
+          size="xl"
+          radius="lg"
+          disabled
           styles={{
             root: {
-              background: 'linear-gradient(145deg, rgba(59, 130, 246, 0.03) 0%, rgba(96, 165, 250, 0.05) 100%)',
-              borderColor: 'rgba(59, 130, 246, 0.15)',
+              background: '#00A8FF',
+              border: 'none',
+              fontWeight: 600,
+              height: '56px',
+              fontSize: '16px',
+              opacity: 0.5,
+              cursor: 'not-allowed',
             }
           }}
         >
-          <Text c="dimmed" size="sm" mb="sm" ta="center">
-            {t('need_one_node_to_invite')}
-          </Text>
-          <Text
-            ta="center"
-            size="lg"
-            fw={600}
-            c={blueDark}
-            style={{
-              opacity: 0.5,
-            }}
-          >
-            {t('common.invite')}
-          </Text>
-        </Card>
+          {t('common.invite')}
+        </Button>
       )}
     </>
   );

@@ -22,41 +22,27 @@ export function Invite({
 
   return (
     <>
-      <Card
-        withBorder
-        radius="xl"
-        p="xl"
-        className="home-card"
+      <Button
+        fullWidth
+        size="xl"
+        radius="lg"
+        onClick={open}
+        leftSection={<IconShare size={20} />}
         styles={{
           root: {
-            background: '#FFFFFF',
-            border: '1px solid rgba(59, 130, 246, 0.08)',
-            boxShadow: '0 4px 20px rgba(59, 130, 246, 0.1)',
+            background: '#00A8FF',
+            border: 'none',
+            fontWeight: 600,
+            height: '56px',
+            fontSize: '16px',
+            '&:hover': {
+              background: '#0096E6',
+            },
           }
         }}
       >
-        <Button
-          fullWidth
-          size="xl"
-          radius="lg"
-          onClick={open}
-          leftSection={<IconShare size={20} />}
-          styles={{
-            root: {
-              background: '#00A8FF',
-              border: 'none',
-              fontWeight: 600,
-              height: '56px',
-              fontSize: '16px',
-              '&:hover': {
-                background: '#0096E6',
-              },
-            }
-          }}
-        >
-          {t('common.invite')}
-        </Button>
-      </Card>
+        {t('common.invite')}
+      </Button>
 
       <InviteModal opened={opened} onClose={close} blueColor={blueColor} blueGradient={blueGradient} />
     </>

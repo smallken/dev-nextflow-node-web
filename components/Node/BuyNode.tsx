@@ -308,43 +308,15 @@ export function BuyNode({
       >
         <LoadingOverlay visible={isPending || isConfirming} loaderProps={{ size: 'lg', color: blueColor }} />
 
-        {/* 用户信息栏 - 放在卡片上方，一行显示 */}
-        <Paper
-          radius="lg"
-          px="md"
-          py="xs"
-          mb="md"
-          styles={{
-            root: {
-              background: 'rgba(37, 99, 235, 0.05)',
-              border: '1px solid rgba(37, 99, 235, 0.1)',
-            }
-          }}
-        >
-          <Group justify="space-between" wrap="nowrap">
-            <Group gap="xs">
-              <IconShoppingBag size={16} color={blueColor} />
-              <Text size="sm" fw={600} c={blueColor}>
-                {t('you_purchased')}：{contractUserInfo ? contractUserInfo.salesCount : 0}{t('nai_units')}
-              </Text>
-            </Group>
-            <Group gap="xs">
-              <IconWallet size={16} color={blueColor} />
-              <Text size="sm" fw={600} c={blueColor} className="usdt-balance">
-                <style jsx>{`
-                  @media (max-width: 48em) {
-                    .usdt-balance :global(span) {
-                      display: none;
-                    }
-                  }
-                `}</style>
-                {Math.floor(parseFloat(formatEther(usdtBalance)))}<span>.{formatEther(usdtBalance).split('.')[1]?.substring(0, 2) || '00'}</span> USDT
-              </Text>
-            </Group>
-          </Group>
-        </Paper>
-
-        <Space h="sm" />
+        {/* 用户信息栏 */}
+        <Group justify="space-between" wrap="nowrap" mb="md">
+          <Text size="sm" fw={600} c={blueColor}>
+            {t('you_purchased')}：{contractUserInfo ? contractUserInfo.salesCount : 0}{t('nai_units')}
+          </Text>
+          <Text size="sm" fw={600} c={blueColor}>
+            {Math.floor(parseFloat(formatEther(usdtBalance)))} USDT
+          </Text>
+        </Group>
 
         {/* 主购买按钮 - 按照8.jpg样式 */}
         <Button

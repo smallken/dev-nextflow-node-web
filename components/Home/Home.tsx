@@ -60,10 +60,17 @@ export function Home() {
           }
           .home-hero-left {
             width: 100%;
-            justify-content: center;
+            justify-content: flex-start;
             flex-direction: column;
-            gap: 8px !important;
+            gap: 0 !important;
             margin-top: 0;
+          }
+          .mobile-nai-row {
+            display: flex !important;
+            flex-direction: row;
+            align-items: flex-start;
+            gap: 8px;
+            width: 100%;
           }
           .home-hero-title {
             width: 100%;
@@ -101,12 +108,18 @@ export function Home() {
             display: block !important;
             text-align: center;
             width: 100%;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
           }
           .desktop-hero-title {
             display: none !important;
           }
           .desktop-card-stats {
+            display: none !important;
+          }
+          .desktop-only-nai {
+            display: none !important;
+          }
+          .desktop-bubble {
             display: none !important;
           }
           .mobile-progress-only {
@@ -121,6 +134,9 @@ export function Home() {
             display: none !important;
           }
           .mobile-progress-only {
+            display: none !important;
+          }
+          .mobile-nai-row {
             display: none !important;
           }
           .bubble-arrow-left {
@@ -150,7 +166,7 @@ export function Home() {
             <Group className="home-hero" align="flex-start" justify="space-between" wrap="nowrap" gap="lg">
               {/* 左侧：NAI Logo + 介绍文字 */}
               <Group className="home-hero-left" align="center" gap="xs" wrap="nowrap" style={{ flex: '0 0 auto' }}>
-                {/* 手机端：Smart Tech Link Future在小奈头上 */}
+                {/* 手机端：SmartTech / Link Future 在小奈头上（两行） */}
                 <div style={{ display: 'none' }} className="mobile-only-slogan">
                   <Text 
                     size="24px"
@@ -163,16 +179,68 @@ export function Home() {
                       fontFamily: '"Arial Rounded MT Bold", "Arial Rounded MT", Arial, sans-serif',
                     }}
                   >
-                    Smart Tech LinkFuture
+                    SmartTech<br />Link Future
                   </Text>
                 </div>
+                {/* 手机端：小奈（左）+ 对话框（右）横向行 */}
+                <div style={{ display: 'none' }} className="mobile-nai-row">
+                  <Image
+                    src="/nai.png"
+                    h={210}
+                    w="auto"
+                    fit="contain"
+                    alt="NAI Logo"
+                    className="nai-logo-hero"
+                    style={{ flexShrink: 0 }}
+                  />
+                  <div style={{ flex: 1, paddingTop: 16 }}>
+                    <div style={{
+                      position: 'relative',
+                      background: 'rgba(255, 255, 255, 0.65)',
+                      border: '1px solid rgba(59, 130, 246, 0.12)',
+                      borderRadius: 16,
+                      padding: '10px 12px',
+                      boxShadow: '0 6px 18px rgba(59, 130, 246, 0.08)',
+                    }}>
+                      <div style={{
+                        position: 'absolute',
+                        left: -13,
+                        top: 20,
+                        width: 0,
+                        height: 0,
+                        borderTop: '10px solid transparent',
+                        borderBottom: '10px solid transparent',
+                        borderRight: '13px solid rgba(59, 130, 246, 0.12)',
+                      }} />
+                      <div style={{
+                        position: 'absolute',
+                        left: -12,
+                        top: 20,
+                        width: 0,
+                        height: 0,
+                        borderTop: '10px solid transparent',
+                        borderBottom: '10px solid transparent',
+                        borderRight: '13px solid rgba(255, 255, 255, 0.65)',
+                      }} />
+                      <Stack gap={2}>
+                        <Text size="md" fw={600} c="#334155" style={{ lineHeight: 1.3 }}>
+                          {t('home_hero_greeting')}
+                        </Text>
+                        <Text size="sm" c="#94a3b8" style={{ lineHeight: 1.3 }}>
+                          {t('home_hero_subtitle')}
+                        </Text>
+                      </Stack>
+                    </div>
+                  </div>
+                </div>
+                {/* 桌面端：小奈图片 */}
                 <Image
                   src="/nai.png"
                   h={{ base: 130, sm: 200, md: 240 }}
                   w="auto"
                   fit="contain"
                   alt="NAI Logo"
-                  className="nai-logo-hero"
+                  className="nai-logo-hero desktop-only-nai"
                   style={{ flexShrink: 0 }}
                 />
                 <div
