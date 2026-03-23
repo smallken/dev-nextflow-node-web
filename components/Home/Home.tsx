@@ -60,9 +60,9 @@ export function Home() {
           }
           .home-hero-left {
             width: 100%;
-            justify-content: flex-start;
-            flex-direction: row;
-            gap: 4px;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
           }
           .home-hero-title {
             width: 100%;
@@ -82,15 +82,20 @@ export function Home() {
             width: 100%;
           }
           .nai-logo-hero {
-            transform: rotate(-10deg);
+            transform: none;
           }
           .mobile-bubble {
-            margin-left: 0 !important;
-            margin-right: -4px;
+            position: absolute;
+            top: 50%;
+            left: 65%;
+            transform: translateY(-50%);
+            margin: 0 !important;
           }
-          .home-hero-left {
-            align-items: flex-start !important;
-            margin-top: -8px;
+          .nai-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            width: 100%;
           }
           .mobile-stats-row {
             width: 100%;
@@ -100,9 +105,9 @@ export function Home() {
           }
           .mobile-only-slogan {
             display: block !important;
-            text-align: left;
+            text-align: center;
             width: 100%;
-            margin-bottom: 8px;
+            margin-bottom: 16px;
           }
           .desktop-hero-title {
             display: none !important;
@@ -154,38 +159,39 @@ export function Home() {
                     size="24px"
                     fw={700} 
                     c="#1e293b"
-                    ta="left"
+                    ta="center"
                     style={{ 
                       lineHeight: 1.2,
                       letterSpacing: '-0.01em',
                       fontFamily: '"Arial Rounded MT Bold", "Arial Rounded MT", Arial, sans-serif',
                     }}
                   >
-                    SmartTech<br />LinkFuture
+                    SmartTech<br />Link Future
                   </Text>
                 </div>
-                <Image
-                  src="/nai.png"
-                  h={{ base: 130, sm: 200, md: 240 }}
-                  w="auto"
-                  fit="contain"
-                  alt="NAI Logo"
-                  className="nai-logo-hero"
-                  style={{ flexShrink: 0 }}
-                />
-                <div
-                  className="desktop-bubble mobile-bubble"
-                  style={{
-                    position: 'relative',
-                    background: 'rgba(255, 255, 255, 0.65)',
-                    border: '1px solid rgba(59, 130, 246, 0.12)',
-                    borderRadius: 16,
-                    padding: '10px 12px',
-                    boxShadow: '0 6px 18px rgba(59, 130, 246, 0.08)',
-                    maxWidth: 210,
-                    marginLeft: -4,
-                  }}
-                >
+                <div className="nai-container">
+                  <Image
+                    src="/nai.png"
+                    h={{ base: 130, sm: 200, md: 240 }}
+                    w="auto"
+                    fit="contain"
+                    alt="NAI Logo"
+                    className="nai-logo-hero"
+                    style={{ flexShrink: 0 }}
+                  />
+                  <div
+                    className="desktop-bubble mobile-bubble"
+                    style={{
+                      position: 'relative',
+                      background: 'rgba(255, 255, 255, 0.65)',
+                      border: '1px solid rgba(59, 130, 246, 0.12)',
+                      borderRadius: 16,
+                      padding: '10px 12px',
+                      boxShadow: '0 6px 18px rgba(59, 130, 246, 0.08)',
+                      maxWidth: 210,
+                      marginLeft: -4,
+                    }}
+                  >
                   <div
                     className="bubble-arrow-left"
                     style={{
@@ -220,6 +226,7 @@ export function Home() {
                       {t('home_hero_subtitle')}
                     </Text>
                   </Stack>
+                </div>
                 </div>
               </Group>
 
