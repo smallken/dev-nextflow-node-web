@@ -12,6 +12,7 @@ export function BottomNavigation() {
   const { t } = useTranslation();
   const [opened, { toggle, close }] = useDisclosure(false);
   const [mounted, setMounted] = useState(false);
+  const [activePath, setActivePath] = useState<string | null>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -20,17 +21,29 @@ export function BottomNavigation() {
     });
   }, [router]);
 
+  useEffect(() => {
+    const onComplete = () => setActivePath(router.pathname);
+    const onError = () => setActivePath(router.pathname);
+    router.events.on('routeChangeComplete', onComplete);
+    router.events.on('routeChangeError', onError);
+    return () => {
+      router.events.off('routeChangeComplete', onComplete);
+      router.events.off('routeChangeError', onError);
+    };
+  }, [router]);
+
   const handleNavClick = (path: string | null) => {
     if (path === null) {
-      // 点击"更多"按钮，打开社交菜单
       toggle();
     } else {
-      if (router.pathname !== path) router.push(path);
+      if (router.pathname !== path) {
+        setActivePath(path);
+        router.push(path);
+      }
     }
   };
 
-  // 获取当前路由，用于高亮显示
-  const currentPath = router.pathname;
+  const currentPath = activePath ?? router.pathname;
 
   return (
     <>

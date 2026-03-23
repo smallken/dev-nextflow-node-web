@@ -2,7 +2,12 @@ import { Button, Card } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconShare } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
-import { InviteModal } from './InviteModal';
+import dynamic from 'next/dynamic';
+
+const InviteModal = dynamic(
+  () => import('./InviteModal').then(m => ({ default: m.InviteModal })),
+  { ssr: false }
+);
 
 interface InviteProps {
   blueColor?: string;

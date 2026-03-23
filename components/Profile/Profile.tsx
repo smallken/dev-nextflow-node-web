@@ -9,8 +9,13 @@ import { useState, useEffect } from 'react';
 import { useAccount } from 'wagmi';
 import { useUser } from '../../context/UserContext';
 import { useTranslation } from 'react-i18next';
-import { InviteModal } from '../User/InviteModal';
+import dynamic from 'next/dynamic';
 import { getConfigLink } from '../../config';
+
+const InviteModal = dynamic(
+  () => import('../User/InviteModal').then(m => ({ default: m.InviteModal })),
+  { ssr: false }
+);
 
 
 

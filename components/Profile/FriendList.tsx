@@ -8,11 +8,15 @@ import { useState, useEffect } from 'react';
 import { useUser } from '../../context/UserContext';
 import { useTranslation } from 'react-i18next';
 import { useDisclosure } from '@mantine/hooks';
-import { InviteModal } from '../User/InviteModal';
 import { getUserWithFriends, getAddressFromUrl, User } from '../../services/thegraph';
 import { useAccount } from 'wagmi';
 import { formatEther } from 'viem';
 import { UserDetailModal, UserDetail } from '../User/UserDetailModal';
+
+const InviteModal = dynamic(
+  () => import('../User/InviteModal').then(m => ({ default: m.InviteModal })),
+  { ssr: false }
+);
 
 // Type for friend details
 interface FriendDetail {
