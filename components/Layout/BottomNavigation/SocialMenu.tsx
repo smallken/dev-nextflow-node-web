@@ -13,21 +13,8 @@ export function SocialMenu({ opened, onClose }: SocialMenuProps) {
   const router = useRouter();
   const currentLanguage = router.locale || 'en';
 
+  // 手机端只显示官网链接
   const socialItems = [
-    {
-      id: 'twitter',
-      icon: IconBrandTwitter,
-      label: 'social_twitter',
-      url: 'https://x.com/flipfloplaunch',
-      color: '#1DA1F2',
-    },
-    {
-      id: 'telegram',
-      icon: IconBrandTelegram,
-      label: 'social_telegram',
-      url: currentLanguage === 'zh' ? 'https://t.me/flipflopChi' : 'https://t.me/flipflopEng',
-      color: '#0088cc',
-    },
     {
       id: 'website',
       icon: IconWorld,

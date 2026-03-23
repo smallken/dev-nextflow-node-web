@@ -72,13 +72,20 @@ export function Home() {
           }
           .home-title-row {
             flex-direction: column;
-            align-items: center;
+            align-items: flex-start;
             gap: 8px;
           }
           .home-slogan {
             white-space: normal;
-            text-align: center;
+            text-align: left;
             width: 100%;
+          }
+          .nai-logo-hero {
+            transform: rotate(10deg);
+          }
+          .mobile-bubble {
+            margin-left: 0 !important;
+            margin-right: -4px;
           }
           .mobile-stats-row {
             width: 100%;
@@ -112,6 +119,20 @@ export function Home() {
           .mobile-progress-only {
             display: none !important;
           }
+          .bubble-arrow-left {
+            display: block !important;
+          }
+          .home-title-row {
+            align-items: flex-start !important;
+          }
+          .home-slogan {
+            text-align: left !important;
+          }
+        }
+        @media (max-width: 48em) {
+          .bubble-arrow-left {
+            display: none !important;
+          }
         }
       `}</style>
 
@@ -138,12 +159,12 @@ export function Home() {
                     c="#1e293b"
                     ta="center"
                     style={{ 
-                      lineHeight: 1.1,
+                      lineHeight: 1.2,
                       letterSpacing: '-0.01em',
                       fontFamily: '"Arial Rounded MT Bold", "Arial Rounded MT", Arial, sans-serif',
                     }}
                   >
-                    Smart Tech Link Future
+                    Smart Tech<br />Link Future
                   </Text>
                 </div>
                 <Image
@@ -156,7 +177,7 @@ export function Home() {
                   style={{ flexShrink: 0 }}
                 />
                 <div
-                  className="desktop-bubble"
+                  className="desktop-bubble mobile-bubble"
                   style={{
                     position: 'relative',
                     background: 'rgba(255, 255, 255, 0.65)',
@@ -169,6 +190,7 @@ export function Home() {
                   }}
                 >
                   <div
+                    className="bubble-arrow-left"
                     style={{
                       position: 'absolute',
                       left: -13,
@@ -181,6 +203,7 @@ export function Home() {
                     }}
                   />
                   <div
+                    className="bubble-arrow-left"
                     style={{
                       position: 'absolute',
                       left: -12,
