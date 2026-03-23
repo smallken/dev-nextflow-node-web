@@ -1,4 +1,4 @@
-import { Card, Text, Group, Button, Container, Stack, rem, Box, Paper, Grid, Space, Progress, CopyButton, ActionIcon, Tooltip, Divider } from '@mantine/core';
+import { Card, Text, Group, Button, Container, Stack, rem, Box, Paper, Grid, Space, Progress, CopyButton, ActionIcon, Tooltip, Divider, Skeleton } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useDisclosure } from '@mantine/hooks';
 import { useChainId } from 'wagmi';
@@ -24,7 +24,8 @@ function StatCard({
   onSecondaryAction,
   showButton = true,
   icon,
-  iconTooltip
+  iconTooltip,
+  loading = false
 }: {
   title: string;
   value: string | number;
@@ -35,6 +36,7 @@ function StatCard({
   showButton?: boolean;
   icon?: React.ReactNode;
   iconTooltip?: string;
+  loading?: boolean;
 }) {
   const { t } = useTranslation();
   return (
@@ -86,9 +88,10 @@ function StatCard({
         <Text c="dimmed" size="sm" ta="center">
           {title}
         </Text>
-        <Text fw={700} size="xl" ta="center">
-          {value}
-        </Text>
+        {loading
+          ? <Skeleton height={28} width={80} radius="sm" />
+          : <Text fw={700} size="xl" ta="center">{value}</Text>
+        }
 
         {/* Main action button - only show if showButton is true */}
         {showButton && (
@@ -130,7 +133,7 @@ export function Profile() {
   const { t } = useTranslation();
   const chainId = useChainId();
   // 使用自定义 hook 获取全局用户数据
-  const { address, contractUserInfo, loadUserData } = useUser();
+  const { address, contractUserInfo, loadUserData, isLoadingBlockchainData } = useUser();
   const [bgColor] = useState('#FFF'); // Default light green background
   const [inviteModalOpened, { open: openInviteModal, close: closeInviteModal }] = useDisclosure(false);
   
@@ -197,14 +200,20 @@ export function Profile() {
             <Box>
               <Group justify="space-between" mb={4}>
                 <Text size="sm" c="dimmed">{t('profile.levelProgress')}</Text>
-                <Text size="sm" fw={500}>VIP {contractUserInfo?.level} / VIP 7</Text>
+                {isLoadingBlockchainData && !contractUserInfo
+                ? <Skeleton height={16} width={80} radius="sm" />
+                : <Text size="sm" fw={500}>VIP {contractUserInfo?.level} / VIP 7</Text>
+              }
               </Group>
-              <Progress
-                value={(contractUserInfo?.level || 0) * (100 / 7)} /* Each level represents 100/7 % */
+              {isLoadingBlockchainData && !contractUserInfo
+              ? <Skeleton height={8} radius="xl" />
+              : <Progress
+              value={(contractUserInfo?.level || 0) * (100 / 7)} /* Each level represents 100/7 % */
                 size="md"
                 radius="xl"
                 color={colors.primary}
-              />
+            />
+            }
             </Box>
 
             {/* User info */}
@@ -274,6 +283,7 @@ export function Profile() {
               <StatCard
                 title={t('profile.myEarnings')}
                 value={formatEther(contractUserInfo?.usdtIncome || BigInt(0)).substring(0, 8)}
+                loading={isLoadingBlockchainData && !contractUserInfo}
                 buttonText={t('common.details')}
                 onClick={() => window.open(getConfigLink(chainId, "myIncomeLink", address), '_blank')}
                 icon={<IconWallet size={32} color={colors.secondary} />}
@@ -284,6 +294,7 @@ export function Profile() {
               <StatCard
                 title={t('profile.myFriends')}
                 value={contractUserInfo?.downlineCount || 0}
+                loading={isLoadingBlockchainData && !contractUserInfo}
                 buttonText={t('common.details')}
                 onClick={() => router.push('/friend-list')}
                 icon={<IconUsers size={32} color={colors.secondary} />}
@@ -294,6 +305,7 @@ export function Profile() {
               <StatCard
                 title={t('profile.teamNodes')}
                 value={contractUserInfo?.teamSalesCount || 0}
+                loading={isLoadingBlockchainData && !contractUserInfo}
                 buttonText={t('common.details')}
                 onClick={() => router.push(`/team?address=${address}`)}
                 icon={<IconDeviceMobile size={32} color={colors.secondary} />}

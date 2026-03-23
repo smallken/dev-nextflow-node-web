@@ -1,6 +1,6 @@
 // import { ConnectButton } from '@rainbow-me/rainbowkit'
 import CustomConnectButton from './CustomConnectButton'
-import { AppShell, Burger, Group, Progress, Button } from '@mantine/core'
+import { AppShell, Burger, Group, Button } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { useTranslation } from 'react-i18next'
 import Navbar from './Navbar'
@@ -128,21 +128,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </Group>
         </Group>
 
-        {/* Loading progress bar */}
-        {isLoadingBlockchainData && (
-          <Progress
-            value={100}
-            animated
-            size="xs"
-            color="blue"
-            style={{
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
-              right: 0,
-            }}
-          />
-        )}
       </AppShell.Header>
 
       {/* 桌面端显示左侧导航栏 */}

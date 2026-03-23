@@ -4,7 +4,6 @@ import { Register } from '../User/Register'
 import { Invite } from '../User/Invite'
 import { BuyNode } from '../Node/BuyNode'
 import { useTranslation } from 'react-i18next';
-import { useState, useEffect } from 'react';
 
 // HomeContent component to handle rendering different views based on user state
 interface HomeContentProps {
@@ -32,26 +31,6 @@ export function HomeContent({
   blueLight = '#60A5FA'
 }: HomeContentProps) {
   const { t } = useTranslation();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // Prevent hydration error by not rendering wallet-dependent content until mounted
-  if (!mounted) {
-    return (
-      <>
-        <BuyNode
-          blueColor={blueColor}
-          blueGradient={blueGradient}
-          blueDark={blueDark}
-          blueLight={blueLight}
-        />
-        <Space h="lg" />
-      </>
-    );
-  }
 
   // Case 1: User is not connected to wallet
   if (!isConnected) {

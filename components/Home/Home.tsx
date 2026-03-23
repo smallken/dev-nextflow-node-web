@@ -1,6 +1,5 @@
-import { Group, Progress, Stack, Paper, Container, Text, SimpleGrid } from '@mantine/core';
+import { Group, Progress, Stack, Paper, Container, Text, SimpleGrid, Skeleton } from '@mantine/core';
 import { Image, Card, Badge } from '@mantine/core';
-import { useState, useEffect } from 'react';
 
 import { useAccount } from 'wagmi';
 import { useTranslation } from 'react-i18next';
@@ -12,12 +11,6 @@ export function Home() {
   const { t } = useTranslation();
   const account = useAccount();
   const { contractUserInfo, appInfo } = useUser();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   // 蓝色主题色 (参考 5.jpg)
   const blueColor = '#3B82F6';
   const blueDark = '#2563EB';
@@ -358,9 +351,10 @@ export function Home() {
 
           {/* 手机端：数量和期数放到卡片外面 */}
           <Group className="mobile-stats-row" justify="space-between" align="center" mb="sm" style={{ display: 'none' }}>
-            <Text size="xl" fw={700} c="#1e293b">
-              {appInfo?.batchSoldCount ?? 0}/{appInfo?.batchTotalStock ?? 0}
-            </Text>
+            {!appInfo
+              ? <Skeleton height={28} width={80} radius="sm" />
+              : <Text size="xl" fw={700} c="#1e293b">{appInfo.batchSoldCount}/{appInfo.batchTotalStock}</Text>
+            }
             {appInfo && (
               appInfo.batchRemainingStock === 0 ? (
                 <Text size="sm" c="dimmed" ta="center">
@@ -399,9 +393,10 @@ export function Home() {
           >
             <Stack gap="sm" className="desktop-card-stats">
               {/* 进度数字 - 显示已售数量/总库存 */}
-              <Text size="xl" fw={700} c="#1e293b">
-                {appInfo?.batchSoldCount ?? 0}/{appInfo?.batchTotalStock ?? 0}
-              </Text>
+              {!appInfo
+                ? <Skeleton height={28} width={100} radius="sm" />
+                : <Text size="xl" fw={700} c="#1e293b">{appInfo.batchSoldCount}/{appInfo.batchTotalStock}</Text>
+              }
 
               {/* 进度条和阶段badge */}
               <Group align="center" gap="md" wrap="nowrap">
@@ -459,8 +454,8 @@ export function Home() {
 
           {/* 购买和邀请区域 */}
           <HomeContent
-            isConnected={mounted ? account.isConnected : false}
-            contractUserInfo={mounted ? contractUserInfo : null}
+            isConnected={account.isConnected}
+            contractUserInfo={contractUserInfo}
             blueColor={blueColor}
             blueGradient={blueGradient}
             blueDark={blueDark}
