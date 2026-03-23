@@ -60,10 +60,10 @@ export function Home() {
           }
           .home-hero-left {
             width: 100%;
-            justify-content: flex-start;
-            flex-direction: row;
+            justify-content: center;
+            flex-direction: column;
             gap: 8px !important;
-            margin-top: -20px;
+            margin-top: 0;
           }
           .home-hero-title {
             width: 100%;
@@ -84,12 +84,12 @@ export function Home() {
           }
           .nai-logo-hero {
             transform: rotate(-10deg);
-            margin-left: 20px;
+            margin-left: 0;
           }
           .mobile-bubble {
-            margin-left: 8px !important;
+            margin-left: 0 !important;
             margin-right: 0;
-            max-width: 160px !important;
+            max-width: 210px !important;
           }
           .mobile-stats-row {
             width: 100%;
@@ -163,7 +163,7 @@ export function Home() {
                       fontFamily: '"Arial Rounded MT Bold", "Arial Rounded MT", Arial, sans-serif',
                     }}
                   >
-                    Smart Tech<br />LinkFuture
+                    Smart Tech LinkFuture
                   </Text>
                 </div>
                 <Image
