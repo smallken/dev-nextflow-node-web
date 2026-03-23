@@ -32,16 +32,19 @@ import { config } from '../wagmi'
 import { Layout } from '../components/Layout/Layout'
 import { UserProvider } from '../context/UserContext'
 
+// ✅ QueryClient 提升到模块顶层，确保页面切换时复用缓存
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      // 保持数据常新，不自动视为过期；仅手动 refreshData 时刷新
-      staleTime: Infinity,
-      // 缓存保留 30 分钟，页面切换时不丢失
+      // 数据在 10 分钟内被视为新鲜的，不会自动重新获取
+      staleTime: 10 * 60 * 1000,
+      // 缓存数据保留 30 分钟
       gcTime: 30 * 60 * 1000,
-      // 禁用自动重新获取
+      // 禁用窗口获得焦点时自动重新获取
       refetchOnWindowFocus: false,
+      // 禁用组件重新挂载时自动重新获取
       refetchOnMount: false,
+      // 网络重新连接时不自动重新获取
       refetchOnReconnect: false,
       // 失败时不重试
       retry: false,

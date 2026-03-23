@@ -74,7 +74,7 @@ function calculateLevelByCommissionRate(commissionRate: number): number {
 
 // 定义全局应用信息类型
 type AppInfo = {
-  price: bigint; // 手机价格（以 USDT 为单位，从合约 usdtPrice() 获取）
+  price: bigint; // 节点价格（usdt计算）
 
   // 批次信息
   activeBatchIndex: number; // 当前活跃批次索引
@@ -137,11 +137,37 @@ export function UserProvider({ children }: { children: ReactNode }) {
     }
   });
 
+  // 调试：打印用户数据状态
+  if (false) {
+    console.log('=== 用户数据状态调试 ===');
+    console.log('address:', address);
+    console.log('userData:', userData);
+    console.log('isError:', isError);
+    console.log('isLoading:', isLoading);
+  }
+
   // 使用 useReadPoolUsdtPrice 获取手机价格（以 USDT 为单位）
   const { data: phonePrice, refetch: refetchPhonePrice, isError: isPriceError, isLoading: isPriceLoading } = useReadPoolUsdtPrice();
 
+  // 调试：打印价格获取状态
+  if (false) {
+    console.log('=== getPrice 调试 ===');
+    console.log('isPriceLoading:', isPriceLoading);
+    console.log('isPriceError:', isPriceError);
+    console.log('phonePrice:', phonePrice);
+  }
+
   // 获取活跃批次信息
   const { data: activeBatchData, refetch: refetchActiveBatch, isError: isActiveBatchError, isLoading: isActiveBatchLoading } = useReadPoolGetActiveBatch();
+
+  // 调试：打印批次获取状态
+  if (false) {
+    console.log('=== getActiveBatch 调试 ===');
+    console.log('chainId:', chainId);
+    console.log('isActiveBatchLoading:', isActiveBatchLoading);
+    console.log('isActiveBatchError:', isActiveBatchError);
+    console.log('activeBatchData:', activeBatchData);
+  }
 
   // 当 getActiveBatch 失败时（售罄情况），回退到批次 0
   const fallbackBatchIndex = isActiveBatchError && !isActiveBatchLoading ? BigInt(0) : undefined;
@@ -200,9 +226,14 @@ export function UserProvider({ children }: { children: ReactNode }) {
   // Function to refresh data after transactions by refetching from the blockchain
   const refreshData = async () => {
     try {
+      if (isDev) console.log('Refreshing blockchain data after transaction...');
+
       // Force a small delay to allow blockchain state to update
       // This is important because the RPC needs time to reflect the new state
       await new Promise(resolve => setTimeout(resolve, 500));
+
+      // After immediate UI feedback, now refetch actual blockchain data
+      if (isDev) console.log('Refetching data from blockchain...');
 
       // Execute all refetch operations in parallel for efficiency
       const refetchPromises = [];
@@ -224,6 +255,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
       // Wait for all refetch operations to complete
       await Promise.all(refetchPromises);
+
+      if (isDev) console.log('Blockchain data refresh complete')
     } catch (error) {
       console.error('Error refreshing data:', error);
     }
@@ -235,7 +268,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   // Initialize application global information only when key values change
   useEffect(() => {
     // Debug: Log all dependencies
-    if (isDev) {
+    if (false) {
       console.log('=== appInfo useEffect 检查 ===');
       console.log('phonePrice:', phonePrice);
       console.log('activeBatchData:', activeBatchData);
@@ -262,6 +295,13 @@ export function UserProvider({ children }: { children: ReactNode }) {
         appInfo.batchSoldCount !== batchSoldCount;
 
       if (hasChanged) {
+        if (isDev) console.log('✅ 更新 appInfo - 批次信息:', {
+          batchTotalStock,
+          batchRemainingStock,
+          batchSoldCount,
+          activeBatchIndex
+        });
+
         setAppInfo({
           price: phonePrice,
           activeBatchIndex,
@@ -270,6 +310,14 @@ export function UserProvider({ children }: { children: ReactNode }) {
           batchSoldCount,
           isNftMintComplete,
         });
+      } else {
+        if (isDev) console.log('⏭️ appInfo 无需更新，值未变化');
+      }
+    } else {
+      if (false) {
+        console.log('❌ 缺少必要数据，无法设置 appInfo');
+        if (!phonePrice) console.log('  - phonePrice 为空');
+        if (!batchDetails) console.log('  - batchDetails 为空');
       }
     }
   }, [phonePrice, activeBatchData, batchDetails]);
@@ -287,6 +335,13 @@ export function UserProvider({ children }: { children: ReactNode }) {
   // 将userData更新contractUserInfo
   useEffect(() => {
     if (userData && address) {
+      // 调试：打印用户数据
+      if (false) {
+        console.log('=== 用户数据调试 ===');
+        console.log('userData:', userData);
+        console.log('address:', address);
+      }
+
       // 从数组解构各个属性
       // getUserInfo 返回: salesCount, teamSalesCount, usdtIncome, tokenIncome, upline, downlineCount, usdtCommissionRate, tokenCommissionRate
       const [
@@ -300,6 +355,19 @@ export function UserProvider({ children }: { children: ReactNode }) {
         tokenCommissionRateRes
       ] = userData;
 
+      if (false) {
+        console.log('=== 合约 getUserInfo 返回值详细打印 ===');
+        console.log('原始返回数组 userData:', userData);
+        console.log('1. salesCount (个人购买数量):', salesCountRes, '→', Number(salesCountRes));
+        console.log('2. teamSalesCount (团队业绩):', teamSalesCountRes, '→', Number(teamSalesCountRes));
+        console.log('3. usdtIncome (USDT收益):', usdtIncomeRes, '→', formatEther(usdtIncomeRes));
+        console.log('4. tokenIncome (代币收益):', tokenIncomeRes);
+        console.log('5. upline (推荐人):', uplineRes);
+        console.log('6. downlineCount (直推人数):', downlineCountRes, '→', Number(downlineCountRes));
+        console.log('7. usdtCommissionRate (USDT佣金费率):', usdtCommissionRateRes, '→', Number(usdtCommissionRateRes));
+        console.log('8. tokenCommissionRate (代币佣金费率):', tokenCommissionRateRes, '→', Number(tokenCommissionRateRes));
+      }
+
       const transformedData: ContractUserInfo = {
         salesCount: Number(salesCountRes), // 已购买手机数
         teamSalesCount: Number(teamSalesCountRes), // 我的团队
@@ -309,6 +377,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
         upline: uplineRes, // 推荐人（直接从 getUserInfo 获取）
       };
 
+      if (isDev) console.log('转换后的用户数据:', transformedData);
+
       // 更新状态
       setContractUserInfo(transformedData);
     }
@@ -317,6 +387,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (address) {
+      if (isDev) console.log('Chain ID changed, refreshing data...');
       refreshData();
     }
   }, [chainId, address]); 

@@ -30,6 +30,10 @@ export default withBundleAnalyzer({
   // i18n is handled by react-i18next, not Next.js built-in i18n
   devIndicators: false,
   
+  // 性能优化
+  compress: true,
+  poweredByHeader: false,
+  
   // Make version info available as environment variables
   env: {
     APP_VERSION: packageInfo.version,
