@@ -13,12 +13,13 @@ export function SocialMenu({ opened, onClose }: SocialMenuProps) {
   const router = useRouter();
   const currentLanguage = router.locale || 'en';
 
+  // 显示所有图标，但只有官网可以点击
   const socialItems = [
     {
       id: 'twitter',
       icon: IconBrandTwitter,
       label: 'social_twitter',
-      url: '', // 禁用链接
+      url: '', // 不可点击
       color: '#1DA1F2',
       disabled: true,
     },
@@ -26,7 +27,7 @@ export function SocialMenu({ opened, onClose }: SocialMenuProps) {
       id: 'telegram',
       icon: IconBrandTelegram,
       label: 'social_telegram',
-      url: '', // 禁用链接
+      url: '', // 不可点击
       color: '#0088cc',
       disabled: true,
     },
@@ -40,7 +41,10 @@ export function SocialMenu({ opened, onClose }: SocialMenuProps) {
     },
   ];
 
-  const handleSocialClick = (url: string) => {
+  const handleSocialClick = (url: string, disabled: boolean) => {
+    if (disabled || !url) {
+      return; // 不执行任何操作
+    }
     window.open(url, '_blank');
     onClose();
   };
@@ -99,7 +103,7 @@ export function SocialMenu({ opened, onClose }: SocialMenuProps) {
               return (
                 <UnstyledButton
                   key={item.id}
-                  onClick={() => !item.disabled && handleSocialClick(item.url)}
+                  onClick={() => handleSocialClick(item.url, item.disabled)}
                   styles={{
                     root: {
                       display: 'flex',
@@ -109,8 +113,8 @@ export function SocialMenu({ opened, onClose }: SocialMenuProps) {
                       borderRadius: '12px',
                       background: 'transparent',
                       transition: 'background 0.2s ease',
-                      opacity: item.disabled ? 0.5 : 1,
                       cursor: item.disabled ? 'default' : 'pointer',
+                      opacity: item.disabled ? 0.5 : 1,
                       '&:hover': {
                         background: item.disabled ? 'transparent' : 'rgba(139, 92, 246, 0.1)',
                       },

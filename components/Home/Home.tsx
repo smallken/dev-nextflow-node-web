@@ -60,9 +60,10 @@ export function Home() {
           }
           .home-hero-left {
             width: 100%;
-            justify-content: center;
-            flex-direction: column;
-            align-items: center;
+            justify-content: flex-start;
+            flex-direction: row;
+            gap: 8px !important;
+            margin-top: -20px;
           }
           .home-hero-title {
             width: 100%;
@@ -82,20 +83,13 @@ export function Home() {
             width: 100%;
           }
           .nai-logo-hero {
-            transform: none;
+            transform: rotate(-10deg);
+            margin-left: 20px;
           }
           .mobile-bubble {
-            position: absolute;
-            top: 50%;
-            left: 65%;
-            transform: translateY(-50%);
-            margin: 0 !important;
-          }
-          .nai-container {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            width: 100%;
+            margin-left: 8px !important;
+            margin-right: 0;
+            max-width: 160px !important;
           }
           .mobile-stats-row {
             width: 100%;
@@ -107,7 +101,7 @@ export function Home() {
             display: block !important;
             text-align: center;
             width: 100%;
-            margin-bottom: 16px;
+            margin-bottom: 8px;
           }
           .desktop-hero-title {
             display: none !important;
@@ -128,6 +122,9 @@ export function Home() {
           }
           .mobile-progress-only {
             display: none !important;
+          }
+          .bubble-arrow-left {
+            display: block !important;
           }
           .home-title-row {
             align-items: flex-start !important;
@@ -166,32 +163,31 @@ export function Home() {
                       fontFamily: '"Arial Rounded MT Bold", "Arial Rounded MT", Arial, sans-serif',
                     }}
                   >
-                    SmartTech<br />Link Future
+                    Smart Tech<br />LinkFuture
                   </Text>
                 </div>
-                <div className="nai-container">
-                  <Image
-                    src="/nai.png"
-                    h={{ base: 130, sm: 200, md: 240 }}
-                    w="auto"
-                    fit="contain"
-                    alt="NAI Logo"
-                    className="nai-logo-hero"
-                    style={{ flexShrink: 0 }}
-                  />
-                  <div
-                    className="desktop-bubble mobile-bubble"
-                    style={{
-                      position: 'relative',
-                      background: 'rgba(255, 255, 255, 0.65)',
-                      border: '1px solid rgba(59, 130, 246, 0.12)',
-                      borderRadius: 16,
-                      padding: '10px 12px',
-                      boxShadow: '0 6px 18px rgba(59, 130, 246, 0.08)',
-                      maxWidth: 210,
-                      marginLeft: -4,
-                    }}
-                  >
+                <Image
+                  src="/nai.png"
+                  h={{ base: 130, sm: 200, md: 240 }}
+                  w="auto"
+                  fit="contain"
+                  alt="NAI Logo"
+                  className="nai-logo-hero"
+                  style={{ flexShrink: 0 }}
+                />
+                <div
+                  className="desktop-bubble mobile-bubble"
+                  style={{
+                    position: 'relative',
+                    background: 'rgba(255, 255, 255, 0.65)',
+                    border: '1px solid rgba(59, 130, 246, 0.12)',
+                    borderRadius: 16,
+                    padding: '10px 12px',
+                    boxShadow: '0 6px 18px rgba(59, 130, 246, 0.08)',
+                    maxWidth: 210,
+                    marginLeft: -4,
+                  }}
+                >
                   <div
                     className="bubble-arrow-left"
                     style={{
@@ -226,7 +222,6 @@ export function Home() {
                       {t('home_hero_subtitle')}
                     </Text>
                   </Stack>
-                </div>
                 </div>
               </Group>
 
