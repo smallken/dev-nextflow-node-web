@@ -10,8 +10,8 @@ import {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const poolAbi = [
@@ -100,6 +100,14 @@ export const poolAbi = [
     inputs: [{ name: 'index', internalType: 'uint8', type: 'uint8' }],
     name: 'InvalidTierIndex',
   },
+  {
+    type: 'error',
+    inputs: [
+      { name: 'totalStock', internalType: 'uint256', type: 'uint256' },
+      { name: 'soldCount', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'InvalidTotalStock',
+  },
   { type: 'error', inputs: [], name: 'MaxSinglePurchaseMustBePositive' },
   { type: 'error', inputs: [], name: 'NotInitializing' },
   { type: 'error', inputs: [], name: 'NotRegistered' },
@@ -113,6 +121,7 @@ export const poolAbi = [
     inputs: [{ name: 'account', internalType: 'address', type: 'address' }],
     name: 'OwnableUnauthorizedAccount',
   },
+  { type: 'error', inputs: [], name: 'OwnershipRenouncementDisabled' },
   {
     type: 'error',
     inputs: [{ name: 'rate', internalType: 'uint8', type: 'uint8' }],
@@ -148,6 +157,26 @@ export const poolAbi = [
     type: 'error',
     inputs: [{ name: 'slot', internalType: 'bytes32', type: 'bytes32' }],
     name: 'UUPSUnsupportedProxiableUUID',
+  },
+  { type: 'error', inputs: [], name: 'Unauthorized' },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'oldAdmin',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'newAdmin',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+    ],
+    name: 'AdminUpdated',
   },
   {
     type: 'event',
@@ -492,6 +521,19 @@ export const poolAbi = [
     anonymous: false,
     inputs: [
       {
+        name: 'tokenTreasury',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+    ],
+    name: 'TokenTreasurySet',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
         name: 'token',
         internalType: 'address',
         type: 'address',
@@ -612,6 +654,13 @@ export const poolAbi = [
   },
   {
     type: 'function',
+    inputs: [],
+    name: 'admin',
+    outputs: [{ name: '', internalType: 'address', type: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
     inputs: [{ name: 'amount', internalType: 'uint256', type: 'uint256' }],
     name: 'buyPhone',
     outputs: [],
@@ -648,6 +697,7 @@ export const poolAbi = [
     outputs: [
       { name: 'batchIndex', internalType: 'uint256', type: 'uint256' },
       { name: 'remainingStock', internalType: 'uint256', type: 'uint256' },
+      { name: 'totalStock', internalType: 'uint256', type: 'uint256' },
     ],
     stateMutability: 'view',
   },
@@ -764,8 +814,10 @@ export const poolAbi = [
       { name: '_usdt', internalType: 'address', type: 'address' },
       { name: '_token', internalType: 'address', type: 'address' },
       { name: '_treasury', internalType: 'address', type: 'address' },
+      { name: '_tokenTreasury', internalType: 'address', type: 'address' },
       { name: '_referrer0', internalType: 'address', type: 'address' },
       { name: '_usdtPrice', internalType: 'uint256', type: 'uint256' },
+      { name: '_admin', internalType: 'address', type: 'address' },
     ],
     name: 'initialize',
     outputs: [],
@@ -885,6 +937,13 @@ export const poolAbi = [
   },
   {
     type: 'function',
+    inputs: [{ name: '_admin', internalType: 'address', type: 'address' }],
+    name: 'setAdmin',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
     inputs: [
       { name: 'tierIndex', internalType: 'uint8', type: 'uint8' },
       { name: 'threshold', internalType: 'uint256', type: 'uint256' },
@@ -933,6 +992,15 @@ export const poolAbi = [
     type: 'function',
     inputs: [{ name: '_tokenPool', internalType: 'address', type: 'address' }],
     name: 'setTokenPool',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '_tokenTreasury', internalType: 'address', type: 'address' },
+    ],
+    name: 'setTokenTreasury',
     outputs: [],
     stateMutability: 'nonpayable',
   },
@@ -992,6 +1060,13 @@ export const poolAbi = [
     type: 'function',
     inputs: [],
     name: 'tokenPool',
+    outputs: [{ name: '', internalType: 'address', type: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'tokenTreasury',
     outputs: [{ name: '', internalType: 'address', type: 'address' }],
     stateMutability: 'view',
   },
@@ -1081,19 +1156,19 @@ export const poolAbi = [
 ] as const
 
 /**
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const poolAddress = {
-  56: '0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4',
-  97: '0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4',
-  31337: '0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4',
+  56: '0x928E333922abdf3D10C317647AAF344F37d20ccE',
+  97: '0x928E333922abdf3D10C317647AAF344F37d20ccE',
+  31337: '0x928E333922abdf3D10C317647AAF344F37d20ccE',
 } as const
 
 /**
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const poolConfig = { address: poolAddress, abi: poolAbi } as const
@@ -1103,8 +1178,8 @@ export const poolConfig = { address: poolAddress, abi: poolAbi } as const
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
  * -
  */
 export const tokenAbi = [
@@ -1113,6 +1188,7 @@ export const tokenAbi = [
     inputs: [
       { name: 'initialSupply', internalType: 'uint256', type: 'uint256' },
       { name: 'treasury', internalType: 'address', type: 'address' },
+      { name: '_admin', internalType: 'address', type: 'address' },
     ],
     stateMutability: 'nonpayable',
   },
@@ -1165,6 +1241,27 @@ export const tokenAbi = [
     type: 'error',
     inputs: [{ name: 'account', internalType: 'address', type: 'address' }],
     name: 'OwnableUnauthorizedAccount',
+  },
+  { type: 'error', inputs: [], name: 'OwnershipRenouncementDisabled' },
+  { type: 'error', inputs: [], name: 'Unauthorized' },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'oldAdmin',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'newAdmin',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+    ],
+    name: 'AdminUpdated',
   },
   {
     type: 'event',
@@ -1252,6 +1349,13 @@ export const tokenAbi = [
     inputs: [],
     name: 'MAX_SUPPLY',
     outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'admin',
+    outputs: [{ name: '', internalType: 'address', type: 'address' }],
     stateMutability: 'view',
   },
   {
@@ -1358,7 +1462,14 @@ export const tokenAbi = [
     inputs: [],
     name: 'renounceOwnership',
     outputs: [],
-    stateMutability: 'pure',
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: '_admin', internalType: 'address', type: 'address' }],
+    name: 'setAdmin',
+    outputs: [],
+    stateMutability: 'nonpayable',
   },
   {
     type: 'function',
@@ -1422,19 +1533,19 @@ export const tokenAbi = [
 ] as const
 
 /**
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
  * -
  */
 export const tokenAddress = {
-  56: '0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6',
-  97: '0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6',
-  31337: '0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6',
+  56: '0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686',
+  97: '0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686',
+  31337: '0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686',
 } as const
 
 /**
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
  * -
  */
 export const tokenConfig = { address: tokenAddress, abi: tokenAbi } as const
@@ -1444,8 +1555,8 @@ export const tokenConfig = { address: tokenAddress, abi: tokenAbi } as const
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const tokenPoolAbi = [
@@ -1484,6 +1595,7 @@ export const tokenPoolAbi = [
     inputs: [{ name: 'account', internalType: 'address', type: 'address' }],
     name: 'OwnableUnauthorizedAccount',
   },
+  { type: 'error', inputs: [], name: 'OwnershipRenouncementDisabled' },
   { type: 'error', inputs: [], name: 'ReentrancyGuardReentrantCall' },
   {
     type: 'error',
@@ -1495,6 +1607,26 @@ export const tokenPoolAbi = [
     type: 'error',
     inputs: [{ name: 'slot', internalType: 'bytes32', type: 'bytes32' }],
     name: 'UUPSUnsupportedProxiableUUID',
+  },
+  { type: 'error', inputs: [], name: 'Unauthorized' },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'oldAdmin',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'newAdmin',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+    ],
+    name: 'AdminUpdated',
   },
   {
     type: 'event',
@@ -1645,6 +1777,25 @@ export const tokenPoolAbi = [
         type: 'address',
         indexed: true,
       },
+      {
+        name: 'amount',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'TreasuryTransferred',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'treasury',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
     ],
     name: 'TreasuryUpdated',
   },
@@ -1728,6 +1879,20 @@ export const tokenPoolAbi = [
   {
     type: 'function',
     inputs: [],
+    name: 'VESTING_TYPE_PURCHASE',
+    outputs: [{ name: '', internalType: 'uint8', type: 'uint8' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'VESTING_TYPE_REFERRAL',
+    outputs: [{ name: '', internalType: 'uint8', type: 'uint8' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
     name: 'acceptOwnership',
     outputs: [],
     stateMutability: 'nonpayable',
@@ -1737,10 +1902,18 @@ export const tokenPoolAbi = [
     inputs: [
       { name: 'user', internalType: 'address', type: 'address' },
       { name: 'totalAmount', internalType: 'uint256', type: 'uint256' },
+      { name: 'vestingType', internalType: 'uint8', type: 'uint8' },
     ],
     name: 'addVesting',
     outputs: [],
     stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'admin',
+    outputs: [{ name: '', internalType: 'address', type: 'address' }],
+    stateMutability: 'view',
   },
   {
     type: 'function',
@@ -1799,6 +1972,18 @@ export const tokenPoolAbi = [
   },
   {
     type: 'function',
+    inputs: [{ name: 'user', internalType: 'address', type: 'address' }],
+    name: 'getVestingInfoByType',
+    outputs: [
+      { name: 'purchaseVested', internalType: 'uint256', type: 'uint256' },
+      { name: 'referralVested', internalType: 'uint256', type: 'uint256' },
+      { name: 'purchaseClaimable', internalType: 'uint256', type: 'uint256' },
+      { name: 'referralClaimable', internalType: 'uint256', type: 'uint256' },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
     inputs: [],
     name: 'globalTotalClaimed',
     outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
@@ -1824,6 +2009,7 @@ export const tokenPoolAbi = [
       { name: '_token', internalType: 'address', type: 'address' },
       { name: '_distribution', internalType: 'address', type: 'address' },
       { name: '_treasury', internalType: 'address', type: 'address' },
+      { name: '_admin', internalType: 'address', type: 'address' },
     ],
     name: 'initialize',
     outputs: [],
@@ -1868,6 +2054,13 @@ export const tokenPoolAbi = [
     type: 'function',
     inputs: [],
     name: 'renounceOwnership',
+    outputs: [],
+    stateMutability: 'pure',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: '_admin', internalType: 'address', type: 'address' }],
+    name: 'setAdmin',
     outputs: [],
     stateMutability: 'nonpayable',
   },
@@ -1954,6 +2147,16 @@ export const tokenPoolAbi = [
   },
   {
     type: 'function',
+    inputs: [
+      { name: 'recipient', internalType: 'address', type: 'address' },
+      { name: 'amount', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'transferToTreasury',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
     inputs: [],
     name: 'treasury',
     outputs: [{ name: '', internalType: 'address', type: 'address' }],
@@ -1997,19 +2200,19 @@ export const tokenPoolAbi = [
 ] as const
 
 /**
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const tokenPoolAddress = {
-  56: '0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38',
-  97: '0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38',
-  31337: '0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38',
+  56: '0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0',
+  97: '0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0',
+  31337: '0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0',
 } as const
 
 /**
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const tokenPoolConfig = {
@@ -2022,8 +2225,8 @@ export const tokenPoolConfig = {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88)
  * -
  */
 export const usdtAbi = [
@@ -2124,19 +2327,19 @@ export const usdtAbi = [
 ] as const
 
 /**
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88)
  * -
  */
 export const usdtAddress = {
-  56: '0x55d398326f99059fF775485246999027B3197955',
-  97: '0x55d398326f99059fF775485246999027B3197955',
-  31337: '0x55d398326f99059fF775485246999027B3197955',
+  56: '0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88',
+  97: '0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88',
+  31337: '0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88',
 } as const
 
 /**
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88)
  * -
  */
 export const usdtConfig = { address: usdtAddress, abi: usdtAbi } as const
@@ -2148,8 +2351,8 @@ export const usdtConfig = { address: usdtAddress, abi: usdtAbi } as const
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useReadPool = /*#__PURE__*/ createUseReadContract({
@@ -2160,8 +2363,8 @@ export const useReadPool = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"UPGRADE_INTERFACE_VERSION"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useReadPoolUpgradeInterfaceVersion =
@@ -2172,10 +2375,23 @@ export const useReadPoolUpgradeInterfaceVersion =
   })
 
 /**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"admin"`
+ *
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * -
+ */
+export const useReadPoolAdmin = /*#__PURE__*/ createUseReadContract({
+  abi: poolAbi,
+  address: poolAddress,
+  functionName: 'admin',
+})
+
+/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"commissionRates"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useReadPoolCommissionRates = /*#__PURE__*/ createUseReadContract({
@@ -2187,8 +2403,8 @@ export const useReadPoolCommissionRates = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"downlines"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useReadPoolDownlines = /*#__PURE__*/ createUseReadContract({
@@ -2200,8 +2416,8 @@ export const useReadPoolDownlines = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"getActiveBatch"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useReadPoolGetActiveBatch = /*#__PURE__*/ createUseReadContract({
@@ -2213,8 +2429,8 @@ export const useReadPoolGetActiveBatch = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"getBatch"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useReadPoolGetBatch = /*#__PURE__*/ createUseReadContract({
@@ -2226,8 +2442,8 @@ export const useReadPoolGetBatch = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"getBatchCount"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useReadPoolGetBatchCount = /*#__PURE__*/ createUseReadContract({
@@ -2239,8 +2455,8 @@ export const useReadPoolGetBatchCount = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"getBatchRewards"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useReadPoolGetBatchRewards = /*#__PURE__*/ createUseReadContract({
@@ -2252,8 +2468,8 @@ export const useReadPoolGetBatchRewards = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"getDownlineCount"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useReadPoolGetDownlineCount = /*#__PURE__*/ createUseReadContract({
@@ -2265,8 +2481,8 @@ export const useReadPoolGetDownlineCount = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"getDownlinesPaginated"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useReadPoolGetDownlinesPaginated =
@@ -2279,8 +2495,8 @@ export const useReadPoolGetDownlinesPaginated =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"getNextBatch"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useReadPoolGetNextBatch = /*#__PURE__*/ createUseReadContract({
@@ -2292,8 +2508,8 @@ export const useReadPoolGetNextBatch = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"getTokenCommissionRate"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useReadPoolGetTokenCommissionRate =
@@ -2306,8 +2522,8 @@ export const useReadPoolGetTokenCommissionRate =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"getUsdtCommissionRate"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useReadPoolGetUsdtCommissionRate =
@@ -2320,8 +2536,8 @@ export const useReadPoolGetUsdtCommissionRate =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"getUserDownlines"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useReadPoolGetUserDownlines = /*#__PURE__*/ createUseReadContract({
@@ -2333,8 +2549,8 @@ export const useReadPoolGetUserDownlines = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"getUserInfo"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useReadPoolGetUserInfo = /*#__PURE__*/ createUseReadContract({
@@ -2346,8 +2562,8 @@ export const useReadPoolGetUserInfo = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"globalSalesCount"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useReadPoolGlobalSalesCount = /*#__PURE__*/ createUseReadContract({
@@ -2359,8 +2575,8 @@ export const useReadPoolGlobalSalesCount = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"isRegistered"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useReadPoolIsRegistered = /*#__PURE__*/ createUseReadContract({
@@ -2372,8 +2588,8 @@ export const useReadPoolIsRegistered = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"isWhitelisted"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useReadPoolIsWhitelisted = /*#__PURE__*/ createUseReadContract({
@@ -2385,8 +2601,8 @@ export const useReadPoolIsWhitelisted = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"maxCommissionDepth"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useReadPoolMaxCommissionDepth =
@@ -2399,8 +2615,8 @@ export const useReadPoolMaxCommissionDepth =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"maxCumulativePurchase"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useReadPoolMaxCumulativePurchase =
@@ -2413,8 +2629,8 @@ export const useReadPoolMaxCumulativePurchase =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"maxRate"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useReadPoolMaxRate = /*#__PURE__*/ createUseReadContract({
@@ -2426,8 +2642,8 @@ export const useReadPoolMaxRate = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"maxReferralDepth"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useReadPoolMaxReferralDepth = /*#__PURE__*/ createUseReadContract({
@@ -2439,8 +2655,8 @@ export const useReadPoolMaxReferralDepth = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"maxSinglePurchase"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useReadPoolMaxSinglePurchase = /*#__PURE__*/ createUseReadContract(
@@ -2450,8 +2666,8 @@ export const useReadPoolMaxSinglePurchase = /*#__PURE__*/ createUseReadContract(
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"owner"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useReadPoolOwner = /*#__PURE__*/ createUseReadContract({
@@ -2463,8 +2679,8 @@ export const useReadPoolOwner = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"paused"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useReadPoolPaused = /*#__PURE__*/ createUseReadContract({
@@ -2476,8 +2692,8 @@ export const useReadPoolPaused = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"pendingOwner"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useReadPoolPendingOwner = /*#__PURE__*/ createUseReadContract({
@@ -2489,8 +2705,8 @@ export const useReadPoolPendingOwner = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"proxiableUUID"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useReadPoolProxiableUuid = /*#__PURE__*/ createUseReadContract({
@@ -2502,8 +2718,8 @@ export const useReadPoolProxiableUuid = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"purchaseTokens"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useReadPoolPurchaseTokens = /*#__PURE__*/ createUseReadContract({
@@ -2515,8 +2731,8 @@ export const useReadPoolPurchaseTokens = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"referrer0"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useReadPoolReferrer0 = /*#__PURE__*/ createUseReadContract({
@@ -2528,8 +2744,8 @@ export const useReadPoolReferrer0 = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"renounceOwnership"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useReadPoolRenounceOwnership = /*#__PURE__*/ createUseReadContract(
@@ -2539,8 +2755,8 @@ export const useReadPoolRenounceOwnership = /*#__PURE__*/ createUseReadContract(
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"salesCount"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useReadPoolSalesCount = /*#__PURE__*/ createUseReadContract({
@@ -2552,8 +2768,8 @@ export const useReadPoolSalesCount = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"teamSalesCount"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useReadPoolTeamSalesCount = /*#__PURE__*/ createUseReadContract({
@@ -2565,8 +2781,8 @@ export const useReadPoolTeamSalesCount = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"tierThresholds"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useReadPoolTierThresholds = /*#__PURE__*/ createUseReadContract({
@@ -2578,8 +2794,8 @@ export const useReadPoolTierThresholds = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"token"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useReadPoolToken = /*#__PURE__*/ createUseReadContract({
@@ -2591,8 +2807,8 @@ export const useReadPoolToken = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"tokenIncome"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useReadPoolTokenIncome = /*#__PURE__*/ createUseReadContract({
@@ -2604,8 +2820,8 @@ export const useReadPoolTokenIncome = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"tokenPool"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useReadPoolTokenPool = /*#__PURE__*/ createUseReadContract({
@@ -2615,10 +2831,23 @@ export const useReadPoolTokenPool = /*#__PURE__*/ createUseReadContract({
 })
 
 /**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"tokenTreasury"`
+ *
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * -
+ */
+export const useReadPoolTokenTreasury = /*#__PURE__*/ createUseReadContract({
+  abi: poolAbi,
+  address: poolAddress,
+  functionName: 'tokenTreasury',
+})
+
+/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"totalProjectUsdtIncome"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useReadPoolTotalProjectUsdtIncome =
@@ -2631,8 +2860,8 @@ export const useReadPoolTotalProjectUsdtIncome =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"treasury"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useReadPoolTreasury = /*#__PURE__*/ createUseReadContract({
@@ -2644,8 +2873,8 @@ export const useReadPoolTreasury = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"upline"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useReadPoolUpline = /*#__PURE__*/ createUseReadContract({
@@ -2657,8 +2886,8 @@ export const useReadPoolUpline = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"usdt"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useReadPoolUsdt = /*#__PURE__*/ createUseReadContract({
@@ -2670,8 +2899,8 @@ export const useReadPoolUsdt = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"usdtIncome"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useReadPoolUsdtIncome = /*#__PURE__*/ createUseReadContract({
@@ -2683,8 +2912,8 @@ export const useReadPoolUsdtIncome = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"usdtPrice"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useReadPoolUsdtPrice = /*#__PURE__*/ createUseReadContract({
@@ -2696,8 +2925,8 @@ export const useReadPoolUsdtPrice = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link poolAbi}__
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWritePool = /*#__PURE__*/ createUseWriteContract({
@@ -2708,8 +2937,8 @@ export const useWritePool = /*#__PURE__*/ createUseWriteContract({
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"acceptOwnership"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWritePoolAcceptOwnership = /*#__PURE__*/ createUseWriteContract(
@@ -2719,8 +2948,8 @@ export const useWritePoolAcceptOwnership = /*#__PURE__*/ createUseWriteContract(
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"activateBatch"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWritePoolActivateBatch = /*#__PURE__*/ createUseWriteContract({
@@ -2732,8 +2961,8 @@ export const useWritePoolActivateBatch = /*#__PURE__*/ createUseWriteContract({
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"addBatch"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWritePoolAddBatch = /*#__PURE__*/ createUseWriteContract({
@@ -2745,8 +2974,8 @@ export const useWritePoolAddBatch = /*#__PURE__*/ createUseWriteContract({
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"buyPhone"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWritePoolBuyPhone = /*#__PURE__*/ createUseWriteContract({
@@ -2758,8 +2987,8 @@ export const useWritePoolBuyPhone = /*#__PURE__*/ createUseWriteContract({
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"deactivateBatch"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWritePoolDeactivateBatch = /*#__PURE__*/ createUseWriteContract(
@@ -2769,8 +2998,8 @@ export const useWritePoolDeactivateBatch = /*#__PURE__*/ createUseWriteContract(
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"initialize"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWritePoolInitialize = /*#__PURE__*/ createUseWriteContract({
@@ -2782,8 +3011,8 @@ export const useWritePoolInitialize = /*#__PURE__*/ createUseWriteContract({
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"register"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWritePoolRegister = /*#__PURE__*/ createUseWriteContract({
@@ -2793,10 +3022,23 @@ export const useWritePoolRegister = /*#__PURE__*/ createUseWriteContract({
 })
 
 /**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"setAdmin"`
+ *
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * -
+ */
+export const useWritePoolSetAdmin = /*#__PURE__*/ createUseWriteContract({
+  abi: poolAbi,
+  address: poolAddress,
+  functionName: 'setAdmin',
+})
+
+/**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"setCommissionTier"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWritePoolSetCommissionTier =
@@ -2809,8 +3051,8 @@ export const useWritePoolSetCommissionTier =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"setMaxCommissionDepth"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWritePoolSetMaxCommissionDepth =
@@ -2823,8 +3065,8 @@ export const useWritePoolSetMaxCommissionDepth =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"setMaxCumulativePurchase"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWritePoolSetMaxCumulativePurchase =
@@ -2837,8 +3079,8 @@ export const useWritePoolSetMaxCumulativePurchase =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"setMaxReferralDepth"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWritePoolSetMaxReferralDepth =
@@ -2851,8 +3093,8 @@ export const useWritePoolSetMaxReferralDepth =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"setMaxSinglePurchase"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWritePoolSetMaxSinglePurchase =
@@ -2865,8 +3107,8 @@ export const useWritePoolSetMaxSinglePurchase =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"setPaused"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWritePoolSetPaused = /*#__PURE__*/ createUseWriteContract({
@@ -2878,8 +3120,8 @@ export const useWritePoolSetPaused = /*#__PURE__*/ createUseWriteContract({
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"setTokenPool"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWritePoolSetTokenPool = /*#__PURE__*/ createUseWriteContract({
@@ -2889,10 +3131,24 @@ export const useWritePoolSetTokenPool = /*#__PURE__*/ createUseWriteContract({
 })
 
 /**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"setTokenTreasury"`
+ *
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * -
+ */
+export const useWritePoolSetTokenTreasury =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: poolAbi,
+    address: poolAddress,
+    functionName: 'setTokenTreasury',
+  })
+
+/**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"setTreasury"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWritePoolSetTreasury = /*#__PURE__*/ createUseWriteContract({
@@ -2904,8 +3160,8 @@ export const useWritePoolSetTreasury = /*#__PURE__*/ createUseWriteContract({
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"setUsdtPrice"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWritePoolSetUsdtPrice = /*#__PURE__*/ createUseWriteContract({
@@ -2917,8 +3173,8 @@ export const useWritePoolSetUsdtPrice = /*#__PURE__*/ createUseWriteContract({
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"setWhitelist"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWritePoolSetWhitelist = /*#__PURE__*/ createUseWriteContract({
@@ -2930,8 +3186,8 @@ export const useWritePoolSetWhitelist = /*#__PURE__*/ createUseWriteContract({
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"transferOwnership"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWritePoolTransferOwnership =
@@ -2944,8 +3200,8 @@ export const useWritePoolTransferOwnership =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"updateBatch"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWritePoolUpdateBatch = /*#__PURE__*/ createUseWriteContract({
@@ -2957,8 +3213,8 @@ export const useWritePoolUpdateBatch = /*#__PURE__*/ createUseWriteContract({
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"upgradeToAndCall"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWritePoolUpgradeToAndCall =
@@ -2971,8 +3227,8 @@ export const useWritePoolUpgradeToAndCall =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"withdrawToken"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWritePoolWithdrawToken = /*#__PURE__*/ createUseWriteContract({
@@ -2984,8 +3240,8 @@ export const useWritePoolWithdrawToken = /*#__PURE__*/ createUseWriteContract({
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link poolAbi}__
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useSimulatePool = /*#__PURE__*/ createUseSimulateContract({
@@ -2996,8 +3252,8 @@ export const useSimulatePool = /*#__PURE__*/ createUseSimulateContract({
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"acceptOwnership"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useSimulatePoolAcceptOwnership =
@@ -3010,8 +3266,8 @@ export const useSimulatePoolAcceptOwnership =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"activateBatch"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useSimulatePoolActivateBatch =
@@ -3024,8 +3280,8 @@ export const useSimulatePoolActivateBatch =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"addBatch"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useSimulatePoolAddBatch = /*#__PURE__*/ createUseSimulateContract({
@@ -3037,8 +3293,8 @@ export const useSimulatePoolAddBatch = /*#__PURE__*/ createUseSimulateContract({
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"buyPhone"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useSimulatePoolBuyPhone = /*#__PURE__*/ createUseSimulateContract({
@@ -3050,8 +3306,8 @@ export const useSimulatePoolBuyPhone = /*#__PURE__*/ createUseSimulateContract({
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"deactivateBatch"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useSimulatePoolDeactivateBatch =
@@ -3064,8 +3320,8 @@ export const useSimulatePoolDeactivateBatch =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"initialize"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useSimulatePoolInitialize =
@@ -3078,8 +3334,8 @@ export const useSimulatePoolInitialize =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"register"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useSimulatePoolRegister = /*#__PURE__*/ createUseSimulateContract({
@@ -3089,10 +3345,23 @@ export const useSimulatePoolRegister = /*#__PURE__*/ createUseSimulateContract({
 })
 
 /**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"setAdmin"`
+ *
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * -
+ */
+export const useSimulatePoolSetAdmin = /*#__PURE__*/ createUseSimulateContract({
+  abi: poolAbi,
+  address: poolAddress,
+  functionName: 'setAdmin',
+})
+
+/**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"setCommissionTier"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useSimulatePoolSetCommissionTier =
@@ -3105,8 +3374,8 @@ export const useSimulatePoolSetCommissionTier =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"setMaxCommissionDepth"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useSimulatePoolSetMaxCommissionDepth =
@@ -3119,8 +3388,8 @@ export const useSimulatePoolSetMaxCommissionDepth =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"setMaxCumulativePurchase"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useSimulatePoolSetMaxCumulativePurchase =
@@ -3133,8 +3402,8 @@ export const useSimulatePoolSetMaxCumulativePurchase =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"setMaxReferralDepth"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useSimulatePoolSetMaxReferralDepth =
@@ -3147,8 +3416,8 @@ export const useSimulatePoolSetMaxReferralDepth =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"setMaxSinglePurchase"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useSimulatePoolSetMaxSinglePurchase =
@@ -3161,8 +3430,8 @@ export const useSimulatePoolSetMaxSinglePurchase =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"setPaused"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useSimulatePoolSetPaused = /*#__PURE__*/ createUseSimulateContract(
@@ -3172,8 +3441,8 @@ export const useSimulatePoolSetPaused = /*#__PURE__*/ createUseSimulateContract(
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"setTokenPool"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useSimulatePoolSetTokenPool =
@@ -3184,10 +3453,24 @@ export const useSimulatePoolSetTokenPool =
   })
 
 /**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"setTokenTreasury"`
+ *
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * -
+ */
+export const useSimulatePoolSetTokenTreasury =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: poolAbi,
+    address: poolAddress,
+    functionName: 'setTokenTreasury',
+  })
+
+/**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"setTreasury"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useSimulatePoolSetTreasury =
@@ -3200,8 +3483,8 @@ export const useSimulatePoolSetTreasury =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"setUsdtPrice"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useSimulatePoolSetUsdtPrice =
@@ -3214,8 +3497,8 @@ export const useSimulatePoolSetUsdtPrice =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"setWhitelist"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useSimulatePoolSetWhitelist =
@@ -3228,8 +3511,8 @@ export const useSimulatePoolSetWhitelist =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"transferOwnership"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useSimulatePoolTransferOwnership =
@@ -3242,8 +3525,8 @@ export const useSimulatePoolTransferOwnership =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"updateBatch"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useSimulatePoolUpdateBatch =
@@ -3256,8 +3539,8 @@ export const useSimulatePoolUpdateBatch =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"upgradeToAndCall"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useSimulatePoolUpgradeToAndCall =
@@ -3270,8 +3553,8 @@ export const useSimulatePoolUpgradeToAndCall =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link poolAbi}__ and `functionName` set to `"withdrawToken"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useSimulatePoolWithdrawToken =
@@ -3284,8 +3567,8 @@ export const useSimulatePoolWithdrawToken =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link poolAbi}__
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWatchPoolEvent = /*#__PURE__*/ createUseWatchContractEvent({
@@ -3294,10 +3577,24 @@ export const useWatchPoolEvent = /*#__PURE__*/ createUseWatchContractEvent({
 })
 
 /**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link poolAbi}__ and `eventName` set to `"AdminUpdated"`
+ *
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * -
+ */
+export const useWatchPoolAdminUpdatedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: poolAbi,
+    address: poolAddress,
+    eventName: 'AdminUpdated',
+  })
+
+/**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link poolAbi}__ and `eventName` set to `"BatchActivated"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWatchPoolBatchActivatedEvent =
@@ -3310,8 +3607,8 @@ export const useWatchPoolBatchActivatedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link poolAbi}__ and `eventName` set to `"BatchAdded"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWatchPoolBatchAddedEvent =
@@ -3324,8 +3621,8 @@ export const useWatchPoolBatchAddedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link poolAbi}__ and `eventName` set to `"BatchDeactivated"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWatchPoolBatchDeactivatedEvent =
@@ -3338,8 +3635,8 @@ export const useWatchPoolBatchDeactivatedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link poolAbi}__ and `eventName` set to `"BatchUpdated"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWatchPoolBatchUpdatedEvent =
@@ -3352,8 +3649,8 @@ export const useWatchPoolBatchUpdatedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link poolAbi}__ and `eventName` set to `"CommissionTierSet"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWatchPoolCommissionTierSetEvent =
@@ -3366,8 +3663,8 @@ export const useWatchPoolCommissionTierSetEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link poolAbi}__ and `eventName` set to `"Initialized"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWatchPoolInitializedEvent =
@@ -3380,8 +3677,8 @@ export const useWatchPoolInitializedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link poolAbi}__ and `eventName` set to `"MaxCommissionDepthSet"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWatchPoolMaxCommissionDepthSetEvent =
@@ -3394,8 +3691,8 @@ export const useWatchPoolMaxCommissionDepthSetEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link poolAbi}__ and `eventName` set to `"MaxCumulativePurchaseSet"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWatchPoolMaxCumulativePurchaseSetEvent =
@@ -3408,8 +3705,8 @@ export const useWatchPoolMaxCumulativePurchaseSetEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link poolAbi}__ and `eventName` set to `"MaxReferralDepthSet"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWatchPoolMaxReferralDepthSetEvent =
@@ -3422,8 +3719,8 @@ export const useWatchPoolMaxReferralDepthSetEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link poolAbi}__ and `eventName` set to `"MaxSinglePurchaseSet"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWatchPoolMaxSinglePurchaseSetEvent =
@@ -3436,8 +3733,8 @@ export const useWatchPoolMaxSinglePurchaseSetEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link poolAbi}__ and `eventName` set to `"OwnershipTransferStarted"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWatchPoolOwnershipTransferStartedEvent =
@@ -3450,8 +3747,8 @@ export const useWatchPoolOwnershipTransferStartedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link poolAbi}__ and `eventName` set to `"OwnershipTransferred"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWatchPoolOwnershipTransferredEvent =
@@ -3464,8 +3761,8 @@ export const useWatchPoolOwnershipTransferredEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link poolAbi}__ and `eventName` set to `"PausedStateChanged"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWatchPoolPausedStateChangedEvent =
@@ -3478,8 +3775,8 @@ export const useWatchPoolPausedStateChangedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link poolAbi}__ and `eventName` set to `"PhonePurchased"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWatchPoolPhonePurchasedEvent =
@@ -3492,8 +3789,8 @@ export const useWatchPoolPhonePurchasedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link poolAbi}__ and `eventName` set to `"PurchaseTokenRewarded"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWatchPoolPurchaseTokenRewardedEvent =
@@ -3506,8 +3803,8 @@ export const useWatchPoolPurchaseTokenRewardedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link poolAbi}__ and `eventName` set to `"ReferralRegistered"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWatchPoolReferralRegisteredEvent =
@@ -3520,8 +3817,8 @@ export const useWatchPoolReferralRegisteredEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link poolAbi}__ and `eventName` set to `"TokenCommissionRecorded"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWatchPoolTokenCommissionRecordedEvent =
@@ -3534,8 +3831,8 @@ export const useWatchPoolTokenCommissionRecordedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link poolAbi}__ and `eventName` set to `"TokenPoolSet"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWatchPoolTokenPoolSetEvent =
@@ -3546,10 +3843,24 @@ export const useWatchPoolTokenPoolSetEvent =
   })
 
 /**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link poolAbi}__ and `eventName` set to `"TokenTreasurySet"`
+ *
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * -
+ */
+export const useWatchPoolTokenTreasurySetEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: poolAbi,
+    address: poolAddress,
+    eventName: 'TokenTreasurySet',
+  })
+
+/**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link poolAbi}__ and `eventName` set to `"TokenWithdrawn"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWatchPoolTokenWithdrawnEvent =
@@ -3562,8 +3873,8 @@ export const useWatchPoolTokenWithdrawnEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link poolAbi}__ and `eventName` set to `"TreasurySet"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWatchPoolTreasurySetEvent =
@@ -3576,8 +3887,8 @@ export const useWatchPoolTreasurySetEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link poolAbi}__ and `eventName` set to `"Upgraded"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWatchPoolUpgradedEvent =
@@ -3590,8 +3901,8 @@ export const useWatchPoolUpgradedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link poolAbi}__ and `eventName` set to `"UsdtCommissionPaid"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWatchPoolUsdtCommissionPaidEvent =
@@ -3604,8 +3915,8 @@ export const useWatchPoolUsdtCommissionPaidEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link poolAbi}__ and `eventName` set to `"UsdtPriceSet"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWatchPoolUsdtPriceSetEvent =
@@ -3618,8 +3929,8 @@ export const useWatchPoolUsdtPriceSetEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link poolAbi}__ and `eventName` set to `"WhitelistUpdated"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x928E333922abdf3D10C317647AAF344F37d20ccE)
  * -
  */
 export const useWatchPoolWhitelistUpdatedEvent =
@@ -3632,8 +3943,8 @@ export const useWatchPoolWhitelistUpdatedEvent =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link tokenAbi}__
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
  * -
  */
 export const useReadToken = /*#__PURE__*/ createUseReadContract({
@@ -3644,8 +3955,8 @@ export const useReadToken = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link tokenAbi}__ and `functionName` set to `"MAX_BATCH_LENGTH"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
  * -
  */
 export const useReadTokenMaxBatchLength = /*#__PURE__*/ createUseReadContract({
@@ -3657,8 +3968,8 @@ export const useReadTokenMaxBatchLength = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link tokenAbi}__ and `functionName` set to `"MAX_SUPPLY"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
  * -
  */
 export const useReadTokenMaxSupply = /*#__PURE__*/ createUseReadContract({
@@ -3668,10 +3979,23 @@ export const useReadTokenMaxSupply = /*#__PURE__*/ createUseReadContract({
 })
 
 /**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link tokenAbi}__ and `functionName` set to `"admin"`
+ *
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * -
+ */
+export const useReadTokenAdmin = /*#__PURE__*/ createUseReadContract({
+  abi: tokenAbi,
+  address: tokenAddress,
+  functionName: 'admin',
+})
+
+/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link tokenAbi}__ and `functionName` set to `"allowance"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
  * -
  */
 export const useReadTokenAllowance = /*#__PURE__*/ createUseReadContract({
@@ -3683,8 +4007,8 @@ export const useReadTokenAllowance = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link tokenAbi}__ and `functionName` set to `"balanceOf"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
  * -
  */
 export const useReadTokenBalanceOf = /*#__PURE__*/ createUseReadContract({
@@ -3696,8 +4020,8 @@ export const useReadTokenBalanceOf = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link tokenAbi}__ and `functionName` set to `"decimals"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
  * -
  */
 export const useReadTokenDecimals = /*#__PURE__*/ createUseReadContract({
@@ -3709,8 +4033,8 @@ export const useReadTokenDecimals = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link tokenAbi}__ and `functionName` set to `"isWhitelisted"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
  * -
  */
 export const useReadTokenIsWhitelisted = /*#__PURE__*/ createUseReadContract({
@@ -3722,8 +4046,8 @@ export const useReadTokenIsWhitelisted = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link tokenAbi}__ and `functionName` set to `"name"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
  * -
  */
 export const useReadTokenName = /*#__PURE__*/ createUseReadContract({
@@ -3735,8 +4059,8 @@ export const useReadTokenName = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link tokenAbi}__ and `functionName` set to `"owner"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
  * -
  */
 export const useReadTokenOwner = /*#__PURE__*/ createUseReadContract({
@@ -3746,24 +4070,10 @@ export const useReadTokenOwner = /*#__PURE__*/ createUseReadContract({
 })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link tokenAbi}__ and `functionName` set to `"renounceOwnership"`
- *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * -
- */
-export const useReadTokenRenounceOwnership =
-  /*#__PURE__*/ createUseReadContract({
-    abi: tokenAbi,
-    address: tokenAddress,
-    functionName: 'renounceOwnership',
-  })
-
-/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link tokenAbi}__ and `functionName` set to `"symbol"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
  * -
  */
 export const useReadTokenSymbol = /*#__PURE__*/ createUseReadContract({
@@ -3775,8 +4085,8 @@ export const useReadTokenSymbol = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link tokenAbi}__ and `functionName` set to `"totalSupply"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
  * -
  */
 export const useReadTokenTotalSupply = /*#__PURE__*/ createUseReadContract({
@@ -3788,8 +4098,8 @@ export const useReadTokenTotalSupply = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link tokenAbi}__ and `functionName` set to `"tradingEnabled"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
  * -
  */
 export const useReadTokenTradingEnabled = /*#__PURE__*/ createUseReadContract({
@@ -3801,8 +4111,8 @@ export const useReadTokenTradingEnabled = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link tokenAbi}__
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
  * -
  */
 export const useWriteToken = /*#__PURE__*/ createUseWriteContract({
@@ -3813,8 +4123,8 @@ export const useWriteToken = /*#__PURE__*/ createUseWriteContract({
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link tokenAbi}__ and `functionName` set to `"approve"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
  * -
  */
 export const useWriteTokenApprove = /*#__PURE__*/ createUseWriteContract({
@@ -3826,8 +4136,8 @@ export const useWriteTokenApprove = /*#__PURE__*/ createUseWriteContract({
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link tokenAbi}__ and `functionName` set to `"batchSetWhitelist"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
  * -
  */
 export const useWriteTokenBatchSetWhitelist =
@@ -3840,8 +4150,8 @@ export const useWriteTokenBatchSetWhitelist =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link tokenAbi}__ and `functionName` set to `"batchTransfer"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
  * -
  */
 export const useWriteTokenBatchTransfer = /*#__PURE__*/ createUseWriteContract({
@@ -3853,8 +4163,8 @@ export const useWriteTokenBatchTransfer = /*#__PURE__*/ createUseWriteContract({
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link tokenAbi}__ and `functionName` set to `"burn"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
  * -
  */
 export const useWriteTokenBurn = /*#__PURE__*/ createUseWriteContract({
@@ -3866,8 +4176,8 @@ export const useWriteTokenBurn = /*#__PURE__*/ createUseWriteContract({
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link tokenAbi}__ and `functionName` set to `"burnFrom"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
  * -
  */
 export const useWriteTokenBurnFrom = /*#__PURE__*/ createUseWriteContract({
@@ -3879,8 +4189,8 @@ export const useWriteTokenBurnFrom = /*#__PURE__*/ createUseWriteContract({
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link tokenAbi}__ and `functionName` set to `"enableTrading"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
  * -
  */
 export const useWriteTokenEnableTrading = /*#__PURE__*/ createUseWriteContract({
@@ -3890,10 +4200,37 @@ export const useWriteTokenEnableTrading = /*#__PURE__*/ createUseWriteContract({
 })
 
 /**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link tokenAbi}__ and `functionName` set to `"renounceOwnership"`
+ *
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * -
+ */
+export const useWriteTokenRenounceOwnership =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: tokenAbi,
+    address: tokenAddress,
+    functionName: 'renounceOwnership',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link tokenAbi}__ and `functionName` set to `"setAdmin"`
+ *
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * -
+ */
+export const useWriteTokenSetAdmin = /*#__PURE__*/ createUseWriteContract({
+  abi: tokenAbi,
+  address: tokenAddress,
+  functionName: 'setAdmin',
+})
+
+/**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link tokenAbi}__ and `functionName` set to `"setWhitelist"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
  * -
  */
 export const useWriteTokenSetWhitelist = /*#__PURE__*/ createUseWriteContract({
@@ -3905,8 +4242,8 @@ export const useWriteTokenSetWhitelist = /*#__PURE__*/ createUseWriteContract({
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link tokenAbi}__ and `functionName` set to `"transfer"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
  * -
  */
 export const useWriteTokenTransfer = /*#__PURE__*/ createUseWriteContract({
@@ -3918,8 +4255,8 @@ export const useWriteTokenTransfer = /*#__PURE__*/ createUseWriteContract({
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link tokenAbi}__ and `functionName` set to `"transferFrom"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
  * -
  */
 export const useWriteTokenTransferFrom = /*#__PURE__*/ createUseWriteContract({
@@ -3931,8 +4268,8 @@ export const useWriteTokenTransferFrom = /*#__PURE__*/ createUseWriteContract({
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link tokenAbi}__ and `functionName` set to `"transferOwnership"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
  * -
  */
 export const useWriteTokenTransferOwnership =
@@ -3945,8 +4282,8 @@ export const useWriteTokenTransferOwnership =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link tokenAbi}__
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
  * -
  */
 export const useSimulateToken = /*#__PURE__*/ createUseSimulateContract({
@@ -3957,8 +4294,8 @@ export const useSimulateToken = /*#__PURE__*/ createUseSimulateContract({
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link tokenAbi}__ and `functionName` set to `"approve"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
  * -
  */
 export const useSimulateTokenApprove = /*#__PURE__*/ createUseSimulateContract({
@@ -3970,8 +4307,8 @@ export const useSimulateTokenApprove = /*#__PURE__*/ createUseSimulateContract({
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link tokenAbi}__ and `functionName` set to `"batchSetWhitelist"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
  * -
  */
 export const useSimulateTokenBatchSetWhitelist =
@@ -3984,8 +4321,8 @@ export const useSimulateTokenBatchSetWhitelist =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link tokenAbi}__ and `functionName` set to `"batchTransfer"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
  * -
  */
 export const useSimulateTokenBatchTransfer =
@@ -3998,8 +4335,8 @@ export const useSimulateTokenBatchTransfer =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link tokenAbi}__ and `functionName` set to `"burn"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
  * -
  */
 export const useSimulateTokenBurn = /*#__PURE__*/ createUseSimulateContract({
@@ -4011,8 +4348,8 @@ export const useSimulateTokenBurn = /*#__PURE__*/ createUseSimulateContract({
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link tokenAbi}__ and `functionName` set to `"burnFrom"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
  * -
  */
 export const useSimulateTokenBurnFrom = /*#__PURE__*/ createUseSimulateContract(
@@ -4022,8 +4359,8 @@ export const useSimulateTokenBurnFrom = /*#__PURE__*/ createUseSimulateContract(
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link tokenAbi}__ and `functionName` set to `"enableTrading"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
  * -
  */
 export const useSimulateTokenEnableTrading =
@@ -4034,10 +4371,35 @@ export const useSimulateTokenEnableTrading =
   })
 
 /**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link tokenAbi}__ and `functionName` set to `"renounceOwnership"`
+ *
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * -
+ */
+export const useSimulateTokenRenounceOwnership =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: tokenAbi,
+    address: tokenAddress,
+    functionName: 'renounceOwnership',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link tokenAbi}__ and `functionName` set to `"setAdmin"`
+ *
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * -
+ */
+export const useSimulateTokenSetAdmin = /*#__PURE__*/ createUseSimulateContract(
+  { abi: tokenAbi, address: tokenAddress, functionName: 'setAdmin' },
+)
+
+/**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link tokenAbi}__ and `functionName` set to `"setWhitelist"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
  * -
  */
 export const useSimulateTokenSetWhitelist =
@@ -4050,8 +4412,8 @@ export const useSimulateTokenSetWhitelist =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link tokenAbi}__ and `functionName` set to `"transfer"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
  * -
  */
 export const useSimulateTokenTransfer = /*#__PURE__*/ createUseSimulateContract(
@@ -4061,8 +4423,8 @@ export const useSimulateTokenTransfer = /*#__PURE__*/ createUseSimulateContract(
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link tokenAbi}__ and `functionName` set to `"transferFrom"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
  * -
  */
 export const useSimulateTokenTransferFrom =
@@ -4075,8 +4437,8 @@ export const useSimulateTokenTransferFrom =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link tokenAbi}__ and `functionName` set to `"transferOwnership"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
  * -
  */
 export const useSimulateTokenTransferOwnership =
@@ -4089,8 +4451,8 @@ export const useSimulateTokenTransferOwnership =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link tokenAbi}__
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
  * -
  */
 export const useWatchTokenEvent = /*#__PURE__*/ createUseWatchContractEvent({
@@ -4099,10 +4461,24 @@ export const useWatchTokenEvent = /*#__PURE__*/ createUseWatchContractEvent({
 })
 
 /**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link tokenAbi}__ and `eventName` set to `"AdminUpdated"`
+ *
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * -
+ */
+export const useWatchTokenAdminUpdatedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: tokenAbi,
+    address: tokenAddress,
+    eventName: 'AdminUpdated',
+  })
+
+/**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link tokenAbi}__ and `eventName` set to `"Approval"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
  * -
  */
 export const useWatchTokenApprovalEvent =
@@ -4115,8 +4491,8 @@ export const useWatchTokenApprovalEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link tokenAbi}__ and `eventName` set to `"OwnershipTransferred"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
  * -
  */
 export const useWatchTokenOwnershipTransferredEvent =
@@ -4129,8 +4505,8 @@ export const useWatchTokenOwnershipTransferredEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link tokenAbi}__ and `eventName` set to `"TradingEnabled"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
  * -
  */
 export const useWatchTokenTradingEnabledEvent =
@@ -4143,8 +4519,8 @@ export const useWatchTokenTradingEnabledEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link tokenAbi}__ and `eventName` set to `"Transfer"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
  * -
  */
 export const useWatchTokenTransferEvent =
@@ -4157,8 +4533,8 @@ export const useWatchTokenTransferEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link tokenAbi}__ and `eventName` set to `"WhitelistUpdated"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x535d05335a2d41Ab7E1aAc6d73C18Ae4899Ba0D6)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x1436aC5097edA3b3Cc8c16b5574B11EE1B300686)
  * -
  */
 export const useWatchTokenWhitelistUpdatedEvent =
@@ -4171,8 +4547,8 @@ export const useWatchTokenWhitelistUpdatedEvent =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link tokenPoolAbi}__
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useReadTokenPool = /*#__PURE__*/ createUseReadContract({
@@ -4183,8 +4559,8 @@ export const useReadTokenPool = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"UPGRADE_INTERFACE_VERSION"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useReadTokenPoolUpgradeInterfaceVersion =
@@ -4195,10 +4571,51 @@ export const useReadTokenPoolUpgradeInterfaceVersion =
   })
 
 /**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"VESTING_TYPE_PURCHASE"`
+ *
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * -
+ */
+export const useReadTokenPoolVestingTypePurchase =
+  /*#__PURE__*/ createUseReadContract({
+    abi: tokenPoolAbi,
+    address: tokenPoolAddress,
+    functionName: 'VESTING_TYPE_PURCHASE',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"VESTING_TYPE_REFERRAL"`
+ *
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * -
+ */
+export const useReadTokenPoolVestingTypeReferral =
+  /*#__PURE__*/ createUseReadContract({
+    abi: tokenPoolAbi,
+    address: tokenPoolAddress,
+    functionName: 'VESTING_TYPE_REFERRAL',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"admin"`
+ *
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * -
+ */
+export const useReadTokenPoolAdmin = /*#__PURE__*/ createUseReadContract({
+  abi: tokenPoolAbi,
+  address: tokenPoolAddress,
+  functionName: 'admin',
+})
+
+/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"distribution"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useReadTokenPoolDistribution = /*#__PURE__*/ createUseReadContract(
@@ -4212,8 +4629,8 @@ export const useReadTokenPoolDistribution = /*#__PURE__*/ createUseReadContract(
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"getClaimable"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useReadTokenPoolGetClaimable = /*#__PURE__*/ createUseReadContract(
@@ -4227,8 +4644,8 @@ export const useReadTokenPoolGetClaimable = /*#__PURE__*/ createUseReadContract(
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"getSchedule"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useReadTokenPoolGetSchedule = /*#__PURE__*/ createUseReadContract({
@@ -4240,8 +4657,8 @@ export const useReadTokenPoolGetSchedule = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"getScheduleCount"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useReadTokenPoolGetScheduleCount =
@@ -4254,8 +4671,8 @@ export const useReadTokenPoolGetScheduleCount =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"getVestingInfo"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useReadTokenPoolGetVestingInfo =
@@ -4266,10 +4683,24 @@ export const useReadTokenPoolGetVestingInfo =
   })
 
 /**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"getVestingInfoByType"`
+ *
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * -
+ */
+export const useReadTokenPoolGetVestingInfoByType =
+  /*#__PURE__*/ createUseReadContract({
+    abi: tokenPoolAbi,
+    address: tokenPoolAddress,
+    functionName: 'getVestingInfoByType',
+  })
+
+/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"globalTotalClaimed"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useReadTokenPoolGlobalTotalClaimed =
@@ -4282,8 +4713,8 @@ export const useReadTokenPoolGlobalTotalClaimed =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"globalTotalVested"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useReadTokenPoolGlobalTotalVested =
@@ -4296,8 +4727,8 @@ export const useReadTokenPoolGlobalTotalVested =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"immediatePercent"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useReadTokenPoolImmediatePercent =
@@ -4310,8 +4741,8 @@ export const useReadTokenPoolImmediatePercent =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"isBlacklisted"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useReadTokenPoolIsBlacklisted =
@@ -4324,8 +4755,8 @@ export const useReadTokenPoolIsBlacklisted =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"minClaimAmount"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useReadTokenPoolMinClaimAmount =
@@ -4338,8 +4769,8 @@ export const useReadTokenPoolMinClaimAmount =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"owner"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useReadTokenPoolOwner = /*#__PURE__*/ createUseReadContract({
@@ -4351,8 +4782,8 @@ export const useReadTokenPoolOwner = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"pendingOwner"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useReadTokenPoolPendingOwner = /*#__PURE__*/ createUseReadContract(
@@ -4366,8 +4797,8 @@ export const useReadTokenPoolPendingOwner = /*#__PURE__*/ createUseReadContract(
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"proxiableUUID"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useReadTokenPoolProxiableUuid =
@@ -4378,10 +4809,24 @@ export const useReadTokenPoolProxiableUuid =
   })
 
 /**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"renounceOwnership"`
+ *
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * -
+ */
+export const useReadTokenPoolRenounceOwnership =
+  /*#__PURE__*/ createUseReadContract({
+    abi: tokenPoolAbi,
+    address: tokenPoolAddress,
+    functionName: 'renounceOwnership',
+  })
+
+/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"token"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useReadTokenPoolToken = /*#__PURE__*/ createUseReadContract({
@@ -4393,8 +4838,8 @@ export const useReadTokenPoolToken = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"totalClaimedAmount"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useReadTokenPoolTotalClaimedAmount =
@@ -4407,8 +4852,8 @@ export const useReadTokenPoolTotalClaimedAmount =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"totalImmediateAmount"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useReadTokenPoolTotalImmediateAmount =
@@ -4421,8 +4866,8 @@ export const useReadTokenPoolTotalImmediateAmount =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"totalVestedAmount"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useReadTokenPoolTotalVestedAmount =
@@ -4435,8 +4880,8 @@ export const useReadTokenPoolTotalVestedAmount =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"treasury"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useReadTokenPoolTreasury = /*#__PURE__*/ createUseReadContract({
@@ -4448,8 +4893,8 @@ export const useReadTokenPoolTreasury = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"vestingDuration"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useReadTokenPoolVestingDuration =
@@ -4462,8 +4907,8 @@ export const useReadTokenPoolVestingDuration =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"vestingPercent"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useReadTokenPoolVestingPercent =
@@ -4476,8 +4921,8 @@ export const useReadTokenPoolVestingPercent =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link tokenPoolAbi}__
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useWriteTokenPool = /*#__PURE__*/ createUseWriteContract({
@@ -4488,8 +4933,8 @@ export const useWriteTokenPool = /*#__PURE__*/ createUseWriteContract({
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"acceptOwnership"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useWriteTokenPoolAcceptOwnership =
@@ -4502,8 +4947,8 @@ export const useWriteTokenPoolAcceptOwnership =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"addVesting"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useWriteTokenPoolAddVesting = /*#__PURE__*/ createUseWriteContract(
@@ -4513,8 +4958,8 @@ export const useWriteTokenPoolAddVesting = /*#__PURE__*/ createUseWriteContract(
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"claim"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useWriteTokenPoolClaim = /*#__PURE__*/ createUseWriteContract({
@@ -4526,8 +4971,8 @@ export const useWriteTokenPoolClaim = /*#__PURE__*/ createUseWriteContract({
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"initialize"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useWriteTokenPoolInitialize = /*#__PURE__*/ createUseWriteContract(
@@ -4535,24 +4980,23 @@ export const useWriteTokenPoolInitialize = /*#__PURE__*/ createUseWriteContract(
 )
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"renounceOwnership"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"setAdmin"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
-export const useWriteTokenPoolRenounceOwnership =
-  /*#__PURE__*/ createUseWriteContract({
-    abi: tokenPoolAbi,
-    address: tokenPoolAddress,
-    functionName: 'renounceOwnership',
-  })
+export const useWriteTokenPoolSetAdmin = /*#__PURE__*/ createUseWriteContract({
+  abi: tokenPoolAbi,
+  address: tokenPoolAddress,
+  functionName: 'setAdmin',
+})
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"setBlacklist"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useWriteTokenPoolSetBlacklist =
@@ -4565,8 +5009,8 @@ export const useWriteTokenPoolSetBlacklist =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"setDistribution"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useWriteTokenPoolSetDistribution =
@@ -4579,8 +5023,8 @@ export const useWriteTokenPoolSetDistribution =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"setMinClaimAmount"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useWriteTokenPoolSetMinClaimAmount =
@@ -4593,8 +5037,8 @@ export const useWriteTokenPoolSetMinClaimAmount =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"setTreasury"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useWriteTokenPoolSetTreasury =
@@ -4607,8 +5051,8 @@ export const useWriteTokenPoolSetTreasury =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"setVestingConfig"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useWriteTokenPoolSetVestingConfig =
@@ -4621,8 +5065,8 @@ export const useWriteTokenPoolSetVestingConfig =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"transferOwnership"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useWriteTokenPoolTransferOwnership =
@@ -4633,10 +5077,24 @@ export const useWriteTokenPoolTransferOwnership =
   })
 
 /**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"transferToTreasury"`
+ *
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * -
+ */
+export const useWriteTokenPoolTransferToTreasury =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: tokenPoolAbi,
+    address: tokenPoolAddress,
+    functionName: 'transferToTreasury',
+  })
+
+/**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"upgradeToAndCall"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useWriteTokenPoolUpgradeToAndCall =
@@ -4649,8 +5107,8 @@ export const useWriteTokenPoolUpgradeToAndCall =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"withdrawToken"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useWriteTokenPoolWithdrawToken =
@@ -4663,8 +5121,8 @@ export const useWriteTokenPoolWithdrawToken =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link tokenPoolAbi}__
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useSimulateTokenPool = /*#__PURE__*/ createUseSimulateContract({
@@ -4675,8 +5133,8 @@ export const useSimulateTokenPool = /*#__PURE__*/ createUseSimulateContract({
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"acceptOwnership"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useSimulateTokenPoolAcceptOwnership =
@@ -4689,8 +5147,8 @@ export const useSimulateTokenPoolAcceptOwnership =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"addVesting"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useSimulateTokenPoolAddVesting =
@@ -4703,8 +5161,8 @@ export const useSimulateTokenPoolAddVesting =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"claim"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useSimulateTokenPoolClaim =
@@ -4717,8 +5175,8 @@ export const useSimulateTokenPoolClaim =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"initialize"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useSimulateTokenPoolInitialize =
@@ -4729,24 +5187,24 @@ export const useSimulateTokenPoolInitialize =
   })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"renounceOwnership"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"setAdmin"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
-export const useSimulateTokenPoolRenounceOwnership =
+export const useSimulateTokenPoolSetAdmin =
   /*#__PURE__*/ createUseSimulateContract({
     abi: tokenPoolAbi,
     address: tokenPoolAddress,
-    functionName: 'renounceOwnership',
+    functionName: 'setAdmin',
   })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"setBlacklist"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useSimulateTokenPoolSetBlacklist =
@@ -4759,8 +5217,8 @@ export const useSimulateTokenPoolSetBlacklist =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"setDistribution"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useSimulateTokenPoolSetDistribution =
@@ -4773,8 +5231,8 @@ export const useSimulateTokenPoolSetDistribution =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"setMinClaimAmount"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useSimulateTokenPoolSetMinClaimAmount =
@@ -4787,8 +5245,8 @@ export const useSimulateTokenPoolSetMinClaimAmount =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"setTreasury"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useSimulateTokenPoolSetTreasury =
@@ -4801,8 +5259,8 @@ export const useSimulateTokenPoolSetTreasury =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"setVestingConfig"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useSimulateTokenPoolSetVestingConfig =
@@ -4815,8 +5273,8 @@ export const useSimulateTokenPoolSetVestingConfig =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"transferOwnership"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useSimulateTokenPoolTransferOwnership =
@@ -4827,10 +5285,24 @@ export const useSimulateTokenPoolTransferOwnership =
   })
 
 /**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"transferToTreasury"`
+ *
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * -
+ */
+export const useSimulateTokenPoolTransferToTreasury =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: tokenPoolAbi,
+    address: tokenPoolAddress,
+    functionName: 'transferToTreasury',
+  })
+
+/**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"upgradeToAndCall"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useSimulateTokenPoolUpgradeToAndCall =
@@ -4843,8 +5315,8 @@ export const useSimulateTokenPoolUpgradeToAndCall =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link tokenPoolAbi}__ and `functionName` set to `"withdrawToken"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useSimulateTokenPoolWithdrawToken =
@@ -4857,8 +5329,8 @@ export const useSimulateTokenPoolWithdrawToken =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link tokenPoolAbi}__
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useWatchTokenPoolEvent = /*#__PURE__*/ createUseWatchContractEvent(
@@ -4866,10 +5338,24 @@ export const useWatchTokenPoolEvent = /*#__PURE__*/ createUseWatchContractEvent(
 )
 
 /**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link tokenPoolAbi}__ and `eventName` set to `"AdminUpdated"`
+ *
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * -
+ */
+export const useWatchTokenPoolAdminUpdatedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: tokenPoolAbi,
+    address: tokenPoolAddress,
+    eventName: 'AdminUpdated',
+  })
+
+/**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link tokenPoolAbi}__ and `eventName` set to `"BlacklistUpdated"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useWatchTokenPoolBlacklistUpdatedEvent =
@@ -4882,8 +5368,8 @@ export const useWatchTokenPoolBlacklistUpdatedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link tokenPoolAbi}__ and `eventName` set to `"DistributionUpdated"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useWatchTokenPoolDistributionUpdatedEvent =
@@ -4896,8 +5382,8 @@ export const useWatchTokenPoolDistributionUpdatedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link tokenPoolAbi}__ and `eventName` set to `"Initialized"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useWatchTokenPoolInitializedEvent =
@@ -4910,8 +5396,8 @@ export const useWatchTokenPoolInitializedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link tokenPoolAbi}__ and `eventName` set to `"InsufficientBalance"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useWatchTokenPoolInsufficientBalanceEvent =
@@ -4924,8 +5410,8 @@ export const useWatchTokenPoolInsufficientBalanceEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link tokenPoolAbi}__ and `eventName` set to `"MinClaimAmountSet"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useWatchTokenPoolMinClaimAmountSetEvent =
@@ -4938,8 +5424,8 @@ export const useWatchTokenPoolMinClaimAmountSetEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link tokenPoolAbi}__ and `eventName` set to `"OwnershipTransferStarted"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useWatchTokenPoolOwnershipTransferStartedEvent =
@@ -4952,8 +5438,8 @@ export const useWatchTokenPoolOwnershipTransferStartedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link tokenPoolAbi}__ and `eventName` set to `"OwnershipTransferred"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useWatchTokenPoolOwnershipTransferredEvent =
@@ -4966,8 +5452,8 @@ export const useWatchTokenPoolOwnershipTransferredEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link tokenPoolAbi}__ and `eventName` set to `"TokenWithdrawn"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useWatchTokenPoolTokenWithdrawnEvent =
@@ -4980,8 +5466,8 @@ export const useWatchTokenPoolTokenWithdrawnEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link tokenPoolAbi}__ and `eventName` set to `"TokensClaimed"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useWatchTokenPoolTokensClaimedEvent =
@@ -4992,10 +5478,24 @@ export const useWatchTokenPoolTokensClaimedEvent =
   })
 
 /**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link tokenPoolAbi}__ and `eventName` set to `"TreasuryTransferred"`
+ *
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * -
+ */
+export const useWatchTokenPoolTreasuryTransferredEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: tokenPoolAbi,
+    address: tokenPoolAddress,
+    eventName: 'TreasuryTransferred',
+  })
+
+/**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link tokenPoolAbi}__ and `eventName` set to `"TreasuryUpdated"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useWatchTokenPoolTreasuryUpdatedEvent =
@@ -5008,8 +5508,8 @@ export const useWatchTokenPoolTreasuryUpdatedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link tokenPoolAbi}__ and `eventName` set to `"Upgraded"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useWatchTokenPoolUpgradedEvent =
@@ -5022,8 +5522,8 @@ export const useWatchTokenPoolUpgradedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link tokenPoolAbi}__ and `eventName` set to `"VestingConfigUpdated"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useWatchTokenPoolVestingConfigUpdatedEvent =
@@ -5036,8 +5536,8 @@ export const useWatchTokenPoolVestingConfigUpdatedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link tokenPoolAbi}__ and `eventName` set to `"VestingCreated"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x4Ebf184Dc237c42fB41D5958f2F6422d6390fa38)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x073d8735a0Ff3A6C9F70467Bd226BF75647e56a0)
  * -
  */
 export const useWatchTokenPoolVestingCreatedEvent =
@@ -5050,8 +5550,8 @@ export const useWatchTokenPoolVestingCreatedEvent =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link usdtAbi}__
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88)
  * -
  */
 export const useReadUsdt = /*#__PURE__*/ createUseReadContract({
@@ -5062,8 +5562,8 @@ export const useReadUsdt = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link usdtAbi}__ and `functionName` set to `"allowance"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88)
  * -
  */
 export const useReadUsdtAllowance = /*#__PURE__*/ createUseReadContract({
@@ -5075,8 +5575,8 @@ export const useReadUsdtAllowance = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link usdtAbi}__ and `functionName` set to `"balanceOf"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88)
  * -
  */
 export const useReadUsdtBalanceOf = /*#__PURE__*/ createUseReadContract({
@@ -5088,8 +5588,8 @@ export const useReadUsdtBalanceOf = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link usdtAbi}__ and `functionName` set to `"decimals"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88)
  * -
  */
 export const useReadUsdtDecimals = /*#__PURE__*/ createUseReadContract({
@@ -5101,8 +5601,8 @@ export const useReadUsdtDecimals = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link usdtAbi}__ and `functionName` set to `"name"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88)
  * -
  */
 export const useReadUsdtName = /*#__PURE__*/ createUseReadContract({
@@ -5114,8 +5614,8 @@ export const useReadUsdtName = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link usdtAbi}__ and `functionName` set to `"symbol"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88)
  * -
  */
 export const useReadUsdtSymbol = /*#__PURE__*/ createUseReadContract({
@@ -5127,8 +5627,8 @@ export const useReadUsdtSymbol = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link usdtAbi}__ and `functionName` set to `"totalSupply"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88)
  * -
  */
 export const useReadUsdtTotalSupply = /*#__PURE__*/ createUseReadContract({
@@ -5140,8 +5640,8 @@ export const useReadUsdtTotalSupply = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link usdtAbi}__
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88)
  * -
  */
 export const useWriteUsdt = /*#__PURE__*/ createUseWriteContract({
@@ -5152,8 +5652,8 @@ export const useWriteUsdt = /*#__PURE__*/ createUseWriteContract({
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link usdtAbi}__ and `functionName` set to `"approve"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88)
  * -
  */
 export const useWriteUsdtApprove = /*#__PURE__*/ createUseWriteContract({
@@ -5165,8 +5665,8 @@ export const useWriteUsdtApprove = /*#__PURE__*/ createUseWriteContract({
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link usdtAbi}__ and `functionName` set to `"transfer"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88)
  * -
  */
 export const useWriteUsdtTransfer = /*#__PURE__*/ createUseWriteContract({
@@ -5178,8 +5678,8 @@ export const useWriteUsdtTransfer = /*#__PURE__*/ createUseWriteContract({
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link usdtAbi}__ and `functionName` set to `"transferFrom"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88)
  * -
  */
 export const useWriteUsdtTransferFrom = /*#__PURE__*/ createUseWriteContract({
@@ -5191,8 +5691,8 @@ export const useWriteUsdtTransferFrom = /*#__PURE__*/ createUseWriteContract({
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link usdtAbi}__
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88)
  * -
  */
 export const useSimulateUsdt = /*#__PURE__*/ createUseSimulateContract({
@@ -5203,8 +5703,8 @@ export const useSimulateUsdt = /*#__PURE__*/ createUseSimulateContract({
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link usdtAbi}__ and `functionName` set to `"approve"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88)
  * -
  */
 export const useSimulateUsdtApprove = /*#__PURE__*/ createUseSimulateContract({
@@ -5216,8 +5716,8 @@ export const useSimulateUsdtApprove = /*#__PURE__*/ createUseSimulateContract({
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link usdtAbi}__ and `functionName` set to `"transfer"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88)
  * -
  */
 export const useSimulateUsdtTransfer = /*#__PURE__*/ createUseSimulateContract({
@@ -5229,8 +5729,8 @@ export const useSimulateUsdtTransfer = /*#__PURE__*/ createUseSimulateContract({
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link usdtAbi}__ and `functionName` set to `"transferFrom"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88)
  * -
  */
 export const useSimulateUsdtTransferFrom =
@@ -5243,8 +5743,8 @@ export const useSimulateUsdtTransferFrom =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link usdtAbi}__
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88)
  * -
  */
 export const useWatchUsdtEvent = /*#__PURE__*/ createUseWatchContractEvent({
@@ -5255,8 +5755,8 @@ export const useWatchUsdtEvent = /*#__PURE__*/ createUseWatchContractEvent({
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link usdtAbi}__ and `eventName` set to `"Approval"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88)
  * -
  */
 export const useWatchUsdtApprovalEvent =
@@ -5269,8 +5769,8 @@ export const useWatchUsdtApprovalEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link usdtAbi}__ and `eventName` set to `"Transfer"`
  *
- * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
- * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
+ * - [__View Contract on Bnb Smart Chain Bsc Scan__](https://bscscan.com/address/0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88)
+ * - [__View Contract on Binance Smart Chain Testnet Bsc Scan__](https://testnet.bscscan.com/address/0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88)
  * -
  */
 export const useWatchUsdtTransferEvent =

@@ -207,6 +207,22 @@
     "type": "error"
   },
   {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "totalStock",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "soldCount",
+        "type": "uint256"
+      }
+    ],
+    "name": "InvalidTotalStock",
+    "type": "error"
+  },
+  {
     "inputs": [],
     "name": "MaxSinglePurchaseMustBePositive",
     "type": "error"
@@ -241,6 +257,11 @@
       }
     ],
     "name": "OwnableUnauthorizedAccount",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "OwnershipRenouncementDisabled",
     "type": "error"
   },
   {
@@ -328,6 +349,30 @@
     ],
     "name": "UUPSUnsupportedProxiableUUID",
     "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Unauthorized",
+    "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "oldAdmin",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newAdmin",
+        "type": "address"
+      }
+    ],
+    "name": "AdminUpdated",
+    "type": "event"
   },
   {
     "anonymous": false,
@@ -713,6 +758,19 @@
       {
         "indexed": true,
         "internalType": "address",
+        "name": "tokenTreasury",
+        "type": "address"
+      }
+    ],
+    "name": "TokenTreasurySet",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
         "name": "token",
         "type": "address"
       },
@@ -889,6 +947,19 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "admin",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "uint256",
@@ -969,6 +1040,11 @@
       {
         "internalType": "uint256",
         "name": "remainingStock",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "totalStock",
         "type": "uint256"
       }
     ],
@@ -1275,6 +1351,11 @@
       },
       {
         "internalType": "address",
+        "name": "_tokenTreasury",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
         "name": "_referrer0",
         "type": "address"
       },
@@ -1282,6 +1363,11 @@
         "internalType": "uint256",
         "name": "_usdtPrice",
         "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_admin",
+        "type": "address"
       }
     ],
     "name": "initialize",
@@ -1518,6 +1604,19 @@
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "_admin",
+        "type": "address"
+      }
+    ],
+    "name": "setAdmin",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "uint8",
         "name": "tierIndex",
         "type": "uint8"
@@ -1612,6 +1711,19 @@
       }
     ],
     "name": "setTokenPool",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_tokenTreasury",
+        "type": "address"
+      }
+    ],
+    "name": "setTokenTreasury",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1733,6 +1845,19 @@
   {
     "inputs": [],
     "name": "tokenPool",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "tokenTreasury",
     "outputs": [
       {
         "internalType": "address",
