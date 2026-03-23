@@ -110,7 +110,7 @@
     "myWallet": "My Wallet",
     "myEarnings": "Income(USDT)",
     "myFriends": "My Referrals",
-    "teamNodes": "My Team",
+    "teamNodes": "Team Performance",
     "myEarningsTooltip": "USDT income earned by this address",
     "friendsTooltip": "Team under this address",
     "teamNodesTooltip": "Phones purchased by this address"
@@ -132,7 +132,7 @@
   },
 
   "team": {
-    "title": "My Team",
+    "title": "Team Performance",
     "loading": "Loading team data...",
     "error": "Error",
     "userNotFound": "User data not found",

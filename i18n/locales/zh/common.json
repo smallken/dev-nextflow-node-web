@@ -109,7 +109,7 @@
     "myWallet": "我的钱包",
     "myEarnings": "收益(USDT)",
     "myFriends": "我的推荐",
-    "teamNodes": "我的团队",
+    "teamNodes": "团队业绩",
     "myEarningsTooltip": "该地址获得的USDT收益",
     "friendsTooltip": "该地址伞下团队",
     "teamNodesTooltip": "该地址购买手机数"
@@ -131,7 +131,7 @@
   },
 
   "team": {
-    "title": "我的团队",
+    "title": "团队业绩",
     "loading": "正在加载团队数据...",
     "error": "错误",
     "userNotFound": "未找到用户数据",
