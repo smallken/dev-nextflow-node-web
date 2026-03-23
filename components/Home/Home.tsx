@@ -84,6 +84,36 @@ export function Home() {
             width: 100%;
             justify-content: space-between;
             margin-bottom: 12px;
+            display: flex !important;
+          }
+          .mobile-only-slogan {
+            display: block !important;
+            text-align: center;
+            width: 100%;
+            margin-bottom: 8px;
+          }
+          .desktop-hero-title {
+            display: none !important;
+          }
+          .desktop-bubble {
+            display: none !important;
+          }
+          .desktop-card-stats {
+            display: none !important;
+          }
+          .mobile-progress-only {
+            display: flex !important;
+          }
+        }
+        @media (min-width: 48.01em) {
+          .mobile-stats-row {
+            display: none !important;
+          }
+          .mobile-only-slogan {
+            display: none !important;
+          }
+          .mobile-progress-only {
+            display: none !important;
           }
         }
       `}</style>
@@ -105,22 +135,6 @@ export function Home() {
               <Group className="home-hero-left" align="center" gap="xs" wrap="nowrap" style={{ flex: '0 0 auto' }}>
                 {/* 手机端：Smart Tech Link Future在小奈头上 */}
                 <div style={{ display: 'none' }} className="mobile-only-slogan">
-                  <style jsx>{`
-                    @media (max-width: 48em) {
-                      .mobile-only-slogan {
-                        display: block !important;
-                        text-align: center;
-                        width: 100%;
-                        margin-bottom: 8px;
-                      }
-                      .desktop-hero-title {
-                        display: none !important;
-                      }
-                      .desktop-bubble {
-                        display: none !important;
-                      }
-                    }
-                  `}</style>
                   <Text 
                     size="24px"
                     fw={700} 
@@ -256,21 +270,6 @@ export function Home() {
           </Stack>
 
           {/* 手机端：数量和期数放到卡片外面 */}
-          <style jsx>{`
-            @media (max-width: 48em) {
-              .mobile-stats-row {
-                display: flex !important;
-              }
-              .desktop-card-stats {
-                display: none !important;
-              }
-            }
-            @media (min-width: 48.01em) {
-              .mobile-stats-row {
-                display: none !important;
-              }
-            }
-          `}</style>
           <Group className="mobile-stats-row" justify="space-between" align="center" mb="sm" style={{ display: 'none' }}>
             <Text size="xl" fw={700} c="#1e293b">
               {appInfo?.batchSoldCount ?? 0}/{appInfo?.batchTotalStock ?? 0}
@@ -356,13 +355,6 @@ export function Home() {
             </Stack>
             {/* 手机端只显示进度条 */}
             <Group align="center" gap="md" wrap="nowrap" style={{ display: 'none' }} className="mobile-progress-only">
-              <style jsx>{`
-                @media (max-width: 48em) {
-                  .mobile-progress-only {
-                    display: flex !important;
-                  }
-                }
-              `}</style>
               <Progress
                 value={appInfo ? (appInfo.batchTotalStock > 0 ? (appInfo.batchSoldCount / appInfo.batchTotalStock * 100) : 0) : 0}
                 size="lg"
