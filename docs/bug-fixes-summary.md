@@ -14,6 +14,7 @@
 6. [数据获取冗余问题](#6-数据获取冗余问题)
 7. [WebSocket 实时监听性能问题](#7-websocket-实时监听性能问题)
 8. [SocialMenu Modal 页面抖动](#8-socialmenu-modal-页面抖动)
+9. [本地开发环境区块链数据查询失败](#9-本地开发环境区块链数据查询失败)
 
 ---
 
@@ -798,6 +799,236 @@ body { overflow: hidden; } → 滚动条消失
 2. **渐进增强** — 先保证功能可用，再添加视觉效果
 3. **性能监控** — 使用 React DevTools 和浏览器性能工具分析瓶颈
 4. **代码审查** — 定期审查 Context、查询、事件监听等关键代码
+
+---
+
+## 9. 本地开发环境区块链数据查询失败
+
+### 问题现象
+
+本地开发环境启动后，页面显示 0/0 库存，所有区块链数据无法加载，显示"刷新BSC链数据"按钮。控制台输出：
+```
+phonePrice: undefined
+activeBatchData: undefined
+batchDetails: undefined
+```
+
+### 问题背景
+
+项目使用 Wagmi CLI 根据 `.env.local` 中的合约地址自动生成 TypeScript hooks。当环境变量发生变化时，需要重新生成这些 hooks，否则会使用旧的（可能错误的）合约地址进行查询。
+
+### 问题发生原因
+
+#### Wagmi CLI 工作流程
+
+```
+.env.local (环境变量)
+       ↓
+wagmi.config.ts (读取环境变量)
+       ↓
+npx wagmi generate (生成 hooks)
+       ↓
+wagmi/generated.ts (TypeScript hooks)
+       ↓
+应用代码使用 hooks 查询合约
+```
+
+#### 问题根源
+
+1. **环境变量更改但未重新生成**
+   - 修改了 `.env.local` 中的合约地址
+   - 没有运行 `npx wagmi generate`
+   - `wagmi/generated.ts` 中仍然是旧的合约地址
+   - 查询失败返回 undefined
+
+2. **不同环境的合约地址不同**
+   - 开发环境：可能使用测试网合约
+   - 生产环境：使用主网合约
+   - 两个环境的地址完全不同
+
+#### 验证问题
+
+运行 `npx wagmi generate` 时会看到当前使用的环境变量：
+
+```bash
+=== Wagmi Generate - Environment Variables ===
+NEXT_PUBLIC_PHONE_DISTRIBUTION: 0x42C739E8CF9DBcbE076993Cf9495858018bE4395
+NEXT_PUBLIC_USDT: 0x98Fe9F8A2d08D7bD55c3207238F6E9aC757B3e88
+...
+===============================================
+```
+
+如果这些地址与 `.env.local` 中的不一致，说明 hooks 没有更新。
+
+#### 相关知识：Wagmi CLI 代码生成
+
+Wagmi CLI 从 `wagmi.config.ts` 读取配置：
+
+```typescript
+// wagmi.config.ts
+import { defineConfig } from '@wagmi/cli'
+import dotenv from 'dotenv'
+
+// 加载环境变量
+dotenv.config({ path: '.env.local' });
+
+const addresses = {
+  [bscTestnet.id]: {
+    pool: process.env.NEXT_PUBLIC_PHONE_DISTRIBUTION,
+    usdt: process.env.NEXT_PUBLIC_USDT,
+    // ...
+  }
+};
+
+export default defineConfig({
+  out: 'wagmi/generated.ts',
+  contracts: [
+    {
+      name: 'pool',
+      address: addresses,
+      abi: poolAbi,
+    },
+    // ...
+  ],
+});
+```
+
+生成的 `wagmi/generated.ts` 包含硬编码的合约地址：
+
+```typescript
+// wagmi/generated.ts (自动生成)
+export const poolAddress = {
+  97: '0x42C739E8CF9DBcbE076993Cf9495858018bE4395', // ← 硬编码地址
+} as const;
+
+export function useReadPoolUsdtPrice() {
+  return useReadContract({
+    address: poolAddress,  // ← 使用生成的地址
+    functionName: 'usdtPrice',
+  });
+}
+```
+
+### 解决方案
+
+**每次修改 `.env.local` 后，必须重新生成 wagmi hooks：**
+
+```bash
+npx wagmi generate
+```
+
+**完整操作流程：**
+
+1. 修改 `.env.local` 中的合约地址
+2. 运行 `npx wagmi generate`
+3. 确认输出的环境变量正确
+4. 重启开发服务器 `pnpm dev`
+5. 刷新浏览器页面
+
+**示例：**
+
+```bash
+# 1. 编辑 .env.local
+vim .env.local
+
+# 2. 重新生成 hooks
+npx wagmi generate
+
+# 输出：
+# === Wagmi Generate - Environment Variables ===
+# NEXT_PUBLIC_PHONE_DISTRIBUTION: 0xc0134f7724c79Aa10292bBaf7F9c8b0c878bF4f4 ✓
+# ===============================================
+# ✔ Writing to wagmi/generated.ts
+
+# 3. 重启开发服务器
+pnpm dev
+```
+
+### 常见错误场景
+
+#### 场景1：从其他仓库复制代码
+
+```bash
+# 从 repo-A 复制到 repo-B
+cp -r repo-A/components repo-B/
+
+# ❌ 错误：没有重新生成 hooks
+# repo-B 的 wagmi/generated.ts 仍然是旧地址
+
+# ✅ 正确：重新生成
+cd repo-B
+npx wagmi generate
+```
+
+#### 场景2：切换测试网/主网
+
+```bash
+# 修改 .env.local
+NEXT_PUBLIC_ENABLE_TESTNETS=false  # true → false
+
+# ❌ 错误：直接启动
+pnpm dev
+
+# ✅ 正确：先重新生成
+npx wagmi generate
+pnpm dev
+```
+
+#### 场景3：Git 拉取最新代码
+
+```bash
+git pull origin main
+
+# 如果合约地址变化了：
+# ❌ 错误：直接运行
+pnpm dev
+
+# ✅ 正确：检查并重新生成
+npx wagmi generate
+pnpm dev
+```
+
+### 防止问题的最佳实践
+
+**1. 添加到 package.json scripts：**
+
+```json
+{
+  "scripts": {
+    "dev": "wagmi generate && next dev",
+    "build": "wagmi generate && next build",
+    "generate": "wagmi generate"
+  }
+}
+```
+
+这样每次 `pnpm dev` 自动重新生成。
+
+**2. 添加到 Git Hooks（可选）：**
+
+```bash
+# .husky/post-checkout
+#!/bin/sh
+npx wagmi generate
+```
+
+**3. 在 README 中说明：**
+
+```markdown
+## 环境配置
+
+修改 `.env.local` 后必须运行：
+\`\`\`bash
+npx wagmi generate
+\`\`\`
+```
+
+### 结果
+
+- ✅ 区块链数据正常加载
+- ✅ 合约地址与环境变量一致
+- ✅ 避免使用错误的合约地址
+- ✅ 开发体验更流畅
 
 ---
 
