@@ -95,9 +95,6 @@ export function Home() {
           .desktop-hero-title {
             display: none !important;
           }
-          .desktop-bubble {
-            display: none !important;
-          }
           .desktop-card-stats {
             display: none !important;
           }
