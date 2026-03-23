@@ -60,8 +60,9 @@ export function Home() {
           }
           .home-hero-left {
             width: 100%;
-            justify-content: center;
-            flex-direction: column;
+            justify-content: flex-start;
+            flex-direction: row;
+            gap: 4px;
           }
           .home-hero-title {
             width: 100%;
@@ -87,6 +88,10 @@ export function Home() {
             margin-left: 0 !important;
             margin-right: -4px;
           }
+          .home-hero-left {
+            align-items: flex-start !important;
+            margin-top: -8px;
+          }
           .mobile-stats-row {
             width: 100%;
             justify-content: space-between;
@@ -95,9 +100,9 @@ export function Home() {
           }
           .mobile-only-slogan {
             display: block !important;
-            text-align: center;
+            text-align: left;
             width: 100%;
-            margin-bottom: 16px;
+            margin-bottom: 8px;
           }
           .desktop-hero-title {
             display: none !important;
@@ -149,14 +154,14 @@ export function Home() {
                     size="24px"
                     fw={700} 
                     c="#1e293b"
-                    ta="center"
+                    ta="left"
                     style={{ 
                       lineHeight: 1.2,
                       letterSpacing: '-0.01em',
                       fontFamily: '"Arial Rounded MT Bold", "Arial Rounded MT", Arial, sans-serif',
                     }}
                   >
-                    SmartTech<br />Link Future
+                    SmartTech<br />LinkFuture
                   </Text>
                 </div>
                 <Image
