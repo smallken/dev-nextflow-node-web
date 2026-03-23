@@ -193,7 +193,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const isLoadingBlockchainData = isPriceLoading || isActiveBatchLoading || (!!address && shouldLoadUserData && isLoading);
 
   // Calculate global error state for blockchain data
-  const hasBlockchainError = isPriceError || isActiveBatchError;
+  // Only show error state when critical data is missing (not just when error occurred)
+  const hasBlockchainError = (isPriceError && !phonePrice) || (isActiveBatchError && !activeBatchData);
 
   // Function to refresh data after transactions by refetching from the blockchain
   const refreshData = async () => {
