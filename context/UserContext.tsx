@@ -194,7 +194,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
   // Calculate global error state for blockchain data
   // Only show error state when critical data is missing (not just when error occurred)
-  const hasBlockchainError = (isPriceError && !phonePrice) || (isActiveBatchError && !activeBatchData);
+  // Consider fallback data: if activeBatch fails but batchDetails exists (via fallback), it's not an error
+  const hasBlockchainError = (isPriceError && !phonePrice) || (isActiveBatchError && !activeBatchData && !batchDetails);
 
   // Function to refresh data after transactions by refetching from the blockchain
   const refreshData = async () => {
