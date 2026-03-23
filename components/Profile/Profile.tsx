@@ -149,8 +149,8 @@ export function Profile() {
     loadUserData();
   }, []);
 
-  // 钱包正在重连中（MetaMask内置浏览器需要几秒恢复连接），显示骨架屏
-  if (walletStatus === 'connecting' || walletStatus === 'reconnecting') {
+  // 无address且钱包正在重连中（MetaMask内置浏览器需要几秒恢复连接），显示骨架屏
+  if (!address && (walletStatus === 'connecting' || walletStatus === 'reconnecting')) {
     return (
       <div style={{ background: 'linear-gradient(135deg, #E8F4FF 0%, #F0F9FF 100%)', minHeight: '100vh', paddingBottom: rem(80) }}>
         <Group px="md" py="lg">
