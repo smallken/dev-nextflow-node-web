@@ -138,7 +138,7 @@ export function Tokens() {
 
   return (
     <div style={{ 
-      background: 'linear-gradient(135deg, #E8F4FF 0%, #F0F9FF 100%)',
+      background: 'linear-gradient(180deg, #EFF6FF 0%, #DBEAFE 50%, #FFFFFF 100%)',
       minHeight: '100vh', 
       paddingBottom: '80px' 
     }}>
@@ -152,9 +152,10 @@ export function Tokens() {
           onClick={handleRefresh}
           styles={{
             root: {
-              background: 'rgba(255, 255, 255, 0.8)',
+              background: 'rgba(255, 255, 255, 0.85)',
+              border: '1px solid rgba(59, 130, 246, 0.15)',
               '&:hover': {
-                background: 'rgba(255, 255, 255, 0.9)',
+                background: 'rgba(255, 255, 255, 0.95)',
               }
             }
           }}
@@ -170,9 +171,9 @@ export function Tokens() {
           mb="md"
           styles={{
             root: {
-              background: '#FFFFFF',
-              border: '1px solid rgba(59, 130, 246, 0.08)',
-              boxShadow: '0 4px 20px rgba(59, 130, 246, 0.1)',
+              background: 'rgba(255, 255, 255, 0.75)',
+              border: '1px solid rgba(59, 130, 246, 0.2)',
+              boxShadow: '0 8px 32px rgba(59, 130, 246, 0.12), 0 2px 8px rgba(0, 0, 0, 0.04)',
             }
           }}
         >
@@ -231,9 +232,9 @@ export function Tokens() {
           mb="md"
           styles={{
             root: {
-              background: '#FFFFFF',
-              border: '1px solid rgba(59, 130, 246, 0.08)',
-              boxShadow: '0 4px 20px rgba(59, 130, 246, 0.1)',
+              background: 'rgba(255, 255, 255, 0.75)',
+              border: '1px solid rgba(59, 130, 246, 0.2)',
+              boxShadow: '0 8px 32px rgba(59, 130, 246, 0.12), 0 2px 8px rgba(0, 0, 0, 0.04)',
             }
           }}
         >
@@ -293,9 +294,9 @@ export function Tokens() {
             mb="md"
             styles={{
               root: {
-                background: '#FFFFFF',
-                border: '1px solid rgba(59, 130, 246, 0.08)',
-                boxShadow: '0 4px 20px rgba(59, 130, 246, 0.1)',
+                background: 'rgba(255, 255, 255, 0.75)',
+                border: '1px solid rgba(59, 130, 246, 0.2)',
+                boxShadow: '0 8px 32px rgba(59, 130, 246, 0.12), 0 2px 8px rgba(0, 0, 0, 0.04)',
               }
             }}
           >
