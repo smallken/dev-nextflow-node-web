@@ -5,7 +5,7 @@ import { useChainId } from 'wagmi';
 import { colors, styles, vipColors } from '../../theme';
 import { formatEther } from 'viem';
 import { IconCrown, IconChevronRight, IconCopy, IconCheck, IconUserPlus, IconDeviceMobile, IconUsers, IconWallet } from '@tabler/icons-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useUser } from '../../context/UserContext';
 import { useTranslation } from 'react-i18next';
 import { InviteModal } from '../User/InviteModal';
@@ -130,9 +130,14 @@ export function Profile() {
   const { t } = useTranslation();
   const chainId = useChainId();
   // 使用自定义 hook 获取全局用户数据
-  const { address, contractUserInfo } = useUser();
+  const { address, contractUserInfo, loadUserData } = useUser();
   const [bgColor] = useState('#FFF'); // Default light green background
   const [inviteModalOpened, { open: openInviteModal, close: closeInviteModal }] = useDisclosure(false);
+  
+  // Trigger user data loading when component mounts
+  useEffect(() => {
+    loadUserData();
+  }, []);
 
 
   // If user is not connected or data is not loaded, show a placeholder

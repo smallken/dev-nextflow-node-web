@@ -28,9 +28,14 @@ export function Register({
   const router = useRouter();
   const account = useAccount();
   const { openConnectModal } = useConnectModal();
-  const { contractUserInfo, refreshData } = useUser();
+  const { contractUserInfo, refreshData, loadUserData } = useUser();
 
   const [txHash, setTxHash] = React.useState<`0x${string}` | undefined>(undefined);
+
+  // Trigger user data loading when component mounts
+  React.useEffect(() => {
+    loadUserData();
+  }, []);
 
   React.useEffect(() => {
     if (contractUserInfo && isNonZeroAddress(contractUserInfo.upline)) {

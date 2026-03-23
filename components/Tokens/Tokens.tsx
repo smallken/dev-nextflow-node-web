@@ -16,9 +16,14 @@ import {
 
 export function Tokens() {
   const { t } = useTranslation();
-  const { address } = useUser();
+  const { address, loadUserData } = useUser();
   const chainId = useChainId();
   const [isClaiming, setIsClaiming] = useState(false);
+  
+  // Trigger user data loading when component mounts
+  useEffect(() => {
+    loadUserData();
+  }, []);
 
   // 获取 TokenPool 合约地址
   const poolAddr = tokenPoolAddress[chainId as keyof typeof tokenPoolAddress];

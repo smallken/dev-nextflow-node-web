@@ -56,9 +56,16 @@ export function InviteModal({
   blueLight = '#60A5FA'
 }: InviteModalProps) {
   const { t, i18n } = useTranslation();
-  const { address, contractUserInfo } = useUser();
+  const { address, contractUserInfo, loadUserData } = useUser();
   const [inviteUrl, setInviteUrl] = useState('');
   const router = useRouter();
+
+  // Trigger user data loading when modal opens
+  useEffect(() => {
+    if (opened) {
+      loadUserData();
+    }
+  }, [opened]);
 
   // Generate the invitation URL with the user's address and current language
   useEffect(() => {

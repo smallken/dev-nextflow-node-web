@@ -5,7 +5,7 @@ import { useWritePoolBuyPhone, useReadPoolUsdtPrice } from '../../wagmi/generate
 import { useWaitForTransactionReceipt, useAccount } from 'wagmi';
 import { notifications } from '@mantine/notifications';
 import { IconCheck, IconX, IconChevronsDown, IconChevronsUp, IconAlertCircle, IconWallet, IconShoppingBag } from '@tabler/icons-react';
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { formatEther } from 'viem';
 import { ApproveUsdt } from './ApproveUsdt';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
@@ -32,7 +32,12 @@ export function BuyNode({
   const { openConnectModal } = useConnectModal();
 
   const [opened, { toggle }] = useDisclosure(false);
-  const { contractUserInfo, usdtBalance, usdtAllowanceForPool, appInfo, refreshData } = useUser();
+  const { contractUserInfo, usdtBalance, usdtAllowanceForPool, appInfo, refreshData, loadUserData } = useUser();
+  
+  // Trigger user data loading when component mounts
+  useEffect(() => {
+    loadUserData();
+  }, []);
   const [buyAmount, setBuyAmount] = useState<number>(1);
 
   // Track which button is currently loading

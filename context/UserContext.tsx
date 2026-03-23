@@ -106,6 +106,8 @@ type UserContextType = {
   usdtAllowanceForPool: bigint,
   // Method to refresh data after transactions
   refreshData: () => void,
+  // Method to trigger lazy loading of user-specific data
+  loadUserData: () => void,
   // Loading and error states for blockchain data
   isLoadingBlockchainData: boolean,
   hasBlockchainError: boolean,
@@ -123,12 +125,15 @@ export function UserProvider({ children }: { children: ReactNode }) {
   // 初始化应用全局数据状态
   const [appInfo, setAppInfo] = useState<AppInfo | null>(null);
   const [contractUserInfo, setContractUserInfo] = useState<ContractUserInfo | null>(null);
+  
+  // 控制是否加载用户特定数据（按需加载）
+  const [shouldLoadUserData, setShouldLoadUserData] = useState(false);
 
-  // 使用 useReadPoolGetUserInfo 从合约获取用户信息
+  // 使用 useReadPoolGetUserInfo 从合约获取用户信息（按需加载）
   const { data: userData, isError, isLoading, refetch: refetchUserData } = useReadPoolGetUserInfo({
     args: address ? [address] : undefined,
     query: {
-      enabled: !!address,
+      enabled: !!address && shouldLoadUserData,
     }
   });
 
@@ -150,24 +155,24 @@ export function UserProvider({ children }: { children: ReactNode }) {
     }
   });
 
-  // 使用 useReadUsdtBalanceOf 获取用户的USDT余额
+  // 使用 useReadUsdtBalanceOf 获取用户的USDT余额（按需加载）
   const { data: usdtBalanceData, refetch: refetchUsdtBalance } = useReadUsdtBalanceOf({
     args: address ? [address] : undefined,
     query: {
-      enabled: !!address,
+      enabled: !!address && shouldLoadUserData,
     }
   });
 
   // 默认余额为0
   const usdtBalance = usdtBalanceData || BigInt(0);
 
-  // 获取用户授权给pool合约的USDT额度
+  // 获取用户授权给pool合约的USDT额度（按需加载）
   const { data: usdtAllowanceData, refetch: refetchUsdtAllowance } = useReadUsdtAllowance({
     args: address && poolAddress[chainId as keyof typeof poolAddress] ?
       [address, poolAddress[chainId as keyof typeof poolAddress] as `0x${string}`] :
       undefined,
     query: {
-      enabled: !!address && !!poolAddress[chainId as keyof typeof poolAddress],
+      enabled: !!address && !!poolAddress[chainId as keyof typeof poolAddress] && shouldLoadUserData,
     }
   });
 
@@ -177,8 +182,15 @@ export function UserProvider({ children }: { children: ReactNode }) {
   // NFT铸造完成状态（目前固定为 false，未来可根据实际需求从合约读取）
   const isNftMintComplete = false;
 
+  // Method to trigger lazy loading of user data
+  const loadUserData = () => {
+    if (address && !shouldLoadUserData) {
+      setShouldLoadUserData(true);
+    }
+  };
+
   // Calculate global loading state for blockchain data
-  const isLoadingBlockchainData = isPriceLoading || isActiveBatchLoading || (!!address && isLoading);
+  const isLoadingBlockchainData = isPriceLoading || isActiveBatchLoading || (!!address && shouldLoadUserData && isLoading);
 
   // Calculate global error state for blockchain data
   const hasBlockchainError = isPriceError || isActiveBatchError;
@@ -317,6 +329,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
         usdtBalance,
         usdtAllowanceForPool,
         refreshData,
+        loadUserData,
         isLoadingBlockchainData,
         hasBlockchainError,
       }}
