@@ -1,10 +1,10 @@
-import { Card, Text, Group, Button, Container, Stack, Paper, Space, Divider, Alert, Badge } from '@mantine/core';
+import { Card, Text, Group, Button, Container, Stack, Paper, Space, Divider, Alert, Badge, Skeleton, rem } from '@mantine/core';
 import { IconCoin, IconCheck, IconRefresh, IconAlertCircle } from '@tabler/icons-react';
 import { useUser } from '../../context/UserContext';
 import { useTranslation } from 'react-i18next';
 import { useState, useEffect } from 'react';
 import { formatEther } from 'viem';
-import { useChainId, useWaitForTransactionReceipt } from 'wagmi';
+import { useChainId, useWaitForTransactionReceipt, useAccount } from 'wagmi';
 import { notifications } from '@mantine/notifications';
 import {
   useWriteTokenPoolClaim,
@@ -17,6 +17,7 @@ import {
 export function Tokens() {
   const { t } = useTranslation();
   const { address, loadUserData } = useUser();
+  const { status: walletStatus } = useAccount();
   const chainId = useChainId();
   const [isClaiming, setIsClaiming] = useState(false);
   
@@ -129,7 +130,24 @@ export function Tokens() {
     }
   }, [isClaimed, refetchVestingByType, refetchClaimable, refetchTotalClaimed]);
 
-  // 检查是否连接钱包
+  // 钱包正在重连中，显示骨架屏
+  if (walletStatus === 'connecting' || walletStatus === 'reconnecting') {
+    return (
+      <div style={{ background: 'linear-gradient(135deg, #E8F4FF 0%, #F0F9FF 100%)', minHeight: '100vh', paddingBottom: rem(80) }}>
+        <Group px="md" py="lg">
+          <Skeleton height={28} width={120} radius="sm" />
+        </Group>
+        <Container size="md" mb="md">
+          <Skeleton height={160} radius="lg" />
+        </Container>
+        <Container size="md">
+          <Skeleton height={220} radius="lg" />
+        </Container>
+      </div>
+    );
+  }
+
+  // 真正断开连接时才显示提示
   if (!address) {
     return (
       <Container size="md" py="xl">

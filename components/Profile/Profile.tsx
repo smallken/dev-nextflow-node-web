@@ -6,6 +6,7 @@ import { colors, styles, vipColors } from '../../theme';
 import { formatEther } from 'viem';
 import { IconCrown, IconChevronRight, IconCopy, IconCheck, IconUserPlus, IconDeviceMobile, IconUsers, IconWallet } from '@tabler/icons-react';
 import { useState, useEffect } from 'react';
+import { useAccount } from 'wagmi';
 import { useUser } from '../../context/UserContext';
 import { useTranslation } from 'react-i18next';
 import { InviteModal } from '../User/InviteModal';
@@ -132,6 +133,7 @@ export function Profile() {
   const router = useRouter();
   const { t } = useTranslation();
   const chainId = useChainId();
+  const { status: walletStatus } = useAccount();
   // 使用自定义 hook 获取全局用户数据
   const { address, contractUserInfo, loadUserData, isLoadingBlockchainData } = useUser();
   const [bgColor] = useState('#FFF'); // Default light green background
@@ -142,8 +144,24 @@ export function Profile() {
     loadUserData();
   }, []);
 
+  // 钱包正在重连中（MetaMask内置浏览器需要几秒恢复连接），显示骨架屏
+  if (walletStatus === 'connecting' || walletStatus === 'reconnecting') {
+    return (
+      <div style={{ background: 'linear-gradient(135deg, #E8F4FF 0%, #F0F9FF 100%)', minHeight: '100vh', paddingBottom: rem(80) }}>
+        <Group px="md" py="lg">
+          <Skeleton height={28} width={120} radius="sm" />
+        </Group>
+        <Container size="md" mb="md">
+          <Skeleton height={160} radius="lg" />
+        </Container>
+        <Container size="md">
+          <Skeleton height={200} radius="lg" />
+        </Container>
+      </div>
+    );
+  }
 
-  // If user is not connected or data is not loaded, show a placeholder
+  // 真正断开连接时才显示提示
   if (!address) {
     return (
       <Container size="md" py="xl">
