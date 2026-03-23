@@ -10,6 +10,7 @@ import {
   useWriteTokenPoolClaim,
   useReadTokenPoolGetVestingInfoByType,
   useReadTokenPoolGetClaimable,
+  useReadTokenPoolTotalClaimedAmount,
   tokenPoolAddress,
 } from '../../wagmi/generated';
 
@@ -43,6 +44,14 @@ export function Tokens() {
     }
   });
 
+  // 读取已领取总额
+  const { data: totalClaimed, refetch: refetchTotalClaimed } = useReadTokenPoolTotalClaimedAmount({
+    args: address ? [address] : undefined,
+    query: {
+      enabled: !!address && !!poolAddr,
+    }
+  });
+
   // 写入合约 - 领取代币
   const { data: claimHash, writeContractAsync: claimTokens } = useWriteTokenPoolClaim();
   const { isLoading: isConfirming, isSuccess: isClaimed } = useWaitForTransactionReceipt({
@@ -56,6 +65,7 @@ export function Tokens() {
   const purchaseClaimable = vestingByType ? BigInt(vestingByType[2].toString()) : BigInt(0);
   const referralClaimable = vestingByType ? BigInt(vestingByType[3].toString()) : BigInt(0);
   const claimableAmount = claimable ? BigInt(claimable.toString()) : BigInt(0);
+  const claimedAmount = totalClaimed ? BigInt(totalClaimed.toString()) : BigInt(0);
 
   // 计算总奖励和立即释放部分
   // 购机: 总奖励 = purchaseVested / 0.95, 首次获得 = 总奖励 * 0.05
@@ -115,8 +125,9 @@ export function Tokens() {
       // 刷新所有代币数据
       refetchVestingByType();
       refetchClaimable();
+      refetchTotalClaimed();
     }
-  }, [isClaimed, refetchVestingByType, refetchClaimable]);
+  }, [isClaimed, refetchVestingByType, refetchClaimable, refetchTotalClaimed]);
 
   // 检查是否连接钱包
   if (!address) {
@@ -299,6 +310,19 @@ export function Tokens() {
             }}
           >
             <Stack gap="md">
+              {/* 已领取代币 */}
+              {claimedAmount > BigInt(0) && (
+                <Paper p="sm" withBorder radius="md" bg="green.0">
+                  <Group justify="space-between">
+                    <Text size="sm" c="dimmed">{t('tokens.claimed')}</Text>
+                    <Group gap="xs">
+                      <IconCheck size={16} color="green" />
+                      <Text fw={600} c="green">{formatDisplay(claimedAmount)} {t('tokens.tokens')}</Text>
+                    </Group>
+                  </Group>
+                </Paper>
+              )}
+
               <Paper p="sm" withBorder radius="md" bg="blue.0">
                 <Group justify="space-between">
                   <Text size="sm" c="dimmed">{t('tokens.claimable')}</Text>
