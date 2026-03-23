@@ -52,14 +52,14 @@ export function BottomNavigation() {
           className="bottom-nav-paper"
           styles={{
             root: {
-              background: 'linear-gradient(180deg, rgba(139, 92, 246, 0.95) 0%, rgba(124, 58, 237, 0.95) 100%)',
+              background: 'linear-gradient(180deg, #00A8FF 0%, #0096E6 100%)',
               borderTop: '1px solid rgba(255, 255, 255, 0.1)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               width: '100%',
               paddingBottom: 'env(safe-area-inset-bottom, 0px)',
-              boxShadow: '0 -4px 20px rgba(139, 92, 246, 0.3)',
+              boxShadow: '0 -4px 20px rgba(0, 168, 255, 0.3)',
             },
           }}
         >

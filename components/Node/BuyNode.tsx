@@ -308,46 +308,41 @@ export function BuyNode({
       >
         <LoadingOverlay visible={isPending || isConfirming} loaderProps={{ size: 'lg', color: blueColor }} />
 
-        {/* 用户信息栏 */}
-        <Group justify="space-between" mb="md">
-          <Paper
-            radius="lg"
-            px="md"
-            py="xs"
-            styles={{
-              root: {
-                background: 'rgba(37, 99, 235, 0.05)',
-                border: '1px solid rgba(37, 99, 235, 0.1)',
-              }
-            }}
-          >
+        {/* 用户信息栏 - 放在卡片上方，一行显示 */}
+        <Paper
+          radius="lg"
+          px="md"
+          py="xs"
+          mb="md"
+          styles={{
+            root: {
+              background: 'rgba(37, 99, 235, 0.05)',
+              border: '1px solid rgba(37, 99, 235, 0.1)',
+            }
+          }}
+        >
+          <Group justify="space-between" wrap="nowrap">
             <Group gap="xs">
               <IconShoppingBag size={16} color={blueColor} />
               <Text size="sm" fw={600} c={blueColor}>
-                {t('phones_purchased')}：{contractUserInfo ? contractUserInfo.salesCount : 0}
+                {t('you_purchased')}：{contractUserInfo ? contractUserInfo.salesCount : 0}{t('nai_units')}
               </Text>
             </Group>
-          </Paper>
-
-          <Paper
-            radius="lg"
-            px="sm"
-            py="xs"
-            styles={{
-              root: {
-                background: 'rgba(37, 99, 235, 0.05)',
-                border: '1px solid rgba(37, 99, 235, 0.1)',
-              }
-            }}
-          >
             <Group gap="xs">
               <IconWallet size={16} color={blueColor} />
-              <Text size="sm" fw={600} c={blueColor}>
-                {parseFloat(formatEther(usdtBalance)).toFixed(2)} USDT
+              <Text size="sm" fw={600} c={blueColor} className="usdt-balance">
+                <style jsx>{`
+                  @media (max-width: 48em) {
+                    .usdt-balance :global(span) {
+                      display: none;
+                    }
+                  }
+                `}</style>
+                {Math.floor(parseFloat(formatEther(usdtBalance)))}<span>.{formatEther(usdtBalance).split('.')[1]?.substring(0, 2) || '00'}</span> USDT
               </Text>
             </Group>
-          </Paper>
-        </Group>
+          </Group>
+        </Paper>
 
         <Space h="sm" />
 
@@ -380,8 +375,7 @@ export function BuyNode({
             ? t('sold_out')
             : (loadingButton === 'one' && (isPending || isConfirming)
               ? t('processing')
-              : (isRegistered ? t('buy_one_phone') : t('buy_one_node')) +
-                ' (' + formatEther(BigInt(1) * (nftPrice || BigInt(0))) + ' USDT)')
+              : t('buy_one_nai_phone', { price: formatEther(BigInt(1) * (nftPrice || BigInt(0))) }))
           }
         </Button>
 

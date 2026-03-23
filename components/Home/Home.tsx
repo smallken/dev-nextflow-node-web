@@ -56,11 +56,12 @@ export function Home() {
           .home-hero {
             flex-direction: column;
             align-items: center;
-            gap: 12px;
+            gap: 8px;
           }
           .home-hero-left {
             width: 100%;
             justify-content: center;
+            flex-direction: column;
           }
           .home-hero-title {
             width: 100%;
@@ -70,15 +71,19 @@ export function Home() {
             text-align: center;
           }
           .home-title-row {
-            flex-wrap: wrap;
-            align-items: flex-end;
-            gap: 6px;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
           }
           .home-slogan {
             white-space: normal;
-            text-align: right;
-            flex: 1;
-            min-width: 140px;
+            text-align: center;
+            width: 100%;
+          }
+          .mobile-stats-row {
+            width: 100%;
+            justify-content: space-between;
+            margin-bottom: 12px;
           }
         }
       `}</style>
@@ -98,6 +103,38 @@ export function Home() {
             <Group className="home-hero" align="flex-start" justify="space-between" wrap="nowrap" gap="lg">
               {/* 左侧：NAI Logo + 介绍文字 */}
               <Group className="home-hero-left" align="center" gap="xs" wrap="nowrap" style={{ flex: '0 0 auto' }}>
+                {/* 手机端：Smart Tech Link Future在小奈头上 */}
+                <div style={{ display: 'none' }} className="mobile-only-slogan">
+                  <style jsx>{`
+                    @media (max-width: 48em) {
+                      .mobile-only-slogan {
+                        display: block !important;
+                        text-align: center;
+                        width: 100%;
+                        margin-bottom: 8px;
+                      }
+                      .desktop-hero-title {
+                        display: none !important;
+                      }
+                      .desktop-bubble {
+                        display: none !important;
+                      }
+                    }
+                  `}</style>
+                  <Text 
+                    size="24px"
+                    fw={700} 
+                    c="#1e293b"
+                    ta="center"
+                    style={{ 
+                      lineHeight: 1.1,
+                      letterSpacing: '-0.01em',
+                      fontFamily: '"Arial Rounded MT Bold", "Arial Rounded MT", Arial, sans-serif',
+                    }}
+                  >
+                    Smart Tech Link Future
+                  </Text>
+                </div>
                 <Image
                   src="/nai.png"
                   h={{ base: 130, sm: 200, md: 240 }}
@@ -108,6 +145,7 @@ export function Home() {
                   style={{ flexShrink: 0 }}
                 />
                 <div
+                  className="desktop-bubble"
                   style={{
                     position: 'relative',
                     background: 'rgba(255, 255, 255, 0.65)',
@@ -154,9 +192,9 @@ export function Home() {
                 </div>
               </Group>
 
-              {/* 右侧：大标题 - 往右对齐 */}
+              {/* 右侧：大标题 - 往右对齐（桌面端显示） */}
               <Stack
-                className="home-hero-title"
+                className="home-hero-title desktop-hero-title"
                 gap={6}
                 align="flex-end"
                 style={{
@@ -188,7 +226,7 @@ export function Home() {
           </div>
 
           {/* 标题区域 - 在淡蓝色背景上，加大字体 */}
-          <Group className="home-title-row" justify="space-between" align="center" mb="sm" wrap="wrap">
+          <Stack className="home-title-row" gap="xs" mb="sm">
             <Text 
               size="28px"
               fw={700} 
@@ -215,6 +253,49 @@ export function Home() {
             >
               {t('home_slogan')}
             </Text>
+          </Stack>
+
+          {/* 手机端：数量和期数放到卡片外面 */}
+          <style jsx>{`
+            @media (max-width: 48em) {
+              .mobile-stats-row {
+                display: flex !important;
+              }
+              .desktop-card-stats {
+                display: none !important;
+              }
+            }
+            @media (min-width: 48.01em) {
+              .mobile-stats-row {
+                display: none !important;
+              }
+            }
+          `}</style>
+          <Group className="mobile-stats-row" justify="space-between" align="center" mb="sm" style={{ display: 'none' }}>
+            <Text size="xl" fw={700} c="#1e293b">
+              {appInfo?.batchSoldCount ?? 0}/{appInfo?.batchTotalStock ?? 0}
+            </Text>
+            {appInfo && (
+              appInfo.batchRemainingStock === 0 ? (
+                <Text size="sm" c="dimmed" ta="center">
+                  {t('first_phase_sold_out')}
+                </Text>
+              ) : (
+                <Badge
+                  size="sm"
+                  variant="filled"
+                  radius="md"
+                  style={{
+                    background: '#FF9500',
+                    fontWeight: 600,
+                    padding: '4px 12px',
+                    flexShrink: 0,
+                  }}
+                >
+                  {t('phase', { number: appInfo.activeBatchIndex + 1 })}
+                </Badge>
+              )
+            )}
           </Group>
 
           {/* 进度卡片 - 按照参考图片设计 */}
@@ -230,7 +311,7 @@ export function Home() {
               }
             }}
           >
-            <Stack gap="sm">
+            <Stack gap="sm" className="desktop-card-stats">
               {/* 进度数字 - 显示已售数量/总库存 */}
               <Text size="xl" fw={700} c="#1e293b">
                 {appInfo?.batchSoldCount ?? 0}/{appInfo?.batchTotalStock ?? 0}
@@ -273,6 +354,28 @@ export function Home() {
                 )}
               </Group>
             </Stack>
+            {/* 手机端只显示进度条 */}
+            <Group align="center" gap="md" wrap="nowrap" style={{ display: 'none' }} className="mobile-progress-only">
+              <style jsx>{`
+                @media (max-width: 48em) {
+                  .mobile-progress-only {
+                    display: flex !important;
+                  }
+                }
+              `}</style>
+              <Progress
+                value={appInfo ? (appInfo.batchTotalStock > 0 ? (appInfo.batchSoldCount / appInfo.batchTotalStock * 100) : 0) : 0}
+                size="lg"
+                radius="xl"
+                className="home-progress-bar"
+                style={{ flex: 1 }}
+                styles={{
+                  root: {
+                    backgroundColor: '#E5E7EB',
+                  }
+                }}
+              />
+            </Group>
           </Paper>
 
           {/* 购买和邀请区域 */}
