@@ -9,6 +9,7 @@ import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { MantineProvider } from '@mantine/core'
 import { isBrowser, isServer } from '../utils/environment'
+import { useMemo } from 'react'
 
 import { Notifications } from '@mantine/notifications';
 
@@ -58,43 +59,46 @@ function App({ Component, pageProps }: AppProps) {
   // Get current language for RainbowKit
   const currentLocale = i18n?.language === 'en' ? 'en' : 'zh-CN';
 
+  // ✅ 使用 useMemo 缓存 config，确保引用稳定
+  const wagmiConfig = useMemo(() => config, [config]);
+
   return (
     <I18nextProvider i18n={i18n}>
-      <MantineProvider theme={theme}>
-        <Notifications position="top-center" zIndex={4000} />
-        <WagmiProvider config={config}>
-          <QueryClientProvider client={queryClient}>
-            <RainbowKitProvider
-              locale={currentLocale}
-              theme={customLightTheme}
-              modalSize="compact"
-              showRecentTransactions={true}
-            >
-            <UserProvider>
-              <Head>
-                <title>NextFlow — 全球领先的AI+Web4终端生态</title>
-                <meta name='description' content='成为全球领先的AI+Web4 终端生态服务商，推动AI+Web4 技术从行业小众应用走向大众普及' />
-                <meta
-                  name='viewport'
-                  content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover'
-                />
-                <meta name="theme-color" content="#8b5cf6" />
-                <meta name="apple-mobile-web-app-capable" content="yes" />
-                <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-                <meta name="apple-mobile-web-app-title" content="NextFlow" />
-                <link rel='shortcut icon' href='/logo-black.png' />
-                <link rel="apple-touch-icon" href="/logo-black.png" />
-                <link rel="icon" type="image/png" sizes="32x32" href="/logo-black.png" />
-                <link rel="icon" type="image/png" sizes="16x16" href="/logo-black.png" />
-              </Head>
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
-            </UserProvider>
+      <WagmiProvider config={wagmiConfig}>
+        <QueryClientProvider client={queryClient}>
+          <RainbowKitProvider
+            locale={currentLocale}
+            theme={customLightTheme}
+            modalSize="compact"
+            showRecentTransactions={true}
+          >
+            <MantineProvider theme={theme}>
+              <Notifications position="top-center" zIndex={4000} />
+              <UserProvider>
+                <Head>
+                  <title>NextFlow — 全球领先的AI+Web4终端生态</title>
+                  <meta name='description' content='成为全球领先的AI+Web4 终端生态服务商，推动AI+Web4 技术从行业小众应用走向大众普及' />
+                  <meta
+                    name='viewport'
+                    content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover'
+                  />
+                  <meta name="theme-color" content="#8b5cf6" />
+                  <meta name="apple-mobile-web-app-capable" content="yes" />
+                  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+                  <meta name="apple-mobile-web-app-title" content="NextFlow" />
+                  <link rel='shortcut icon' href='/logo-black.png' />
+                  <link rel="apple-touch-icon" href="/logo-black.png" />
+                  <link rel="icon" type="image/png" sizes="32x32" href="/logo-black.png" />
+                  <link rel="icon" type="image/png" sizes="16x16" href="/logo-black.png" />
+                </Head>
+                <Layout>
+                  <Component {...pageProps} />
+                </Layout>
+              </UserProvider>
+            </MantineProvider>
           </RainbowKitProvider>
         </QueryClientProvider>
       </WagmiProvider>
-    </MantineProvider>
     </I18nextProvider>
   )
 }
