@@ -47,14 +47,14 @@ export const socialItems: SocialItemConfig[] = [
     id: 'twitter',
     icon: IconBrandTwitter,
     label: 'Twitter',
-    url: 'https://x.com/flipfloplaunch',
+    url: '',
     color: '#1DA1F2',
   },
   {
     id: 'telegram',
     icon: IconBrandTelegram,
     label: 'Telegram',
-    url: 'https://t.me/flipflopEng',
+    url: '',
     color: '#0088cc',
   },
   {

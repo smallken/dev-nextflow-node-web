@@ -123,7 +123,7 @@ export function Navbar({ toggleMobile }: NavbarProps) {
               <IconBrandTwitter size={18} stroke={1.5} />
             }
             component="a"
-            href="https://x.com/flipfloplaunch"
+            href=""
             target="_blank"
             style={{
               color: '#64748b',
@@ -146,7 +146,7 @@ export function Navbar({ toggleMobile }: NavbarProps) {
               <IconBrandTelegram size={18} stroke={1.5} />
             }
             component="a"
-            href={currentLanguage === 'zh' ? "https://t.me/flipflopChi" : "https://t.me/flipflopEng"}
+            href=""
             target="_blank"
             style={{
               color: '#64748b',
