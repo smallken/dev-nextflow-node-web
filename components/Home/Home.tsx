@@ -186,7 +186,7 @@ export function Home() {
                     className="nai-logo-hero"
                     style={{ flexShrink: 0 }}
                   />
-                  <div style={{ flex: 1, paddingTop: 16, marginLeft: -40, marginRight: 16 }}>
+                  <div style={{ flex: 1, paddingTop: 16, marginLeft: -60, marginRight: 16 }}>
                     <div style={{
                       position: 'relative',
                       background: 'rgba(255, 255, 255, 0.65)',
