@@ -123,21 +123,35 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const isDev = process.env.NODE_ENV !== 'production';
 
   // wagmi 重连计数器：每次导航只打一条摘要，避免 100+ 条 log 占用主线程
+  // 同时添加500ms防抖，避免TokenPocket等钱包浏览器高频重连导致的卡顿
   const cycleCountRef = useRef(0);
   const cycleStartRef = useRef(0);
+  const lastReconnectLogRef = useRef(0);  // 上次打印重连日志的时间
   useEffect(() => {
+    // 如果是重连/连接状态，检查是否需要防抖（500ms内只打印一次）
     if (walletStatus === 'reconnecting' || walletStatus === 'connecting') {
+      const now = Date.now();
+      if (now - lastReconnectLogRef.current < 500) {
+        // 500ms内的重复重连只计数，不打印日志，避免日志刷屏
+        if (cycleCountRef.current === 0) cycleStartRef.current = performance.now();
+        cycleCountRef.current++;
+        return;
+      }
+      lastReconnectLogRef.current = now;
       if (cycleCountRef.current === 0) cycleStartRef.current = performance.now();
       cycleCountRef.current++;
     } else {
+      // 状态稳定了，打印汇总日志
       const count = cycleCountRef.current;
       const ms = count > 0 ? (performance.now() - cycleStartRef.current).toFixed(0) : null;
-      console.log(count > 0
-        ? `[wagmi] ${count} reconnects in ${ms}ms → ${walletStatus} addr=${address?.slice(0,6)}`
-        : `[wagmi] → ${walletStatus} addr=${address?.slice(0,6)}`);
+      if (isDev) {
+        console.log(count > 0
+          ? `[wagmi] ${count} reconnects in ${ms}ms → ${walletStatus} addr=${address?.slice(0,6)}`
+          : `[wagmi] → ${walletStatus} addr=${address?.slice(0,6)}`);
+      }
       cycleCountRef.current = 0;
     }
-  }, [walletStatus, address]);
+  }, [walletStatus, address, isDev]);
 
   // 初始化应用全局数据状态
   const [appInfo, setAppInfo] = useState<AppInfo | null>(null);

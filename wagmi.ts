@@ -80,6 +80,4 @@ export const config = createConfig({
   },
   connectors,
   storage,
-  // 禁用链ID自动同步，避免TokenPocket等钱包浏览器链变化时循环重连
-  syncConnectedChain: false,
 });
