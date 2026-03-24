@@ -363,6 +363,7 @@ export function Home() {
                   fontWeight: 600,
                   padding: '4px 12px',
                   flexShrink: 0,
+                  fontSize: '16px',
                 }}
               >
                 库存告急
@@ -382,7 +383,7 @@ export function Home() {
           >
             <Stack gap="sm" className="desktop-card-stats">
               {/* 库存告急提示和进度数字 */}
-              <Group justify="space-between" align="flex-start">
+              <Group justify="space-between" align="center">
                 {/* 进度数字 - 显示已售数量/总库存 */}
                 {!appInfo
                   ? <Skeleton height={28} width={100} radius="sm" />
@@ -399,6 +400,7 @@ export function Home() {
                       fontWeight: 600,
                       padding: '4px 12px',
                       flexShrink: 0,
+                      fontSize: '16px',
                     }}
                   >
                     库存告急
