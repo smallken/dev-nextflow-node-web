@@ -19,6 +19,7 @@
   "phase": "第 {{number}} 期",
   "sold_out": "已售罄",
   "first_phase_sold_out": "第一期已售罄",
+  "low_stock_alert": "库存告急",
   "refresh_bsc_data": "刷新BSC链数据",
   "custom_quantity":"自定义数量",
   "max_50_phones_hint":"每次最多购买50台",

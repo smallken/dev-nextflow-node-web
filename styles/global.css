@@ -203,6 +203,16 @@ img {
   }
 }
 
+@keyframes nav-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes nav-progress {
+  0%   { transform: translateX(-100%); }
+  60%  { transform: translateX(20%); }
+  100% { transform: translateX(100%); }
+}
+
 /* Animations */
 .fade-in {
   animation: fadeIn 0.6s ease-out;

@@ -366,7 +366,7 @@ export function Home() {
                   fontSize: '16px',
                 }}
               >
-                库存告急
+                {t('low_stock_alert')}
               </Badge>
             )}
           </Group>
@@ -403,7 +403,7 @@ export function Home() {
                       fontSize: '16px',
                     }}
                   >
-                    库存告急
+                    {t('low_stock_alert')}
                   </Badge>
                 )}
               </Group>

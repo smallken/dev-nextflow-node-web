@@ -1,7 +1,7 @@
 import { Box, Paper, Group } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { navItems } from './navConfig';
 import { NavItem } from './NavItem';
@@ -13,6 +13,7 @@ export function BottomNavigation() {
   const [opened, { toggle, close }] = useDisclosure(false);
   const [mounted, setMounted] = useState(false);
   const [activePath, setActivePath] = useState<string | null>(null);
+  const [isNavigating, setIsNavigating] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -22,17 +23,21 @@ export function BottomNavigation() {
   }, [router]);
 
   useEffect(() => {
-    const onComplete = () => setActivePath(router.pathname);
-    const onError = () => setActivePath(router.pathname);
+    const onStart = () => setIsNavigating(true);
+    const onComplete = () => { setIsNavigating(false); setActivePath(router.pathname); };
+    const onError = () => { setIsNavigating(false); setActivePath(router.pathname); };
+    router.events.on('routeChangeStart', onStart);
     router.events.on('routeChangeComplete', onComplete);
     router.events.on('routeChangeError', onError);
     return () => {
+      router.events.off('routeChangeStart', onStart);
       router.events.off('routeChangeComplete', onComplete);
       router.events.off('routeChangeError', onError);
     };
   }, [router]);
 
-  const handleNavClick = (path: string | null) => {
+  const handleNavClick = useCallback((path: string | null) => {
+    if (isNavigating) return;
     if (path === null) {
       toggle();
     } else {
@@ -41,12 +46,27 @@ export function BottomNavigation() {
         router.push(path);
       }
     }
-  };
+  }, [isNavigating, router, toggle]);
 
   const currentPath = activePath ?? router.pathname;
 
   return (
     <>
+      {/* 顶部进度条：导航中可见，防止用户以为没反应 */}
+      {isNavigating && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0,
+          height: '3px', zIndex: 9999, overflow: 'hidden',
+          background: 'rgba(0, 168, 255, 0.2)',
+        }}>
+          <div style={{
+            height: '100%',
+            background: 'linear-gradient(90deg, #00A8FF, #60D0FF)',
+            animation: 'nav-progress 1.4s ease-in-out infinite',
+            boxShadow: '0 0 8px rgba(0, 168, 255, 0.8)',
+          }} />
+        </div>
+      )}
       <Box
         className="bottom-navigation"
         style={{
@@ -85,6 +105,7 @@ export function BottomNavigation() {
                   icon={Icon}
                   label={t(item.label)}
                   isActive={mounted && currentPath === item.path}
+                  isNavigating={isNavigating}
                   onClick={() => handleNavClick(item.path)}
                 />
               );
