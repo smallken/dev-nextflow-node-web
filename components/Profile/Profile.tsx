@@ -144,10 +144,10 @@ export function Profile() {
   const [bgColor] = useState('#FFF'); // Default light green background
   const [inviteModalOpened, { open: openInviteModal, close: closeInviteModal }] = useDisclosure(false);
   
-  // Trigger user data loading when component mounts
+  // 移除空的useEffect依赖 - loadUserData已在address变化时由UserContext处理
+  // 仅保留日志
   useEffect(() => {
     console.log(`[Profile] mounted t=${performance.now().toFixed(0)}ms`);
-    loadUserData();
   }, []);
 
   // 无address且钱包正在重连中（MetaMask内置浏览器需要几秒恢复连接），显示骨架屏

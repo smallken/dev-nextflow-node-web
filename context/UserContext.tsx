@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode, useEffect, useRef } from 'react';
+import { createContext, useContext, useState, ReactNode, useEffect, useRef, useMemo } from 'react';
 import { useAccount, useChainId } from 'wagmi';
 import { formatEther } from 'viem';
 import {
@@ -421,23 +421,24 @@ export function UserProvider({ children }: { children: ReactNode }) {
       if (isDev) console.log('Chain ID changed, refreshing data...');
       refreshData();
     }
-  }, [chainId, address]); 
+  }, [chainId, address]);
+
+  // 使用 useMemo 稳定 Context value，避免不必要的重渲染
+  const contextValue = useMemo(() => ({
+    appInfo,
+    setAppInfo,
+    address,
+    contractUserInfo,
+    usdtBalance,
+    usdtAllowanceForPool,
+    refreshData,
+    loadUserData,
+    isLoadingBlockchainData,
+    hasBlockchainError,
+  }), [appInfo, address, contractUserInfo, usdtBalance, usdtAllowanceForPool, isLoadingBlockchainData, hasBlockchainError]);
 
   return (
-    <UserContext.Provider
-      value={{
-        appInfo,
-        setAppInfo,
-        address,
-        contractUserInfo,
-        usdtBalance,
-        usdtAllowanceForPool,
-        refreshData,
-        loadUserData,
-        isLoadingBlockchainData,
-        hasBlockchainError,
-      }}
-    >
+    <UserContext.Provider value={contextValue}>
       {children}
     </UserContext.Provider>
   );

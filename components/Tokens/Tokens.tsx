@@ -16,15 +16,12 @@ import {
 
 export function Tokens() {
   const { t } = useTranslation();
-  const { address, loadUserData } = useUser();
+  const { address } = useUser();
   const { status: walletStatus } = useAccount();
   const chainId = useChainId();
   const [isClaiming, setIsClaiming] = useState(false);
   
-  // Trigger user data loading when component mounts
-  useEffect(() => {
-    loadUserData();
-  }, []);
+  // 移除空的useEffect依赖 - loadUserData已在address变化时由UserContext处理
 
   // 获取 TokenPool 合约地址
   const poolAddr = tokenPoolAddress[chainId as keyof typeof tokenPoolAddress];
