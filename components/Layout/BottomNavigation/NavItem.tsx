@@ -6,15 +6,17 @@ export interface NavItemProps {
   icon: React.ComponentType<{ size: number; color?: string; style?: React.CSSProperties }>;
   label: string;
   isActive: boolean;
+  isNavigating?: boolean;
   onClick: () => void;
 }
 
 export const NavItem = forwardRef<HTMLButtonElement, NavItemProps>(
-  ({ icon: Icon, label, isActive, onClick }, ref) => {
+  ({ icon: Icon, label, isActive, isNavigating = false, onClick }, ref) => {
     return (
       <UnstyledButton
         ref={ref}
         onClick={onClick}
+        disabled={isNavigating}
         className="nav-item-button"
         styles={{
           root: {
@@ -28,14 +30,15 @@ export const NavItem = forwardRef<HTMLButtonElement, NavItemProps>(
             color: 'white',
             background: 'none',
             border: 'none',
-            cursor: 'pointer',
+            cursor: isNavigating ? 'not-allowed' : 'pointer',
+            opacity: isNavigating ? 0.6 : 1,
             position: 'relative',
             transition: 'all 0.2s ease',
             touchAction: 'manipulation',
             WebkitTapHighlightColor: 'transparent',
             userSelect: 'none',
             '&:active': {
-              transform: 'scale(0.95)',
+              transform: isNavigating ? 'none' : 'scale(0.95)',
             },
           },
         }}
@@ -82,10 +85,21 @@ export const NavItem = forwardRef<HTMLButtonElement, NavItemProps>(
             transition: 'all 0.2s ease',
           }}
         >
-          <Icon 
-            size={24} 
-            color={isActive ? 'white' : 'rgba(255, 255, 255, 0.85)'} 
-          />
+          {isNavigating && isActive ? (
+            <div style={{
+              width: 24,
+              height: 24,
+              border: '2.5px solid rgba(255,255,255,0.3)',
+              borderTopColor: 'white',
+              borderRadius: '50%',
+              animation: 'nav-spin 0.7s linear infinite',
+            }} />
+          ) : (
+            <Icon 
+              size={24} 
+              color={isActive ? 'white' : 'rgba(255, 255, 255, 0.85)'} 
+            />
+          )}
         </div>
 
         {/* 标签文字 */}
