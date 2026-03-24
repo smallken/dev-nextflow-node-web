@@ -9,10 +9,11 @@ import {
   tokenPocketWallet
 } from '@rainbow-me/rainbowkit/wallets';
 
-// 创建存储，仅在客户端使用 localStorage
+// 创建存储，仅在客户端使用 sessionStorage（同一标签页内持久化，避免TokenPocket localStorage不稳定问题）
 const storage = typeof window !== 'undefined'
   ? createStorage({
-      storage: window.localStorage,
+      storage: window.sessionStorage,
+      key: 'wagmi',
     })
   : undefined;
 
@@ -79,4 +80,6 @@ export const config = createConfig({
   },
   connectors,
   storage,
+  // 禁用链ID自动同步，避免TokenPocket等钱包浏览器链变化时循环重连
+  syncConnectedChain: false,
 });
