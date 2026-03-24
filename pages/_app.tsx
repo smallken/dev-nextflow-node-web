@@ -9,7 +9,8 @@ import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { MantineProvider } from '@mantine/core'
 import { isBrowser, isServer } from '../utils/environment'
-import { useMemo } from 'react'
+import { useMemo, useEffect } from 'react'
+import { useRouter } from 'next/router'
 
 import { Notifications } from '@mantine/notifications';
 
@@ -61,6 +62,29 @@ function App({ Component, pageProps }: AppProps) {
 
   // Get current language for RainbowKit
   const currentLocale = i18n?.language === 'en' ? 'en' : 'zh-CN';
+
+  const router = useRouter();
+
+  // 路由计时：t0 在 closure 中，空依赖确保只注册一次，不会被重置
+  useEffect(() => {
+    let t0 = 0;
+    const onStart = (url: string) => {
+      t0 = performance.now();
+      console.log(`[Nav] START → ${url}`);
+    };
+    const onComplete = (url: string) => {
+      const dt = t0 ? (performance.now() - t0).toFixed(0) : '?';
+      console.log(`[Nav] DONE  → ${url}  (${dt}ms)`);
+      t0 = 0;
+    };
+    router.events.on('routeChangeStart', onStart);
+    router.events.on('routeChangeComplete', onComplete);
+    return () => {
+      router.events.off('routeChangeStart', onStart);
+      router.events.off('routeChangeComplete', onComplete);
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // ✅ 使用 useMemo 缓存 config，确保引用稳定
   const wagmiConfig = useMemo(() => config, [config]);

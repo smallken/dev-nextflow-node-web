@@ -11,6 +11,14 @@ export default function Document() {
         <link href="https://fonts.loli.net/css2?family=Long+Cang&display=swap" rel="stylesheet" />
       </Head>
       <body>
+        <script dangerouslySetInnerHTML={{ __html: `
+          if (location.search.includes('eruda=1')) {
+            var s = document.createElement('script');
+            s.src = 'https://cdn.jsdelivr.net/npm/eruda';
+            s.onload = function() { eruda.init(); };
+            document.head.appendChild(s);
+          }
+        ` }} />
         <Main />
         <NextScript />
       </body>

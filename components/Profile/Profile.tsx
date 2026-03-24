@@ -146,6 +146,7 @@ export function Profile() {
   
   // Trigger user data loading when component mounts
   useEffect(() => {
+    console.log(`[Profile] mounted t=${performance.now().toFixed(0)}ms`);
     loadUserData();
   }, []);
 

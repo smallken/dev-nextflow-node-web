@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import { createContext, useContext, useState, ReactNode, useEffect, useRef } from 'react';
 import { useAccount, useChainId } from 'wagmi';
 import { formatEther } from 'viem';
 import {
@@ -118,9 +118,26 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 
 // 上下文提供者组件
 export function UserProvider({ children }: { children: ReactNode }) {
-  const { address } = useAccount();
+  const { address, status: walletStatus } = useAccount();
   const chainId = useChainId();
   const isDev = process.env.NODE_ENV !== 'production';
+
+  // wagmi 重连计数器：每次导航只打一条摘要，避免 100+ 条 log 占用主线程
+  const cycleCountRef = useRef(0);
+  const cycleStartRef = useRef(0);
+  useEffect(() => {
+    if (walletStatus === 'reconnecting' || walletStatus === 'connecting') {
+      if (cycleCountRef.current === 0) cycleStartRef.current = performance.now();
+      cycleCountRef.current++;
+    } else {
+      const count = cycleCountRef.current;
+      const ms = count > 0 ? (performance.now() - cycleStartRef.current).toFixed(0) : null;
+      console.log(count > 0
+        ? `[wagmi] ${count} reconnects in ${ms}ms → ${walletStatus} addr=${address?.slice(0,6)}`
+        : `[wagmi] → ${walletStatus} addr=${address?.slice(0,6)}`);
+      cycleCountRef.current = 0;
+    }
+  }, [walletStatus, address]);
 
   // 初始化应用全局数据状态
   const [appInfo, setAppInfo] = useState<AppInfo | null>(null);
