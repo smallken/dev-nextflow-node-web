@@ -352,11 +352,21 @@ export function Home() {
               ? <Skeleton height={28} width={80} radius="sm" />
               : <Text size="xl" fw={700} c="#1e293b">{appInfo.batchSoldCount}/{appInfo.batchTotalStock}</Text>
             }
-            {/* 库存告急 - 红色文字，固定显示 */}
+            {/* 库存告急 - 橙色Badge，固定显示 */}
             {appInfo && (
-              <Text size="xl" fw={700} c="#EF4444" style={{ flexShrink: 0 }}>
+              <Badge
+                size="sm"
+                variant="filled"
+                radius="md"
+                style={{
+                  background: '#FF9500',
+                  fontWeight: 600,
+                  padding: '4px 12px',
+                  flexShrink: 0,
+                }}
+              >
                 库存告急
-              </Text>
+              </Badge>
             )}
           </Group>
 
@@ -378,11 +388,21 @@ export function Home() {
                   ? <Skeleton height={28} width={100} radius="sm" />
                   : <Text size="xl" fw={700} c="#1e293b">{appInfo.batchSoldCount}/{appInfo.batchTotalStock}</Text>
                 }
-                {/* 库存告急 - 红色文字，位于右侧，固定显示，字号与左侧数字一致 */}
+                {/* 库存告急 - 橙色Badge，位于右侧，固定显示 */}
                 {appInfo && (
-                  <Text size="xl" fw={700} c="#EF4444" style={{ flexShrink: 0 }}>
+                  <Badge
+                    size="sm"
+                    variant="filled"
+                    radius="md"
+                    style={{
+                      background: '#FF9500',
+                      fontWeight: 600,
+                      padding: '4px 12px',
+                      flexShrink: 0,
+                    }}
+                  >
                     库存告急
-                  </Text>
+                  </Badge>
                 )}
               </Group>
 
