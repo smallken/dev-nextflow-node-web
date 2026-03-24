@@ -20,8 +20,8 @@ interface RegisterProps {
 
 export function Register({
   blueColor = '#3B82F6',
-  blueGradient = 'linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)',
-  blueDark = '#2563EB',
+  blueGradient = 'linear-gradient(135deg, #60A5FA 0%, #2563EB 50%, #1E40AF 100%)',
+  blueDark = '#1E40AF',
   blueLight = '#60A5FA'
 }: RegisterProps) {
   const { t } = useTranslation();
@@ -184,9 +184,7 @@ export function Register({
       p="xl"
       styles={{
         root: {
-          background: '#FFFFFF',
-          border: '1px solid rgba(59, 130, 246, 0.08)',
-          boxShadow: '0 4px 20px rgba(59, 130, 246, 0.1)',
+          background: 'transparent',
         }
       }}
     >

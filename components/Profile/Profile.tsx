@@ -55,7 +55,7 @@ function StatCard({
           position: 'relative',
           display: 'flex',
           flexDirection: 'column',
-          background: '#FFFFFF',
+          background: 'transparent',
           border: '1px solid rgba(59, 130, 246, 0.08)',
           boxShadow: '0 2px 10px rgba(59, 130, 246, 0.08)',
         }
@@ -152,7 +152,7 @@ export function Profile() {
   // 无address且钱包正在重连中（MetaMask内置浏览器需要几秒恢复连接），显示骨架屏
   if (!address && (walletStatus === 'connecting' || walletStatus === 'reconnecting')) {
     return (
-      <div style={{ background: 'linear-gradient(135deg, #E8F4FF 0%, #F0F9FF 100%)', minHeight: '100vh', paddingBottom: rem(80) }}>
+      <div style={{ background: 'linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 50%, #93C5FD 100%)', minHeight: '100vh', paddingBottom: rem(80) }}>
         <Group px="md" py="lg">
           <Skeleton height={28} width={120} radius="sm" />
         </Group>
@@ -179,7 +179,7 @@ export function Profile() {
 
   return (
     <div style={{ 
-      background: 'linear-gradient(135deg, #E8F4FF 0%, #F0F9FF 100%)', 
+      background: 'linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 50%, #93C5FD 100%)', 
       minHeight: '100vh', 
       paddingBottom: rem(80) 
     }}>
@@ -195,7 +195,7 @@ export function Profile() {
           p="md"
           styles={{
             root: {
-              background: '#FFFFFF',
+              background: 'transparent',
               border: '1px solid rgba(59, 130, 246, 0.08)',
               boxShadow: '0 4px 20px rgba(59, 130, 246, 0.1)',
             }
@@ -295,9 +295,7 @@ export function Profile() {
           radius="lg"
           styles={{
             root: {
-              background: '#FFFFFF',
-              border: '1px solid rgba(59, 130, 246, 0.08)',
-              boxShadow: '0 4px 20px rgba(59, 130, 246, 0.1)',
+              background: 'transparent',
             }
           }}
         >
@@ -347,9 +345,7 @@ export function Profile() {
           radius="lg"
           styles={{
             root: {
-              background: '#FFFFFF',
-              border: '1px solid rgba(59, 130, 246, 0.08)',
-              boxShadow: '0 4px 20px rgba(59, 130, 246, 0.1)',
+              background: 'transparent',
             }
           }}
         >

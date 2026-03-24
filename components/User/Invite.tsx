@@ -18,8 +18,8 @@ interface InviteProps {
 
 export function Invite({
   blueColor = '#3B82F6',
-  blueGradient = 'linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)',
-  blueDark = '#2563EB',
+  blueGradient = 'linear-gradient(135deg, #60A5FA 0%, #2563EB 50%, #1E40AF 100%)',
+  blueDark = '#1E40AF',
   blueLight = '#60A5FA'
 }: InviteProps) {
   const { t } = useTranslation();

@@ -113,9 +113,7 @@ function FriendCard({ friend, friendData, onClick }: { friend: string; friendDat
         root: {
           cursor: 'pointer',
           position: 'relative',
-          background: '#FFFFFF',
-          border: '1px solid rgba(59, 130, 246, 0.08)',
-          boxShadow: '0 2px 10px rgba(59, 130, 246, 0.08)',
+          background: 'transparent',
         }
       }}
     >
@@ -312,7 +310,7 @@ function FriendListComponent() {
 
   return (
     <div style={{ 
-      background: 'linear-gradient(135deg, #E8F4FF 0%, #F0F9FF 100%)', 
+      background: 'linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 50%, #93C5FD 100%)', 
       minHeight: '100vh', 
       paddingBottom: rem(80) 
     }}>

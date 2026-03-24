@@ -1,10 +1,4 @@
-import dynamic from 'next/dynamic'
-
-// Create client-side only version of page component
-const FriendList = dynamic(
-  () => import('../components/Profile/FriendList').then(mod => mod.FriendList),
-  { ssr: false }
-)
+import { FriendList } from '../components/Profile/FriendList'
 
 // Friend List page wrapped with layout
 export default function FriendListPage() {

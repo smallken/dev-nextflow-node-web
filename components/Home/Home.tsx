@@ -13,20 +13,20 @@ export function Home() {
   const { contractUserInfo, appInfo } = useUser();
   // 蓝色主题色 (参考 5.jpg)
   const blueColor = '#3B82F6';
-  const blueDark = '#2563EB';
+  const blueDark = '#1E40AF';
   const blueLight = '#60A5FA';
-  const blueGradient = 'linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)';
+  const blueGradient = 'linear-gradient(135deg, #60A5FA 0%, #2563EB 50%, #1E40AF 100%)';
 
   return (
     <>
       {/* 全局样式 */}
       <style jsx global>{`
         body {
-          background: linear-gradient(135deg, #E8F4FF 0%, #F0F9FF 100%) !important;
+          background: linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 50%, #93C5FD 100%) !important;
           min-height: 100vh;
         }
         .home-progress-bar .mantine-Progress-bar {
-          background: linear-gradient(90deg, #3B82F6, #60A5FA, #3B82F6) !important;
+          background: linear-gradient(90deg, #2563EB 0%, #3B82F6 25%, #60A5FA 50%, #3B82F6 75%, #2563EB 100%) !important;
           background-size: 200% 100%;
           animation: progressGradient 3s ease infinite;
         }
@@ -146,7 +146,7 @@ export function Home() {
 
       <div style={{ 
         minHeight: '100vh',
-        background: 'linear-gradient(135deg, #E8F4FF 0%, #F0F9FF 100%)',
+        background: 'linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 50%, #93C5FD 100%)',
         padding: '0'
       }}>
         <Container size="lg" px="md">
@@ -179,14 +179,14 @@ export function Home() {
                 <div style={{ display: 'none' }} className="mobile-nai-row">
                   <Image
                     src="/nai.png"
-                    h={210}
+                    h={252}
                     w="auto"
                     fit="contain"
                     alt="NAI Logo"
                     className="nai-logo-hero"
                     style={{ flexShrink: 0 }}
                   />
-                  <div style={{ flex: 1, paddingTop: 16 }}>
+                  <div style={{ flex: 1, paddingTop: 16, marginLeft: -40, marginRight: 16 }}>
                     <div style={{
                       position: 'relative',
                       background: 'rgba(255, 255, 255, 0.65)',
@@ -194,6 +194,7 @@ export function Home() {
                       borderRadius: 16,
                       padding: '10px 12px',
                       boxShadow: '0 6px 18px rgba(59, 130, 246, 0.08)',
+                      minWidth: '140px',
                     }}>
                       <div style={{
                         position: 'absolute',
@@ -338,10 +339,6 @@ export function Home() {
               c="#3B9FE8" 
               fw={400}
               style={{ 
-                letterSpacing: '0.06em',
-                fontFamily: '"Long Cang", "KaiTi", "STKaiti", cursive',
-                fontStyle: 'normal',
-                textShadow: '0 1px 0 rgba(255, 255, 255, 0.65)',
                 fontSize: 'clamp(16px, 2.8vw, 26px)',
               }}
             >
@@ -349,91 +346,58 @@ export function Home() {
             </Text>
           </Stack>
 
-          {/* 手机端：数量和期数放到卡片外面 */}
+          {/* 手机端：数量和库存告急 */}
           <Group className="mobile-stats-row" justify="space-between" align="center" mb="sm" style={{ display: 'none' }}>
             {!appInfo
               ? <Skeleton height={28} width={80} radius="sm" />
               : <Text size="xl" fw={700} c="#1e293b">{appInfo.batchSoldCount}/{appInfo.batchTotalStock}</Text>
             }
+            {/* 库存告急 - 红色文字，固定显示 */}
             {appInfo && (
-              appInfo.batchRemainingStock === 0 ? (
-                <Text size="sm" c="dimmed" ta="center">
-                  {t('first_phase_sold_out')}
-                </Text>
-              ) : (
-                <Badge
-                  size="sm"
-                  variant="filled"
-                  radius="md"
-                  style={{
-                    background: '#FF9500',
-                    fontWeight: 600,
-                    padding: '4px 12px',
-                    flexShrink: 0,
-                  }}
-                >
-                  {t('phase', { number: appInfo.activeBatchIndex + 1 })}
-                </Badge>
-              )
+              <Text size="xl" fw={700} c="#EF4444" style={{ flexShrink: 0 }}>
+                库存告急
+              </Text>
             )}
           </Group>
 
           {/* 进度卡片 - 按照参考图片设计 */}
-          <Paper
+          <Card
             radius="lg"
-            p="md"
             mb="sm"
             styles={{
               root: {
-                background: '#FFFFFF',
-                border: '1px solid rgba(59, 130, 246, 0.08)',
-                boxShadow: '0 4px 20px rgba(59, 130, 246, 0.1)',
+                background: 'transparent',
               }
             }}
           >
             <Stack gap="sm" className="desktop-card-stats">
-              {/* 进度数字 - 显示已售数量/总库存 */}
-              {!appInfo
-                ? <Skeleton height={28} width={100} radius="sm" />
-                : <Text size="xl" fw={700} c="#1e293b">{appInfo.batchSoldCount}/{appInfo.batchTotalStock}</Text>
-              }
-
-              {/* 进度条和阶段badge */}
-              <Group align="center" gap="md" wrap="nowrap">
-                <Progress
-                  value={appInfo ? (appInfo.batchTotalStock > 0 ? (appInfo.batchSoldCount / appInfo.batchTotalStock * 100) : 0) : 0}
-                  size="lg"
-                  radius="xl"
-                  className="home-progress-bar"
-                  style={{ flex: 1 }}
-                  styles={{
-                    root: {
-                      backgroundColor: '#E5E7EB',
-                    }
-                  }}
-                />
+              {/* 库存告急提示和进度数字 */}
+              <Group justify="space-between" align="flex-start">
+                {/* 进度数字 - 显示已售数量/总库存 */}
+                {!appInfo
+                  ? <Skeleton height={28} width={100} radius="sm" />
+                  : <Text size="xl" fw={700} c="#1e293b">{appInfo.batchSoldCount}/{appInfo.batchTotalStock}</Text>
+                }
+                {/* 库存告急 - 红色文字，位于右侧，固定显示，字号与左侧数字一致 */}
                 {appInfo && (
-                  appInfo.batchRemainingStock === 0 ? (
-                    <Text size="sm" c="dimmed" ta="center">
-                      {t('first_phase_sold_out')}
-                    </Text>
-                  ) : (
-                    <Badge
-                      size="sm"
-                      variant="filled"
-                      radius="md"
-                      style={{
-                        background: '#FF9500',
-                        fontWeight: 600,
-                        padding: '4px 12px',
-                        flexShrink: 0,
-                      }}
-                    >
-                      {t('phase', { number: appInfo.activeBatchIndex + 1 })}
-                    </Badge>
-                  )
+                  <Text size="xl" fw={700} c="#EF4444" style={{ flexShrink: 0 }}>
+                    库存告急
+                  </Text>
                 )}
               </Group>
+
+              {/* 进度条 - 移除右侧 Badge */}
+              <Progress
+                value={appInfo ? (appInfo.batchTotalStock > 0 ? (appInfo.batchSoldCount / appInfo.batchTotalStock * 100) : 0) : 0}
+                size="lg"
+                radius="xl"
+                className="home-progress-bar"
+                styles={{
+                  root: {
+                    backgroundColor: '#E5E7EB',
+                  }
+                }}
+              />
             </Stack>
             {/* 手机端只显示进度条 */}
             <Group align="center" gap="md" wrap="nowrap" style={{ display: 'none' }} className="mobile-progress-only">
@@ -450,7 +414,7 @@ export function Home() {
                 }}
               />
             </Group>
-          </Paper>
+          </Card>
 
           {/* 购买和邀请区域 */}
           <HomeContent

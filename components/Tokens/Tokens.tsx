@@ -133,7 +133,7 @@ export function Tokens() {
   // 无address且钱包正在重连中，显示骨架屏
   if (!address && (walletStatus === 'connecting' || walletStatus === 'reconnecting')) {
     return (
-      <div style={{ background: 'linear-gradient(135deg, #E8F4FF 0%, #F0F9FF 100%)', minHeight: '100vh', paddingBottom: rem(80) }}>
+      <div style={{ background: 'linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 50%, #93C5FD 100%)', minHeight: '100vh', paddingBottom: rem(80) }}>
         <Group px="md" py="lg">
           <Skeleton height={28} width={120} radius="sm" />
         </Group>
@@ -167,6 +167,8 @@ export function Tokens() {
 
   return (
     <div style={{ 
+      background: 'linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 50%, #93C5FD 100%)',
+      minHeight: '100vh',
       paddingBottom: '80px' 
     }}>
       {/* Header with title */}
@@ -198,9 +200,7 @@ export function Tokens() {
           mb="md"
           styles={{
             root: {
-              background: 'rgba(255, 255, 255, 0.75)',
-              border: '1px solid rgba(59, 130, 246, 0.2)',
-              boxShadow: '0 8px 32px rgba(59, 130, 246, 0.12), 0 2px 8px rgba(0, 0, 0, 0.04)',
+              background: 'transparent',
             }
           }}
         >
@@ -259,9 +259,7 @@ export function Tokens() {
           mb="md"
           styles={{
             root: {
-              background: 'rgba(255, 255, 255, 0.75)',
-              border: '1px solid rgba(59, 130, 246, 0.2)',
-              boxShadow: '0 8px 32px rgba(59, 130, 246, 0.12), 0 2px 8px rgba(0, 0, 0, 0.04)',
+              background: 'transparent',
             }
           }}
         >
@@ -321,9 +319,7 @@ export function Tokens() {
             mb="md"
             styles={{
               root: {
-                background: 'rgba(255, 255, 255, 0.75)',
-                border: '1px solid rgba(59, 130, 246, 0.2)',
-                boxShadow: '0 8px 32px rgba(59, 130, 246, 0.12), 0 2px 8px rgba(0, 0, 0, 0.04)',
+                background: 'transparent',
               }
             }}
           >

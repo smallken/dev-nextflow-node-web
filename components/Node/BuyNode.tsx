@@ -22,8 +22,8 @@ interface BuyNodeProps {
 
 export function BuyNode({
   blueColor = '#3B82F6',
-  blueGradient = 'linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)',
-  blueDark = '#2563EB',
+  blueGradient = 'linear-gradient(135deg, #60A5FA 0%, #2563EB 50%, #1E40AF 100%)',
+  blueDark = '#1E40AF',
   blueLight = '#60A5FA'
 }: BuyNodeProps) {
   const { t } = useTranslation();
@@ -293,16 +293,13 @@ export function BuyNode({
 
       {/* 购买卡片 */}
       <Card
-        withBorder
-        radius="xl"
-        p={{ base: 'lg', sm: 'xl', md: 'xl' }}
-        pos="relative"
+        p="lg"
+        radius="lg"
+        withBorder={false}
         className="home-card"
         styles={{
           root: {
-            background: '#FFFFFF',
-            border: '1px solid rgba(59, 130, 246, 0.08)',
-            boxShadow: '0 4px 20px rgba(59, 130, 246, 0.1)',
+            background: 'transparent',
           }
         }}
       >

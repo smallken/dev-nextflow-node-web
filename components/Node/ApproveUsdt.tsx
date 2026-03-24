@@ -24,8 +24,8 @@ export function ApproveUsdt({
   amount,
   onApproveSuccess,
   blueColor = '#3B82F6',
-  blueGradient = 'linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)',
-  blueDark = '#2563EB',
+  blueGradient = 'linear-gradient(135deg, #60A5FA 0%, #2563EB 50%, #1E40AF 100%)',
+  blueDark = '#1E40AF',
   blueLight = '#60A5FA'
 }: ApproveUsdtProps) {
   const { t } = useTranslation();
@@ -167,7 +167,7 @@ export function ApproveUsdt({
             fontWeight: 600,
             boxShadow: '0 4px 20px rgba(37, 99, 235, 0.25)',
             '&:hover:not(:disabled)': {
-              background: 'linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%)',
+              background: 'linear-gradient(135deg, #3B82F6 0%, #1E40AF 50%, #1E3A8A 100%)',
             },
           }
         }}
