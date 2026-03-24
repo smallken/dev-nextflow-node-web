@@ -127,6 +127,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const cycleCountRef = useRef(0);
   const cycleStartRef = useRef(0);
   const lastReconnectLogRef = useRef(0);  // 上次打印重连日志的时间
+  const refreshTimerRef = useRef<NodeJS.Timeout | null>(null);  // refreshData防抖定时器
   useEffect(() => {
     // 如果是重连/连接状态，检查是否需要防抖（500ms内只打印一次）
     if (walletStatus === 'reconnecting' || walletStatus === 'connecting') {
@@ -418,9 +419,21 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (address) {
-      if (isDev) console.log('Chain ID changed, refreshing data...');
-      refreshData();
+      // 清除之前的定时器
+      if (refreshTimerRef.current) {
+        clearTimeout(refreshTimerRef.current);
+      }
+      // 延迟300ms再刷新，避免频繁触发区块链请求
+      refreshTimerRef.current = setTimeout(() => {
+        if (isDev) console.log('Chain ID changed, refreshing data...');
+        refreshData();
+      }, 300);
     }
+    return () => {
+      if (refreshTimerRef.current) {
+        clearTimeout(refreshTimerRef.current);
+      }
+    };
   }, [chainId, address]);
 
   // 使用 useMemo 稳定 Context value，避免不必要的重渲染
