@@ -2,7 +2,7 @@ import { Card, Text, Group, Button, Container, Stack, Paper, Space, Divider, Ale
 import { IconCoin, IconCheck, IconRefresh, IconAlertCircle } from '@tabler/icons-react';
 import { useUser } from '../../context/UserContext';
 import { useTranslation } from 'react-i18next';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { formatEther } from 'viem';
 import { useChainId, useWaitForTransactionReceipt, useAccount } from 'wagmi';
 import { notifications } from '@mantine/notifications';
@@ -26,14 +26,21 @@ export function Tokens() {
     console.log(`[Tokens] mounted t=${performance.now().toFixed(0)}ms`);
   }, []);
 
-  // 获取 TokenPool 合约地址
-  const poolAddr = tokenPoolAddress[chainId as keyof typeof tokenPoolAddress];
+  // 获取 TokenPool 合约地址 - 用useMemo缓存
+  const poolAddr = useMemo(() => {
+    return tokenPoolAddress[chainId as keyof typeof tokenPoolAddress];
+  }, [chainId]);
 
-  // 读取分类锁仓信息（购机和推广分开）
+  // 判断是否应该加载数据 - 只有连接了钱包才触发
+  const shouldLoadData = useMemo(() => {
+    return !!address && !!poolAddr;
+  }, [address, poolAddr]);
+
+  // 读取分类锁仓信息（购机和推广分开）- 添加计时
   const { data: vestingByType, refetch: refetchVestingByType } = useReadTokenPoolGetVestingInfoByType({
     args: address ? [address] : undefined,
     query: {
-      enabled: !!address && !!poolAddr,
+      enabled: shouldLoadData,
     }
   });
 
@@ -41,7 +48,7 @@ export function Tokens() {
   const { data: claimable, refetch: refetchClaimable } = useReadTokenPoolGetClaimable({
     args: address ? [address] : undefined,
     query: {
-      enabled: !!address && !!poolAddr,
+      enabled: shouldLoadData,
     }
   });
 
@@ -49,7 +56,7 @@ export function Tokens() {
   const { data: totalClaimed, refetch: refetchTotalClaimed } = useReadTokenPoolTotalClaimedAmount({
     args: address ? [address] : undefined,
     query: {
-      enabled: !!address && !!poolAddr,
+      enabled: shouldLoadData,
     }
   });
 
