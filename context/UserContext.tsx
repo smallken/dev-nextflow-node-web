@@ -161,6 +161,13 @@ export function UserProvider({ children }: { children: ReactNode }) {
   // 控制是否加载用户特定数据（按需加载）
   const [shouldLoadUserData, setShouldLoadUserData] = useState(false);
 
+  // 计时日志：追踪 shouldLoadUserData 变化
+  useEffect(() => {
+    if (shouldLoadUserData) {
+      console.log(`[UserContext] shouldLoadUserData=true triggered at t=${performance.now().toFixed(0)}ms`);
+    }
+  }, [shouldLoadUserData]);
+
   // 使用 useReadPoolGetUserInfo 从合约获取用户信息（按需加载）
   const { data: userData, isError, isLoading, refetch: refetchUserData } = useReadPoolGetUserInfo({
     args: address ? [address] : undefined,
@@ -242,7 +249,9 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
   // Method to trigger lazy loading of user data
   const loadUserData = () => {
+    console.log(`[UserContext] loadUserData called at t=${performance.now().toFixed(0)}ms, address=${address?.slice(0,8)}, shouldLoadUserData=${shouldLoadUserData}`);
     if (address && !shouldLoadUserData) {
+      console.log(`[UserContext] Setting shouldLoadUserData=true at t=${performance.now().toFixed(0)}ms`);
       setShouldLoadUserData(true);
     }
   };
@@ -356,6 +365,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
   // 当地址变化时重置用户相关信息
   useEffect(() => {
+    console.log(`[UserContext] address changed at t=${performance.now().toFixed(0)}ms, address=${address?.slice(0,8)}`);
     if (!address) {
       setContractUserInfo(null);
     } else {
@@ -367,6 +377,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   // 将userData更新contractUserInfo
   useEffect(() => {
     if (userData && address) {
+      console.log(`[UserContext] userData received at t=${performance.now().toFixed(0)}ms, address=${address?.slice(0,8)}`);
       // 调试：打印用户数据
       if (false) {
         console.log('=== 用户数据调试 ===');

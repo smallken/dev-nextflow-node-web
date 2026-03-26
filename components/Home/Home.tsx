@@ -6,11 +6,18 @@ import { useTranslation } from 'react-i18next';
 
 import { useUser } from '../../context/UserContext';
 import { HomeContent } from './HomeContent';
+import { useEffect } from 'react';
 
 export function Home() {
   const { t } = useTranslation();
   const account = useAccount();
   const { contractUserInfo, appInfo } = useUser();
+
+  // 计时日志：组件挂载时间
+  useEffect(() => {
+    console.log(`[Home] mounted t=${performance.now().toFixed(0)}ms`);
+  }, []);
+
   // 蓝色主题色 (参考 5.jpg)
   const blueColor = '#3B82F6';
   const blueDark = '#1E40AF';

@@ -195,7 +195,12 @@ function TeamTree2Component() {
   const tree = useTree({
     onNodeExpand: handleNodeExpand
   });
-  
+
+  // 计时日志：组件挂载时间
+  useEffect(() => {
+    console.log(`[Team] mounted t=${performance.now().toFixed(0)}ms`);
+  }, []);
+
   // Function to convert user data to tree nodes
   const mapUserToTreeNode = (user: User, expandedState?: Record<string, boolean>): ExtendedTreeNodeData => {
     const hasChildren = (user.referrals?.length || 0) > 0;

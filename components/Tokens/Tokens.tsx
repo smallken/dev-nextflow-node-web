@@ -20,8 +20,11 @@ export function Tokens() {
   const { status: walletStatus } = useAccount();
   const chainId = useChainId();
   const [isClaiming, setIsClaiming] = useState(false);
-  
-  // 移除空的useEffect依赖 - loadUserData已在address变化时由UserContext处理
+
+  // 计时日志：组件挂载时间
+  useEffect(() => {
+    console.log(`[Tokens] mounted t=${performance.now().toFixed(0)}ms`);
+  }, []);
 
   // 获取 TokenPool 合约地址
   const poolAddr = tokenPoolAddress[chainId as keyof typeof tokenPoolAddress];
